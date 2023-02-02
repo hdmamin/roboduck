@@ -21,6 +21,9 @@ X -add readme img
 
 Backlog
 -------
+-watch bret victor Future of Programming vid
+-read distill AI-augmented human intelligence post
+-read Engelbart paper on augmenting human intellect
 
 Easy Backlog
 ------------
