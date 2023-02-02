@@ -1,0 +1,20 @@
+2/1/23 wed
+----------
+X -settle on project
+X -find all old relevant work
+    > added 3 relevant files to this dir for now. The fourth (and perhaps most developed) effort is in the ~/nbextension-duckling dir.
+
+2/2/23 wed
+----------
+-map out very tentative plan for order to take things on (e.g. debugger -> jupyter magic -> interactive error messages -> nbextension -> reloading stuff -> LLM native programming language)
+-premortem
+-decide how to structure dir(s)/repo(s) (Will prob have multiple semi-related outputs, perhaps 1-5.)
+-consider whether notebook extension proj should continue or start over as jupyterlab extension
+    -find stats on how commonly used each is?
+
+
+Backlog
+-------
+
+Easy Backlog
+------------
