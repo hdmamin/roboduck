@@ -16,6 +16,7 @@ X -add readme img
 -premortem
 -consider whether notebook extension proj should continue or start over as jupyterlab extension
     -find stats on how commonly used each is?
+-create cookiecutter template for each major project
 
 
 Backlog
