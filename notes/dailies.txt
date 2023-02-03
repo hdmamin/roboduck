@@ -1,0 +1,43 @@
+2/1/23 wed
+----------
+X -settle on project
+X -find all old relevant work
+    > added 3 relevant files to this dir for now. The fourth (and perhaps most developed) effort is in the ~/nbextension-duckling dir.
+~ -decide how to structure dir(s)/repo(s) (Will prob have multiple semi-related outputs, perhaps 1-5.)
+    > Tentatively thinking monorepo. Easier to track everything that way.
+-pick repo name
+    > cairina, from "cairina moschata", one of the biggest, most powerful looking species of duck ("muscovy"). Think (rubber) duck on steroids.
+X -add readme img
+    > :D
+~ -read distill AI-augmented human intelligence post
+
+2/2/23 thurs
+------------
+X -premortem
+X -map out very tentative plan for order to take things on (e.g. debugger -> jupyter magic -> interactive error messages -> nbextension -> reloading stuff -> LLM native programming language)
+    > Lets start with debugger, then jupyter magic. The former is pretty far along and the latter should largely build on top of the debugger. We can take stock after that - depending on timing, can take a break or fit in error messages before break or move on to one of the bigger rocks (live reloading stuff or nbextension) if it went surprisingly fast.
+X -consider whether notebook extension proj should continue or start over as jupyterlab extension
+    -find stats on how commonly used each is?
+        > In 2019 jetbrains python dev survey, DS use cases skewed twoards notebook (13% vs 5%; if we normalize to avoid non-jupyter options, that becomes 72% and 28%). By 2020 survey, it was 11% vs 6% (65% and 35% normalized). In 2021, they didn't break down results by DS users, so it's just 3% vs 2% (60% vs 40% normalized). In the "additional but not main IDE" question, it was 25% vs 12% notebooks (68% vs 32% normalized). In kaggle 2022 survey, 66.5% used nb while 23.7% used lab (74% vs 26% normalized). So (somewhat surprisingly) it seems like notebook is still considerably more popular, though perhaps slowly shifting towards lab. I like nb and started building in that so it's tempting to continue in that, but I guess I don't need to decide quite yet given that we're starting with the debugger.
+~ -create cookiecutter template for each major project
+    > Just start with debugger subdir (now "roboduck", i.e. a more powerful rubber duck). Uploaded to pypi to claim name.
+-finish distill AI-augmented human intelligence post
+
+2/3/23 fri
+----------
+-remind myself where I left off w/ debugger work
+    -run existing code (do)
+    -skim over existing code (read)
+    -read through done and outstanding todos
+    -write some todo items for what comes next
+-rename usages from llmdb to rdb or similar?
+-finish distill AI-augmented human intelligence post
+
+
+Backlog
+-------
+-watch bret victor Future of Programming vid
+-read Engelbart paper on augmenting human intellect
+
+Easy Backlog
+------------

@@ -1,0 +1,10 @@
+MANIFEST.in
+README.md
+requirements.txt
+setup.py
+roboduck/__init__.py
+roboduck/utils.py
+roboduck.egg-info/PKG-INFO
+roboduck.egg-info/SOURCES.txt
+roboduck.egg-info/dependency_links.txt
+roboduck.egg-info/top_level.txt
