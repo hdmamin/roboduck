@@ -41,3 +41,5 @@ Backlog
 
 Easy Backlog
 ------------
+-add my jabberwocky pre-commit hook to avoid pushing api key
+-add file from jabberwocky (I think?) to avoid counting jupyter notebooks in github code % count
