@@ -25,17 +25,33 @@ X -consider whether notebook extension proj should continue or start over as jup
 
 2/3/23 fri
 ----------
--remind myself where I left off w/ debugger work
-    -run existing code (do)
+X -remind myself where I left off w/ debugger work
+    X -run existing code (do)
     -skim over existing code (read)
-    -read through done and outstanding todos
-    -write some todo items for what comes next
--rename usages from llmdb to rdb or similar?
+    X -read through done and outstanding todos
+    X -write some todo items for what comes next
+X -possible bug: seems like if we haven't saved nb since latest changes, load_ipynb func can load an outdated version (possibly? Though tit did that once but then I looked again and it seemed to be up to date so idk)
+    > Confirmed that was happening but fixed it w/ help of a stackoverflow function.
+X -consider adding option for "I don't know". Or maybe something like "If you don't know what's causing the bug, say "I don't know". Then write a list of 5 plausible causes that the developer can check for when debugging." (take advantage of its strength at generating lists, thinking of possibilities we might not)
+X -update prompt to explain to gpt what the chat_db()/roboduck()/rbd() func call is
+X -rename usages from llmdb to rdb or similar?
+X -update func names to fit roboduck lib
+X -add stop word to prompt to prevent starting another question
 -finish distill AI-augmented human intelligence post
 
+2/4/23 sat
+----------
+-see if we can color user/model turns differently. (Bit hard to read atm, though partly bc I'm printing out full prompt for debugging purposes.)
+-consider tweaking prompt to use proxy/authority (e.g. "Answer Key")
+-hide user warning about using codex model name.
 
 Backlog
 -------
+-lmdb nb
+    -consider if there's a good way to make this more conversational in case we need to ask multiple questions. If we just print gpt's response, this won't work so well. Could try to revise this to fit into ConvManager paradigm.
+    -consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+    -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
+    -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
 -watch bret victor Future of Programming vid
 -read Engelbart paper on augmenting human intellect
 
