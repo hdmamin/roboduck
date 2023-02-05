@@ -41,15 +41,28 @@ X -add stop word to prompt to prevent starting another question
 
 2/4/23 sat
 ----------
--see if we can color user/model turns differently. (Bit hard to read atm, though partly bc I'm printing out full prompt for debugging purposes.)
+X -see if we can color user/model turns differently. (Bit hard to read atm, though partly bc I'm printing out full prompt for debugging purposes.)
+X -add backup value when response is nothing
+X -debug why I'm getting so many empty responses
+    > Turns out I had docstring quotes in my stop phrases which can be problematic since that is a valid thing to generate at times. Also didn't start my prompt with docstring quotes which maybe degrades quality a bit. But if I add them back in, then I feel like I need it in stopwords again. Hmmm.
+X -make codex respond in second person
+X -figure out how to make multiline str start with quotes in yaml (or abandon their use)
+    > Turns out my old method already supports that. Just don't escape them.
 -consider tweaking prompt to use proxy/authority (e.g. "Answer Key")
 -hide user warning about using codex model name.
+
+2/5/23 sun
+----------
+-consider removing stop seq """ from 3 debug prompts (in case it actually needs to generate that w/in solution)
+-consider tweaking prompt to use proxy/authority (e.g. "Answer Key")
+-hide user warning about using codex model name
+-consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+
 
 Backlog
 -------
 -lmdb nb
     -consider if there's a good way to make this more conversational in case we need to ask multiple questions. If we just print gpt's response, this won't work so well. Could try to revise this to fit into ConvManager paradigm.
-    -consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
     -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
     -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
 -watch bret victor Future of Programming vid
