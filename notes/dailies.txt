@@ -53,15 +53,26 @@ X -figure out how to make multiline str start with quotes in yaml (or abandon th
 
 2/5/23 sun
 ----------
--consider removing stop seq """ from 3 debug prompts (in case it actually needs to generate that w/in solution)
--consider tweaking prompt to use proxy/authority (e.g. "Answer Key")
--hide user warning about using codex model name
+X -consider removing stop seq """ from 3 debug prompts (in case it actually needs to generate that w/in solution)
+    > Yes, try it out. Just have roboduck rstrip them.
+    > Update: with this format, codex seems to like closing the docstring before doing anything else, then jumping straight to code, meaning no explanation gets written. May need to revert to old no-docstring method.
+    > Also realized I haven't been bumping the prompt versions. Whoops. I guess maybe this only needs to be done when I actually bump the jabberwocky pypi version and/or the roboduck pypi version.
+_ -consider tweaking prompt to use proxy/authority (e.g. "Answer Key")
+    > I think for now let's leave this be - I'll be seeing a lot of query results over the next couple months so it will become apparent if this is something we need (i.e. if quality is an issue). I also suspect we may see a chatgpt/gpt4/codex2 release that makes this type of prompt engineering less necessary before the end of this project, so no need to optimize that dimension now.
+X -hide user warning about using codex model name
 -consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+
+2/6/23 mon
+----------
+-try reverting debug prompts to no opening docstring (see sun notes for why)
+-consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+-stream completion instead of waiting for whole thing
 
 
 Backlog
 -------
 -lmdb nb
+    -stream completion instead of waiting for whole thing
     -consider if there's a good way to make this more conversational in case we need to ask multiple questions. If we just print gpt's response, this won't work so well. Could try to revise this to fit into ConvManager paradigm.
     -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
     -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
