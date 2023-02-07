@@ -64,18 +64,27 @@ X -hide user warning about using codex model name
 
 2/6/23 mon
 ----------
--try reverting debug prompts to no opening docstring (see sun notes for why)
+X -try reverting debug prompts to no opening docstring (see sun notes for why)
+    > Nope, tried this again but it really seems like it needs the docstring otherwise it just jumps straight to code. Added logit bias instead of stopword. Also add another stopword since I observed some cases where it skipped repeating the DEVELOPER QUESTION but did repeat LOCAL VARIABLES and everything afterwards.
+X -see how chatGPT does
+    > As expected, noticeably better. Codex seems to like repeating things and writing lengthy answers here even though I added the word "concise" to the instructions. I bet a better code api will become available within the next few months.
 -consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
--stream completion instead of waiting for whole thing
+X -stream completion instead of waiting for whole thing
+    > Added streaming with .02s between characters. Maminbot used .015 but somehow even .02 seems really fast in jupyter. Maybe streamlit had extra latency so it wasn't really .015s there.
+
+2/7/23 tues
+-----------
+-consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+-consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
+-maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
+-try running magic again and see if problems arise
 
 
 Backlog
 -------
 -lmdb nb
-    -stream completion instead of waiting for whole thing
     -consider if there's a good way to make this more conversational in case we need to ask multiple questions. If we just print gpt's response, this won't work so well. Could try to revise this to fit into ConvManager paradigm.
     -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
-    -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
 -watch bret victor Future of Programming vid
 -read Engelbart paper on augmenting human intellect
 
