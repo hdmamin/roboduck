@@ -74,7 +74,23 @@ X -stream completion instead of waiting for whole thing
 
 2/7/23 tues
 -----------
--consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+~ -consider how to handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+    X -write draft of truncated_repr func
+    -consider desired behavior for cases like DotDict (might be nice to indicate to gpt that it's not just a regular dict, but not sure if there's any good indicator that allows us to identify that automatically - just "feels" like it wouuld be useful info to provide. One option is to provide types for all values, though that would make the prompt snippet look less like valid python.)
+    -document (mention that length is more of a rough guideline, not strictly enforced)
+    -integrate into RoboDuckDB cls (autocompute max len per var based on number of vars?)
+-consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
+-maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
+-try running magic again and see if problems arise
+
+2/8/23 wed
+-----------
+-handle huge data structures (big df, long list, etc.) ~ - See if we can get this to work like ipdb where you can call it only AFTER an error occurs.
+    -handle case where seq[:1] still produces repr that's too long
+    -test behavior on dfs again (potential opportunity to do something custom like "pd.DataFrame([col1, col2, ...])"? As in literally that string, just call truncated_repr on cols.)
+    -consider desired behavior for cases like DotDict (might be nice to indicate to gpt that it's not just a regular dict, but not sure if there's any good indicator that allows us to identify that automatically - just "feels" like it wouuld be useful info to provide. One option is to provide types for all values, though that would make the prompt snippet look less like valid python.)
+    -document (mention that length is more of a rough guideline, not strictly enforced)
+    -integrate into RoboDuckDB cls (autocompute max len per var based on number of vars? Maybe only if original prompt is too long? Should I try to identify problematic vars and just shorten those dramatically (e.g. the 1 giant df or tensor) rather than risk truncating a bunch of medium size vars slightly?)
 -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
 -maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
 -try running magic again and see if problems arise
