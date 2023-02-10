@@ -98,10 +98,27 @@ X -add file from jabberwocky (I think?) to avoid counting jupyter notebooks in g
 
 2/9/23 thurs
 -----------
--handle huge data structures (big df, long list, etc.) 
-    -consider desired behavior for cases like DotDict (might be nice to indicate to gpt that it's not just a regular dict, but not sure if there's any good indicator that allows us to identify that automatically - just "feels" like it wouuld be useful info to provide. One option is to provide types for all values, though that would make the prompt snippet look less like valid python.)
+~ -handle huge data structures (big df, long list, etc.) 
+    X -consider desired behavior for cases like DotDict (might be nice to indicate to gpt that it's not just a regular dict, but not sure if there's any good indicator that allows us to identify that automatically - just "feels" like it would be useful info to provide. One option is to provide types for all values, though that would make the prompt snippet look less like valid python.)
+        > I guess I intentionally made dotdict have the same str and repr as a regular dict so it's tough to come up with a rule that would help here. I could change its str/repr, just leave it as the regular dict version, or update my debug prompt to show the type of each var too (could be a separate section like GLOBALS_TYPES, could be a comment after each value in GLOBALS like `'nums': [1, 3, 4...], # list`. Last idea is interesting.
+    X -try out idea about specifying var types in comments
+        > Wrote new func. I like this.
+    X -fix bug: empty sets represented wrong
+        > Because empty lists and tuples use literals like [] but sets use 'set()' so my logic around the last non-brace index failed. Added some hardcoded logic around setes.
+    X -fix bug: dict-like objects have extra quotes
+        > Must have added this mistakenly, fixed now.
+    X -tweak debug prompt to acknowledge that roboduck func may not be present (in case we repurpose these)
     -document (mention that length is more of a rough guideline, not strictly enforced)
     -integrate into RoboDuckDB cls (autocompute max len per var based on number of vars? Maybe only if original prompt is too long? Should I try to identify problematic vars and just shorten those dramatically (e.g. the 1 giant df or tensor) rather than risk truncating a bunch of medium size vars slightly?)
+-consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
+-maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
+-try running magic again and see if problems arise
+
+2/10/23 fri
+-----------
+-handle huge data structures (big df, long list, etc.) 
+    -integrate into RoboDuckDB cls (autocompute max len per var based on number of vars? Maybe only if original prompt is too long? Should I try to identify problematic vars and just shorten those dramatically (e.g. the 1 giant df or tensor) rather than risk truncating a bunch of medium size vars slightly?)
+    -document (mention that length is more of a rough guideline, not strictly enforced)
 -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
 -maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
 -try running magic again and see if problems arise
