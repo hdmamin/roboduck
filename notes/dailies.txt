@@ -116,12 +116,25 @@ X -add file from jabberwocky (I think?) to avoid counting jupyter notebooks in g
 
 2/10/23 fri
 -----------
--handle huge data structures (big df, long list, etc.) 
-    -integrate into RoboDuckDB cls (autocompute max len per var based on number of vars? Maybe only if original prompt is too long? Should I try to identify problematic vars and just shorten those dramatically (e.g. the 1 giant df or tensor) rather than risk truncating a bunch of medium size vars slightly?)
-    -document (mention that length is more of a rough guideline, not strictly enforced)
--consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
--maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
+X -handle huge data structures (big df, long list, etc.) 
+    X -integrate into RoboDuckDB cls (autocompute max len per var based on number of vars? Maybe only if original prompt is too long? Should I try to identify problematic vars and just shorten those dramatically (e.g. the 1 giant df or tensor) rather than risk truncating a bunch of medium size vars slightly?)
+        > Just hardcode for now. There's not going to be some magic number here that's perfect.
+    X -document (mention that length is more of a rough guideline, not strictly enforced)
+_ -consider changing logic for when to call codex (currently when "?" is in text, but should it be more formally defined?)
+    > Actually I think this is pretty good.
+X -tweak prompts to hopefully reduce repetition a bit (been noticing this more lately)
+    > Added frequency_penalty of 0.2 (pretty minor change for now, range is -2 to 2). Haven't tested yet, just keep an eye on things as I continue working on it. Don't want to sink too much time into selecting perfect prompt params now bc I think better models may be available soon.
+~ -maybe start refactoring some things out of RoboDuckDB class to reduce overhead per call (e.g. load prompts once rather than every time)
+    > Tried replacing load_prompt w/ PromptManager and realized the issue is that I wnat to check the resolved prompt, and pm.query() with verbose mode just prints. But found pm.prompt() and pm.kwargs() methods so it is possible. However, we have to pass GPT obj to PM on instantiation so if we want to support diff backends in roboduck init, we still need to create PM inside it. So not really saving any time. But maybe this work will help pave the way if I want to transition to ConversationManager at some point.
+    > Haven't tested this yet but it's ready to be tried. I kept the old cls around in case I want to revert (w/out messing w/ jupyter/git interaction weirdness).
 -try running magic again and see if problems arise
+
+2/11/23 sat
+-----------
+-try running new version of roboduck with PM (just run all cells from cls def down to debugging session cell)
+-consider whether to try replacing PM with convmanager
+-if yes ^, briefly prototype some bios (should this be a strong programmer? Or something like "the python debugger/interpreter"? Or "a helpful AI code assistant embedded in the interpreter"?)
+-try running jupyter magic again and see if problems arise
 
 
 Backlog
