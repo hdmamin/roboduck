@@ -131,7 +131,18 @@ X -tweak prompts to hopefully reduce repetition a bit (been noticing this more l
 
 2/11/23 sat
 -----------
--try running new version of roboduck with PM (just run all cells from cls def down to debugging session cell)
+X -handle pandas series separately in truncated_repr (noticed it was not handled that well, was truncating the metadata for some reason)
+    > Also refactored func a bit.
+X -try running new version of roboduck with PM (just run all cells from cls def down to debugging session cell)
+    X -debug if necessary
+    > Had to fix both prompt() and query() calls, they take slightly different args than GPT.query() which in hindsight is maybe not ideal but I guess part of the point is that it's supposed to simplify the call and if it had an identical interface it wouldn't be any easier. Works now, though codex's answer was very wrong.
+-consider whether to try replacing PM with convmanager
+-if yes ^, briefly prototype some bios (should this be a strong programmer? Or something like "the python debugger/interpreter"? Or "a helpful AI code assistant embedded in the interpreter"?)
+-try running jupyter magic again and see if problems arise
+
+2/12/23 sun
+-----------
+-add my jabberwocky pre-commit hook to avoid pushing api key
 -consider whether to try replacing PM with convmanager
 -if yes ^, briefly prototype some bios (should this be a strong programmer? Or something like "the python debugger/interpreter"? Or "a helpful AI code assistant embedded in the interpreter"?)
 -try running jupyter magic again and see if problems arise
@@ -147,4 +158,3 @@ Backlog
 
 Easy Backlog
 ------------
--add my jabberwocky pre-commit hook to avoid pushing api key
