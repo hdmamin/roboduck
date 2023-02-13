@@ -142,17 +142,26 @@ X -try running new version of roboduck with PM (just run all cells from cls def 
 
 2/12/23 sun
 -----------
--add my jabberwocky pre-commit hook to avoid pushing api key
--consider whether to try replacing PM with convmanager
--if yes ^, briefly prototype some bios (should this be a strong programmer? Or something like "the python debugger/interpreter"? Or "a helpful AI code assistant embedded in the interpreter"?)
--try running jupyter magic again and see if problems arise
+X -add my jabberwocky pre-commit hook to avoid pushing api key
+_ -consider whether to try replacing PM with convmanager
+    > Don't want to get too bogged down on exact interfact yet. Don't know if upcoming chatgpt API might have slightly different UX (e.g. conversation_id) - this could be used in place of my conversationmanager cls, which is more helpful for the alexa skill with its auto-persona generation via wikipedia.
+_ -if yes ^, briefly prototype some bios (should this be a strong programmer? Or something like "the python debugger/interpreter"? Or "a helpful AI code assistant embedded in the interpreter"?)
+~ -try running jupyter magic again and see if problems arise
+    > Existing code worked fine. Taking another stab at setting shell attr instead of global var to help with code insertion but not working yet.
+    > Confirmed that I CAN set a var ;ole get_ipython().xyz = 123 and it persists (just working in global scope for both).
+    > BUT if I set it in RoboduckDB.ask_language_model, it does not seem to persist by the time the magic checks it. Need to investigate more. I think this is similar to the issue I ran into last time. Maybe shell obj is recreated every time we change scope or something?
+
+2/13/23 mon
+-----------
+-debug failure to set get_ipython() var in certain contexts (see yesterday's last few bullet points)
+-finish distill post on augmenting human intellect
 
 
 Backlog
 -------
 -lmdb nb
-    -consider if there's a good way to make this more conversational in case we need to ask multiple questions. If we just print gpt's response, this won't work so well. Could try to revise this to fit into ConvManager paradigm.
     -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
+-[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
 -watch bret victor Future of Programming vid
 -read Engelbart paper on augmenting human intellect
 
