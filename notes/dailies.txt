@@ -153,17 +153,36 @@ _ -if yes ^, briefly prototype some bios (should this be a strong programmer? Or
 
 2/13/23 mon
 -----------
--debug failure to set get_ipython() var in certain contexts (see yesterday's last few bullet points)
+X -debug failure to set get_ipython() var in certain contexts (see yesterday's last few bullet points)
+    > Realized there's no real reason this has to be set on the Ipython object. I ended up creating a cache class and setting a var there - not sure if this is meaningfully better than global (we're just editing a global class var, I suppose) but maybe it is, idk.
+X -add "keep an eye on" and "won't do" sections to dailies
+~ -extract code from gpt completion when inserting code cell
+    > Tried ast.parse-based method, pretrained huggingface classifier method, considered ways of breaking down prompt into 2 to make extraction easier. Ended up implementing method that makes a second codex call but only when the magic exits, not on every conversational turn, that extracts code. Seems to work alright in playground but need to debug a bit more - code snippet is no longer being used to populate cell below. Also, without live typing it feels a lot slower.
+-finish distill post on augmenting human intellect
+
+2/14/23 tues
+------------
+-debug code extraction in magic: why is it failing to populate nex cell now?
+-consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
 -finish distill post on augmenting human intellect
 
 
 Backlog
 -------
 -lmdb nb
-    -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
 -[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
 -watch bret victor Future of Programming vid
 -read Engelbart paper on augmenting human intellect
 
 Easy Backlog
 ------------
+
+Keep an eye out for
+-------------------
+-debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
+    > 2/13/23: Haven't observed this in this round of work on the project, leftover from last time. Maybe just a transient issue w/ the codex API at the time?
+-codex completion quality issues
+    > 2/13/23: seeing a lot of repetition lately. Seems like it came after I upped the freq penalty so that seems odd, but maybe the more salient change is that at some point I removed docstring quotes as a stopword (bc we may need to generate it sometimes).
+
+Won't do (for now)
+------------------
