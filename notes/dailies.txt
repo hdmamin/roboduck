@@ -162,7 +162,21 @@ X -add "keep an eye on" and "won't do" sections to dailies
 
 2/14/23 tues
 ------------
--debug code extraction in magic: why is it failing to populate nex cell now?
+X -debug code extraction in magic: why is it failing to populate next cell now?
+    > First val returned by gpt.query is list, had to extract str.
+X -consider other appraoches to code extraction (really feel like a simpler version relying on templating should be possible)
+    > Have prompt ask for a two part solution and title the sections carefully to try to encourage this separation. Seems promising so far. Had to add some new stop words. Just updating debug and debug_full prompts atm, leave duckling prompt for later.
+~ -update roboduck cls to avoid printing the SOLUTION PART 2 part
+    > Did planning but no implementation yet. A bit tricky since we're printing one token at a time and SOLUTION tokenizes into ['S', 'OL', 'UTION']. It becomes very slightly less complex if we go lowercase (['s', 'olution']) but even so we probably need a solution that builds up a queue of tokens to print and prints with a slight delay (i.e. always check the last x tokens, prob 4-8, before printing. If we find ourselves in the SOLUTION PART 2 phrase, we pop those tokens off and don't print them until we hit a newline).
+-consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
+-finish distill post on augmenting human intellect
+
+2/15/23 wed
+-----------
+-update roboduck cls to avoid printing the SOLUTION PART 2 part
+    -implement algo from yesterday: SOLUTION tokenizes into ['S', 'OL', 'UTION']. It becomes very slightly less complex if we go lowercase (['s', 'olution']) but even so we probably need a solution that builds up a queue of tokens to print and prints with a slight delay (i.e. always check the last x tokens, prob 4-8, before printing. If we find ourselves in the SOLUTION PART 2 phrase, we pop those tokens off and don't print them until we hit a newline).
+-consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
+-finish distill post on augmenting human intellect
 -consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
 -finish distill post on augmenting human intellect
 
