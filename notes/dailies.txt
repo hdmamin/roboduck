@@ -173,8 +173,22 @@ X -consider other appraoches to code extraction (really feel like a simpler vers
 
 2/15/23 wed
 -----------
+X -move testing cells to bottom of nb to avoid re-run on kernel restart
+    > Frequent restarts are necessary to make magic update, even if we manually delete it before registering it again. Weird that this issue just popped up. Wonder if related to deleting cookies somehow? Seems unlikely. Better solution is to do as much of debugging as possible in Roboduck cls and just update magic occasionally once a big chunk of progress has been made.
+~ -update roboduck cls to avoid printing the SOLUTION PART 2 part
+    ~ -implement algo from yesterday: SOLUTION tokenizes into ['S', 'OL', 'UTION']. It becomes very slightly less complex if we go lowercase (['s', 'olution']) but even so we probably need a solution that builds up a queue of tokens to print and prints with a slight delay (i.e. always check the last x tokens, prob 4-8, before printing. If we find ourselves in the SOLUTION PART 2 phrase, we pop those tokens off and don't print them until we hit a newline).
+        > WIP. Quite tricky. Getting close now - remaining bug is that openai seems to (at least sometimes) return "SOLUTION PART 2" as a single token (or else I'm unintentionally converting it before adding it to the queue somehow?). Think the solution is to first confirm that that's actually happening (i.e. print out cur on each iteration). Then if that is true, update algo to grab items from start of queue until the desired char limit is met and track the index, and pop that many items. Or just add an extra check if first val is SOLUTION PART 2, though that wouldn't handle the case of them returning it as 2 tokens. (I initially thought maybe they add all stop words as single tokens to vocab somehow, but then I remembered only PART 1 and 3 versions are stop words, not 2.)
+-consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
+-finish distill post on augmenting human intellect
+-consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
+-finish distill post on augmenting human intellect
+
+2/16/23 thurs
+-------------
 -update roboduck cls to avoid printing the SOLUTION PART 2 part
-    -implement algo from yesterday: SOLUTION tokenizes into ['S', 'OL', 'UTION']. It becomes very slightly less complex if we go lowercase (['s', 'olution']) but even so we probably need a solution that builds up a queue of tokens to print and prints with a slight delay (i.e. always check the last x tokens, prob 4-8, before printing. If we find ourselves in the SOLUTION PART 2 phrase, we pop those tokens off and don't print them until we hit a newline).
+    -Debug algo to avoid printing SOLUTION PART 2
+        -print out cur on each iteration to confirm that openai actually sometimes returns SOLUTION PART 2 as a single token even though codex is supposed to tokenize it as 5 tokens
+        -if ^ is true, update algo to grab items from start of queue until the desired char limit is met and track the index, and pop that many items. Or just add an extra check if first val is SOLUTION PART 2, though that wouldn't handle the case of them returning it as 2 tokens. (I initially thought maybe they add all stop words as single tokens to vocab somehow, but then I remembered only PART 1 and 3 versions are stop words, not 2.)
 -consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
 -finish distill post on augmenting human intellect
 -consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
