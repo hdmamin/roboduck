@@ -185,13 +185,27 @@ X -move testing cells to bottom of nb to avoid re-run on kernel restart
 
 2/16/23 thurs
 -------------
--update roboduck cls to avoid printing the SOLUTION PART 2 part
-    -Debug algo to avoid printing SOLUTION PART 2
-        -print out cur on each iteration to confirm that openai actually sometimes returns SOLUTION PART 2 as a single token even though codex is supposed to tokenize it as 5 tokens
-        -if ^ is true, update algo to grab items from start of queue until the desired char limit is met and track the index, and pop that many items. Or just add an extra check if first val is SOLUTION PART 2, though that wouldn't handle the case of them returning it as 2 tokens. (I initially thought maybe they add all stop words as single tokens to vocab somehow, but then I remembered only PART 1 and 3 versions are stop words, not 2.)
+X -update roboduck cls to avoid printing the SOLUTION PART 2 part
+    X -Debug algo to avoid printing SOLUTION PART 2
+        X -print out cur on each iteration to confirm that openai actually sometimes returns SOLUTION PART 2 as a single token even though codex is supposed to tokenize it as 5 tokens
+        _ -if ^ is true, update algo to grab items from start of queue until the desired char limit is met and track the index, and pop that many items. Or just add an extra check if first val is SOLUTION PART 2, though that wouldn't handle the case of them returning it as 2 tokens. (I initially thought maybe they add all stop words as single tokens to vocab somehow, but then I remembered only PART 1 and 3 versions are stop words, not 2.)
+            > Decided to go with simpler approach (see below).
+        X -implement simple approach
+            > Wanted to keep this part simple for now. Might end up just having chatgpt/codex 3 api extract code portion once at end when magic is used in insert mode. For now, set colon right after SOLUTION PART N to try to avoid the issue of having a title of unknown content and variable size. Then just relied on assumption that gpt will continue to treat SOLUTION PART 2 as a single streaming step (it's still multiple tokens, but apparently they don't necessarily stream 1 token per step).
+            X -tweak prompts
+                > Added ANSWER KEY back to stop words and moved LOC (start of local variables) to logit bias.
+            X -update magic to work with new solution
+                > Had to keep SOLUTION PART 2 in codecompletioncache so we can split on it. Also stripped leading newline in inserted code cell.
 -consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
 -finish distill post on augmenting human intellect
+
+2/17/23 fri
+-----------
 -consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
+-cleanup funcs (lots of comments, todos, etc)
+-port everything to a lib
+    -consider if these will live in same lib, same module, etc.
+-document funcs/classes
 -finish distill post on augmenting human intellect
 
 
