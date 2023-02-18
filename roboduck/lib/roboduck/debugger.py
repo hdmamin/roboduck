@@ -1,0 +1,175 @@
+import cmd
+from functools import partial
+from htools import load, is_ipy_name
+import inspect
+import ipynbname
+from jabberwocky.openai_utils import GPT, load_prompt, PromptManager, \
+    GPTBackend, EngineMap
+from pdb import Pdb
+import time
+import warnings
+
+from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
+    truncated_repr
+
+
+ROBODUCK_GPT = GPTBackend(log_stdout=False)
+PROMPT_MANAGER = PromptManager(['debug', 'debug_full'],
+                               verbose=False,
+                               gpt=ROBODUCK_GPT)
+
+
+class CodeCompletionCache:
+    last_completion = ''
+
+
+class RoboDuckDB(Pdb):
+
+    def __init__(self, *args, backend='openai', model=None,
+                 full_context=False, log=False, max_len_per_var=79,
+                 **kwargs):
+        """
+        Once you're in a debugging session, any conversational turn containing
+        a question mark will be interepreted as a question for gpt. Prefixing
+        your question with "[dev]" will print out the full prompt before
+        making the query.
+
+        max_len_per_var: int
+            Limits number of characters per variable when communicating
+            current state (local or global depending on `full_context`) to
+            gpt. If unbounded, that section of the prompt alone could grow
+            very big . I somewhat arbitrarily set 79 as the default, i.e.
+            1 line of python per variable. I figure that's usually enough to
+            communicate the gist of what's happening.
+        """
+        super().__init__(*args, **kwargs)
+        self.prompt = '>>> '
+        self.duck_prompt = '[RoboDuck] '
+        # Check if None explicitly because model=0 is different.
+        self.query_kwargs = {'model': model} if model is not None else {}
+        self.backend = backend
+        self.full_context = full_context
+        self.task = 'debug' + '_full' * full_context
+        self.log = log
+        self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
+
+    def _get_prompt_kwargs(self):
+        res = {}
+
+        # Get current code snippet.
+        try:
+            res['code'] = inspect.getsource(self.curframe)
+        except OSError as err:
+            self.error(err)
+        res['local_vars'] = type_annotated_dict_str(
+            {k: v for k, v in self.curframe_locals.items()
+             if not is_ipy_name(k)},
+            self.repr_func
+        )
+
+        # Get full source code if necessary.
+        if self.full_context:
+            # File is a string, either a file name or something like
+            # <ipython-input-50-e97ed612f523>.
+            file = inspect.getsourcefile(self.curframe.f_code)
+            if file.startswith('<ipython'):
+                res['full_code'] = load_ipynb(ipynbname.path())
+                res['file_type'] = 'jupyter notebook'
+            else:
+                res['full_code'] = load(file, verbose=False)
+                res['file_type'] = 'python script'
+            used_tokens = set(res['full_code'].split())
+        else:
+            # This is intentionally different from the used_tokens line in the
+            # if clause - we only want to consider local code here.
+            used_tokens = set(res['code'].split())
+
+        # Namespace is often polluted with lots of unused globals (htools is
+        # very much guilty of this 😬) and we don't want to clutter up the
+        # prompt with these.
+        res['global_vars'] = type_annotated_dict_str(
+            {k: v for k, v in self.curframe.f_globals.items()
+             if k in used_tokens and not is_ipy_name(k)},
+            self.repr_func
+        )
+        return res
+
+    def onecmd(self, line):
+        """Interpret the argument as though it had been typed in response
+        to the prompt.
+        Checks whether this line is typed at the normal prompt or in
+        a breakpoint command list definition.
+        """
+        if not self.commands_defining:
+            if '?' in line:
+                return self.ask_language_model(
+                    line, verbose=line.startswith('[dev]')
+                )
+            return cmd.Cmd.onecmd(self, line)
+        else:
+            return self.handle_command_def(line)
+
+    def ask_language_model(self, question, verbose=False):
+        prompt_kwargs = self._get_prompt_kwargs()
+        prompt_kwargs['question'] = question
+        prompt = PROMPT_MANAGER.prompt(self.task, prompt_kwargs)
+        if len(prompt.split()) > 1_000:
+            warnings.warn(
+                'Prompt is very long (>1k words). You\'re approaching a risky'
+                ' zone where your prompt + completion might exceed the max '
+                'sequence length.'
+            )
+        if verbose:
+            print(colored(prompt, 'red'))
+
+        print(colored(self.duck_prompt, 'green'), end='')
+        res = ''
+        # Suppress jabberwocky auto-warning about codex model name.
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore')
+            with ROBODUCK_GPT(self.backend, verbose=False):
+                prev_is_title = False
+                for i, (cur, full) in enumerate(PROMPT_MANAGER.query(
+                        self.task,
+                        prompt_kwargs,
+                        **self.query_kwargs,
+                        log=self.log,
+                        stream=True
+                )):
+                    # We do this BEFORE the checks around SOLUTION PART 2
+                    # because we don't want to print that line, but we do want
+                    # to retain it in our CodeCompletionCache so that our
+                    # jupyter magic can easily extract the code portion later.
+                    res += cur
+
+                    # Slightly fragile logic - openai currently returns this
+                    # in a single streaming step even though the current codex
+                    # tokenizer splits it into 5 tokens. If they return this
+                    # as multiple tokens, we'd need to change this logic.
+                    if cur == 'SOLUTION PART 2':
+                        prev_is_title = True
+                        continue
+                    # Avoid printing the ':' after 'SOLUTION PART 2'. Openai
+                    # returns this at a different streaming step.
+                    if prev_is_title and cur.startswith(':'):
+                        continue
+                    prev_is_title = False
+                    if not i:
+                        cur = cur.lstrip('\n')
+                    for char in cur:
+                        print(colored(char, 'green'), end='')
+                        time.sleep(.02)
+
+        # Strip trailing quotes because the entire prompt is inside a
+        # docstring and codex may try to close it. We can't use it as a stop
+        # phrase in case codex generates a fixed code snippet that includes
+        # a docstring.
+        answer = res.strip()
+        if not answer:
+            answer = 'Sorry, I don\'t know. Can you try ' \
+                     'rephrasing your question?'
+            print(colored(answer, 'green'))
+
+        # When using the `duck` jupyter magic in "insert" mode, we reference
+        # the CodeCompletionCache to populate the new code cell.
+        CodeCompletionCache.last_completion = answer

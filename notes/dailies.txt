@@ -201,17 +201,29 @@ X -update roboduck cls to avoid printing the SOLUTION PART 2 part
 
 2/17/23 fri
 -----------
--consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
--cleanup funcs (lots of comments, todos, etc)
--port everything to a lib
-    -consider if these will live in same lib, same module, etc.
+X -consider refactoring promptmanager and gpt out to module level vars (avoid repeated instantiation)
+    > Considered refactoring further to use ConversationManager but I think by project's end we'll switch over to the chatgpt api anyway which should add enough statefulness for us. Not expecting super longform conversations anyway.
+X -cleanup funcs (lots of comments, todos, etc)
+X -port everything to a lib
+    X -consider if these will live in same lib, same module, etc.
+        > Same lib, diff module. Jupyter extension stuff might go elsewhere but debugger and magic should be same lib because the magic just calls the debugger.
 -document funcs/classes
 -finish distill post on augmenting human intellect
+
+2/18/23 sat
+-----------
+-document funcs/classes
+-finish distill post on augmenting human intellect
+-start scoping out possible stack trace explainer
+    -what is the exact use case - show better error messages all the time? Only if some env var is set? Only if we run a script with some special command? Or enter a conversational console on error? Static vs conversational is one of the first questions to answer.
+    -write todos for next steps
 
 
 Backlog
 -------
--lmdb nb
+-equivalent of jupyter magic but for scripts? (i.e. if we hit an error, enter debugging session)
+-investigate: was it intentional that PromptManager supports passing in GPT obj but ConversationManager doesn't? (I think initially neither did but had an immediate use case for PromptManager so changed that one, but haven't had a need yet for ConversationManager so didn't prioritize it. Probably good to do eventually though.)
+-[WAIT: near end of proj, see which features were really necessary] create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
 -[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
 -watch bret victor Future of Programming vid
 -read Engelbart paper on augmenting human intellect
