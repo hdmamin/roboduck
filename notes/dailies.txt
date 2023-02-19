@@ -212,11 +212,19 @@ X -port everything to a lib
 
 2/18/23 sat
 -----------
--document funcs/classes
+X -document funcs/classes
+    > Documented three modules.
 -finish distill post on augmenting human intellect
 -start scoping out possible stack trace explainer
     -what is the exact use case - show better error messages all the time? Only if some env var is set? Only if we run a script with some special command? Or enter a conversational console on error? Static vs conversational is one of the first questions to answer.
     -write todos for next steps
+
+2/19/23 sun
+-----------
+-start scoping out possible stack trace explainer
+    -what is the exact use case - show better error messages all the time? Only if some env var is set? Only if we run a script with some special command? Or enter a conversational console on error? Static vs conversational is one of the first questions to answer.
+    -write todos for next steps
+-finish distill post on augmenting human intellect
 
 
 Backlog

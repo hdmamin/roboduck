@@ -20,20 +20,50 @@ PROMPT_MANAGER = PromptManager(['debug', 'debug_full'],
 
 
 class CodeCompletionCache:
+    """Just stores the last completion from RoboDuckDB in a way that our
+    `duck` jupyter magic can access (without relying on global variable, though
+    not sure if this is meaningfully different). The magic only needs to access
+    it in insert mode (-i flag) to insert the fixed code snippet into a new
+    code cell.
+    """
     last_completion = ''
 
 
 class RoboDuckDB(Pdb):
+    """Conversational debugger powered by gpt models (currently codex, possibly
+    eventually chatGPT). Once you're in a debugging session, any user command
+    containing a question mark will be interpreted as a question for gpt.
+    Prefixing your question with "[dev]" will print out the full prompt before
+    making the query.
+    """
 
     def __init__(self, *args, backend='openai', model=None,
                  full_context=False, log=False, max_len_per_var=79,
                  **kwargs):
         """
-        Once you're in a debugging session, any conversational turn containing
-        a question mark will be interepreted as a question for gpt. Prefixing
-        your question with "[dev]" will print out the full prompt before
-        making the query.
-
+        Parameters
+        ----------
+        args: any
+            Misc args for base Pdb class.
+        backend: str
+            Specifies which GPT api to use, e.g. 'openai' or 'gooseai'. Since
+            we currently use codex, backends besides 'openai' are not
+            supported.
+        model: str or int or None
+            Specifies which model to using format defined by
+            jabberwocky.openai_utils.EngineMap. If none is specified, we fall
+            back to whatever is defined in the jabberwocky `debug` or
+            `debug_full` prompts. 'code-davinci-002' is the current default,
+            though 'text-davinci-002' may be a decent option as well.
+        full_context: bool
+            If True, provide the whole notebook source code to gpt
+            (when used in a script, this has no effect). This
+            increases the risk of creating a prompt that is too long. Note that
+            even when full_context=False, global variables with names that
+            appear in the relevant code snippet will be sent to gpt.
+        log: bool
+            Specifies whether jabberwocky should log gpt api calls. If true,
+            these are stored as jsonlines files.
         max_len_per_var: int
             Limits number of characters per variable when communicating
             current state (local or global depending on `full_context`) to
@@ -41,6 +71,8 @@ class RoboDuckDB(Pdb):
             very big . I somewhat arbitrarily set 79 as the default, i.e.
             1 line of python per variable. I figure that's usually enough to
             communicate the gist of what's happening.
+        kwargs: any
+            Additional kwargs for base Pdb class.
         """
         super().__init__(*args, **kwargs)
         self.prompt = '>>> '
@@ -54,6 +86,17 @@ class RoboDuckDB(Pdb):
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
 
     def _get_prompt_kwargs(self):
+        """Construct a dictionary describing the current state of our code
+        (variable names and values, source code, file type). This will be
+        passed to our jabberwocky PromptManager to fill in the debug prompt
+        template.
+
+        Returns
+        -------
+        dict: contains keys 'code', 'local_vars', 'global_vars', 'file_type'.
+        If we specified full_context=True on init, we also include the key
+        'full_code'.
+        """
         res = {}
 
         # Get current code snippet.
@@ -95,10 +138,15 @@ class RoboDuckDB(Pdb):
         return res
 
     def onecmd(self, line):
-        """Interpret the argument as though it had been typed in response
-        to the prompt.
-        Checks whether this line is typed at the normal prompt or in
+        """Base class describes this as follows:
+
+        Interpret the argument as though it had been typed in response to the
+        prompt. Checks whether this line is typed at the normal prompt or in
         a breakpoint command list definition.
+
+        We add an extra check in the if block to check if the user asked a
+        question. If so, we ask gpt. If not, we treat it as a regular pdb
+        command.
         """
         if not self.commands_defining:
             if '?' in line:
@@ -110,6 +158,20 @@ class RoboDuckDB(Pdb):
             return self.handle_command_def(line)
 
     def ask_language_model(self, question, verbose=False):
+        """When the user asks a question during a debugging session, query
+        gpt for the answer and type it back to them live.
+
+        Parameters
+        ----------
+        question: str
+            User question, e.g. "Why are the first three values in nums equal
+            to 5 when the input list only had a single 5?". (Example is from
+            a faulty bubble sort implementation.)
+        verbose: bool
+            If True, print the full gpt prompt in red before making the api
+            call. User activates this mode by prefixing their question with
+            '[dev]'.
+        """
         prompt_kwargs = self._get_prompt_kwargs()
         prompt_kwargs['question'] = question
         prompt = PROMPT_MANAGER.prompt(self.task, prompt_kwargs)

@@ -9,7 +9,9 @@ from roboduck.debugger import RoboDuckDB, CodeCompletionCache
 
 @magics_class
 class DebugMagic(Magics):
-    """
+    """Enter a conversational debugging session after an error is thrown by a
+    jupyter notebook code cell.
+
     Examples
     --------
     After a cell execution throws an error, enter this in the next cell to
@@ -28,7 +30,7 @@ class DebugMagic(Magics):
               help='Boolean flag: if provided, INSERT a new code cell with '
                    'the suggested code fix.')
     @line_magic
-    def duck(self, line='', cell=None):
+    def duck(self, line=''):
         """Silence warnings for a cell. The -p flag can be used to make the
         change persist, at least until the user changes it again.
         """
