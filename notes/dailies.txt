@@ -240,9 +240,24 @@ X -document funcs/classes
 
 2/20/23 mon
 -----------
--port new funcs from debug_on_error to htools
-    -monkeypatch
-    -excepthook (careful - as written, just importing it registers it. Maybe put in its own module or move to a method of a class that also lets you revert to default excepthook)
+X -port new funcs from debug_on_error to htools
+    X -monkeypatch
+    X -excepthook (careful - as written, just importing it registers it. Maybe put in its own module or move to a method of a class that also lets you revert to default excepthook)
+    X -get working in ipython
+        > Not trivial, but got it working. Ipython does not use sys.excepthook.
+-get editable version of lib working
+    -magic works in ipython
+        -fix line causing attributeerror in magic duck cls
+        -see if we need to change how source code is obtained (actually, how did debugger do this? Must be possible already.)
+        -see if we need to change insert mode (is there a concept of a new cell here? Probably, but idk if interface is same)
+-explore excepthook strategy for error messages (recall: plan is to just print default stack trace, then have y/n input asking if we want LLM to explain)
+    -see what default excepthook does
+    -try to reproduce that
+    -add in input asking for y/n
+    -add in LM query if above is Y
+
+2/21/23 tues
+-----------
 -get editable version of lib working
     -magic works in ipython
         -fix line causing attributeerror in magic duck cls
