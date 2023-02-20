@@ -3,9 +3,9 @@ from functools import partial
 from htools import load, is_ipy_name
 import inspect
 import ipynbname
-from jabberwocky.openai_utils import GPT, load_prompt, PromptManager, \
-    GPTBackend, EngineMap
+from jabberwocky.openai_utils import PromptManager, GPTBackend
 from pdb import Pdb
+import sys
 import time
 import warnings
 
@@ -235,3 +235,8 @@ class RoboDuckDB(Pdb):
         # When using the `duck` jupyter magic in "insert" mode, we reference
         # the CodeCompletionCache to populate the new code cell.
         CodeCompletionCache.last_completion = answer
+
+
+def roboduck(backend='openai', model=None):
+    # Equivalent of native breakpoint().
+    RoboDuckDB(backend=backend, model=model).set_trace(sys._getframe().f_back)

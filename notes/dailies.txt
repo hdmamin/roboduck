@@ -221,14 +221,43 @@ X -document funcs/classes
 
 2/19/23 sun
 -----------
+~ -install editable version of lib and test imports
+    X -debugger works in jupyter
+    X -magic works in jupyter
+    ~ -debugger works in ipython
+        > Live typing is kind of slow and choppy, but works.
+    ! -magic works in ipython
+        > We get AttributeError: can't set attribute when calling %duck magic. Caused by the line that sets shell.debugger_cls to RoboDuckDB, seems like ipython shell makes itself read only maybe? Weird that it works in jupyter though. I suspect we may also need to change debugger's method of reading in source code and possibly magic's method of handling insert mode.
 -start scoping out possible stack trace explainer
-    -what is the exact use case - show better error messages all the time? Only if some env var is set? Only if we run a script with some special command? Or enter a conversational console on error? Static vs conversational is one of the first questions to answer.
-    -write todos for next steps
+    X -revisit exisitg debug_on_fail work
+        > Actually ended up getting this working quite nicely. Ended up writing a nice monkeypatch and excepthook class that should probably end up in htools (currenly in debug_on_error.py). There's some interesting potential here but I'm not sure it's the right place to inject the LLM.
+    X -what is the exact use case - show better error messages all the time? Only if some env var is set? Only if we run a script with some special command? Or enter a conversational console on error? Static vs conversational is one of the first questions to answer.
+        > Key is we don't really want it to do this on every single error (esp in interactive shell), but want it to be as low friction as possible to use once we want to. I'm thinking maybe just catch errors using excepthook, print normal stack trace, and include a simple y/n input asking the user if they want it explained.
+    X -look into prettyerrors source code
+        > Actually looks fairly complex, may be easies after all to mess with sys.excepthook. Note that my current version of that doesn't seem to affect ipython, maybe it's already overridden sys.excepthook?
+    X -write todos for next steps
 -finish distill post on augmenting human intellect
+
+2/20/23 mon
+-----------
+-port new funcs from debug_on_error to htools
+    -monkeypatch
+    -excepthook (careful - as written, just importing it registers it. Maybe put in its own module or move to a method of a class that also lets you revert to default excepthook)
+-get editable version of lib working
+    -magic works in ipython
+        -fix line causing attributeerror in magic duck cls
+        -see if we need to change how source code is obtained (actually, how did debugger do this? Must be possible already.)
+        -see if we need to change insert mode (is there a concept of a new cell here? Probably, but idk if interface is same)
+-explore excepthook strategy for error messages (recall: plan is to just print default stack trace, then have y/n input asking if we want LLM to explain)
+    -see what default excepthook does
+    -try to reproduce that
+    -add in input asking for y/n
+    -add in LM query if above is Y
 
 
 Backlog
 -------
+-finish distill post on augmenting human intellect
 -equivalent of jupyter magic but for scripts? (i.e. if we hit an error, enter debugging session)
 -investigate: was it intentional that PromptManager supports passing in GPT obj but ConversationManager doesn't? (I think initially neither did but had an immediate use case for PromptManager so changed that one, but haven't had a need yet for ConversationManager so didn't prioritize it. Probably good to do eventually though.)
 -[WAIT: near end of proj, see which features were really necessary] create a more minimal install for jabberwocky (no youtube transcription stuff, for example)

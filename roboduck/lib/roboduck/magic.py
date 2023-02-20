@@ -36,6 +36,7 @@ class DebugMagic(Magics):
         """
         args = parse_argstring(self.duck, line)
         cls = self.shell.debugger_cls
+        # TODO: this raises AttributeError in ipython.
         self.shell.debugger_cls = RoboDuckDB
         self.shell.InteractiveTB.debugger_cls = RoboDuckDB
         self.shell.debugger(force=True)

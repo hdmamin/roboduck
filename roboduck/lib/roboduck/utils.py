@@ -1,4 +1,3 @@
-from collections.abc import Iterable
 from colorama import Fore, Style
 import hashlib
 import ipynbname
