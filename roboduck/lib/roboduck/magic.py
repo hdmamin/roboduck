@@ -37,7 +37,14 @@ class DebugMagic(Magics):
         args = parse_argstring(self.duck, line)
         cls = self.shell.debugger_cls
         # TODO: this raises AttributeError in ipython.
-        self.shell.debugger_cls = RoboDuckDB
+        try:
+            self.shell.debugger_cls = RoboDuckDB
+        except AttributeError:
+            print('Roboduck is unavailable in your current ipython session. '
+                  'To use it, start a new session with the command:\n\n'
+                  'ipython --TerminalIPythonApp.interactive_shell_class='
+                  'roboduck.shell.RoboDuckTerminalInteractiveShell')
+            return
         self.shell.InteractiveTB.debugger_cls = RoboDuckDB
         self.shell.debugger(force=True)
         # Insert suggested code into next cell.
