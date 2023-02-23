@@ -2,10 +2,14 @@ from colorama import Fore, Style
 import hashlib
 import ipynbname
 from IPython.display import display, Javascript
+from IPython import get_ipython
 import json
 import pandas as pd
+from pathlib import Path
 import re
 import time
+
+from htools.core import random_str, load
 
 
 def colored(text, color):
@@ -94,6 +98,45 @@ def load_ipynb(path, save_if_self=True):
             source = '\n```' + source + '```\n'
         cell_str += source
     return cell_str
+
+
+def load_current_ipython_session(formatted=True):
+    """Load current ipython session as a list and optionally convert it to a
+    nicely formatted str with each cell enclosed in triple backticks.
+
+    Parameters
+    ----------
+    formatted: bool
+        If True, format list of cells into a single str like:
+
+        ```
+        print('This is cell 1 code.')
+        ```
+
+        ```
+        print('This is cell 2 code.')
+        ```
+
+        If False, leave it as a list of strings where each string contains
+        content from one cell.
+
+    Returns
+    -------
+    list or str
+    """
+    shell = get_ipython()
+    path = Path('/tmp')/f'{random_str(24)}.txt'
+    shell.magic(f'%history -n -f {path}')
+    res = load(path)
+    path.unlink()
+    cells = []
+    for row in res.splitlines():
+        content = row.partition(':')[-1].strip()
+        if content:
+            cells.append(content)
+    if formatted:
+        return '\n\n'.join(f'```\n{cell}\n```' for cell in cells)
+    return cells
 
 
 def type_annotated_dict_str(dict_, func=repr):

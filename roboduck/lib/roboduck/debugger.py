@@ -10,7 +10,7 @@ import time
 import warnings
 
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
-    truncated_repr
+    truncated_repr, load_current_ipython_session
 
 
 ROBODUCK_GPT = GPTBackend(log_stdout=False)
@@ -116,8 +116,14 @@ class RoboDuckDB(Pdb):
             # <ipython-input-50-e97ed612f523>.
             file = inspect.getsourcefile(self.curframe.f_code)
             if file.startswith('<ipython'):
-                res['full_code'] = load_ipynb(ipynbname.path())
-                res['file_type'] = 'jupyter notebook'
+                # If we're in ipython, ipynbname.path() throws a
+                # FileNotFoundError.
+                try:
+                    res['full_code'] = load_ipynb(ipynbname.path())
+                    res['file_type'] = 'jupyter notebook'
+                except FileNotFoundError:
+                    res['full_code'] = load_current_ipython_session()
+                    res['file_type'] = 'ipython session'
             else:
                 res['full_code'] = load(file, verbose=False)
                 res['file_type'] = 'python script'
