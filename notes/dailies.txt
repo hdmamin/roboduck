@@ -287,11 +287,33 @@ X -get editable version of lib working
 
 2/23/23 thurs
 -------------
--explore excepthook strategy for intelligent error messages (recall: plan is to just print default stack trace, then have y/n input asking if we want LLM to explain)
-    -see what default excepthook does
-    -try to reproduce that
-    -add in input asking for y/n
-    -add in LM query if above is Y
+~ -explore excepthook strategy for intelligent error messages (recall: plan is to just print default stack trace, then have y/n input asking if we want LLM to explain)
+    ~ -see what default excepthook does
+    ~ -try to reproduce that
+    X -add in input asking for y/n
+    X -color prompt to stand out from stack trace
+    ~ -add in LM query if above is Y
+        > Options:
+            > 1. just enter debug session
+                > Basically same as magic, though faster to enter would be nice. Still, maybe should differentiate this more.
+            > 2. try to reuse roboduckdb cls but manually create a query (assume user question will basically be "what caused this error and how do I fix it?")
+                > Probably ideal if possible, not sure if it is though.
+            > 3. Manually call with jabberwocky.
+                > Doable but clunky.
+            > 4. Refactor jabberwocky call out of roboduckdb cls and call same helper func here.
+                > Maybe the most likely solution ultimately.
+            > For now, started with calling pdb.post_mortem with custom roboduck class. Works, though I do notice the answer was not good in this case and it looks like it *might* be caused by a missing global_var rather than just poor GPT.
+                > Never mind, the global var is there. GPT is just wrong. Again, don't worry about this too much - chatgpt/codex3 would likely do better here.
+
+2/24/23 fri
+-----------
+-figure out way to avoid making user type query. Recall main options are:
+    -make new error prompt and just call gpt manually
+    -refactor behavior out of roboduckdb cls
+    -figure out how to call roboduckdb.ask_language_model directly instead of making user do it (perhaps look into what that interact() method called inside post_mortem() actually does)
+-provide shell shortcut command to launch ipython in mode that enables debug magic
+    -implement
+    -update error message in debugger.py
 
 
 Backlog
