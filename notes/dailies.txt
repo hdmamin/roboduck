@@ -307,24 +307,40 @@ X -get editable version of lib working
 
 2/24/23 fri
 -----------
--figure out way to avoid making user type query. Recall main options are:
+~ -figure out way to avoid making user type query. Recall main options are:
     -make new error prompt and just call gpt manually
     -refactor behavior out of roboduckdb cls
-    -figure out how to call roboduckdb.ask_language_model directly instead of making user do it (perhaps look into what that interact() method called inside post_mortem() actually does)
--provide shell shortcut command to launch ipython in mode that enables debug magic
-    -implement
-    -update error message in debugger.py
+    X -figure out how to call roboduckdb.ask_language_model directly instead of making user do it (perhaps look into what that interact() method called inside post_mortem() actually does)
+        > Essentially did this by adding commands to the debugger cmdqueue. This does what I envisioned but now I'm realizing it doesn't give gpt access to the stack trace. Pretty sure that should be possible though.
+_ -provide shell shortcut command to launch ipython in mode that enables debug magic
+    > Not sure this is actually better. Stick with current method for now.
+    _ -implement
+    X -update error message in debugger.py
+        > Updated to include instructions on how to make setting persist (and to make it auto import the debug magic instead of just configuring ipython so that we're *allowed* to use it if we did import it).
+X -allow user to pass kwargs into roboduck()
+X -add get_ipython import in magic module (technically unnecessary, I think, but the missing import makes me a bit uneasy0
+
+2/25/23 sat
+-----------
+-easy:
+    -document shell.RoboDuckTerminalInteractiveShell cls (very short, just explaining why this is necessary: ipython frozen attr etc.)
+    -finish distill post on augmenting human intellect
+    -watch bret victor Future of Programming vid
+    -read Engelbart paper on augmenting human intellect
+-talky errors 
+    -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
+        -dive into traceback.print_exception to see where it's getting the error message + stack trace from
+        -update funcs in scratch_errors.py to pass that info down chain of funcs so it can be included in prompt
+        -update prompt.yaml or create new one to include (possibly optional) stack trace
+        -print out prompt and confirm it includes everything I want
+        -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
 
 
 Backlog
 -------
--finish distill post on augmenting human intellect
--equivalent of jupyter magic but for scripts? (i.e. if we hit an error, enter debugging session)
 -investigate: was it intentional that PromptManager supports passing in GPT obj but ConversationManager doesn't? (I think initially neither did but had an immediate use case for PromptManager so changed that one, but haven't had a need yet for ConversationManager so didn't prioritize it. Probably good to do eventually though.)
 -[WAIT: near end of proj, see which features were really necessary] create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
 -[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
--watch bret victor Future of Programming vid
--read Engelbart paper on augmenting human intellect
 
 Easy Backlog
 ------------

@@ -1,5 +1,6 @@
 """Jupyter magics."""
 
+from IPython import get_ipython
 from IPython.core.magic import line_magic, magics_class, Magics
 from IPython.core.magic_arguments import argument, magic_arguments, \
     parse_argstring
@@ -36,14 +37,24 @@ class DebugMagic(Magics):
         """
         args = parse_argstring(self.duck, line)
         cls = self.shell.debugger_cls
-        # TODO: this raises AttributeError in ipython.
         try:
             self.shell.debugger_cls = RoboDuckDB
         except AttributeError:
-            print('Roboduck is unavailable in your current ipython session. '
-                  'To use it, start a new session with the command:\n\n'
-                  'ipython --TerminalIPythonApp.interactive_shell_class='
-                  'roboduck.shell.RoboDuckTerminalInteractiveShell')
+            print(
+                'Roboduck is unavailable in your current ipython session. To '
+                'use it, start a new session with the command:\n\nipython '
+                '--TerminalIPythonApp.interactive_shell_class=roboduck.shell.'
+                'RoboDuckTerminalInteractiveShell\n\n(You will also need to '
+                'run `from roboduck import magic` in the session to make the '
+                'magic available.) To make it available automatically for all '
+                'ipython sessions by default, add the following lines to '
+                'your ipython config (usually found at '
+                '~/.ipython/profile_default/ipython_config.py):\n\n'
+                'cfg = get_config()\ncfg.TerminalIPythonApp.interactive_'
+                'shell_class = roboduck.shell.RoboDuckTerminalInteractiveShell'
+                '\ncfg.InteractiveShellApp.exec_lines = '
+                '["from roboduck import magic"]'
+            )
             return
         self.shell.InteractiveTB.debugger_cls = RoboDuckDB
         self.shell.debugger(force=True)

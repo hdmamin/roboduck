@@ -243,6 +243,7 @@ class RoboDuckDB(Pdb):
         CodeCompletionCache.last_completion = answer
 
 
-def roboduck(backend='openai', model=None):
+def roboduck(backend='openai', model=None, **kwargs):
     # Equivalent of native breakpoint().
-    RoboDuckDB(backend=backend, model=model).set_trace(sys._getframe().f_back)
+    RoboDuckDB(backend=backend, model=model, **kwargs)\
+        .set_trace(sys._getframe().f_back)

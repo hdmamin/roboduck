@@ -3,5 +3,6 @@ from pdb import Pdb
 
 
 class RoboDuckTerminalInteractiveShell(TerminalInteractiveShell):
+    """TODO: docs"""
 
     debugger_cls = Pdb
