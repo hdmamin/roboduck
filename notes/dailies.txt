@@ -322,24 +322,36 @@ X -add get_ipython import in magic module (technically unnecessary, I think, but
 
 2/25/23 sat
 -----------
--easy:
-    -document shell.RoboDuckTerminalInteractiveShell cls (very short, just explaining why this is necessary: ipython frozen attr etc.)
+~ -easy:
+    X -document shell.RoboDuckTerminalInteractiveShell cls (very short, just explaining why this is necessary: ipython frozen attr etc.)
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
     -read Engelbart paper on augmenting human intellect
--talky errors 
+~ -talky errors 
     -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
-        -dive into traceback.print_exception to see where it's getting the error message + stack trace from
+        X -dive into traceback.print_exception to see where it's getting the error message + stack trace from
         -update funcs in scratch_errors.py to pass that info down chain of funcs so it can be included in prompt
         -update prompt.yaml or create new one to include (possibly optional) stack trace
-        -print out prompt and confirm it includes everything I want
-        -incorporate y/n prompt from nb01 excepthook (i.e. don't query for EVERY error)
-        -port over logic from htools.autodebug to work in non-ipython contexts too
+        X -print out prompt and confirm it includes everything I want
+        X -incorporate y/n prompt from nb01 excepthook (i.e. don't query for EVERY error)
+        X -port over logic from htools.autodebug to work in non-ipython contexts too
+        -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
+
+2/26/23 sun
+-----------
+-talky errors 
+    -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
+        -update funcs in scratch_errors.py to pass that info down chain of funcs so it can be included in prompt
+        -update prompt.yaml or create new one to include (possibly optional) stack trace
         -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
 
 
 Backlog
 -------
+-passive:
+    -finish distill post on augmenting human intellect
+    -watch bret victor Future of Programming vid
+    -read Engelbart paper on augmenting human intellect
 -investigate: was it intentional that PromptManager supports passing in GPT obj but ConversationManager doesn't? (I think initially neither did but had an immediate use case for PromptManager so changed that one, but haven't had a need yet for ConversationManager so didn't prioritize it. Probably good to do eventually though.)
 -[WAIT: near end of proj, see which features were really necessary] create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
 -[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
