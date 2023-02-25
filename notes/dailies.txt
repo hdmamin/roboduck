@@ -333,6 +333,8 @@ X -add get_ipython import in magic module (technically unnecessary, I think, but
         -update funcs in scratch_errors.py to pass that info down chain of funcs so it can be included in prompt
         -update prompt.yaml or create new one to include (possibly optional) stack trace
         -print out prompt and confirm it includes everything I want
+        -incorporate y/n prompt from nb01 excepthook (i.e. don't query for EVERY error)
+        -port over logic from htools.autodebug to work in non-ipython contexts too
         -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
 
 
