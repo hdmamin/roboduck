@@ -340,14 +340,35 @@ X -add get_ipython import in magic module (technically unnecessary, I think, but
 2/26/23 sun
 -----------
 -talky errors 
-    -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
-        -update funcs in scratch_errors.py to pass that info down chain of funcs so it can be included in prompt
+    ~ -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
+        ~ -update funcs in scratch_errors.py to pass stack trace down chain of funcs so it can be included in prompt
+            X -write new stack trace debug prompt that includes stack trace var
         -update prompt.yaml or create new one to include (possibly optional) stack trace
         -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
+X -replace some roboduck names w/ duck (duck is taken on pypi and I'm reasonably pleased w/ roboduck as a lib name, but it would be nice for the natural language debugger to be as easy to invoke as possible and duck is fewer chars)
+    > Had to do this in jabberwocky prompts too.
+X -generate roboduck mascot/image with midjourney/stable diffusion/dalle 2
+    > Could still use some touchups - change green body to yellow, remove mystery object on ground (watering can?)
+
+2/27/23 mon
+-----------
+-talky errors 
+    -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
+        -update funcs in scratch_errors.py to pass stack trace down chain of funcs so it can be included in prompt
+            -debugger cls updates
+                -make cls allow user to specify prompt name (to support stack trace debug prompt) instead of just full=T/F
+                -make sure correct vars are passed in (depending on prompt's available kwargs?)
+            -update scratch_errors script to specify correct prompt (stack trace version)
+        -update prompt.yaml or create new one to include (possibly optional) stack trace
+        -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
+-touch up roboduck mascot image
+    -change green body to yellow
+    -remove mystery object on ground (watering can?)
 
 
 Backlog
 -------
+-debug why completions often include leading newline when I thought I stripped them (maybe need to check on first few i rather than just i=0?)
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid

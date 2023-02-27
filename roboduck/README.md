@@ -1,4 +1,5 @@
 # roboduck
+![roboduck logo](data/images/roboduck.png)
 
 # Project Description
 A natural language debugger.

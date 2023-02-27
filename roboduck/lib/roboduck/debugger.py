@@ -76,7 +76,7 @@ class RoboDuckDB(Pdb):
         """
         super().__init__(*args, **kwargs)
         self.prompt = '>>> '
-        self.duck_prompt = '[RoboDuck] '
+        self.duck_prompt = '[Duck] '
         # Check if None explicitly because model=0 is different.
         self.query_kwargs = {'model': model} if model is not None else {}
         self.backend = backend
@@ -243,7 +243,7 @@ class RoboDuckDB(Pdb):
         CodeCompletionCache.last_completion = answer
 
 
-def roboduck(backend='openai', model=None, **kwargs):
+def duck(backend='openai', model=None, **kwargs):
     # Equivalent of native breakpoint().
     RoboDuckDB(backend=backend, model=model, **kwargs)\
         .set_trace(sys._getframe().f_back)

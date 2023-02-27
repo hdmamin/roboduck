@@ -4,7 +4,7 @@ import traceback
 
 from htools import monkeypatch
 from roboduck.utils import colored
-from roboduck.debugger import RoboDuckDB, roboduck
+from roboduck.debugger import RoboDuckDB, duck
 
 
 @monkeypatch(sys, 'excepthook')
