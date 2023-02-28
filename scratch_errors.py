@@ -8,19 +8,16 @@ import sys
 from traceback import TracebackException
 
 
-def my_post_mortem(trace, t=None, Pdb=RoboDuckDB):
+def my_post_mortem(trace, t=None, Pdb=RoboDuckDB, **kwargs):
     if t is None:
         t = sys.exc_info()[2]
         assert t is not None, "post_mortem outside of exception context"
 
-    p = Pdb()
+    p = Pdb(task='debug_stack_trace', **kwargs)
     p.reset()
     # TODO: rm dev mode
-    p.cmdqueue.insert(0, '[dev] What caused this error?')
+    p.cmdqueue.insert(0, ('[dev] What caused this error?', trace))
     p.cmdqueue.insert(1, 'q')
-    # TODO start
-    print(f'IN POST MORTEM\n{trace}\nEND TRACE')
-    # TODO end
     p.interaction(None, t)
 
 

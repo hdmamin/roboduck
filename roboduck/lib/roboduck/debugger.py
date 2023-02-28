@@ -14,7 +14,7 @@ from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
 
 
 ROBODUCK_GPT = GPTBackend(log_stdout=False)
-PROMPT_MANAGER = PromptManager(['debug', 'debug_full'],
+PROMPT_MANAGER = PromptManager(['debug', 'debug_full', 'debug_stack_trace'],
                                verbose=False,
                                gpt=ROBODUCK_GPT)
 
@@ -38,8 +38,7 @@ class RoboDuckDB(Pdb):
     """
 
     def __init__(self, *args, backend='openai', model=None,
-                 full_context=False, log=False, max_len_per_var=79,
-                 **kwargs):
+                 task='debug', log=False, max_len_per_var=79, **kwargs):
         """
         Parameters
         ----------
@@ -80,8 +79,9 @@ class RoboDuckDB(Pdb):
         # Check if None explicitly because model=0 is different.
         self.query_kwargs = {'model': model} if model is not None else {}
         self.backend = backend
-        self.full_context = full_context
-        self.task = 'debug' + '_full' * full_context
+        self.full_context = '_full' in task
+        self.field_names = PROMPT_MANAGER.field_names(task)
+        self.task = task
         self.log = log
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
 
@@ -153,17 +153,30 @@ class RoboDuckDB(Pdb):
         We add an extra check in the if block to check if the user asked a
         question. If so, we ask gpt. If not, we treat it as a regular pdb
         command.
+
+        Parameters
+        ----------
+        line: str or tuple
+            If str, this is a regular line like in the standard debugger.
+            If tuple, this contains (line str, stack trace str). This is for
+            use with the debug_stack_trace mode.
         """
+        if isinstance(line, tuple):
+            line, stack_trace = line
+        else:
+            stack_trace = ''
         if not self.commands_defining:
             if '?' in line:
                 return self.ask_language_model(
-                    line, verbose=line.startswith('[dev]')
+                    line,
+                    stack_trace=stack_trace,
+                    verbose=line.startswith('[dev]')
                 )
             return cmd.Cmd.onecmd(self, line)
         else:
             return self.handle_command_def(line)
 
-    def ask_language_model(self, question, verbose=False):
+    def ask_language_model(self, question, stack_trace='', verbose=False):
         """When the user asks a question during a debugging session, query
         gpt for the answer and type it back to them live.
 
@@ -173,13 +186,24 @@ class RoboDuckDB(Pdb):
             User question, e.g. "Why are the first three values in nums equal
             to 5 when the input list only had a single 5?". (Example is from
             a faulty bubble sort implementation.)
+        stack_trace: str
+            When using the "debug_stack_trace" prompt, we need to pass a
+            stack trace string into the prompt.
         verbose: bool
             If True, print the full gpt prompt in red before making the api
             call. User activates this mode by prefixing their question with
             '[dev]'.
         """
         prompt_kwargs = self._get_prompt_kwargs()
-        prompt_kwargs['question'] = question
+        if 'question' in self.field_names:
+            prompt_kwargs['question'] = question
+        expect_stack_trace = 'stack_trace' in self.field_names
+        if stack_trace and expect_stack_trace:
+            prompt_kwargs['stack_trace'] = stack_trace
+        assert bool(stack_trace) == expect_stack_trace,\
+            f'Received stack_trace={stack_trace!r} but ' \
+            f'self.field_names={self.field_names}.'
+
         prompt = PROMPT_MANAGER.prompt(self.task, prompt_kwargs)
         if len(prompt.split()) > 1_000:
             warnings.warn(
@@ -241,6 +265,12 @@ class RoboDuckDB(Pdb):
         # When using the `duck` jupyter magic in "insert" mode, we reference
         # the CodeCompletionCache to populate the new code cell.
         CodeCompletionCache.last_completion = answer
+
+    def precmd(self, line):
+        if isinstance(line, tuple):
+            line, trace = line
+            return super().precmd(line), trace
+        return super().precmd(line)
 
 
 def duck(backend='openai', model=None, **kwargs):

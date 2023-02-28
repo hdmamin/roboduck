@@ -352,15 +352,27 @@ X -generate roboduck mascot/image with midjourney/stable diffusion/dalle 2
 
 2/27/23 mon
 -----------
+X -talky errors 
+    X -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
+        X -update funcs in scratch_errors.py to pass stack trace down chain of funcs so it can be included in prompt
+            X -debugger cls updates
+                X -make cls allow user to specify prompt name (to support stack trace debug prompt) instead of just full=T/F
+                X -make sure correct vars are passed in (depending on prompt's available kwargs?)
+                    > Along the way, wrote new jabberwocky field_names utils func and added wrapper method to PromptManager. Haven't bumped version and uploaded to pypi yet though, because more changes are probably coming.
+            X -update scratch_errors script to specify correct prompt (stack trace version)
+        X -update prompt.yaml or create new one to include (possibly optional) stack trace
+        > Works, although logic might be a little fragile. Also observed more annoying repetition because I'm limited to 4 stop words and STACK_TRACE adds another (and looks like logit bias isn't as effective as I'd hoped at avoiding LOCAL VARIABLES). But again, don't get bogged down here - chatgpt probably fixes this problem.
+-revisit magic and see if we should use this new stack trace prompt there too (bc it's always used when an error's just occurred)
+-touch up roboduck mascot image
+    -change green body to yellow
+    -remove mystery object on ground (watering can?)
+
+2/28/23 tues
+------------
 -talky errors 
-    -goal: avoid user having to type question, while still passing in both traceback/error + state to gpt
-        -update funcs in scratch_errors.py to pass stack trace down chain of funcs so it can be included in prompt
-            -debugger cls updates
-                -make cls allow user to specify prompt name (to support stack trace debug prompt) instead of just full=T/F
-                -make sure correct vars are passed in (depending on prompt's available kwargs?)
-            -update scratch_errors script to specify correct prompt (stack trace version)
-        -update prompt.yaml or create new one to include (possibly optional) stack trace
-        -revisit magic and see if we should use this new logic there too (bc it's always used when an error's just occurred)
+    -port to lib
+    -document
+-revisit magic and see if we should use new stack trace prompt there too (bc it's always used when an error's just occurred; alternatively, could maybe make prompt depend on flag)
 -touch up roboduck mascot image
     -change green body to yellow
     -remove mystery object on ground (watering can?)
