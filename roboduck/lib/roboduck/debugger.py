@@ -100,6 +100,8 @@ class RoboDuckDB(Pdb):
         res = {}
 
         # Get current code snippet.
+        # TODO: fails when running code from cmd line like:
+        # 'python -c "print(x)"'.
         try:
             res['code'] = inspect.getsource(self.curframe)
         except OSError as err:
