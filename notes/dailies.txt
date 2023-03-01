@@ -378,6 +378,7 @@ X -talky errors
         > Not yet, can't access source code.
 ~ -look into debugger bug when running code from terminal with 'python -c {my_code}'
     > Looks like this won't be trivial to solve - can't easily access source code w/ inspect or sys.argv, for example. Might be able to get it from appropriate frame object. Look into this more tomorrow.
+X -add error handling to htools autodebug ipython exception registration
 -revisit magic and see if we should use new stack trace prompt there too (bc it's always used when an error's just occurred; alternatively, could maybe make prompt depend on flag)
 -touch up roboduck mascot image
     -change green body to yellow
