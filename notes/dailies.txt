@@ -386,7 +386,22 @@ X -add error handling to htools autodebug ipython exception registration
 
 3/3/23 wed
 ----------
--revisit magic and see if we should use new stack trace prompt there too (bc it's always used when an error's just occurred; alternatively, could maybe make prompt depend on flag)
+~ -revisit magic and see if we should use new stack trace prompt there too (bc it's always used when an error's just occurred; alternatively, could maybe make prompt depend on flag)
+    > Wrote new partial stack_trace() to get stack trace as str manually.
+    > Added auto flag in magic to allow user to skip the interactive session and just ask the default question.
+    > Added require_confirmation flag in excepthook to allow us to skip user confirmation, like in the magic auto mode (bc user already requested it).
+    > Tested magic auto flag in jupyter and it works!
+    > Still need to add support for using auto mode and insert mode at the same time in magic - currently auto mode does not insert. Could also just not support this and raise warning - could be rather tricky given how differently I implemented the different modes.
+-figure out how to access source code when running code from terminal with 'python -c {my_code}'. (Gpt suggests maybe can extract from frame obj.)
+-touch up roboduck mascot image
+    -change green body to yellow
+    -remove mystery object on ground (watering can?)
+
+3/4/23 thurs
+------------
+-add support for using auto mode and insert mode at the same time in magic (currently auto mode does not insert. Could also just not support this and raise warning - could be rather tricky given how differently I implemented the different modes.)
+    -look into how difficult it might be to support this
+    -implement (either add support or raise warning)
 -figure out how to access source code when running code from terminal with 'python -c {my_code}'. (Gpt suggests maybe can extract from frame obj.)
 -touch up roboduck mascot image
     -change green body to yellow
@@ -395,6 +410,10 @@ X -add error handling to htools autodebug ipython exception registration
 
 Backlog
 -------
+-jabberwocky changes to support chatgpt
+    -think openai package needs to be updated, make sure things stil work
+    -update enginemap engines?
+    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
 -debug why completions often include leading newline when I thought I stripped them (maybe need to check on first few i rather than just i=0?)
 -passive:
     -finish distill post on augmenting human intellect

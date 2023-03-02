@@ -4,6 +4,7 @@ from IPython import get_ipython
 from IPython.core.magic import line_magic, magics_class, Magics
 from IPython.core.magic_arguments import argument, magic_arguments, \
     parse_argstring
+import sys
 
 from roboduck.debugger import RoboDuckDB, CodeCompletionCache
 
@@ -30,12 +31,29 @@ class DebugMagic(Magics):
     @argument('-i', action='store_true',
               help='Boolean flag: if provided, INSERT a new code cell with '
                    'the suggested code fix.')
+    @argument('-a', action='store_true',
+              help='Boolean flag: if provided, use AUTO mode. Rather than '
+                   'starting an interactive debugging session and requiring '
+                   'the user to enter a question, auto mode simply asks gpt '
+                   'what caused the error that just occurred.')
     @line_magic
     def duck(self, line=''):
         """Silence warnings for a cell. The -p flag can be used to make the
         change persist, at least until the user changes it again.
         """
         args = parse_argstring(self.duck, line)
+        # TODO: auto mode currently doesn't support insert mode. If everything
+        # looks good with auto mode and I decide to keep it, should implement
+        # that.
+        if args.a:
+            # Confine this import to this if clause rather than keeping a top
+            # level import - importing this module overwrites sys.excepthook
+            # which we don't necessarily want in most cases.
+            from roboduck import errors
+            errors.excepthook(sys.last_type, sys.last_value,
+                              sys.last_traceback, require_confirmation=False)
+            errors.disable()
+            return
         cls = self.shell.debugger_cls
         try:
             self.shell.debugger_cls = RoboDuckDB

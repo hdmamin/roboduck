@@ -1,6 +1,7 @@
 # Prototyped method to auto ask basic question without requiring user to type
 # it. Elegant but probably not the most functional - we don't actually pass the
 # stack trace or error to gpt, so it's just inferring what the issue is.
+from functools import partial
 from htools import monkeypatch
 from IPython import get_ipython
 from roboduck.debugger import RoboDuckDB
@@ -64,13 +65,6 @@ def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
     p.interaction(None, t)
 
 
-def ipy_excepthook(self, etype, evalue, tb, tb_offset):
-    """IPython doesn't use sys.excepthook. We have to handle this case
-    separately and make sure it expects the right argument names.
-    """
-    return excepthook(etype, evalue, tb)
-
-
 def print_exception(etype, value, tb, limit=None, file=None, chain=True):
     """Replacement for traceback.print_exception() that returns the
     whole stack trace as a single string. Used in roboduck's custom excepthook
@@ -103,7 +97,7 @@ def print_exception(etype, value, tb, limit=None, file=None, chain=True):
 
 
 @monkeypatch(sys, 'excepthook')
-def excepthook(etype, val, tb):
+def excepthook(etype, val, tb, require_confirmation=True):
     """Replaces sys.excepthook when module is imported. When an error is
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
@@ -117,6 +111,8 @@ def excepthook(etype, val, tb):
     """
     trace = print_exception(etype, val, tb)
     print(trace)
+    if not require_confirmation:
+        return post_mortem(tb, trace=trace)
     while True:
         cmd = input('Explain error message? [y/n]\n').lower()
         if cmd in ('y', 'yes'):
@@ -124,6 +120,13 @@ def excepthook(etype, val, tb):
         if cmd in ('n', 'no'):
             return
         print('Unrecognized command. Valid choices are "y" or "n".\n')
+
+
+def ipy_excepthook(self, etype, evalue, tb, tb_offset):
+    """IPython doesn't use sys.excepthook. We have to handle this case
+    separately and make sure it expects the right argument names.
+    """
+    return excepthook(etype, evalue, tb)
 
 
 def disable():
@@ -137,6 +140,12 @@ def disable():
     # if we call disable(), we wish to remove the handler for Exception.
     ipy.custom_exceptions = tuple(x for x in ipy.custom_exceptions
                                   if x != Exception)
+
+
+# Lets us recover stack trace as string outside of the functions defined above,
+# which generally only execute automatically when exceptions are thrown.
+stack_trace = partial(print_exception, sys.last_type, sys.last_value,
+                      sys.last_traceback)
 
 
 # Only necessary/possible when in ipython.
