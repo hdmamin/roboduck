@@ -399,10 +399,14 @@ X -add error handling to htools autodebug ipython exception registration
 
 3/4/23 thurs
 ------------
--add support for using auto mode and insert mode at the same time in magic (currently auto mode does not insert. Could also just not support this and raise warning - could be rather tricky given how differently I implemented the different modes.)
-    -look into how difficult it might be to support this
-    -implement (either add support or raise warning)
--figure out how to access source code when running code from terminal with 'python -c {my_code}'. (Gpt suggests maybe can extract from frame obj.)
+X -add support for using auto mode and insert mode at the same time in magic (currently auto mode does not insert. Could also just not support this and raise warning - could be rather tricky given how differently I implemented the different modes.)
+    X -look into how difficult it might be to support this
+    X -implement (either add support or raise warning)
+    > Implemented. Not hard after all - since I managed to reuse debugger cls in errors module, it already sets CompletionCache attr.
+    > Also renamed some flags, confirmed they can be called together (e.g. "-ip" instead of "-i -p"), and revised docstring accordingly.
+X -filter warning in magic when registering excepthook func due to errors module import
+! -figure out how to access source code when running code from terminal with 'python -c {my_code}'. (Gpt suggests maybe can extract from frame obj.)
+    > Continued trying but really seems difficult (maybe impossible? Surely there's SOME way but it might not be doable without some non-python hacks, idk).
 -touch up roboduck mascot image
     -change green body to yellow
     -remove mystery object on ground (watering can?)
@@ -410,6 +414,9 @@ X -add error handling to htools autodebug ipython exception registration
 
 Backlog
 -------
+-early ideas:
+    -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
+    -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
 -jabberwocky changes to support chatgpt
     -think openai package needs to be updated, make sure things stil work
     -update enginemap engines?
