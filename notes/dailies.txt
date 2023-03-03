@@ -406,7 +406,17 @@ X -add support for using auto mode and insert mode at the same time in magic (cu
     > Also renamed some flags, confirmed they can be called together (e.g. "-ip" instead of "-i -p"), and revised docstring accordingly.
 X -filter warning in magic when registering excepthook func due to errors module import
 ! -figure out how to access source code when running code from terminal with 'python -c {my_code}'. (Gpt suggests maybe can extract from frame obj.)
-    > Continued trying but really seems difficult (maybe impossible? Surely there's SOME way but it might not be doable without some non-python hacks, idk).
+    > Continued trying but really seems difficult (maybe impossible? Surely there's SOME way but it might not be doable without some non-python hacks, idk). Tried to hack something together to use ~/bash_history but that seems unreliable and it doesn't work anyway.
+-touch up roboduck mascot image
+    -change green body to yellow
+    -remove mystery object on ground (watering can?)
+
+3/5/23 fri
+----------
+-debug why completions often include leading newline when I thought I stripped them (maybe need to check on first few i rather than just i=0?)
+-think about some early stage ideas:
+    -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
+    -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
 -touch up roboduck mascot image
     -change green body to yellow
     -remove mystery object on ground (watering can?)
@@ -414,14 +424,10 @@ X -filter warning in magic when registering excepthook func due to errors module
 
 Backlog
 -------
--early ideas:
-    -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
-    -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
 -jabberwocky changes to support chatgpt
     -think openai package needs to be updated, make sure things stil work
     -update enginemap engines?
     -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
--debug why completions often include leading newline when I thought I stripped them (maybe need to check on first few i rather than just i=0?)
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
