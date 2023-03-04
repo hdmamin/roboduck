@@ -413,7 +413,29 @@ X -filter warning in magic when registering excepthook func due to errors module
 
 3/5/23 fri
 ----------
--debug why completions often include leading newline when I thought I stripped them (maybe need to check on first few i rather than just i=0?)
+X -prototype json/yaml version of prompt w/ chatgpt
+    > Prototype in roboduck/data/scratch/debug_prompt_yaml_response. Still need to test with api though. I initially wanted json response but chatgpt was having a really hard time keeping python indentation in json - I'm guessin because dumping code to json removes tabs by default and so a lot of code in json training data probably didn't have much indentation. But yaml works pretty well so far and the human readable aspect is actually pretty nice given than the response is basically a bunch of natural language.
+    > 🤔 Now I'm wondering if the increased parsability of a highly structured response is worth it - it might require us to wait for the whole response rather than showing live words, and more waiting is annoying. Could put the "solved" field first but the whole point was to try to make it "think" first before reaching a diagnosis.
+_ -debug why completions often include leading newline when I thought I stripped them (maybe need to check on first few i rather than just i=0?)
+    > Wait on this - would probably become a non issue if I switch to yaml. Same with addressing the repeated newlines at the end of a prompt - gpt3 did this a lot lately but chatgpt shows no signs of doing that.
+X -cleanup repo a bit
+    > Moved some old scratch code files to new roboduck/data/scratch dir.
+-think about some early stage ideas:
+    -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
+    -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
+-touch up roboduck mascot image
+    -change green body to yellow
+    -remove mystery object on ground (watering can?)
+
+3/6/23/sat
+----------
+-jabberwocky changes to support chatgpt
+    -think openai lib version needs to be updated, make sure things stil work afterwards
+    -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+    -update enginemap engines if necessary
+    -update GPTBackend.query if necessary
+    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+    -try out new debug prompt (data/scratch/) from api instead of UI
 -think about some early stage ideas:
     -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
     -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
@@ -424,10 +446,6 @@ X -filter warning in magic when registering excepthook func due to errors module
 
 Backlog
 -------
--jabberwocky changes to support chatgpt
-    -think openai package needs to be updated, make sure things stil work
-    -update enginemap engines?
-    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
