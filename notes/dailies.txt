@@ -427,7 +427,7 @@ X -cleanup repo a bit
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
-3/6/23/sat
+3/6/23 sat
 ----------
 -jabberwocky changes to support chatgpt
     -think openai lib version needs to be updated, make sure things stil work afterwards
@@ -436,8 +436,9 @@ X -cleanup repo a bit
     -update GPTBackend.query if necessary
     -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
     -try out new debug prompt (data/scratch/) from api instead of UI
--think about some early stage ideas:
-    -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
+~ -think about some early stage ideas:
+    ~ -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
+        > Took first stab at implementing this but there are still some possible kinks to work out. I tried to make post_mortem do this but I realized in error mode, we still require the user to hit -y so it's hard to test automatically. Also, sys.last_value etc doesn't seem to be getting updated anymore - maybe bc the default excepthook does that somewhere and we overwrote that?
     ~ -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
         > Looked into logger module a bit. A few ways to do this (custom logger, custom LogRecord, etc.) but I think a better way might be to start by having our custom error mode update the exception obj to include the explanation so it automatically gets logged.
 X -change or document that question is ignored by default in post_mortem
@@ -447,9 +448,26 @@ X -document debugger precmd method
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
+3/7/23 sun
+----------
+-Look into error when importing roboduck.errors in ipython session without special flag (AttributeError: module 'sys' has no attribute 'last_type'. Caused by the stack_trace partial def. Maybe just wrap that w/ better error message?)
+-exploring support for auto updating exception str content after writing completion
+    -look into way to allow user to set requires_confirmation=False (for possible logging in production as opposed to interactive dev)
+    -look into how sys.last_value etc. are set. Maybe I can manually update that rather than my current exc.args mutation in post_mortem? Prob would be ideal to do this in the debugger cls rather than postmortem bc postmortem only affects error mode
+-jabberwocky changes to support chatgpt
+    -think openai lib version needs to be updated, make sure things stil work afterwards
+    -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+    -update enginemap engines if necessary
+    -update GPTBackend.query if necessary
+    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+    -try out new debug prompt (data/scratch/) from api instead of UI
+
 
 Backlog
 -------
+-touch up roboduck mascot image
+    -change green body to yellow
+    -remove mystery object on ground (watering can?)
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid

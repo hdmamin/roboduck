@@ -124,6 +124,12 @@ class RoboDuckDB(Pdb):
                     res['full_code'] = load_ipynb(ipynbname.path())
                     res['file_type'] = 'jupyter notebook'
                 except FileNotFoundError:
+                    # TODO: maybe ipython session needs to use a modified
+                    # version of this func regardless of self.full_context,
+                    # and should return full code as list initially and
+                    # override res['code'] with last executed cell. Otherwise
+                    # I think getsource(curframe) may load a lot more code than
+                    # we usually want in ipython session.
                     res['full_code'] = load_current_ipython_session()
                     res['file_type'] = 'ipython session'
             else:

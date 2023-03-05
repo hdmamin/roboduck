@@ -4,10 +4,11 @@
 from functools import partial
 from htools import monkeypatch
 from IPython import get_ipython
-from roboduck.debugger import RoboDuckDB
+from roboduck.debugger import RoboDuckDB, CodeCompletionCache
 import sys
 from traceback import TracebackException
 import warnings
+
 
 
 default_excepthook = sys.excepthook
@@ -16,7 +17,7 @@ ipy = get_ipython()
 
 def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
                 question='What caused this error?', task='debug_stack_trace',
-                **kwargs):
+                exc=None, **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
     both the stack trace AND global/local vars from the program state right
@@ -67,6 +68,9 @@ def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
     p.cmdqueue.insert(1, 'q')
     p.interaction(None, t)
 
+    if exc and CodeCompletionCache.last_completion:
+        exc.args = (*exc.args, CodeCompletionCache.last_completion)
+
 
 def print_exception(etype, value, tb, limit=None, file=None, chain=True):
     """Replacement for traceback.print_exception() that returns the
@@ -115,11 +119,11 @@ def excepthook(etype, val, tb, require_confirmation=True):
     trace = print_exception(etype, val, tb)
     print(trace)
     if not require_confirmation:
-        return post_mortem(tb, trace=trace)
+        return post_mortem(tb, trace=trace, exc=val)
     while True:
         cmd = input('Explain error message? [y/n]\n').lower().strip()
         if cmd in ('y', 'yes'):
-            return post_mortem(tb, trace=trace)
+            return post_mortem(tb, trace=trace, exc=val)
         if cmd in ('n', 'no'):
             return
         print('Unrecognized command. Valid choices are "y" or "n".\n')
