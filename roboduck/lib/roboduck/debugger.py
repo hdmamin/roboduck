@@ -160,8 +160,9 @@ class RoboDuckDB(Pdb):
         ----------
         line: str or tuple
             If str, this is a regular line like in the standard debugger.
-            If tuple, this contains (line str, stack trace str). This is for
-            use with the debug_stack_trace mode.
+            If tuple, this contains (line str, stack trace str - see
+            roboduck.errors.post_mortem for the actual insertion into the
+            cmdqueue). This is for use with the debug_stack_trace mode.
         """
         if isinstance(line, tuple):
             line, stack_trace = line
@@ -269,6 +270,12 @@ class RoboDuckDB(Pdb):
         CodeCompletionCache.last_completion = answer
 
     def precmd(self, line):
+        """We need to define this to make our errors module work. Our
+        post_mortem function sometimes places a tuple in our debugger's
+        cmdqueue and precmd is called as part of the default cmdloop method.
+        Technically it calls postcmd too but we don't need to override that
+        because it does nothing with its line argument.
+        """
         if isinstance(line, tuple):
             line, trace = line
             return super().precmd(line), trace

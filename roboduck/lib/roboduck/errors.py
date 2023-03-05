@@ -40,6 +40,9 @@ def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
         leave this as the default. If you want to do more custom/in-depth
         debugging, it's better to use roboduck.debugger.duck() (our
         breakpoint() replacement).
+        NOTE: this gets ignored by our RoboDuckDB class if the specified task
+        does not accept a question field. debug_stack_trace does not, so this
+        is ignored by default.
     task: str
         The prompt name that will be passed to our debugger class. Usually
         should leave this as the default. We expect the name to contain
@@ -114,7 +117,7 @@ def excepthook(etype, val, tb, require_confirmation=True):
     if not require_confirmation:
         return post_mortem(tb, trace=trace)
     while True:
-        cmd = input('Explain error message? [y/n]\n').lower()
+        cmd = input('Explain error message? [y/n]\n').lower().strip()
         if cmd in ('y', 'yes'):
             return post_mortem(tb, trace=trace)
         if cmd in ('n', 'no'):

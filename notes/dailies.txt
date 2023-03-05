@@ -438,7 +438,11 @@ X -cleanup repo a bit
     -try out new debug prompt (data/scratch/) from api instead of UI
 -think about some early stage ideas:
     -maybe error module should add gpt response to stack trace like raise RuntimeError(gpt_response) from e?
-    -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
+    ~ -potential logging module: what would this look like? More informative logs would be nice, but maybe this could just entail importing error module and logging the new stack trace that involves gpt's response (see bullet above)
+        > Looked into logger module a bit. A few ways to do this (custom logger, custom LogRecord, etc.) but I think a better way might be to start by having our custom error mode update the exception obj to include the explanation so it automatically gets logged.
+X -change or document that question is ignored by default in post_mortem
+    > Was going to remove but realized prompt is still a WIP and we can specify different prompts, so it's plausible that a future change could make this useful. Just documented.
+X -document debugger precmd method
 -touch up roboduck mascot image
     -change green body to yellow
     -remove mystery object on ground (watering can?)
