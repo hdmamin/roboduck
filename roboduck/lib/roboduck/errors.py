@@ -17,7 +17,7 @@ ipy = get_ipython()
 
 def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
                 question='What caused this error?', task='debug_stack_trace',
-                exc=None, **kwargs):
+                **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
     both the stack trace AND global/local vars from the program state right
@@ -68,8 +68,17 @@ def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
     p.cmdqueue.insert(1, 'q')
     p.interaction(None, t)
 
-    if exc and CodeCompletionCache.last_completion:
-        exc.args = (*exc.args, CodeCompletionCache.last_completion)
+    # Make gpt explanation available as part of last error message,
+    # accessible via sys.last_value.
+    # TODO: may need to update the answer parsing code if I change the prompt
+    # with chatgpt, i.e. no SOLUTION PART 2.
+    last_value = getattr(sys, 'last_value', None)
+    if CodeCompletionCache.last_completion and last_value:
+        explanation = CodeCompletionCache.last_completion.split(
+            'SOLUTION PART 2'
+        )[0]
+        last_value.args = tuple(arg if i else f'{arg}\n\n{explanation}'
+                                for i, arg in enumerate(last_value.args))
 
 
 def print_exception(etype, value, tb, limit=None, file=None, chain=True):
@@ -116,14 +125,15 @@ def excepthook(etype, val, tb, require_confirmation=True):
 
     Parameters are the same as the default sys.excepthook function.
     """
+    sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
     trace = print_exception(etype, val, tb)
     print(trace)
     if not require_confirmation:
-        return post_mortem(tb, trace=trace, exc=val)
+        return post_mortem(tb, trace=trace)
     while True:
         cmd = input('Explain error message? [y/n]\n').lower().strip()
         if cmd in ('y', 'yes'):
-            return post_mortem(tb, trace=trace, exc=val)
+            return post_mortem(tb, trace=trace)
         if cmd in ('n', 'no'):
             return
         print('Unrecognized command. Valid choices are "y" or "n".\n')
@@ -149,10 +159,19 @@ def disable():
                                   if x != Exception)
 
 
-# Lets us recover stack trace as string outside of the functions defined above,
-# which generally only execute automatically when exceptions are thrown.
-stack_trace = partial(print_exception, sys.last_type, sys.last_value,
-                      sys.last_traceback)
+# stack_trace = partial(print_exception, sys.last_type, sys.last_value,
+#                       sys.last_traceback)
+def stack_trace():
+    # Lets us recover stack trace as string outside of the functions defined
+    # above, which generally only execute automatically when exceptions are
+    # thrown. Don't just define this as a partial because that requires
+    # sys.last_value etc. to be available at import time, which it often isn't.
+    try:
+        return print_exception(sys.last_type, sys.last_value,
+                               sys.last_traceback)
+    except AttributeError as e:
+        raise RuntimeError('No stack trace available because an error has '
+                           'not been thrown.') from e
 
 
 # Only necessary/possible when in ipython.

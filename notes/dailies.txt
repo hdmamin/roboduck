@@ -450,10 +450,27 @@ X -document debugger precmd method
 
 3/7/23 sun
 ----------
--Look into error when importing roboduck.errors in ipython session without special flag (AttributeError: module 'sys' has no attribute 'last_type'. Caused by the stack_trace partial def. Maybe just wrap that w/ better error message?)
--exploring support for auto updating exception str content after writing completion
-    -look into way to allow user to set requires_confirmation=False (for possible logging in production as opposed to interactive dev)
-    -look into how sys.last_value etc. are set. Maybe I can manually update that rather than my current exc.args mutation in post_mortem? Prob would be ideal to do this in the debugger cls rather than postmortem bc postmortem only affects error mode
+X -Look into error when importing roboduck.errors in ipython session without special flag (AttributeError: module 'sys' has no attribute 'last_type'. Caused by the stack_trace partial def. Maybe just wrap that w/ better error message?)
+    > Change from partial to function with better error message. Sys.last_type is often not defined at import time and partial definition requires it to exist already.
+X -exploring support for auto updating exception str content after writing completion
+    _ -look into way to allow user to set requires_confirmation=False (for possible logging in production as opposed to interactive dev)
+        > I think the main use case is for logging, so maybe just make a custom logger that works a bit like the jupyter magic and calls excepthook manually.
+    X -look into how sys.last_value etc. are set. Maybe I can manually update that rather than my current exc.args mutation in post_mortem? Prob would be ideal to do this in the debugger cls rather than postmortem bc postmortem only affects error mode
+        > I set these 3 values in sys.excepthook which seems to be where this occurs normally (indirectly, in a called function). I update the error message in post_mortem, not debugger cls, because exiting debugger sets pdb related values for sys.last_type etc anyway.
+-jabberwocky changes to support chatgpt
+    -think openai lib version needs to be updated, make sure things stil work afterwards
+    -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+    -update enginemap engines if necessary
+    -update GPTBackend.query if necessary
+    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+    -try out new debug prompt (data/scratch/) from api instead of UI
+
+3/8/23 mon
+----------
+-logging module
+    -look into base logger class to see what options are for where to slot in the gpt completion
+    -select first option to try (can always revisit decision if it ends up not working as nicely as expected)
+    -implement
 -jabberwocky changes to support chatgpt
     -think openai lib version needs to be updated, make sure things stil work afterwards
     -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
