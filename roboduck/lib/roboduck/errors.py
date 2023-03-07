@@ -2,7 +2,6 @@
 # it. Elegant but probably not the most functional - we don't actually pass the
 # stack trace or error to gpt, so it's just inferring what the issue is.
 from functools import partial
-from htools import monkeypatch
 from IPython import get_ipython
 from roboduck.debugger import RoboDuckDB, CodeCompletionCache
 import sys
@@ -112,8 +111,8 @@ def print_exception(etype, value, tb, limit=None, file=None, chain=True):
     return trace
 
 
-@monkeypatch(sys, 'excepthook')
-def excepthook(etype, val, tb, require_confirmation=True):
+def excepthook(etype, val, tb, task='debug_stack_trace',
+               auto=False, cls=RoboDuckDB, **kwargs):
     """Replaces sys.excepthook when module is imported. When an error is
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
@@ -128,22 +127,51 @@ def excepthook(etype, val, tb, require_confirmation=True):
     sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
     trace = print_exception(etype, val, tb)
     print(trace)
-    if not require_confirmation:
-        return post_mortem(tb, trace=trace)
+    kwargs.update(task=task, trace=trace, t=tb, Pdb=cls)
+    if auto:
+        return post_mortem(**kwargs)
     while True:
         cmd = input('Explain error message? [y/n]\n').lower().strip()
         if cmd in ('y', 'yes'):
-            return post_mortem(tb, trace=trace)
+            return post_mortem(**kwargs)
         if cmd in ('n', 'no'):
             return
         print('Unrecognized command. Valid choices are "y" or "n".\n')
 
 
-def ipy_excepthook(self, etype, evalue, tb, tb_offset):
-    """IPython doesn't use sys.excepthook. We have to handle this case
-    separately and make sure it expects the right argument names.
+def enable(**kwargs):
+    """Enable conversational debugging mode. This is called automatically on
+    module import. However, users may wish to make changes, e.g. set auto=True
+    or pass in a custom debugger cls, and this function makes that possible.
+
+    Parameters
+    ----------
+    kwargs: any
+        auto (bool) - if True, automatically have gpt explain every error that
+            occurs. Mostly useful for logging in production. You almost
+            certainly want to keep this as the default of False for any
+            interactive development.
+        cls (type) - the debugger class to use.
+        task (str) - determines what prompt/task the custom debugger uses, e.g.
+            "debug_stack_trace"
+        Or any other args that can be passed to our debugger cls.
     """
-    return excepthook(etype, evalue, tb)
+    hook = partial(excepthook, **kwargs)
+
+    def ipy_excepthook(self, etype, evalue, tb, tb_offset):
+        """IPython doesn't use sys.excepthook. We have to handle this case
+        separately and make sure it expects the right argument names.
+        """
+        return hook(etype, evalue, tb)
+
+    # Overwrite default error handling.
+    sys.excepthook = hook
+
+    # Only necessary/possible when in ipython.
+    try:
+        ipy.set_custom_exc((Exception,), ipy_excepthook)
+    except AttributeError:
+        pass
 
 
 def disable():
@@ -174,8 +202,4 @@ def stack_trace():
                            'not been thrown.') from e
 
 
-# Only necessary/possible when in ipython.
-try:
-    ipy.set_custom_exc((Exception,), ipy_excepthook)
-except AttributeError:
-    pass
+enable()

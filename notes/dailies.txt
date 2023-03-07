@@ -384,7 +384,7 @@ X -add error handling to htools autodebug ipython exception registration
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
-3/3/23 wed
+3/1/23 wed
 ----------
 ~ -revisit magic and see if we should use new stack trace prompt there too (bc it's always used when an error's just occurred; alternatively, could maybe make prompt depend on flag)
     > Wrote new partial stack_trace() to get stack trace as str manually.
@@ -397,7 +397,7 @@ X -add error handling to htools autodebug ipython exception registration
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
-3/4/23 thurs
+3/2/23 thurs
 ------------
 X -add support for using auto mode and insert mode at the same time in magic (currently auto mode does not insert. Could also just not support this and raise warning - could be rather tricky given how differently I implemented the different modes.)
     X -look into how difficult it might be to support this
@@ -411,7 +411,7 @@ X -filter warning in magic when registering excepthook func due to errors module
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
-3/5/23 fri
+3/3/23 fri
 ----------
 X -prototype json/yaml version of prompt w/ chatgpt
     > Prototype in roboduck/data/scratch/debug_prompt_yaml_response. Still need to test with api though. I initially wanted json response but chatgpt was having a really hard time keeping python indentation in json - I'm guessin because dumping code to json removes tabs by default and so a lot of code in json training data probably didn't have much indentation. But yaml works pretty well so far and the human readable aspect is actually pretty nice given than the response is basically a bunch of natural language.
@@ -427,7 +427,7 @@ X -cleanup repo a bit
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
-3/6/23 sat
+3/4/23 sat
 ----------
 -jabberwocky changes to support chatgpt
     -think openai lib version needs to be updated, make sure things stil work afterwards
@@ -448,7 +448,7 @@ X -document debugger precmd method
     -change green body to yellow
     -remove mystery object on ground (watering can?)
 
-3/7/23 sun
+3/5/23 sun
 ----------
 X -Look into error when importing roboduck.errors in ipython session without special flag (AttributeError: module 'sys' has no attribute 'last_type'. Caused by the stack_trace partial def. Maybe just wrap that w/ better error message?)
     > Change from partial to function with better error message. Sys.last_type is often not defined at import time and partial definition requires it to exist already.
@@ -465,12 +465,30 @@ X -exploring support for auto updating exception str content after writing compl
     -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
     -try out new debug prompt (data/scratch/) from api instead of UI
 
-3/8/23 mon
+3/6/23 mon
+----------
+~ -logging module
+    X -write errors.enable() func
+        > Decided I didn't agree with yesterday's decision to avoid this, I think it as mostly out of a desire to avoid refactoring errors module. Rewrote this and confirmed it works in ipython.
+        > Also let user pass in Pdb cls.
+    X -look into base logger class to see what options are for where to slot in the gpt completion
+    X -select first option to try (can always revisit decision if it ends up not working as nicely as expected)
+        > Override _log in Logger subclass.
+    ~ -implement
+        > Sort of works, but sys.last_value etc aren't getting updated. Need to debug further.
+-jabberwocky changes to support chatgpt
+    -think openai lib version needs to be updated, make sure things stil work afterwards
+    -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+    -update enginemap engines if necessary
+    -update GPTBackend.query if necessary
+    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+    -try out new debug prompt (data/scratch/) from api instead of UI
+
+3/7/23 tues
 ----------
 -logging module
-    -look into base logger class to see what options are for where to slot in the gpt completion
-    -select first option to try (can always revisit decision if it ends up not working as nicely as expected)
-    -implement
+    -investigate why sys.last_value etc aren't being updated when using new logger cls in logger.py
+    -fix
 -jabberwocky changes to support chatgpt
     -think openai lib version needs to be updated, make sure things stil work afterwards
     -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?

@@ -84,11 +84,9 @@ class DebugMagic(Magics):
             # Confine this import to this if clause rather than keeping a top
             # level import - importing this module overwrites sys.excepthook
             # which we don't necessarily want in most cases.
-            with warnings.catch_warnings():
-                warnings.filterwarnings('ignore')
-                from roboduck import errors
+            from roboduck import errors
             errors.excepthook(sys.last_type, sys.last_value,
-                              sys.last_traceback, require_confirmation=False)
+                              sys.last_traceback, auto=True)
             errors.disable()
 
         # Insert suggested code into next cell.
