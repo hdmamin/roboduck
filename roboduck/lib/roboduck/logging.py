@@ -10,10 +10,14 @@ class RoboDuckLogger(Logger):
     def __init__(self, name, *args, roboduck_kwargs=None, **kwargs):
         super().__init__(name, *args, **kwargs)
         self.roboduck_kwargs = roboduck_kwargs or {}
-        if self.roboduck_kwargs.get('auto', False):
-            warnings.warn('You tried to set auto=False in roboduck_kwargs '
-                          'but this must equal True. Overriding.')
-        self.roboduck_kwargs['auto'] = True
+        defaults = dict(auto=True, sleep=0, silent=True)
+        for k, v in defaults.items():
+            if self.roboduck_kwargs.get(k, v) != v:
+                warnings.warn(
+                    f'You tried to set {k}={self.roboduck_kwargs[k]} '
+                    f'but it must equal {v} in logger.'
+                )
+        self.roboduck_kwargs.update(defaults)
 
     def _log(self, level, msg, args, exc_info=None, extra=None,
              stack_info=False):
@@ -23,8 +27,8 @@ class RoboDuckLogger(Logger):
         """
         if isinstance(msg, Exception):
             from roboduck import errors
-            errors.excepthook(sys.last_type, sys.last_value,
-                              sys.last_traceback, **self.roboduck_kwargs)
+            errors.excepthook(type(msg), msg, msg.__traceback__,
+                              **self.roboduck_kwargs)
             msg = sys.last_value
             errors.disable()
 

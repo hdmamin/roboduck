@@ -486,9 +486,24 @@ X -exploring support for auto updating exception str content after writing compl
 
 3/7/23 tues
 ----------
+~ -logging module
+    X -investigate why sys.last_value etc aren't being updated when using new logger cls in logger.py
+        > Actually, issue was that logger called my excepthook with sys.last_value etc and that was wrong because it now only gets updated INSIDE the excepthook itself. Managed to extract those args from the exception obj.
+    X -fix
+    > Parametrized sleep between chars in debugger and added option for silent output. Logger seems to work, though could use a couple refinements/default tweaking.
+-jabberwocky changes to support chatgpt
+    -think openai lib version needs to be updated, make sure things stil work afterwards
+    -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+    -update enginemap engines if necessary
+    -update GPTBackend.query if necessary
+    -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+    -try out new debug prompt (data/scratch/) from api instead of UI
+
+3/8/23 wed
+----------
+-document new silent param in debugger cls (and possibly in errors module kwargs?)
 -logging module
-    -investigate why sys.last_value etc aren't being updated when using new logger cls in logger.py
-    -fix
+    -custom logger seems to lose some default formatting, e.g. starting messages with time or INFO/WARNING/etc. See if we can fix that.
 -jabberwocky changes to support chatgpt
     -think openai lib version needs to be updated, make sure things stil work afterwards
     -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?

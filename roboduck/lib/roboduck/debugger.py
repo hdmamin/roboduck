@@ -38,7 +38,8 @@ class RoboDuckDB(Pdb):
     """
 
     def __init__(self, *args, backend='openai', model=None,
-                 task='debug', log=False, max_len_per_var=79, **kwargs):
+                 task='debug', log=False, max_len_per_var=79, sleep=.02,
+                 silent=False, **kwargs):
         """
         Parameters
         ----------
@@ -70,6 +71,10 @@ class RoboDuckDB(Pdb):
             very big . I somewhat arbitrarily set 79 as the default, i.e.
             1 line of python per variable. I figure that's usually enough to
             communicate the gist of what's happening.
+        sleep: float
+            Seconds to sleep between characters when live typing completions.
+            0 means we type as fast as possible, higher numbers mean we type
+            more slowly.
         kwargs: any
             Additional kwargs for base Pdb class.
         """
@@ -84,6 +89,8 @@ class RoboDuckDB(Pdb):
         self.task = task
         self.log = log
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
+        self.silent = silent
+        self.sleep = sleep
 
     def _get_prompt_kwargs(self):
         """Construct a dictionary describing the current state of our code
@@ -223,7 +230,8 @@ class RoboDuckDB(Pdb):
         if verbose:
             print(colored(prompt, 'red'))
 
-        print(colored(self.duck_prompt, 'green'), end='')
+        if not self.silent:
+            print(colored(self.duck_prompt, 'green'), end='')
         res = ''
         # Suppress jabberwocky auto-warning about codex model name.
         with warnings.catch_warnings():
@@ -257,9 +265,11 @@ class RoboDuckDB(Pdb):
                     prev_is_title = False
                     if not i:
                         cur = cur.lstrip('\n')
+                    if self.silent:
+                        continue
                     for char in cur:
                         print(colored(char, 'green'), end='')
-                        time.sleep(.02)
+                        time.sleep(self.sleep)
 
         # Strip trailing quotes because the entire prompt is inside a
         # docstring and codex may try to close it. We can't use it as a stop
@@ -269,7 +279,8 @@ class RoboDuckDB(Pdb):
         if not answer:
             answer = 'Sorry, I don\'t know. Can you try ' \
                      'rephrasing your question?'
-            print(colored(answer, 'green'))
+            if not self.silent:
+                print(colored(answer, 'green'))
 
         # When using the `duck` jupyter magic in "insert" mode, we reference
         # the CodeCompletionCache to populate the new code cell.
