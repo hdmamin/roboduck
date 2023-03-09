@@ -501,9 +501,12 @@ X -exploring support for auto updating exception str content after writing compl
 
 3/8/23 wed
 ----------
--document new silent param in debugger cls (and possibly in errors module kwargs?)
--logging module
-    -custom logger seems to lose some default formatting, e.g. starting messages with time or INFO/WARNING/etc. See if we can fix that.
+X -document new silent param in debugger cls (and possibly in errors module kwargs?)
+X -logging module
+    X -custom logger seems to lose some default formatting, e.g. starting messages with time or INFO/WARNING/etc. See if we can fix that.
+    > Also added similar functionality as MultiLogger to make it easy to configure logging to stdout and/or file.
+X -removed old commented out quickmail func version from htools
+    > Also uploaded 7.5.0 to pypi.
 -jabberwocky changes to support chatgpt
     -think openai lib version needs to be updated, make sure things stil work afterwards
     -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
@@ -512,18 +515,32 @@ X -exploring support for auto updating exception str content after writing compl
     -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
     -try out new debug prompt (data/scratch/) from api instead of UI
 
+3/9/23 thurs
+------------
+-easy:
+    -document logger cls + init
+-medium:
+    -create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
+    -touch up roboduck mascot image
+        -change green body to yellow
+        -remove mystery object on ground (watering can?)
+-hard:
+    -jabberwocky changes to support chatgpt
+        -think openai lib version needs to be updated, make sure things stil work afterwards
+        -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+        -update enginemap engines if necessary
+        -update GPTBackend.query if necessary
+        -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+        -try out new debug prompt (data/scratch/) from api instead of UI
+
 
 Backlog
 -------
--touch up roboduck mascot image
-    -change green body to yellow
-    -remove mystery object on ground (watering can?)
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
     -read Engelbart paper on augmenting human intellect
 -investigate: was it intentional that PromptManager supports passing in GPT obj but ConversationManager doesn't? (I think initially neither did but had an immediate use case for PromptManager so changed that one, but haven't had a need yet for ConversationManager so didn't prioritize it. Probably good to do eventually though.)
--[WAIT: near end of proj, see which features were really necessary] create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
 -[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
 
 Easy Backlog

@@ -55,12 +55,16 @@ class RoboDuckDB(Pdb):
             back to whatever is defined in the jabberwocky `debug` or
             `debug_full` prompts. 'code-davinci-002' is the current default,
             though 'text-davinci-002' may be a decent option as well.
-        full_context: bool
-            If True, provide the whole notebook source code to gpt
-            (when used in a script, this has no effect). This
-            increases the risk of creating a prompt that is too long. Note that
-            even when full_context=False, global variables with names that
-            appear in the relevant code snippet will be sent to gpt.
+        task: str
+            Name of task (a.k.a. a "prompt" in jabberwocky) to use when
+            querying gpt3. Current options are:
+                debug - for interactive debugging sessions on the relevant
+                    snippet of code.
+                debug_full - for interactive debugging sessions on the whole
+                    notebook (no difference from "debug" for scripts). Risks
+                    creating a context that is too long.
+                debug_stack_trace - for automatic error explanations or
+                    logging.
         log: bool
             Specifies whether jabberwocky should log gpt api calls. If true,
             these are stored as jsonlines files.
@@ -74,7 +78,13 @@ class RoboDuckDB(Pdb):
         sleep: float
             Seconds to sleep between characters when live typing completions.
             0 means we type as fast as possible, higher numbers mean we type
-            more slowly.
+            more slowly. Our logging module sets this to zero because real time
+            typing is not important there.
+        silent: bool
+            If True, print gpt completions to stdout. One example of when False
+            is appropriate is our logging module - we want to get the
+            explanation and update the exception message which then gets
+            logged, but we don't care about typing results in real time.
         kwargs: any
             Additional kwargs for base Pdb class.
         """
