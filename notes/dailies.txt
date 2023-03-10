@@ -517,13 +517,19 @@ X -removed old commented out quickmail func version from htools
 
 3/9/23 thurs
 ------------
--easy:
-    -document logger cls + init
--medium:
-    -create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
-    -touch up roboduck mascot image
-        -change green body to yellow
-        -remove mystery object on ground (watering can?)
+X -easy:
+    X -document logger cls + init
+    X -document other classes
+~ -start playing around with langchain
+    > Realistically, I should probably eventually replace my jabberwocky usage with langchain. Don't do that yet though - go through some more tutorials and toy around a bit more to make sure it will be able to do the things I want.
+X -medium:
+    _ -create a more minimal install for jabberwocky (no youtube transcription stuff, for example)
+        > Hold off while considering move to langchain.
+    X -touch up roboduck mascot image
+        ~ -change green body to yellow
+        _ -remove mystery object on ground (watering can?)
+        > Experimented a bit in gimp. I'd need to get a lot better to really do what I want, and I'm running into a known fuzzy select bug on mac. Made a more blue and yellow variant but the original is kind of growing on me. Leaning towards just keeping it.
+        > Also made a more grayish version online. Now I'm kind of digging the blue one. And I realized the watering can thing may be supposed to be something a mechanic would use to oil robots? That sort of makes sense. Changed readme to use blue version for now, will see if I like it.
 -hard:
     -jabberwocky changes to support chatgpt
         -think openai lib version needs to be updated, make sure things stil work afterwards
@@ -533,9 +539,30 @@ X -removed old commented out quickmail func version from htools
         -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
         -try out new debug prompt (data/scratch/) from api instead of UI
 
+3/10/23 fri
+-----------
+-play around with langchain more with eventual eye towards possibly replacing jabberwocky
+-start adding tests
+    -pick framework (prob pytest)
+    -look up examples
+    -write tests
+    -add CI/CD on push/merge?
+-passive:
+    -finish distill post on augmenting human intellect
+    -watch bret victor Future of Programming vid
+    -read Engelbart paper on augmenting human intellect
+
 
 Backlog
 -------
+-hard:
+    -jabberwocky changes to support chatgpt
+        -think openai lib version needs to be updated, make sure things stil work afterwards
+        -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
+        -update enginemap engines if necessary
+        -update GPTBackend.query if necessary
+        -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
+        -try out new debug prompt (data/scratch/) from api instead of UI
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
