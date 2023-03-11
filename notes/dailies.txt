@@ -542,15 +542,27 @@ X -medium:
 3/10/23 fri
 -----------
 -play around with langchain more with eventual eye towards possibly replacing jabberwocky
--start adding tests
-    -pick framework (prob pytest)
-    -look up examples
-    -write tests
+~ -start adding tests
+    X -pick framework (prob pytest)
+    X -look up examples
+    ~ -write tests
+        > Was starting to question if I really want to do this but testing first module already paid off - second half of truncated_repr seemingly got lost when copy/pasting from jupyter to lib 😳. Seems fixed now.
     -add CI/CD on push/merge?
+~ -brief glimpse of old reload.py script
+    > Lots of todos here, still very WIP. Think it is worth trying to scavenge some things from this, but could consider designing new solution first and then seeing how it differs. Might find something better or more elegant, like how my autodebug module worked way better by starting over.
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
     -read Engelbart paper on augmenting human intellect
+
+3/11/23 sat
+-----------
+-continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
 
 
 Backlog
@@ -572,6 +584,7 @@ Backlog
 
 Easy Backlog
 ------------
+-write more tests
 
 Keep an eye out for
 -------------------

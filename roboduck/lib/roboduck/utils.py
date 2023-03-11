@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from colorama import Fore, Style
 import hashlib
 import ipynbname
@@ -57,9 +58,10 @@ def save_notebook(file_path):
         current_md5 = file_md5(file_path)
 
 
-# Adapted from cli.ReadmeUpdater method.
 def load_ipynb(path, save_if_self=True):
     """Loads ipynb and formats cells into 1 big string.
+
+    Adapted from htools.cli.ReadmeUpdater method.
 
     Parameters
     ----------
@@ -224,3 +226,41 @@ def truncated_repr(obj, max_len=79):
             length += len(new_str)
             res += new_str
         return "{" + res.rstrip() + "...}"
+    if isinstance(obj, str):
+        return repr_[:max_len - 4] + "...'"
+    if isinstance(obj, Iterable):
+        # A bit risky but sort of elegant. Just recursively take smaller
+        # slices until we get an acceptable length. We may end up going
+        # slightly over the max length after adding our ellipses but it's
+        # not that big a deal, this isn't meant to be super precise. We
+        # can also end up with fewer items than we could have fit - if we
+        # exhaustively check every possible length one by one until we
+        # find the max length that fits, we can get a very slow function
+        # when inputs are long.
+        # Can't easily pass smaller max_len value into recursive call
+        # because we always want to compare to the user-specified value.
+        n = int(max_len / len(repr_) * len(obj))
+        if n == len(obj):
+            # Even slicing to just first item is too long, so just revert
+            # to treating this like a non-iterable object.
+            return qualname(obj)
+        # Need to slice set while keeping the original dtype.
+        if isinstance(obj, set):
+            slice_ = set(list(obj)[:n])
+        else:
+            slice_ = obj[:n]
+        repr_ = truncated_repr(slice_, max_len)
+        non_brace_idx = len(repr_) - 1
+        while repr_[non_brace_idx] in open2close.values():
+            non_brace_idx -= 1
+        if non_brace_idx <= 0 or (non_brace_idx == 3
+                                  and repr_.startswith('set')):
+            return repr_[:-1] + '...' + repr_[-1]
+        return repr_[:non_brace_idx + 1] + ',...' + repr_[non_brace_idx + 1:]
+
+    # We know it's non-iterable at this point.
+    if isinstance(obj, type):
+        return f'<class {obj.__name__}>'
+    if isinstance(obj, (int, float)):
+        return truncated_repr(format(obj, '.3e'), max_len)
+    return qualname(obj)
