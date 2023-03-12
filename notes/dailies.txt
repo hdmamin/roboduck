@@ -557,6 +557,20 @@ X -medium:
 
 3/11/23 sat
 -----------
+X -peruse saved git repos around auto refactoring, stack overflow errors, live program tracing
+    > Livepython tool is interesting, seemingly executes code line by line and lets us pause in between. Seems like it might allow for something like: try to execute this line, if it fails debug it and try to fix it, then run the fixed code. But maybe it's unnecessary - sys.excepthook already executes on errors, and sys.settrace seems very problematic in ipython.
+X -func to color new parts of a str differently (similar to colordiff)
+    > Still need to incorporate this into...somewhere. Might lend itself better to a json/yaml response where we know exactly where the code starts and ends. (Granted, we could probably ask gpt to add a field called "diff" but I guess that introduces more chances of inconsistencies.)
+-continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
+
+3/12/23 sun
+-----------
+-consider where (and how) we might incorporate new colordiff func
 -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
 -add CI/CD to run tests on push/merge?
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language

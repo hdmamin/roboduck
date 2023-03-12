@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 from colorama import Fore, Style
+import difflib
 import hashlib
 import ipynbname
 from IPython.display import display, Javascript
@@ -30,6 +31,44 @@ def colored(text, color):
     """
     color = getattr(Fore, color.upper())
     return f'{color}{text}{Style.RESET_ALL}'
+
+
+def colordiff_new_str(old, new, color='green'):
+    """Given two strings, return the new one with new parts in green. Note that
+    deletions are ignored because we want to retain only characters in the new
+    string. Remember colors are only displayed correctly when printing the
+    resulting string - otherwise it just looks like we added extra junk
+    characters.
+
+    Idea is that when displaying a revised code snippet from gpt, we want to
+    draw attention to the new bits.
+
+    Adapted from this gist + variations in comments:
+    https://gist.github.com/ines/04b47597eb9d011ade5e77a068389521
+
+    Parameters
+    ----------
+    old: str
+        This is what `new` is compared to when identifying differences.
+    new: str
+        Determines content of output str.
+    color: str
+        Text color for new characters.
+
+    Returns
+    -------
+    str: Same content as `new` but color new parts in a different color.
+    """
+    res = []
+    matcher = difflib.SequenceMatcher(None, old, new)
+    for opcode, s1, e1, s2, e2 in matcher.get_opcodes():
+        if opcode == 'delete':
+            continue
+        chunk = new[s2:e2]
+        if opcode in ('insert', 'replace'):
+            chunk = colored(chunk, color)
+        res.append(chunk)
+    return ''.join(res)
 
 
 def save_notebook(file_path):
