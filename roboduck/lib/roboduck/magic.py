@@ -91,6 +91,8 @@ class DebugMagic(Magics):
 
         # Insert suggested code into next cell.
         if args.p and CodeCompletionCache.last_completion:
+            # TODO: might need to change code snippet extraction logic if I
+            # switch to a more structured prompt.
             *_, code_snippet = CodeCompletionCache.last_completion.split(
                 'SOLUTION PART 2:'
             )
