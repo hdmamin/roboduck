@@ -16,7 +16,7 @@ ipy = get_ipython()
 
 def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
                 question='What caused this error?', task='debug_stack_trace',
-                **kwargs):
+                colordiff=True, **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
     both the stack trace AND global/local vars from the program state right
@@ -73,11 +73,12 @@ def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
     # with chatgpt, i.e. no SOLUTION PART 2.
     last_value = getattr(sys, 'last_value', None)
     if CodeCompletionCache.last_completion and last_value:
-        explanation = CodeCompletionCache.last_completion.split(
-            'SOLUTION PART 2'
-        )[0]
-        last_value.args = tuple(arg if i else f'{arg}\n\n{explanation}'
-                                for i, arg in enumerate(last_value.args))
+        code_name = 'last_code_diff' if colordiff else 'last_new_code'
+        last_value.args = tuple(
+            arg if i else f'{arg}\n\n{CodeCompletionCache.last_explanation}'
+                          f'\n\n{getattr(CodeCompletionCache, code_name)}'
+            for i, arg in enumerate(last_value.args)
+        )
 
 
 def print_exception(etype, value, tb, limit=None, file=None, chain=True):
@@ -122,7 +123,8 @@ def excepthook(etype, val, tb, task='debug_stack_trace',
 
     Disable by calling roboduck.errors.disable().
 
-    Parameters are the same as the default sys.excepthook function.
+    Parameters are the same as the default sys.excepthook function. Kwargs
+    are forwarded to our custom postmortem function.
     """
     sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
     trace = print_exception(etype, val, tb)
@@ -154,6 +156,8 @@ def enable(**kwargs):
         cls (type) - the debugger class to use.
         task (str) - determines what prompt/task the custom debugger uses, e.g.
             "debug_stack_trace"
+        colordiff (bool) - if True, new code snippet will print new parts
+            in green.
         Or any other args that can be passed to our debugger cls.
     """
     hook = partial(excepthook, **kwargs)

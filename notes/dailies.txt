@@ -570,7 +570,19 @@ X -func to color new parts of a str differently (similar to colordiff)
 
 3/12/23 sun
 -----------
--consider where (and how) we might incorporate new colordiff func
+X -consider where (and how) we might incorporate new colordiff func
+    > Errors module (enabled by default) and logging module (disabled by default). Not compatible with live typing and probably not ideal when logging to file, but works nicely in error message. Note that both of these modules previously ignored code completion entirely, but I decided it's worth keeping.
+    > Note: do I need to update response color in debugger and/or errors module? I realized whole response is currently printed in green, hiding the code diffs. It's visible later when logging/printing the exception. But I guess diffs aren't supported for live typing anyway. Could enter color mode once we hit SOLUTION PART 2, I suppose, but that feels like it will require some custom queue/trie logic that will probably disappear once I update the prompt anyway. Hold off for now.
+    > Ended up adding a bunch of new attrs to cache, which does make it feel more useful. Also added a reset() method to set all of them back to empty strs, which magic does.
+-continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
+
+3/13/23 mon
+-----------
 -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
 -add CI/CD to run tests on push/merge?
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language

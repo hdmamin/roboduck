@@ -14,7 +14,7 @@ class RoboDuckLogger(Logger):
     message in the original exception before logging.)
     """
 
-    def __init__(self, name, *args, roboduck_kwargs=None,
+    def __init__(self, name, *args, excepthook_kwargs=None, colordiff=False,
                  fmt='%(asctime)s [%(levelname)s]: %(message)s', stdout=True,
                  path='', fmode='a', **kwargs):
         """
@@ -24,9 +24,18 @@ class RoboDuckLogger(Logger):
             Same as base logger name arg.
         args: any
             Additional positional args for base logger.
-        roboduck_kwargs: dict or None
-            Kwargs that can be passed to our debugger class (RoboDuckDB)
-            constructor.
+        excepthook_kwargs: dict or None
+            Kwargs that can be passed to our excepthook function. Most of these
+            should generally be kwargs for your debugger class,
+            e.g. RoboDuckDb. These will be updated with the specified
+            `colordiff` as well - we want to set the default to False here
+             because we often want to log to a file, where this will probably
+             not render correctly.
+        colordiff: bool
+            Another kwarg to pass to our excepthook function. This is separate
+            from the others because we want to use a different default than the
+            function has since we often log to a file, in which case
+            colordiff=True may be undesirable.
         fmt: str
             Defines logging format. The default format produces output like
             this when an error is logged:
@@ -42,15 +51,18 @@ class RoboDuckLogger(Logger):
             Additional kwargs for the base logger.
         """
         super().__init__(name, *args, **kwargs)
-        self.roboduck_kwargs = roboduck_kwargs or {}
+        self.excepthook_kwargs = excepthook_kwargs or {}
         defaults = dict(auto=True, sleep=0, silent=True)
         for k, v in defaults.items():
-            if self.roboduck_kwargs.get(k, v) != v:
+            if self.excepthook_kwargs.get(k, v) != v:
                 warnings.warn(
-                    f'You tried to set {k}={self.roboduck_kwargs[k]} '
+                    f'You tried to set {k}={self.excepthook_kwargs[k]} '
                     f'but it must equal {v} in logger.'
                 )
-        self.roboduck_kwargs.update(defaults)
+        self.excepthook_kwargs.update(defaults)
+        self.excepthook_kwargs['colordiff'] = self.excepthook_kwargs.get(
+            'colordiff', colordiff
+        )
         self._add_handlers(fmt, stdout, path, fmode)
 
     def _add_handlers(self, fmt, stdout, path, fmode):
@@ -79,7 +91,7 @@ class RoboDuckLogger(Logger):
         if isinstance(msg, Exception) and sys.exc_info()[2]:
             from roboduck import errors
             errors.excepthook(type(msg), msg, msg.__traceback__,
-                              **self.roboduck_kwargs)
+                              **self.excepthook_kwargs)
             msg = sys.last_value
             errors.disable()
 

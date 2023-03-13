@@ -10,7 +10,7 @@ import time
 import warnings
 
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
-    truncated_repr, load_current_ipython_session
+    truncated_repr, load_current_ipython_session, colordiff_new_str
 
 
 ROBODUCK_GPT = GPTBackend(log_stdout=False)
@@ -27,6 +27,18 @@ class CodeCompletionCache:
     code cell.
     """
     last_completion = ''
+    last_explanation = ''
+    last_code = ''
+    last_new_code = ''
+    last_code_diff = ''
+
+    @classmethod
+    def reset(cls):
+        """Reset all class attributes like 'last_something' to empty strings.
+        """
+        for name in vars(CodeCompletionCache):
+            if name.startswith('last_'):
+                setattr(cls, name, '')
 
 
 class RoboDuckDB(Pdb):
@@ -292,9 +304,28 @@ class RoboDuckDB(Pdb):
             if not self.silent:
                 print(colored(answer, 'green'))
 
+        # TODO: may need to update this logic if switch to more of a json/yaml
+        # structured completion.
+        parts = answer.split("SOLUTION PART 2")
+        if len(parts) != 2 :
+            # Avoid updating cache because the completion doesn't match our
+            # expected explanation/code structure.
+            return
+        explanation, new_code = parts
+
         # When using the `duck` jupyter magic in "insert" mode, we reference
         # the CodeCompletionCache to populate the new code cell.
+        new_code = new_code.lstrip(":\n")
         CodeCompletionCache.last_completion = answer
+        CodeCompletionCache.last_explanation = explanation
+        # TODO: maybe check if code or full_code is more appropriate, either
+        # depening on self.full_context or by doing a quick str similarity
+        # to each.
+        old_code = prompt_kwargs['code']
+        CodeCompletionCache.last_code = old_code
+        CodeCompletionCache.last_code_diff = colordiff_new_str(old_code,
+                                                               new_code)
+        CodeCompletionCache.last_new_code = new_code
 
     def precmd(self, line):
         """We need to define this to make our errors module work. Our
