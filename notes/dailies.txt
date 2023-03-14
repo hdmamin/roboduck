@@ -583,13 +583,34 @@ X -consider where (and how) we might incorporate new colordiff func
 
 3/13/23 mon
 -----------
--continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+~ -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+    > Messed around a bit with basic chains, tuned my cs agent -> PR -> json pipeline a little bit, tried writing a chain that parses a hopefully json str response to a dict, toyed around with some Memory implementations (perhaps less necessary due to chatGPT, though still useful for long conversations).
+    > One learning: a Chain actually seems to be somewhat synonymous with the heavier weight Prompt class I envisioned for jabberwocky 3.0. E.g. you import an entirely different class to perform a Summarization task. Don't necessarily love that but I guess it helps define pre/postprocessing logic (but still...couldn't you do something like Task('summarize') and then have Task create a Summarize obj? Guess that's similar functionally but the UX feels a lot nicer to me. No forest of imports.).
+    > Looked a little bit at async stuff too but didn't try this yet. For some reason I'm kind of surprised they didn't go with threads - seems like using async has major repercussions bc IIRC async funcs must be called by other async funcs, and in my experience they can be quite finicky when working with CLIs (or maybe that's fire-specific).
 -add CI/CD to run tests on push/merge?
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
     -what is the desired experience?
     -what are some possible approaches to achieve this?
     -what is a realistic timeframe? Should I leave this for a future project?
 
+3/14/23 tues
+------------
+-continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+    -vector DB/doc search
+    -agent
+    -tracing
+    -youtube
+    -chatgpt (messed with this a little bit but not enough, only tried single turn)
+-consider: 
+    -how much time/effort to replace jabberwock with langchain in roboduck?
+    -are there any features I'd lose in langchain w/ default functionality? Would those be implementable via custom code?
+    -key question: whether jabberwocky or langchain, do I want to sacrifice live typing for cleaner structured yaml/json output?
+        -and do I want/need to change davinci to a chat model? RLHF probably improves quality quite a bit.
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
 
 Backlog
 -------
