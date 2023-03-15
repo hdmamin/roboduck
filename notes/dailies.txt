@@ -595,11 +595,12 @@ X -consider where (and how) we might incorporate new colordiff func
 
 3/14/23 tues
 ------------
--continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
-    -vector DB/doc search
+~ -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+    X -vector DB/doc search
+    X -youtube
+    > Spent >2 hours playing around with this, lots of fun. Doc search may be less necessary now given increased context length, but still a nice cost saving measure AND gives potential to scale up to more ambitious use cases, perhaps.
     -agent
     -tracing
-    -youtube
     -chatgpt (messed with this a little bit but not enough, only tried single turn)
 -consider: 
     -how much time/effort to replace jabberwock with langchain in roboduck?
@@ -611,6 +612,25 @@ X -consider where (and how) we might incorporate new colordiff func
     -what is the desired experience?
     -what are some possible approaches to achieve this?
     -what is a realistic timeframe? Should I leave this for a future project?
+
+3/15/23 wed
+-----------
+ -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+    -agent
+    -tracing
+    -index (is this that different from the doc search? Maybe a way to speed that up?)
+    -chatgpt (messed with this a little bit but not enough, only tried single turn)
+-consider: 
+    -how much time/effort to replace jabberwock with langchain in roboduck?
+    -are there any features I'd lose in langchain w/ default functionality? Would those be implementable via custom code?
+    -key question: whether jabberwocky or langchain, do I want to sacrifice live typing for cleaner structured yaml/json output?
+        -and do I want/need to change davinci to a chat model? RLHF probably improves quality quite a bit.
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
+
 
 Backlog
 -------
