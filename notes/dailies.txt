@@ -615,16 +615,38 @@ X -consider where (and how) we might incorporate new colordiff func
 
 3/15/23 wed
 -----------
- -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
-    -agent
-    -tracing
-    -index (is this that different from the doc search? Maybe a way to speed that up?)
-    -chatgpt (messed with this a little bit but not enough, only tried single turn)
+ X -continue langchain colab nb with eventual eye towards possibly replacing jabberwocky in roboduck
+    X -agent
+    ~ -tracing
+        > Read through demo nb, looks like in practice this just refers to running an agent (or perhaps a generic chain) with verbose=True. NB doesn't actually import anything from a tracing module.
+    ~ -index (is this that different from the doc search? Maybe a way to speed that up?)
+        > Seems like index is the higher level api wrapped around document stores/vector dbs. Read through demo nb but no need to run code rn.
+    X -chatgpt (messed with this a little bit but not enough, only tried single turn)
+        > Since I've used their chatmodel a bit at this point, I took the opportunity to lump this in with exploring their streaming capabilities and so far it's not super encouraging - not really built to yield values.
+        > Actually maybe it's fine, just a different interface. Should be able to implement whatever logic you want in the on_new_token cls, presumably - may just need to pass in more vars from global state.
+    > Think we've done enough langchain aimless exploration for now. Starting tomorrow we need to consider whether to rewrite roboduck with this or not and whether to use this in next part of project (or next project entirely). Currently leaning towards just keeping jabberwocky for existing roboduck stuff and then using next proj as an opportunity to transition to langchain. The main drawback is that jabberwocky doesn't currently support chat models and those would probably be a lot better than what I'm currently using. But I think we could get 99% of the way their with the 3.5 models and perhaps a hacky use of ConversationManager for the NL debugger. Errors/logging/magic prob don't really need any conversational state, really.
 -consider: 
     -how much time/effort to replace jabberwock with langchain in roboduck?
     -are there any features I'd lose in langchain w/ default functionality? Would those be implementable via custom code?
     -key question: whether jabberwocky or langchain, do I want to sacrifice live typing for cleaner structured yaml/json output?
         -and do I want/need to change davinci to a chat model? RLHF probably improves quality quite a bit.
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
+
+3/16/23 thurs
+-------------
+-consider: 
+    -langchain usage
+        -how much time/effort to replace jabberwock with langchain in roboduck?
+        -are there any features I'd lose in langchain w/ default functionality? Would those be implementable via custom code?
+        -confirm how easily jabberwocky works w/ 3.5 models (at least prob should update some name maps in EngineMap? And support for engine int values will probably start fading away)
+        -briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
+    -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+        -consider tradeoffs
+        -make decision
 -add CI/CD to run tests on push/merge?
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
     -what is the desired experience?
