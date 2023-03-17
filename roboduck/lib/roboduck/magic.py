@@ -1,4 +1,24 @@
-"""Jupyter magics."""
+"""GPT-powered rough equivalent of the `%debug` Jupyter magic. After an error
+occurs, just run %duck in the next cell to get an explanation. This is very
+similar to using the errors module, but is less intrusive - you only call it
+when you want an explanation, rather than having to type y/n after each error.
+We also provide `paste` mode, which attempts to paste a solution into a new
+code cell below, and `interactive` mode, which throws you into a conversational
+debugging session (technically closer to the original `%debug` magic
+functionality.
+
+Quickstart
+----------
+# cell 1
+from roboduck import magic
+
+# cell 2
+nums = [1, 2, 3]
+nums.add(4)
+
+# cell 3
+%duck
+"""
 
 from IPython import get_ipython
 from IPython.core.magic import line_magic, magics_class, Magics

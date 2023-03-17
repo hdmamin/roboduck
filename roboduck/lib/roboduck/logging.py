@@ -1,3 +1,13 @@
+"""Logger that attempts to diagnose and propose a solution for any errors it
+is asked to log. Unlike our debugger and errors modules, explanations are
+not streamed because the intended use case is not focused on live development.
+
+Quickstart
+----------
+from roboduck import logging
+
+logger = logging.getLogger()
+"""
 from logging import Logger, Formatter, StreamHandler, FileHandler
 from pathlib import Path
 import os

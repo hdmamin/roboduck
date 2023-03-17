@@ -1,3 +1,5 @@
+"""Utility functions used by other roboduck modules.
+"""
 from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib

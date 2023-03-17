@@ -4,7 +4,7 @@ This folder is for importable python libraries/packages.
 
 
 ---
-Start of auto-generated file data.<br/>Last updated: 2023-03-16 18:59:21
+Start of auto-generated file data.<br/>Last updated: 2023-03-16 19:23:15
 
 <table border="1" class="dataframe">
   <thead>
@@ -26,31 +26,31 @@ Start of auto-generated file data.<br/>Last updated: 2023-03-16 18:59:21
     </tr>
     <tr>
       <td>debugger.py</td>
-      <td>_</td>
-      <td>346</td>
-      <td>2023-03-12 20:58:57</td>
-      <td>15.24 kb</td>
+      <td>A conversational debugger and drop-in replacement for pdb. Python's default<br/>interactive debugging session is already a crude conversation with your<br/>program or interpreter, in a sense - this just lets your program communicate to<br/>you more effectively.<br/><br/>Quickstart<br/>----------<br/># Our replacement for python's `breakpoint`.<br/>from roboduck.debugger import duck<br/><br/># Broken version of bubble sort. Notice the duck() call on the second to last<br/># line.<br/>def bubble_sort(nums):<br/>    for i in range(len(nums)):<br/>        for j in range(len(nums)):<br/>            if nums[j] &gt; nums[j + 1]:<br/>                nums[j + 1], nums[j] = nums[j], nums[j + 1]<br/>                duck()<br/>    return nums</td>
+      <td>366</td>
+      <td>2023-03-16 19:00:25</td>
+      <td>15.91 kb</td>
     </tr>
     <tr>
       <td>errors.py</td>
-      <td>_</td>
-      <td>209</td>
-      <td>2023-03-12 20:58:57</td>
-      <td>8.85 kb</td>
+      <td>Errors that explain themselves! Or more precisely, that are explained to you<br/>by a gpt-esque model. Simply importing this module will change python's default<br/>behavior when it encounters an error.<br/><br/>Quickstart<br/>----------<br/># After this import, error explanations are automatically enabled.<br/>from roboduck import errors<br/><br/># Go back to python's regular behavior on errors.<br/>errors.disable()<br/><br/># You can use `enable` to change settings or manually re-enable gpt<br/># explanations. By default, we ask the user if they want an explanation after<br/># each error (y/n). Setting auto=True skips this step and always explains<br/># errors (not recommended in most cases, but it's an option).<br/>errors.enable(auto=True)</td>
+      <td>225</td>
+      <td>2023-03-16 19:00:25</td>
+      <td>9.31 kb</td>
     </tr>
     <tr>
       <td>logging.py</td>
-      <td>_</td>
-      <td>109</td>
-      <td>2023-03-12 20:58:57</td>
-      <td>4.51 kb</td>
+      <td>Logger that attempts to diagnose and propose a solution for any errors it<br/>is asked to log. Unlike our debugger and errors modules, explanations are<br/>not streamed because the intended use case is not focused on live development.<br/><br/>Quickstart<br/>----------<br/>from roboduck import logging<br/><br/>logger = logging.getLogger()</td>
+      <td>119</td>
+      <td>2023-03-16 19:00:25</td>
+      <td>4.83 kb</td>
     </tr>
     <tr>
       <td>magic.py</td>
-      <td>Jupyter magics.</td>
-      <td>99</td>
-      <td>2023-03-12 20:58:57</td>
-      <td>4.07 kb</td>
+      <td>GPT-powered rough equivalent of the `%debug` Jupyter magic. After an error<br/>occurs, just run %duck in the next cell to get an explanation. This is very<br/>similar to using the errors module, but is less intrusive - you only call it<br/>when you want an explanation, rather than having to type y/n after each error.<br/>We also provide `paste` mode, which attempts to paste a solution into a new<br/>code cell below, and `interactive` mode, which throws you into a conversational<br/>debugging session (technically closer to the original `%debug` magic<br/>functionality.<br/><br/>Quickstart<br/>----------<br/># cell 1<br/>from roboduck import magic<br/><br/># cell 2<br/>nums = [1, 2, 3]<br/>nums.add(4)<br/><br/># cell 3<br/>%duck</td>
+      <td>119</td>
+      <td>2023-03-16 19:00:25</td>
+      <td>4.71 kb</td>
     </tr>
     <tr>
       <td>shell.py</td>
@@ -61,10 +61,10 @@ Start of auto-generated file data.<br/>Last updated: 2023-03-16 18:59:21
     </tr>
     <tr>
       <td>utils.py</td>
-      <td>_</td>
-      <td>305</td>
+      <td>Utility functions used by other roboduck modules.</td>
+      <td>307</td>
       <td>2023-03-11 20:24:23</td>
-      <td>10.39 kb</td>
+      <td>10.45 kb</td>
     </tr>
   </tbody>
 </table>

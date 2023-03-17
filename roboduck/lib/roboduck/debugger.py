@@ -1,3 +1,23 @@
+"""A conversational debugger and drop-in replacement for pdb. Python's default
+interactive debugging session is already a crude conversation with your
+program or interpreter, in a sense - this just lets your program communicate to
+you more effectively.
+
+Quickstart
+----------
+# Our replacement for python's `breakpoint`.
+from roboduck.debugger import duck
+
+# Broken version of bubble sort. Notice the duck() call on the second to last
+# line.
+def bubble_sort(nums):
+    for i in range(len(nums)):
+        for j in range(len(nums)):
+            if nums[j] > nums[j + 1]:
+                nums[j + 1], nums[j] = nums[j], nums[j + 1]
+                duck()
+    return nums
+"""
 import cmd
 from functools import partial
 from htools import load, is_ipy_name

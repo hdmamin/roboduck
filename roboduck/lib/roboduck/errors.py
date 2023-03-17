@@ -1,6 +1,22 @@
-# Prototyped method to auto ask basic question without requiring user to type
-# it. Elegant but probably not the most functional - we don't actually pass the
-# stack trace or error to gpt, so it's just inferring what the issue is.
+"""Errors that explain themselves! Or more precisely, that are explained to you
+by a gpt-esque model. Simply importing this module will change python's default
+behavior when it encounters an error.
+
+Quickstart
+----------
+# After this import, error explanations are automatically enabled.
+from roboduck import errors
+
+# Go back to python's regular behavior on errors.
+errors.disable()
+
+# You can use `enable` to change settings or manually re-enable gpt
+# explanations. By default, we ask the user if they want an explanation after
+# each error (y/n). Setting auto=True skips this step and always explains
+# errors (not recommended in most cases, but it's an option).
+errors.enable(auto=True)
+
+"""
 from functools import partial
 from IPython import get_ipython
 from roboduck.debugger import DuckDB, CodeCompletionCache
