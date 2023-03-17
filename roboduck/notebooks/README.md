@@ -4,7 +4,7 @@ Jupyter notebooks for data exploration and experimentation.
 
 
 ---
-Start of auto-generated file data.<br/>Last updated: 2023-03-16 19:23:15
+Start of auto-generated file data.<br/>Last updated: 2023-03-16 19:32:17
 
 <table border="1" class="dataframe">
   <thead>
@@ -44,11 +44,11 @@ Start of auto-generated file data.<br/>Last updated: 2023-03-16 19:23:15
     </tr>
     <tr>
       <td>nb02-scratch-langchain-intro.ipynb</td>
-      <td>_</td>
+      <td>Toying around with langchain. Getting familiar with it as a possible replacement for my custom built jabberwocky lib.</td>
       <td>123</td>
       <td>12</td>
       <td>2023-03-16 19:00:25</td>
-      <td>241.08 kb</td>
+      <td>224.24 kb</td>
     </tr>
   </tbody>
 </table>
