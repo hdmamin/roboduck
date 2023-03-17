@@ -20,7 +20,7 @@ PROMPT_MANAGER = PromptManager(['debug', 'debug_full', 'debug_stack_trace'],
 
 
 class CodeCompletionCache:
-    """Just stores the last completion from RoboDuckDB in a way that our
+    """Just stores the last completion from DuckDB in a way that our
     `duck` jupyter magic can access (without relying on global variable, though
     not sure if this is meaningfully different). The magic only needs to access
     it in insert mode (-i flag) to insert the fixed code snippet into a new
@@ -41,7 +41,7 @@ class CodeCompletionCache:
                 setattr(cls, name, '')
 
 
-class RoboDuckDB(Pdb):
+class DuckDB(Pdb):
     """Conversational debugger powered by gpt models (currently codex, possibly
     eventually chatGPT). Once you're in a debugging session, any user command
     containing a question mark will be interpreted as a question for gpt.
@@ -342,5 +342,5 @@ class RoboDuckDB(Pdb):
 
 def duck(backend='openai', model=None, **kwargs):
     # Equivalent of native breakpoint().
-    RoboDuckDB(backend=backend, model=model, **kwargs)\
+    DuckDB(backend=backend, model=model, **kwargs)\
         .set_trace(sys._getframe().f_back)

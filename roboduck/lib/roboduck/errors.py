@@ -3,7 +3,7 @@
 # stack trace or error to gpt, so it's just inferring what the issue is.
 from functools import partial
 from IPython import get_ipython
-from roboduck.debugger import RoboDuckDB, CodeCompletionCache
+from roboduck.debugger import DuckDB, CodeCompletionCache
 import sys
 from traceback import TracebackException
 import warnings
@@ -14,7 +14,7 @@ default_excepthook = sys.excepthook
 ipy = get_ipython()
 
 
-def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
+def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
                 question='What caused this error?', task='debug_stack_trace',
                 colordiff=True, **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
@@ -40,7 +40,7 @@ def post_mortem(t=None, Pdb=RoboDuckDB, trace='', dev_mode=False,
         leave this as the default. If you want to do more custom/in-depth
         debugging, it's better to use roboduck.debugger.duck() (our
         breakpoint() replacement).
-        NOTE: this gets ignored by our RoboDuckDB class if the specified task
+        NOTE: this gets ignored by our DuckDB class if the specified task
         does not accept a question field. debug_stack_trace does not, so this
         is ignored by default.
     task: str
@@ -113,7 +113,7 @@ def print_exception(etype, value, tb, limit=None, file=None, chain=True):
 
 
 def excepthook(etype, val, tb, task='debug_stack_trace',
-               auto=False, cls=RoboDuckDB, **kwargs):
+               auto=False, cls=DuckDB, **kwargs):
     """Replaces sys.excepthook when module is imported. When an error is
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike

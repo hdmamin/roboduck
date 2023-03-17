@@ -17,4 +17,4 @@ pypi: lib
 		cd lib && twine upload --repository pypi dist/*
 
 readmes:
-	htools update_readmes "['bin', 'analysis', 'lib/roboduck']"
+	htools update_readmes "['bin', 'notebooks', 'lib/roboduck']"

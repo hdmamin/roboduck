@@ -638,6 +638,8 @@ X -consider where (and how) we might incorporate new colordiff func
 
 3/16/23 thurs
 -------------
+X -add getLogger() func to logging module to match builtin logging interface
+X -rename RoboDuckDB to DuckDB in all modules
 -cp langchain colab to scratch nbs in repo
     -rm ALL api keys
     -download and move to repo

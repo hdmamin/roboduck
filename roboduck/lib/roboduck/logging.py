@@ -5,9 +5,7 @@ import sys
 import warnings
 
 
-# TODO: looks like sys.last_value isn't getting updated so the error that gets
-# debugged is wrong.
-class RoboDuckLogger(Logger):
+class DuckLogger(Logger):
     """Replacement for logging.Logger class that uses our errors module to
     log natural language explanations and fixes along with the original error.
     (More specifically, we just wait for the errors module to update the
@@ -97,3 +95,15 @@ class RoboDuckLogger(Logger):
 
         return super()._log(level, msg, args, exc_info=exc_info,
                             extra=extra, stack_info=stack_info)
+
+
+def getLogger(name=None, **kwargs):
+    """Mimics interface of builtin logging module. I.e. we can do:
+
+    ```
+    from roboduck import logging
+
+    logger = logging.getLogger()
+    ```
+    """
+    return DuckLogger(name=name, **kwargs)

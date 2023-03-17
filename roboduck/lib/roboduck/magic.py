@@ -7,7 +7,7 @@ from IPython.core.magic_arguments import argument, magic_arguments, \
 import sys
 import warnings
 
-from roboduck.debugger import RoboDuckDB, CodeCompletionCache
+from roboduck.debugger import DuckDB, CodeCompletionCache
 
 
 @magics_class
@@ -57,7 +57,7 @@ class DebugMagic(Magics):
         if args.i:
             cls = self.shell.debugger_cls
             try:
-                self.shell.debugger_cls = RoboDuckDB
+                self.shell.debugger_cls = DuckDB
             except AttributeError:
                 print(
                     'Roboduck is unavailable in your current ipython session. '
@@ -77,7 +77,7 @@ class DebugMagic(Magics):
                     '["from roboduck import magic"]'
                 )
                 return
-            self.shell.InteractiveTB.debugger_cls = RoboDuckDB
+            self.shell.InteractiveTB.debugger_cls = DuckDB
             self.shell.debugger(force=True)
             self.shell.debugger_cls = self.shell.InteractiveTB.debugger_cls = cls
         else:
