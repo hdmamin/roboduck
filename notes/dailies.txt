@@ -640,9 +640,29 @@ X -consider where (and how) we might incorporate new colordiff func
 -------------
 X -add getLogger() func to logging module to match builtin logging interface
 X -rename RoboDuckDB to DuckDB in all modules
--cp langchain colab to scratch nbs in repo
-    -rm ALL api keys
-    -download and move to repo
+X -document lib modules 
+X -add missing notebook summaries
+X -make readmes
+X -cp langchain colab to scratch nbs in repo
+    X -rm ALL api keys
+    X -download and move to repo
+-consider: 
+    -langchain usage
+        -how much time/effort to replace jabberwock with langchain in roboduck?
+        -are there any features I'd lose in langchain w/ default functionality? Would those be implementable via custom code?
+        -confirm how easily jabberwocky works w/ 3.5 models (at least prob should update some name maps in EngineMap? And support for engine int values will probably start fading away)
+        -briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
+    -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+        -consider tradeoffs
+        -make decision
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
+
+3/17/23 fri
+-----------
 -consider: 
     -langchain usage
         -how much time/effort to replace jabberwock with langchain in roboduck?
