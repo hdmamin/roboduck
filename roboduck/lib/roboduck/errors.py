@@ -207,8 +207,6 @@ def disable():
                                   if x != Exception)
 
 
-# stack_trace = partial(print_exception, sys.last_type, sys.last_value,
-#                       sys.last_traceback)
 def stack_trace():
     # Lets us recover stack trace as string outside of the functions defined
     # above, which generally only execute automatically when exceptions are

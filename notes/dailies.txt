@@ -664,14 +664,38 @@ X -cp langchain colab to scratch nbs in repo
 3/17/23 fri
 -----------
 -consider: 
-    -langchain usage
-        -how much time/effort to replace jabberwock with langchain in roboduck?
+    X -langchain usage
+        X -how much time/effort to replace jabberwock with langchain in roboduck?
+            > Changes would at least be pretty well contained to the debugger module (the debugger class, in fact). Not huge lift I suppose. The bigger issue may be that langchain seems to define jabberwocky prompts as classes that need to be imported and perhaps instantiated with different kwargs (?). Probably could recover my interface if I really wanted and just do something like getattr(langchain.prompts, name) or whatever their current interface is. I suppose I'd probably need to implement some custom prompts there but that's not a huge lift.
+            > Implementing streaming their way might be a little bit annoying - maybe it would be fine but I could imagine having to implement a different callback for each module that uses a prompt (maybe?). Again, probably not that bad given how self contained the debugger module/cls are.
+            > Estimate: might add on the order of 1 month? With a pretty wide prediction interval around that, say 1-12 weeks.
+            > Buuuut if I don't do this I may need to update jabberwocky to work w/ chatgpt, gpt4, etc. That might take a similar amount of time if not longer.
         -are there any features I'd lose in langchain w/ default functionality? Would those be implementable via custom code?
-        -confirm how easily jabberwocky works w/ 3.5 models (at least prob should update some name maps in EngineMap? And support for engine int values will probably start fading away)
+            > Pretty sure but not certain that streaming would still work. Pretty sure but not certain that my interface of passing prompt name to debugger class or calling functions would work (though in practice the user should probably never do that).
+        X -confirm how easily jabberwocky works w/ recent openai updates
+			X -3.5 models
+			X -4 models
+			X -chat models
+			> Details in nb. Not supported but not too crazy to add that.
         -briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
     -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
         -consider tradeoffs
         -make decision
+-confirm if I remove duck() call from source code
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
+
+3/18/23 sat
+------------
+-confirm whether I currently remove duck() call from source code in debugger cls source code loading
+-consider: 
+	-briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
+-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+	-briefly try out new debugging prompt in langchain. How to do this, how much work?
+	-make decision on first approach to work on: expanding jabberwocky functionality or replacing jabberwocky usage w/ langchain in roboduck
 -add CI/CD to run tests on push/merge?
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
     -what is the desired experience?
