@@ -690,7 +690,10 @@ X -cp langchain colab to scratch nbs in repo
 
 3/18/23 sat
 ------------
--confirm whether I currently remove duck() call from source code in debugger cls source code loading
+X -confirm whether I currently remove duck() call from source code in debugger cls source code loading
+	> Looked through code briefly and didn't see it. Confirmed by testing dev mode in ipython shell, probably more reliable/comprehensive check than reading code. Uncovered new issue that updated openai api breaks jabberwocky, though.
+X -if necessary, remove duck() call from source code (full and/or partial, as necessary)
+	> Confirmed works in ipython.
 -consider: 
 	-briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
 -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
@@ -702,6 +705,19 @@ X -cp langchain colab to scratch nbs in repo
     -what are some possible approaches to achieve this?
     -what is a realistic timeframe? Should I leave this for a future project?
 
+3/19/23 sun
+-----------
+-fix jabberwocky errors caused by new openai version?
+-consider: 
+	-briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
+-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+	-briefly try out new debugging prompt in langchain. How to do this, how much work?
+	-make decision on first approach to work on: expanding jabberwocky functionality or replacing jabberwocky usage w/ langchain in roboduck
+-add CI/CD to run tests on push/merge?
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
 
 Backlog
 -------

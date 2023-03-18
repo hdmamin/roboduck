@@ -149,10 +149,12 @@ class DuckDB(Pdb):
         res = {}
 
         # Get current code snippet.
-        # TODO: fails when running code from cmd line like:
+        # Fails when running code from cmd line like:
         # 'python -c "print(x)"'.
+        # Haven't been able to find a way around this yet.
         try:
-            res['code'] = inspect.getsource(self.curframe)
+            code_snippet = inspect.getsource(self.curframe)
+            res['code'] = self._remove_debugger_call(code_snippet)
         except OSError as err:
             self.error(err)
         res['local_vars'] = type_annotated_dict_str(
@@ -170,7 +172,7 @@ class DuckDB(Pdb):
                 # If we're in ipython, ipynbname.path() throws a
                 # FileNotFoundError.
                 try:
-                    res['full_code'] = load_ipynb(ipynbname.path())
+                    full_code = load_ipynb(ipynbname.path())
                     res['file_type'] = 'jupyter notebook'
                 except FileNotFoundError:
                     # TODO: maybe ipython session needs to use a modified
@@ -179,11 +181,12 @@ class DuckDB(Pdb):
                     # override res['code'] with last executed cell. Otherwise
                     # I think getsource(curframe) may load a lot more code than
                     # we usually want in ipython session.
-                    res['full_code'] = load_current_ipython_session()
+                    full_code = load_current_ipython_session()
                     res['file_type'] = 'ipython session'
             else:
-                res['full_code'] = load(file, verbose=False)
+                full_code = load(file, verbose=False)
                 res['file_type'] = 'python script'
+            res['full_code'] = self._remove_debugger_call(full_code)
             used_tokens = set(res['full_code'].split())
         else:
             # This is intentionally different from the used_tokens line in the
@@ -199,6 +202,15 @@ class DuckDB(Pdb):
             self.repr_func
         )
         return res
+
+    @staticmethod
+    def _remove_debugger_call(code_str):
+        """Remove `duck` function call (our equivalent of `breakpoint` from
+        source code string. Including it introduces a slight risk that gpt
+        will fixate on this mistery function as a potential bug cause.
+        """
+        return '\n'.join(line for line in code_str.splitlines()
+                         if not line.strip().startswith('duck('))
 
     def onecmd(self, line):
         """Base class describes this as follows:
