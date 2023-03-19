@@ -694,6 +694,8 @@ X -confirm whether I currently remove duck() call from source code in debugger c
 	> Looked through code briefly and didn't see it. Confirmed by testing dev mode in ipython shell, probably more reliable/comprehensive check than reading code. Uncovered new issue that updated openai api breaks jabberwocky, though.
 X -if necessary, remove duck() call from source code (full and/or partial, as necessary)
 	> Confirmed works in ipython.
+X -look into newly discovered openai error on query
+	> Seems to be resolved by restarting ipython. Guessing that was a long running session and autoreload didn't work, just like in jupyter. I imported jabberwocky afterwards in the same new session (after importing openai and confirming that query worked) and querying with it worked so I think we're good.
 -consider: 
 	-briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
 -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
@@ -707,7 +709,6 @@ X -if necessary, remove duck() call from source code (full and/or partial, as ne
 
 3/19/23 sun
 -----------
--fix jabberwocky errors caused by new openai version?
 -consider: 
 	-briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
 -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
