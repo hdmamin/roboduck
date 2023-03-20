@@ -709,27 +709,48 @@ X -look into newly discovered openai error on query
 
 3/19/23 sun
 -----------
--consider: 
-	-briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
--do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+X -briefly try out my idea of using ConversationManager with a non-wiki bio, but rather an AI tutor prompt
+	> Does seem promising. Some kinks to work out around when to pass in code context vs. just user question, when to use conv manager vs prompt manager vs actual chat model, also need to support new 3.5 and 4 model names. But I like the experience of being able to question gpt about its solution, which requires us to maintain some state.
+~ -consider: 
+	-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
 	-briefly try out new debugging prompt in langchain. How to do this, how much work?
-	-make decision on first approach to work on: expanding jabberwocky functionality or replacing jabberwocky usage w/ langchain in roboduck
+	X -make decision on first approach to work on: expanding jabberwocky functionality or replacing jabberwocky usage w/ langchain in roboduck
+			> Start w/ updating jabberwocky, I guess. Would be nice to have that up to date for alexa too, potentially.
+~ -jabberwocky updates
+	X -support 3.5 engine names
+	X -support 4.0 engine names
+	>>> Tentatively added support but realized those new models don't seem to support the completions endpoint, only chat. Could get a little hairy auto-delegating to them.
+	-support chatcompletion usage
+		-via convmanager?
+		-or via new cls?
+		-or leave out of jabberwocky but use native openai implementation in roboduck?
+		-rename gpt3 refs to gpt?
 -add CI/CD to run tests on push/merge?
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
     -what is the desired experience?
     -what are some possible approaches to achieve this?
     -what is a realistic timeframe? Should I leave this for a future project?
 
+3/20/23 mon
+-----------
+ -consider: 
+	-how to support chatcompletion usage in jabberwocky (recall 3.5/4/turbo models do not support completions endpoint after all, just chat)
+		-via convmanager, delegate to another helper method when recognizing a chat-like model name in kwargs?
+		-or via new chatmanager cls?
+		-or leave out of jabberwocky but use native openai implementation in roboduck?
+		-or leave jabberwocky for older versions of openai and bite the bullet and shift over to langchain now
+	-rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
+	-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+	-briefly try out new debugging prompt in langchain. How to do this, how much work?
+-add CI/CD to run tests on push/merge?
+
+
 Backlog
 -------
--hard:
-    -jabberwocky changes to support chatgpt
-        -think openai lib version needs to be updated, make sure things stil work afterwards
-        -review docs on Chat completion vs completions. How much does jabberwocky api need to be updated? Maybe could largely revert to just openai api to minimize deps?
-        -update enginemap engines if necessary
-        -update GPTBackend.query if necessary
-        -try out chat endpoint. Interface is a little different (e.g. takes list of messages?)
-        -try out new debug prompt (data/scratch/) from api instead of UI
+-think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
+    -what is the desired experience?
+    -what are some possible approaches to achieve this?
+    -what is a realistic timeframe? Should I leave this for a future project?
 -passive:
     -finish distill post on augmenting human intellect
     -watch bret victor Future of Programming vid
