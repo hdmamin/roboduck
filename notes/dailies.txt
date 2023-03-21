@@ -746,6 +746,19 @@ X -add CI/CD to run tests on push/merge?
 	> Added yml file. Not sure yet why not running.
 	> $default-branch variable didn't work. Needed to hardcode to 'main'.
 	> Build passes in <2 minutes. Will get slower as (if?) I add tests. But I'll probably also pare down requirements which should help speed things up a little. Also could consider pushing to dev branch and only merging periodically since it kind of annoys me that it runs tests on every single push atm.
+X -flatten dir structure
+
+3/21/23 tues
+------------
+ -consider: 
+	-how to support chatcompletion usage in jabberwocky (recall 3.5/4/turbo models do not support completions endpoint after all, just chat)
+		-via convmanager, delegate to another helper method when recognizing a chat-like model name in kwargs?
+		-or via new chatmanager cls?
+		-or leave out of jabberwocky but use native openai implementation in roboduck?
+		-or leave jabberwocky for older versions of openai and bite the bullet and shift over to langchain now
+	-rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
+	-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
+	-briefly try out new debugging prompt in langchain. How to do this, how much work?
 
 
 Backlog
