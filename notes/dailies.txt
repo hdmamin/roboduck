@@ -743,6 +743,7 @@ X -briefly try out my idea of using ConversationManager with a non-wiki bio, but
 	-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
 	-briefly try out new debugging prompt in langchain. How to do this, how much work?
 -add CI/CD to run tests on push/merge?
+	> Added yml file. Not sure yet why not running.
 
 
 Backlog
