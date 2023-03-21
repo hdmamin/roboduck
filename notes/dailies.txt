@@ -756,7 +756,6 @@ Backlog
     -watch bret victor Future of Programming vid
     -read Engelbart paper on augmenting human intellect
 -investigate: was it intentional that PromptManager supports passing in GPT obj but ConversationManager doesn't? (I think initially neither did but had an immediate use case for PromptManager so changed that one, but haven't had a need yet for ConversationManager so didn't prioritize it. Probably good to do eventually though.)
--[WAIT: maybe unnecessary w/ chatgpt/codex 3 api] prototype some "prompt by proxy" prompts (e.g. "conversation with a powerful AI embedded in the interpreter" or "Donald Knuth")
 
 Easy Backlog
 ------------
