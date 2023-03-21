@@ -742,8 +742,10 @@ X -briefly try out my idea of using ConversationManager with a non-wiki bio, but
 	-rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
 	-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
 	-briefly try out new debugging prompt in langchain. How to do this, how much work?
--add CI/CD to run tests on push/merge?
+X -add CI/CD to run tests on push/merge?
 	> Added yml file. Not sure yet why not running.
+	> $default-branch variable didn't work. Needed to hardcode to 'main'.
+	> Build passes in <2 minutes. Will get slower as (if?) I add tests. But I'll probably also pare down requirements which should help speed things up a little. Also could consider pushing to dev branch and only merging periodically since it kind of annoys me that it runs tests on every single push atm.
 
 
 Backlog
