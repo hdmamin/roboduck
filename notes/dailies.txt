@@ -767,7 +767,8 @@ X -flatten dir structure
     > Not to bad to get the basic mechanics working, but haven't really gotten into refactoring or making the devX nice yet. Prob should to assume we'll just always use chat models at this point - from a tiny sample, turbo's outputs do seem like they might be a bit easier to parse reliably than davinci's.
 -check relative prices of new models
     > turbo is 0.2 cents per 1k tokens, equivalent to curie or 1/10 of davinci or 5x ada. Not too bad. Gpt4 is pretty expensive though, 3 cents per 1k prompt and 6 cents per 1k completions so ~20+ x turbo or 2x davinci. Takeaway: basically never makes sense to use davinci?
-> Note: have to use py38 env now to get new-ish version of langchain.
+X -upgrade env to use py 3.8
+    > Have to use py38 conda env now to get new-ish version of langchain. Also updated github workflow to py 3.8.
 
 3/22/23 wed
 -----------
