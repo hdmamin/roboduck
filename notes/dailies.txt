@@ -750,19 +750,41 @@ X -flatten dir structure
 
 3/21/23 tues
 ------------
- -consider: 
-	-how to support chatcompletion usage in jabberwocky (recall 3.5/4/turbo models do not support completions endpoint after all, just chat)
-		-via convmanager, delegate to another helper method when recognizing a chat-like model name in kwargs?
-		-or via new chatmanager cls?
-		-or leave out of jabberwocky but use native openai implementation in roboduck?
-		-or leave jabberwocky for older versions of openai and bite the bullet and shift over to langchain now
+ ~ -consider: 
+	X -how to support chatcompletion usage in jabberwocky (recall 3.5/4/turbo models do not support completions endpoint after all, just chat)
+		! -via convmanager, delegate to another helper method when recognizing a chat-like model name in kwargs?
+            > Bc of how we select query_func in GPT.query, that doesn't quite seem like the right UX. GPT._get_query_func would need to select different func based on model name (probably), OR make query_gpt3 func perform the delegation to chat_model. Would need to repurpose prompt param for `messages` which would be a little weird and not sure if all params carry over. Thinking it might be cleanest to just leave jabberwocky as is supporting pre-chat models and move to langchain from now on? (Though really, most if not all queries here COULD be done w/ non-chat models. But the more powerful models seem to be only available as chat endpoint so it's probably still very much worth using them even if the stateful aspect is relatively unimportant.)
+		! -or via new chatmanager cls?
+            > I guess we could do this but I think at this point it would be easier to just ignore existing jabberwocky stuff and wrap openai ChatCompletion itself, in which case we might as well not even put it in jabberwocky.
+		! -or leave out of jabberwocky but use native openai implementation in roboduck?
+            > Possible, but using roboduck as a reason to get more familiar with langchain isn't such a bad idea.
+		X -or leave jabberwocky for older versions of openai and bite the bullet and shift over to langchain now
+            > Let's at least give a custom prompt/chain a quick try.
+        > Leaning no chat support in jabberwocky. Langchain or something similar will probably be big, no use resisting.
 	-rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
 	-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
-	-briefly try out new debugging prompt in langchain. How to do this, how much work?
+~ -briefly try out new debugging prompt in langchain. How to do this, how much work?
+    > Not to bad to get the basic mechanics working, but haven't really gotten into refactoring or making the devX nice yet. Prob should to assume we'll just always use chat models at this point - from a tiny sample, turbo's outputs do seem like they might be a bit easier to parse reliably than davinci's.
+-check relative prices of new models
+    > turbo is 0.2 cents per 1k tokens, equivalent to curie or 1/10 of davinci or 5x ada. Not too bad. Gpt4 is pretty expensive though, 3 cents per 1k prompt and 6 cents per 1k completions so ~20+ x turbo or 2x davinci. Takeaway: basically never makes sense to use davinci?
+> Note: have to use py38 env now to get new-ish version of langchain.
+
+3/22/23 wed
+-----------
+-revert jabberwocky to prev commit (before enginemap changes and version bump). Rules still seem to apply to completion endpoint.
+-continue nb04 langchain
+    -figure out a good way to define multiple chat prompt variants (e.g. py file, yaml file, what fields are needed, etc. Take inspo from langchain native method since they provide some out of the box)
+    -Q: what is difference between what I do in nb04 manually appending to messages list vs what I did in nb02 with ChatHistory obj? Is that basically doing the same thing under the hood?
+    -where to provide stop words? And would it be useful/effective to ask gpt to provide specific stop word when done to help it stop when appropriate?
+    -Consider breaking down into chain? (Might be easier than trying to get it to generate valid YAML/JSON, also easier to parse. Could even do this concurrently, though prob better to not do that so code solution can see explanation first.)
+        -EXPLANATION -> CODE
+        -fancier: THOUGHT PROCESS -> EXPLANATION -> CODE
 
 
 Backlog
 -------
+-maybe rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
+-do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language
     -what is the desired experience?
     -what are some possible approaches to achieve this?
