@@ -772,7 +772,9 @@ X -upgrade env to use py 3.8
 
 3/22/23 wed
 -----------
--revert jabberwocky to prev commit (before enginemap changes and version bump). Rules still seem to apply to completion endpoint.
+X -revert jabberwocky to prev commit (before enginemap changes and version bump). Rules still seem to apply to completion endpoint.
+-explore possibility of 2 diff types of user messages - 1 with full context, 1 with just question
+    > Feel like if we're in debug mode and user asks a followup question, we don't need to waste tokens providing so much info again. Maybe can check if we're in the same frame as before to infer this.
 -continue nb04 langchain
     -figure out a good way to define multiple chat prompt variants (e.g. py file, yaml file, what fields are needed, etc. Take inspo from langchain native method since they provide some out of the box)
     -Q: what is difference between what I do in nb04 manually appending to messages list vs what I did in nb02 with ChatHistory obj? Is that basically doing the same thing under the hood?
