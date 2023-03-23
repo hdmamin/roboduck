@@ -773,8 +773,13 @@ X -upgrade env to use py 3.8
 3/22/23 wed
 -----------
 X -revert jabberwocky to prev commit (before enginemap changes and version bump). Rules still seem to apply to completion endpoint.
--explore possibility of 2 diff types of user messages - 1 with full context, 1 with just question
+~ -explore possibility of 2 diff types of user messages - 1 with full context, 1 with just question
     > Feel like if we're in debug mode and user asks a followup question, we don't need to waste tokens providing so much info again. Maybe can check if we're in the same frame as before to infer this.
+    > Implemented part of this, the other part is that I need to figure out how user should specify the two types of messages or if they want to use 2 types. Ideally we'd probably have 1 file defining each prompt, same as I do in jabberwocky, but allow user to specify multiple types of human messages.
+    > Whoops, actually not quite right. Frame only changes when a function/method is called. Hash kwargs instead. This at least makes the next_line field handling a little easier since I'm back to calling get_prompt_kwargs on every question.
+~ -explore possibility of adding "prev_line" or "next_line" field to prompt kwargs
+    > Finally managed to extract this, though logic might be a little fragile (?). Not the most important field but might be nice. But atm it's inside get_prompt_kwargs which doesn't execute if prev_frame_id is unchanged. Maybe that's ok though, since if any state changes I believe the frame will too?
+    > Update: now using hash(kwargs) instead of id(frame), so above concern is not an issue.
 -continue nb04 langchain
     -figure out a good way to define multiple chat prompt variants (e.g. py file, yaml file, what fields are needed, etc. Take inspo from langchain native method since they provide some out of the box)
     -Q: what is difference between what I do in nb04 manually appending to messages list vs what I did in nb02 with ChatHistory obj? Is that basically doing the same thing under the hood?
@@ -783,9 +788,22 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         -EXPLANATION -> CODE
         -fancier: THOUGHT PROCESS -> EXPLANATION -> CODE
 
+3/23/23 thurs
+-------------
+-continue nb04 langchain
+    -figure out a good way to define multiple chat prompt variants (e.g. py file, yaml file, what fields are needed, etc. Take inspo from langchain native method since they provide some out of the box)
+-[BLOCKED: need to figure out how to define chat prompts in yaml/py/etc file first] debugger cls: change to expect chat prompt which (optionally?) has 2 diff types of user messages - 1 with full context, 1 with just question
+    -consider how to let user specify these two types
+    -implement (prob need to update how field_names are parsed in init and how they're used in ask_language_model)
+    -Q: what is difference between what I do in nb04 manually appending to messages list vs what I did in nb02 with ChatHistory obj? Is that basically doing the same thing under the hood?
+    -where to provide stop words? And would it be useful/effective to ask gpt to provide specific stop word when done to help it stop when appropriate?
+    -Consider breaking down into chain? (Might be easier than trying to get it to generate valid YAML/JSON, also easier to parse. Could even do this concurrently, though prob better to not do that so code solution can see explanation first.)
+        -EXPLANATION -> CODE
+        -fancier: THOUGHT PROCESS -> EXPLANATION -> CODE
 
 Backlog
 -------
+-update prompts to include "next_line_to_execute" or something like that. (Currently pop that kwarg in ask_language_model)
 -maybe rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
 -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
 -think about what I want to achieve with auto bug-fixer POC and/or LLM native programming language

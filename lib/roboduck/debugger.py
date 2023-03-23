@@ -133,6 +133,31 @@ class DuckDB(Pdb):
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
         self.silent = silent
         self.sleep = sleep
+        # This gets updated every time the user asks a question.
+        self.prev_kwargs_hash = None
+
+    def _get_next_line(self, code_snippet):
+        """Retrieve next line of code that will be executed. Must call this
+        before we remove the duck() call.
+
+        Parameters
+        ----------
+        code_snippet: str
+        """
+        lines = code_snippet.splitlines()
+        max_idx = len(lines) - 1
+
+        # Adjust f_lineno because it's 1 - indexed by default.
+        # Set default next_line in case we don't find any valid line.
+        line_no = self.curframe.f_lineno - 1
+        next_line = ''
+        while line_no <= max_idx:
+            if lines[line_no].strip().startswith('duck('):
+                line_no += 1
+            else:
+                next_line = lines[line_no]
+                break
+        return next_line
 
     def _get_prompt_kwargs(self):
         """Construct a dictionary describing the current state of our code
@@ -153,7 +178,10 @@ class DuckDB(Pdb):
         # 'python -c "print(x)"'.
         # Haven't been able to find a way around this yet.
         try:
+            # Find next line before removing duck call to avoid messing up our
+            # index.
             code_snippet = inspect.getsource(self.curframe)
+            res['next_line'] = self._get_next_line(code_snippet)
             res['code'] = self._remove_debugger_call(code_snippet)
         except OSError as err:
             self.error(err)
@@ -264,7 +292,21 @@ class DuckDB(Pdb):
             call. User activates this mode by prefixing their question with
             '[dev]'.
         """
+        # Don't provide long context-laden prompt if nothing has changed since
+        # the user's last question. This is often a followup/clarifying
+        # question.
         prompt_kwargs = self._get_prompt_kwargs()
+        kwargs_hash = hash(str(prompt_kwargs))
+        if kwargs_hash == self.prev_kwargs_hash:
+            prompt_kwargs.clear()
+
+        # TODO update prompts to use next_line? Currently need to pop bc they
+        # don't include that field.
+        print('next line:', prompt_kwargs.pop('next_line', None))
+
+        # TODO: if moving to langchain and/or multiple user message types
+        # (contextful vs contextless), will likely need to change logic around
+        # both setting and using self.field_names.
         if 'question' in self.field_names:
             prompt_kwargs['question'] = question
         expect_stack_trace = 'stack_trace' in self.field_names
@@ -351,13 +393,14 @@ class DuckDB(Pdb):
         CodeCompletionCache.last_completion = answer
         CodeCompletionCache.last_explanation = explanation
         # TODO: maybe check if code or full_code is more appropriate, either
-        # depening on self.full_context or by doing a quick str similarity
+        # depending on self.full_context or by doing a quick str similarity
         # to each.
         old_code = prompt_kwargs['code']
         CodeCompletionCache.last_code = old_code
         CodeCompletionCache.last_code_diff = colordiff_new_str(old_code,
                                                                new_code)
         CodeCompletionCache.last_new_code = new_code
+        self.prev_kwargs_hash = kwargs_hash
 
     def precmd(self, line):
         """We need to define this to make our errors module work. Our
