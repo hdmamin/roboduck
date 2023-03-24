@@ -790,8 +790,10 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 3/23/23 thurs
 -------------
--continue nb04 langchain
-    -figure out a good way to define multiple chat prompt variants (e.g. py file, yaml file, what fields are needed, etc. Take inspo from langchain native method since they provide some out of the box)
+~ -continue nb04 langchain
+    ~ -figure out a good way to define multiple chat prompt variants (e.g. py file, yaml file, what fields are needed, etc. Take inspo from langchain native method since they provide some out of the box)
+        > Trying out py file, worried yaml would get messy with multiple user message templates needing to be indented. Not exactly loving python solution either so far but let's give it a shot for a bit longer.
+        > Also started implementing wrapper cls. Maybe langchain already has something like this but I couldn't find it. Prob could gpt doc search the source code but /shrug. Still some stuff left to implement and UX could use a couple tweaks, but it's getting there.
 -[BLOCKED: need to figure out how to define chat prompts in yaml/py/etc file first] debugger cls: change to expect chat prompt which (optionally?) has 2 diff types of user messages - 1 with full context, 1 with just question
     -consider how to let user specify these two types
     -implement (prob need to update how field_names are parsed in init and how they're used in ask_language_model)
@@ -801,8 +803,34 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         -EXPLANATION -> CODE
         -fancier: THOUGHT PROCESS -> EXPLANATION -> CODE
 
+3/24/23 fri
+-----------
+-nb04 langchain: Chat class improvements
+    -maybe specify model cls in config?
+    -consider how user should pass model to chat class (obj or kwargs to instantiate it? Leaning obj and let classmethod construct obj first)
+    -check if completion kwarg names need to change (just using jabberwocky names for now)
+    -check where to pass in completion kwargs (presumably in chatopenai constructor? But that also accepts something called model_kwargs separately, and IIRC `stop` or something similar might be specified elsewhere.)
+    -consider alternatives for how to select user message type (not loving key=x as first param. Also makes helpful fields in docstring harder.)
+    -test end to end
+    -if I like this approach, add some other nice features:
+        -explore possibility of injecting available template fields into docstring
+        -or at least make list of available fields easily viewable
+        -debug mode (just view latest prompt)
+        -docstrings
+        -save/load transcript?
+    -if I like this approach, port other jabberwocky debug prompts to roboduck
+
+
 Backlog
 -------
+-[BLOCKED: need to figure out how to define chat prompts in yaml/py/etc file first] debugger cls: change to expect chat prompt which (optionally?) has 2 diff types of user messages - 1 with full context, 1 with just question
+    -consider how to let user specify these two types
+    -implement (prob need to update how field_names are parsed in init and how they're used in ask_language_model)
+    -Q: what is difference between what I do in nb04 manually appending to messages list vs what I did in nb02 with ChatHistory obj? Is that basically doing the same thing under the hood?
+    -where to provide stop words? And would it be useful/effective to ask gpt to provide specific stop word when done to help it stop when appropriate?
+    -Consider breaking down into chain? (Might be easier than trying to get it to generate valid YAML/JSON, also easier to parse. Could even do this concurrently, though prob better to not do that so code solution can see explanation first.)
+        -EXPLANATION -> CODE
+        -fancier: THOUGHT PROCESS -> EXPLANATION -> CODE
 -update prompts to include "next_line_to_execute" or something like that. (Currently pop that kwarg in ask_language_model)
 -maybe rename gpt3 refs to gpt? (If so, remember to update both lib and alexa. Ignore gui)
 -do I want to sacrifice live typing for cleaner structured yaml/json output? (Possibly orthogonal to langchain decision.)
