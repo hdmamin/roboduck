@@ -1,11 +1,12 @@
 """TODO: add any relevant docs here.
 """
+model_name = 'gpt-3.5-turbo'
 
 # COMPLETION KWARGS
 kwargs = {
     'temperature': 0.0,
     'top_p': .99,
-    'max_length': 512,
+    'max_tokens': 512,
     'frequency_penalty': 0.2,
     'presence_penalty': 0.0,
     'logit_bias': {

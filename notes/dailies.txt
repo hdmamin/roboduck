@@ -806,12 +806,20 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 3/24/23 fri
 -----------
 -nb04 langchain: Chat class improvements
-    -maybe specify model cls in config?
-    -consider how user should pass model to chat class (obj or kwargs to instantiate it? Leaning obj and let classmethod construct obj first)
-    -check if completion kwarg names need to change (just using jabberwocky names for now)
-    -check where to pass in completion kwargs (presumably in chatopenai constructor? But that also accepts something called model_kwargs separately, and IIRC `stop` or something similar might be specified elsewhere.)
+    _ -maybe specify model cls in config?
+        > No, this is more of a runtime thing than a prompt thing. Let user specify it in init though.
+    X -consider how user should pass model to chat class (obj or kwargs to instantiate it? Leaning obj and let classmethod construct obj first)
+        > Current solution is pass in chat class and kwargs and instantiate inside.
+    -figure out how user can define their own prompts without changing roboduck lib
+    X -check if completion kwarg names need to change (just using jabberwocky names for now)
+        > max_length -> max_tokens
+        > Bit of a headache dealing with chat kwargs and model_kwargs arg to chat constructor. Seems like there's some magic going on that might let us pass everything in unpacked though, can look into tomorrow.
+    X -check where to pass in completion kwargs (presumably in chatopenai constructor? But that also accepts something called model_kwargs separately, and IIRC `stop` or something similar might be specified elsewhere.)
+         > Yes. `stop` can be passed in to __call__ but if not it falls back to model_kwargs. (If both, it throws an error rather than overriding - I'm used to the latter but I guess this works too.)
     -consider alternatives for how to select user message type (not loving key=x as first param. Also makes helpful fields in docstring harder.)
-    -test end to end
+    X -write dummy chat model class to save $
+    X -test end to end
+        > New changes look good, though will need to do this again as I add more features.
     -if I like this approach, add some other nice features:
         -explore possibility of injecting available template fields into docstring
         -or at least make list of available fields easily viewable
@@ -820,6 +828,20 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         -save/load transcript?
     -if I like this approach, port other jabberwocky debug prompts to roboduck
 
+3/25/23 sat
+-----------
+-nb04 langchain: Chat class improvements
+    -consider alternatives for how to select user message type (not loving key=x as first param. Also makes helpful fields in docstring harder. At the very least, mangle name 'key' to allow prompts to define fields with that name.)
+    -figure out how user can define their own prompts without changing roboduck lib
+    -consider how to replace importlib code when loading prompt
+    -test end to end
+    -if I like this approach, add some other nice features:
+        -explore possibility of injecting available template fields into reply() docstring (or something like that; could also define separate method for each user message type and support chat.contextless(**kwargs) and chat.contextful(**kwargs), for example.)
+        -or at least make list of available fields easily viewable
+        -debug mode (just view latest prompt)
+        -docstrings
+        -save/load transcript?
+    -if I like this approach, port other jabberwocky debug prompts to roboduck
 
 Backlog
 -------
@@ -847,9 +869,12 @@ Backlog
 Easy Backlog
 ------------
 -write more tests
+    -manually
+    -or try telling gpt to write some tests
 
 Keep an eye out for
 -------------------
+-sometimes openai obj seems to be from an outdated version, restarting kernel helps. Not sure if it's a jabberwocky thing, a langchain thing, an openai thing, or some weird interaction between two or more of those.
 -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
     > 2/13/23: Haven't observed this in this round of work on the project, leftover from last time. Maybe just a transient issue w/ the codex API at the time?
 -codex completion quality issues
