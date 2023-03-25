@@ -820,8 +820,9 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
     X -write dummy chat model class to save $
     X -test end to end
         > New changes look good, though will need to do this again as I add more features.
-    -if I like this approach, add some other nice features:
-        -explore possibility of injecting available template fields into docstring
+    ~ -if I like this approach, add some other nice features:
+        ~ -explore possibility of injecting available template fields into docstring
+            > Prototyped an option that seems to work well. Still need to decide which interface I prefer: 1 reply method where docstring shows default user message fields, or 1 reply method for each user message type. Or both?
         -or at least make list of available fields easily viewable
         -debug mode (just view latest prompt)
         -docstrings
@@ -836,7 +837,7 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
     -consider how to replace importlib code when loading prompt
     -test end to end
     -if I like this approach, add some other nice features:
-        -explore possibility of injecting available template fields into reply() docstring (or something like that; could also define separate method for each user message type and support chat.contextless(**kwargs) and chat.contextful(**kwargs), for example.)
+        -choose preferred way of injecting available template fields into reply() docstring (undecided between 1 reply method and multiple, see nb04 Foo class)
         -or at least make list of available fields easily viewable
         -debug mode (just view latest prompt)
         -docstrings
