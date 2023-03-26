@@ -831,8 +831,9 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 3/25/23 sat
 -----------
--nb04 langchain: Chat class improvements
-    -consider alternatives for how to select user message type (not loving key=x as first param. Also makes helpful fields in docstring harder. At the very least, mangle name 'key' to allow prompts to define fields with that name.)
+~ -nb04 langchain: Chat class improvements
+    X -consider alternatives for how to select user message type (not loving key=x as first param. Also makes helpful fields in docstring harder. At the very least, mangle name 'key' to allow prompts to define fields with that name.)
+        > Got both working! A little hairy for a while but I think it's all good now. Bigger chunk of work than it looks here.
     -figure out how user can define their own prompts without changing roboduck lib
     -consider how to replace importlib code when loading prompt
     -test end to end
@@ -843,6 +844,21 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         -docstrings
         -save/load transcript?
     -if I like this approach, port other jabberwocky debug prompts to roboduck
+
+3/26/23 sun
+-----------
+-nb04 langchain: Chat class improvements
+    -figure out how user can define their own prompts without changing roboduck lib
+    -consider how to replace importlib code when loading prompt
+    -test end to end
+    -if I like this approach, add some other nice features:
+        -choose preferred way of injecting available template fields into reply() docstring (undecided between 1 reply method and multiple, see nb04 Foo class)
+        -or at least make list of available fields easily viewable
+        -debug mode (just view latest prompt)
+        -docstrings
+        -save/load transcript?
+    -if I like this approach, port other jabberwocky debug prompts to roboduck
+
 
 Backlog
 -------
