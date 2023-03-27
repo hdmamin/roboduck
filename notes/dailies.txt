@@ -838,8 +838,6 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
     -consider how to replace importlib code when loading prompt
     -test end to end
     -if I like this approach, add some other nice features:
-        -choose preferred way of injecting available template fields into reply() docstring (undecided between 1 reply method and multiple, see nb04 Foo class)
-        -or at least make list of available fields easily viewable
         -debug mode (just view latest prompt)
         -docstrings
         -save/load transcript?
@@ -847,17 +845,33 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 3/26/23 sun
 -----------
--nb04 langchain: Chat class improvements
-    -figure out how user can define their own prompts without changing roboduck lib
-    -consider how to replace importlib code when loading prompt
-    -test end to end
+~ -nb04 langchain: Chat class improvements
+    X -figure out how user can define their own prompts without changing roboduck lib
+        > Decided yaml specification would be a lot nicer that importlib.importing custom user py files. Multiline strings in nested fields actually work fine in yaml, just have to be mindful of indentation (that defines when str ends). Also updated manifest and setup.py to include yaml files (untested yet on fresh install, but works locally) and wrote new load_template and available_templates functions. Also updated chat class to use config approach. Also found "SOLUTION PART 2" was incorrectly included in roboduck version of debug prompt, removed it (jabberwock version is correct).
+    X -consider how to replace importlib code when loading prompt
+    X -simplify chat_kwargs vs model_kwargs parsing in chat cls (think not actually necessary)
+    X -test end to end
     -if I like this approach, add some other nice features:
-        -choose preferred way of injecting available template fields into reply() docstring (undecided between 1 reply method and multiple, see nb04 Foo class)
-        -or at least make list of available fields easily viewable
         -debug mode (just view latest prompt)
         -docstrings
         -save/load transcript?
     -if I like this approach, port other jabberwocky debug prompts to roboduck
+
+3/27/23 mon
+-----------
+-nb04 langchain: Chat class improvements
+    -confirm stopwords are actually working (noticed yesterday I had "SOLUTION PART 2" in config which actually is supposed to be generated, given my current setup)
+        -where is this specified in langchain?
+        -am I able to truncate solution very early (temporarily) by passing in a stopword str like SOLUTION PART 1?
+    -chat cls improvements
+        -debug mode (just view prompt, don't actually call api)
+        -docstrings
+        -save/load transcript?
+    -port classes/funcs from nb04 to lib
+    -port other jabberwocky debug prompts to roboduck
+-add make commands
+    -make prompt
+    -make chat_prompt
 
 
 Backlog

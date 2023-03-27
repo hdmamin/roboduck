@@ -1,4 +1,5 @@
 recursive-include roboduck *.py
+recursive-include roboduck *.yaml
 include README.md
 include requirements.txt
 

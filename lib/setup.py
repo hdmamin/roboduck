@@ -17,11 +17,17 @@ def version():
             return row.split(' = ')[-1].strip('\n').strip("'")
 
 
-setuptools.setup(name='roboduck',
-                 version=version(),
-                 author='Harrison Mamin',
-                 author_email='harrisonmamin@gmail.com',
-                 description='A natural language debugger.',
-                 install_requires=requirements(),
-                 packages=setuptools.find_packages())
+setuptools.setup(
+    name='roboduck',
+    version=version(),
+    author='Harrison Mamin',
+    author_email='harrisonmamin@gmail.com',
+    description='A natural language debugger.',
+    install_requires=requirements(),
+    packages=setuptools.find_packages(),
+    package_data={
+        'roboduck': ['**/*.yaml']
+    },
+    include_package_data=True
+)
 

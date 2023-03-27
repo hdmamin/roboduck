@@ -12,6 +12,7 @@ import pandas as pd
 from pathlib import Path
 import re
 import time
+import yaml
 
 from htools.core import random_str, load
 
@@ -305,3 +306,25 @@ def truncated_repr(obj, max_len=79):
     if isinstance(obj, (int, float)):
         return truncated_repr(format(obj, '.3e'), max_len)
     return qualname(obj)
+
+
+def load_yaml(path, section=None):
+    """Load a yaml file. Useful for loading prompts.
+
+    Borrowed from jabberwocky.
+
+    Parameters
+    ----------
+    path: str or Path
+    section: str or None
+        I vaguely recall yaml files can define different subsections. This lets
+        you return a specific one if you want. Usually leave as None which
+        returns the whole contents.
+
+    Returns
+    -------
+    dict
+    """
+    with open(path, 'r') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    return data.get(section, data)
