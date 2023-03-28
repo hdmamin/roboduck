@@ -381,7 +381,7 @@ class DuckDB(Pdb):
         # TODO: may need to update this logic if switch to more of a json/yaml
         # structured completion.
         parts = answer.split("SOLUTION PART 2")
-        if len(parts) != 2 :
+        if len(parts) != 2:
             # Avoid updating cache because the completion doesn't match our
             # expected explanation/code structure.
             return

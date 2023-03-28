@@ -859,12 +859,35 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 3/27/23 mon
 -----------
--nb04 langchain: Chat class improvements
-    -confirm stopwords are actually working (noticed yesterday I had "SOLUTION PART 2" in config which actually is supposed to be generated, given my current setup)
-        -where is this specified in langchain?
-        -am I able to truncate solution very early (temporarily) by passing in a stopword str like SOLUTION PART 1?
+~ -nb04 langchain: Chat class improvements
+    X -confirm stopwords are actually working (noticed yesterday I had "SOLUTION PART 2" in config which actually is supposed to be generated, given my current setup)
+        X -where is this specified in langchain?
+            > ChatOpenAI lets you pass it in to __call__ which passes it to _create_message_dicts. If you do that, you can't provide it at instantiation time. Other option is to pass it into init, in which case it ends up in _default_params which is used in _create_message_dicts.
+        X -am I able to truncate solution very early (temporarily) by passing in a stopword str like SOLUTION PART 1?
+            > Yes, specifying it at chat instantiation time.
     -chat cls improvements
-        -debug mode (just view prompt, don't actually call api)
+        _ -debug mode (just view prompt, don't actually call api)
+            > Skip for now. Might be slightly tricky to add as param to dynamically generated reply classes (think that should be supported already but have to check). Maybe this is really just equivalent to calling history() + new_message though?
+        -get streaming mode working
+            X -get messy version working
+                > stdoutstreamer wasn't printing anything, realized it's because we have to set chat(verbose=True) for it to print anything. Hardcoded verbose=True for now; can consider if we want to allow user to disable this later.
+            ~ -incorporate into class def
+                > verbose setting is updated, but maybe provide default callback_manager arg, either in init signature or body. Need to think carefully how to handle this bc it can appear in chat_kwargs.
+        -docstrings
+        -save/load transcript?
+    -port classes/funcs from nb04 to lib
+    -port other jabberwocky debug prompts to roboduck
+-add make commands
+    -make prompt
+    -make chat_prompt
+
+3/28/23 tues
+------------
+-nb04 langchain: Chat class improvements
+    -chat cls improvements
+        -maybe add stdout streaming by default to cls? (could provide default callback_manager arg in init signature or body. Need to think carefully how to handle this bc it can appear in chat_kwargs. Default also depends on how customized I want this to be to roboduck - this affects both WHETHER we print by default and what handler cls we use. ATM IIRC I print response in diff color than user text, for example.)
+>>> START HERE
+            -write callback that prints to stdout on new llm token with desired formatting (i.e. in color)
         -docstrings
         -save/load transcript?
     -port classes/funcs from nb04 to lib
