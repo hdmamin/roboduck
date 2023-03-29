@@ -886,8 +886,26 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 -nb04 langchain: Chat class improvements
     -chat cls improvements
         -maybe add stdout streaming by default to cls? (could provide default callback_manager arg in init signature or body. Need to think carefully how to handle this bc it can appear in chat_kwargs. Default also depends on how customized I want this to be to roboduck - this affects both WHETHER we print by default and what handler cls we use. ATM IIRC I print response in diff color than user text, for example.)
->>> START HERE
-            -write callback that prints to stdout on new llm token with desired formatting (i.e. in color)
+        X -write callback that prints to stdout on new llm token with desired formatting (i.e. in color)
+        X -add live typing functionality
+        X -confirm if we need to change logic around extracting info from reply template
+            > Yes we do. Python code seems to be helpfully enclosed in triple backticks more consistently. But SOLUTION PART X is no longer a single token, meaning I probably need to revert to my old more complex logic streaming from queue.
+        ~ -implement changes if necessary
+            > Options:
+                > Use modified version of jabberwocky.stopwordstreamer (modified bc we don't want to stop streaming when we hit these phrases, just skip printing).
+                    > Probably not much easier than just writing from scratch. Might get something cleaner from scratch anyway bc jabberwocky class was designed for a slightly different use case.
+                > Try to find old version of this code in roboduck git history.
+                    > Possible, but IIRC it got rather messy.
+                > Write from scratch.
+                    > Possible, it doesn't sound too bad and honestly would be fun, but I think I expected it to be simple last time and it still got messy. So probably would happen again, guessing it's more complex than I'm realizing atm.
+                > Move to json/yaml response for easy parsing.
+                    > Really like this mode of interaction but waiting for it to finish before typing anything would be a big loss of functionality.
+                > Move to prompt chain that first asks just for natural language solution, then just for code solution.
+                    > This does seem somewhat promising. My one concern is if chat and chaining are compatible entities in langchain. I'd assume so but I'm not sure - it seems like the assumption is that a chat is between a model and a user, so I don't know what happens if a bot message is last. Probably fine though.
+                    > Seems like we have a few options here. 1) Maybe langchain.SequentialChain provides what I want? Need to test, unclear. 2) Subclass Chain to do what I want, probably very similar to SequentialChain. 3) Update my prompt/chat class to do this without chains. Concretely all we want to do is request two completions in a row, where the second one does not ask for any user input.
+                    > Idiomatic langchain would probably use 1) or 2). Let's try 1 tomorrow and fallback to 2 if necessary.
+                > Adjust system prompt instructing gpt to use unusual sep sequence to mark start and end of each section.
+                    > This does seem like a reasonably simple option. Maybe a tad less generalizable than the above (picture a reply with 10 parts. As a 10 step chain, it should be easy to store the results of each section separately. With this approach, it gets a little hairier - do we access each result by index? If one section is missing, is it straightforward to tell which?
         -docstrings
         -save/load transcript?
     -port classes/funcs from nb04 to lib
@@ -896,6 +914,21 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
     -make prompt
     -make chat_prompt
 
+3/29/23 wed
+-----------
+-nb04 langchain: Chat class improvements
+    -streaming support w/ gpt3.5+ (recall old solution relied on gpt3 tokenization which apparently changed 😭)
+        -try to implement desired behavior w/ chatmodel and SequentialChain (i.e. first prompt just asks for NL explanation, 2nd just asks for code)
+        -if above fails, try implementing custom cls. Prob very similar.
+        -if both above approaches aren't good for some reason, choose between 1) queue-based lagged streaming approach like before, still 1 prompt OR 2) figure out how to manually get multi-part completion by changing config and/or chat cls. (Don't choose now bc both of these approaches are rather complex, need to think through them a lot, and I suspect I can and should get one of the prev 2 options to work.)
+    -docstrings
+    -save/load transcript?
+    -set streaming=True by default in chat cls? (could provide default callback_manager arg in init signature or body. Need to think carefully how to handle this bc it can appear in chat_kwargs. Default also depends on how customized I want this to be to roboduck - this affects both WHETHER we print by default and what handler cls we use. ATM IIRC I print response in diff color than user text, for example.)
+    -port classes/funcs from nb04 to lib
+    -port other jabberwocky debug prompts to roboduck
+-add make commands
+    -make prompt
+    -make chat_prompt
 
 Backlog
 -------

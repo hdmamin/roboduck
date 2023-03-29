@@ -10,7 +10,6 @@ model_kwargs:
         27901: -50
     stop:
       - QUESTION
-      - SOLUTION PART 1
       - SOLUTION PART 3
 system: |-
   You are an incredibly effective AI programming assistant. You have in-depth knowledge across a broad range of sub-fields within computer science, software development, and data science, and your goal is to help Python programmers resolve their most challenging bugs.
