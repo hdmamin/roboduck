@@ -917,10 +917,35 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 3/29/23 wed
 -----------
 -nb04 langchain: Chat class improvements
-    -streaming support w/ gpt3.5+ (recall old solution relied on gpt3 tokenization which apparently changed 😭)
-        -try to implement desired behavior w/ chatmodel and SequentialChain (i.e. first prompt just asks for NL explanation, 2nd just asks for code)
-        -if above fails, try implementing custom cls. Prob very similar.
+    ~ -streaming support w/ gpt3.5+ (recall old solution relied on gpt3 tokenization which apparently changed 😭)
+        _ -try to implement desired behavior w/ chatmodel and SequentialChain (i.e. first prompt just asks for NL explanation, 2nd just asks for code)
+            > Looked through code and it's not quite what I want.
+        ~ -if above fails, try implementing custom cls. Prob very similar.
+            > WIP. Finally getting it to do roughly what I want but it's not clear to me that the UX is actually any better. Need to refactor a bit, then try w/ chat models. Can use actual debug prompt as test.
         -if both above approaches aren't good for some reason, choose between 1) queue-based lagged streaming approach like before, still 1 prompt OR 2) figure out how to manually get multi-part completion by changing config and/or chat cls. (Don't choose now bc both of these approaches are rather complex, need to think through them a lot, and I suspect I can and should get one of the prev 2 options to work.)
+    -docstrings
+    -save/load transcript?
+    -set streaming=True by default in chat cls? (could provide default callback_manager arg in init signature or body. Need to think carefully how to handle this bc it can appear in chat_kwargs. Default also depends on how customized I want this to be to roboduck - this affects both WHETHER we print by default and what handler cls we use. ATM IIRC I print response in diff color than user text, for example.)
+    -port classes/funcs from nb04 to lib
+    -port other jabberwocky debug prompts to roboduck
+-add make commands
+    -make prompt
+    -make chat_prompt
+
+3/30/23 thurs
+-------------
+-nb04 langchain: Chat class improvements
+    -streaming support w/ gpt3.5+ (recall old solution relied on gpt3 tokenization which apparently changed 😭)
+        -custom chain cls
+            -translate debug prompt into a series of chains (don't worry about config yet, just hardcode)
+            -try multi-part debug prompt (above bullet) w/ chatOpenAI (prev only tested this class w/ regular LLM)
+            -if promising, consider how to specify these types of responses in config
+            -if not, revert to a different approach, 1 of:
+                -use more pretty section titles and just display them to user (then str/regex afterwards to extract fields)
+                -use specific sep char and omit (hard to pick something that def won't show up in code though; use str/regex afterwards to extract fields)
+                -make NL and code requests concurrently, stream NL but not code (lose potential chain of thought type benefits though. These answers should be dependent, don't want inconsistent answers.)
+                -queue-based lagged streaming like initial approach
+                -implement "followup question" in chat class/config (currently a bit fuzzy on how this would work exactly)
     -docstrings
     -save/load transcript?
     -set streaming=True by default in chat cls? (could provide default callback_manager arg in init signature or body. Need to think carefully how to handle this bc it can appear in chat_kwargs. Default also depends on how customized I want this to be to roboduck - this affects both WHETHER we print by default and what handler cls we use. ATM IIRC I print response in diff color than user text, for example.)

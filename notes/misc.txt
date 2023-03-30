@@ -1,0 +1,11 @@
+Sequential Chain
+{input_vars} -> render prompt 1 -> {output_str1} 
+{output_str1} -> input to prompt 2 -> render prompt 2 -> {output_str1, output_str2}
+
+I want
+{input_vars} -> render prompt 1 -> {output_str1}
+{concat(render_prompt1, output_str1)} -> input to prompt 2 -> render prompt 2 -> {output_str2}
+    (But also along the way, store output of each step in a way we can access later.)
+
+Take the inputs and pass to our first chain.
+Then concat the first chain's prompt to its output.
