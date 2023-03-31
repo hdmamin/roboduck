@@ -937,9 +937,10 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 -nb04 langchain: Chat class improvements
     -streaming support w/ gpt3.5+ (recall old solution relied on gpt3 tokenization which apparently changed 😭)
         -custom chain cls
-            -translate debug prompt into a series of chains (don't worry about config yet, just hardcode)
-            -try multi-part debug prompt (above bullet) w/ chatOpenAI (prev only tested this class w/ regular LLM)
-            -if promising, consider how to specify these types of responses in config
+            ! -translate debug prompt into a series of chains (don't worry about config yet, just hardcode)
+                > Was really struggling with this and finally wrote down what I wanted to do and realized this approach will be WAY slower and more expensive, O(N^2) wrt number of sections in output vs O(N) (or O(N) rather than O(1), depending on how you look at it). Combined with how un-user-friendly I'm finding the process of trying to define this, I think it's time to explore another option.
+            _ -try multi-part debug prompt (above bullet) w/ chatOpenAI (prev only tested this class w/ regular LLM)
+            _ -if promising, consider how to specify these types of responses in config
             -if not, revert to a different approach, 1 of:
                 -use more pretty section titles and just display them to user (then str/regex afterwards to extract fields)
                 -use specific sep char and omit (hard to pick something that def won't show up in code though; use str/regex afterwards to extract fields)

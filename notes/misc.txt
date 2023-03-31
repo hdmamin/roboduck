@@ -1,3 +1,5 @@
+3/29/23 wed
+-----------
 Sequential Chain
 {input_vars} -> render prompt 1 -> {output_str1} 
 {output_str1} -> input to prompt 2 -> render prompt 2 -> {output_str1, output_str2}
@@ -9,3 +11,13 @@ I want
 
 Take the inputs and pass to our first chain.
 Then concat the first chain's prompt to its output.
+
+3/30/23 thurs
+-------------
+Chain 0
+[system msg, first question] -> first answer
+[system msg, first question, first answer, second question] -> second answer
+[system msg, first question, first answer, second question, second answer, third question] -> third answer
+
+approaches O(n^2) wrt encoding questions (i.e. first question is encoded n times where n is number of questions). Whereas if we make this a single prompt, encoding is O(n) (i.e. each section is encoded once).
+
