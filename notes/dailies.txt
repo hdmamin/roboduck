@@ -963,9 +963,27 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 3/31/23 fri
 -----------
+~ -nb04 langchain: Chat class improvements
+    X -custom chain cls
+        X -consider making streaming/verbose attr set in init optional
+            > Make streaming a separate configurable attr, rm verbose call bc not actually necessary (since callbacks can set always_verbose=True).
+        X -enable streaming mode for dummychatmodel
+            > More involved than expected, but it works now.
+    -port all funcs/classes in nb04 to lib
+        -port
+        -[maybe wait] docstrings
+    -port other jabberwocky debug prompts to roboduck
+    -check for necessary updates in:
+        -debugger module (main pdb subclass, cache)
+        -errors module
+        -logging module
+        -magic module
+
+4/1/23 sat
+-----------
 -nb04 langchain: Chat class improvements
     -custom chain cls
-        -consider making streaming/verbose attr set in init optional
+        -check if we can condense chat_kwargs and model_kwargs in constructor (think this might actually work and interface would be a lot nicer - don't like having to pass in model_kwargs as a dict)
     -port all funcs/classes in nb04 to lib
         -port
         -[maybe wait] docstrings
