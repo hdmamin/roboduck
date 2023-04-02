@@ -1,6 +1,6 @@
 # Technically we could omit logit_bias here, just including it as documentation
 # for future templates.
-model_kwargs:
+kwargs:
     model_name: gpt-3.5-turbo
     max_tokens: 512
     temperature: 0.0

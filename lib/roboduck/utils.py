@@ -5,6 +5,7 @@ from colorama import Fore, Style
 import difflib
 import hashlib
 import ipynbname
+from inspect import signature, Parameter
 from IPython.display import display, Javascript
 from IPython import get_ipython
 import json
@@ -15,6 +16,7 @@ import time
 import yaml
 
 from htools.core import random_str, load
+from htools.meta import typecheck
 
 
 def colored(text, color):
@@ -26,12 +28,15 @@ def colored(text, color):
     text: str
         Text that should be colored.
     color:
-        Color name, e.g. "red". Must be available in the colorama lib.
+        Color name, e.g. "red". Must be available in the colorama lib. If None
+        or empty str, just return the text unchanged.
 
     Returns
     -------
     str
     """
+    if not color:
+        return text
     color = getattr(Fore, color.upper())
     return f'{color}{text}{Style.RESET_ALL}'
 
@@ -328,3 +333,137 @@ def load_yaml(path, section=None):
     with open(path, 'r') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     return data.get(section, data)
+
+
+def add_kwargs(func, fields, hide_fields=(), strict=False):
+    """Decorator that adds parameters into the signature and docstring of a
+    function that accepts **kwargs.
+
+    Parameters
+    ----------
+    func: function
+        Function to decorate.
+    fields: list[str]
+        Names of params to insert into signature + docstring.
+    hide_fields: list[str]
+        Names of params that are *already* in the function's signature that
+        we want to hide. To use a non-empty value here, we must set strict=True
+        and the param must have a default value, as this is what will be used
+        in all subsequent calls.
+    strict: bool
+        If true, we do two things:
+        1. On decorated function call, check that the user provided all
+        expected arguments.
+        2. Enable the use of the `hide_fields` param.
+
+    Returns
+    -------
+    function
+    """
+    # Hide_fields must have default values in existing function. They will not
+    # show up in the new docstring and the user will not be able to pass in a
+    # value when calling the new function - it will always use the default.
+    # To set different defaults, you can pass in a partial rather than a
+    # function as the first arg here.
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+
+    if hide_fields and not strict:
+        raise ValueError(
+            'You must set strict=True when providing one or more '
+            'hide_fields. Otherwise the user can still pass in those args.'
+        )
+    sig = signature(wrapper)
+    params_ = {k: v for k, v in sig.parameters.items()}
+
+    # Remove any fields we want to hide.
+    for field in hide_fields:
+        if field not in params_:
+            warnings.warn(f'No need to hide field {field} because it\'s not '
+                          'in the existing function signature.')
+        elif params_.pop(field).default == Parameter.empty:
+            raise TypeError(
+                f'Field "{field}" is not a valid hide_field because it has '
+                'no default value in the original function.'
+            )
+
+    if getattr(params_.pop('kwargs', None), 'kind') != Parameter.VAR_KEYWORD:
+        raise TypeError(f'Function {func} must accept **kwargs.')
+    new_params = {
+        field: Parameter(field, Parameter.KEYWORD_ONLY)
+        for field in fields
+    }
+    overlap = set(new_params) & set(params_)
+    if overlap:
+        raise RuntimeError(
+            f'Some of the kwargs you tried to inject into {func} already '
+            'exist in its signature. This is not allowed because it\'s '
+            'unclear how to resolve default values and parameter type.'
+        )
+
+    params_.update(new_params)
+    wrapper.__signature__ = sig.replace(parameters=params_.values())
+    if strict:
+        # In practice langchain checks for this anyway if we ask for a
+        # completion, but outside of that context we need typecheck
+        # because otherwise we could provide no kwargs and _func wouldn't
+        # complain. Just use generic type because we only care that a value is
+        # provided.
+        wrapper = typecheck(wrapper, **{f: object for f in fields})
+    return wrapper
+
+
+def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
+    """Extract code snippet from a GPT response (e.g. from our `debug` chat
+    prompt. See `Examples` for expected format.
+
+    Parameters
+    ----------
+    text: str
+    join_multi: bool
+        If multiple code snippets are found, we can either choose to join them
+        into one string or return a list of strings. If the former, we prefix
+        each snippet with `multi_prefix_template` to make it clearer where
+        each new snippet starts.
+    multi_prefix_template: str
+        If join_multi=True and multiple code snippets are found, we prepend
+        this to each code snippet before joining into a single string. It
+        should accept a single parameter {i} which numbers each code snippet
+        in the order they were found in `text` (1-indexed).
+
+    Returns
+    -------
+    str or list: code snippet from `text`. If we find multiple snippets, we
+    either join them into one big string (if join_multi is True) or return a
+    list of strings otherwise.
+
+    Examples
+    --------
+    text = '''Appending to a tuple is not allowed because tuples are immutable.
+    However, in this code snippet, the tuple b contains two lists, and lists
+    are mutable. Therefore, appending to b[1] (which is a list) does not raise
+    an error. To fix this, you can either change b[1] to a tuple or create a
+    new tuple that contains the original elements of b and the new list.
+
+    ```
+    # Corrected code snippet
+    a = 3
+    b = ([0, 1], [2, 3])
+    b = (b[0], b[1] + [a])
+    ```'''
+    print(extract_code(text))
+
+    # Corrected code snippet
+    a = 3
+    b = ([0, 1], [2, 3])
+    b = (b[0], b[1] + [a])
+    """
+    chunks = re.findall("(?s)```\n(.*?)\n```", text)
+    if not join_multi:
+        return chunks
+    if len(chunks) > 1:
+        chunks = [multi_prefix_template.format(i=i) + chunk
+                  for i, chunk in enumerate(chunks, 1)]
+        chunks[0] = chunks[0].lstrip()
+    return ''.join(chunks)

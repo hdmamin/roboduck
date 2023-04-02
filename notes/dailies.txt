@@ -981,10 +981,31 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 4/1/23 sat
 -----------
+~ -nb04 langchain: Chat class improvements
+    X -custom chain cls
+        X -check if we can condense chat_kwargs and model_kwargs in constructor (think this might actually work and interface would be a lot nicer - don't like having to pass in model_kwargs as a dict)
+            > Yes :)
+    ~ -port all funcs/classes in nb04 to lib
+        ~ -port
+            > Ported callback and dummychatmodel classes, add_kwargs and extract_code functions.
+        ~ -[maybe wait] docstrings
+            > Documented the 4 classes/functions above reasonably thoroughly.
+        > Just have Chat cls left. Maybe need to allow user to specify a custom `extract_code` function though - this one is fairly generic but users might want to do something more wild and I think I'd like to support that.
+    -port other jabberwocky debug prompts to roboduck
+    -check for necessary updates in:
+        -debugger module (main pdb subclass, cache)
+        -errors module
+        -logging module
+        -magic module
+
+4/2/23 sun
+-----------
 -nb04 langchain: Chat class improvements
-    -custom chain cls
-        -check if we can condense chat_kwargs and model_kwargs in constructor (think this might actually work and interface would be a lot nicer - don't like having to pass in model_kwargs as a dict)
-    -port all funcs/classes in nb04 to lib
+    -allow prompt config and/or chat class to accept custom extract_code func?
+        -first consider use case
+        -if above seems reasonable enough, figure out how to do this
+        -implement
+    -port chat class in nb04 to lib
         -port
         -[maybe wait] docstrings
     -port other jabberwocky debug prompts to roboduck
@@ -993,7 +1014,6 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         -errors module
         -logging module
         -magic module
-
 
 Backlog
 -------
