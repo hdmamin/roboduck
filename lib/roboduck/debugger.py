@@ -23,20 +23,14 @@ from functools import partial
 from htools import load, is_ipy_name
 import inspect
 import ipynbname
-from jabberwocky.openai_utils import PromptManager, GPTBackend
 from pdb import Pdb
 import sys
 import time
 import warnings
 
+from roboduck.langchain.chat import Chat
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
     truncated_repr, load_current_ipython_session, colordiff_new_str
-
-
-ROBODUCK_GPT = GPTBackend(log_stdout=False)
-PROMPT_MANAGER = PromptManager(['debug', 'debug_full', 'debug_stack_trace'],
-                               verbose=False,
-                               gpt=ROBODUCK_GPT)
 
 
 class CodeCompletionCache:
@@ -127,6 +121,11 @@ class DuckDB(Pdb):
         self.query_kwargs = {'model': model} if model is not None else {}
         self.backend = backend
         self.full_context = '_full' in task
+        # TODO: add support for debugger cls self.silent mode.
+        # TODO: Create chat cls in init, pass appropriate kwargs. Prob need to
+        # update debugger init signature too. Prob rename `task`.
+        self.chat = Chat.from_config(task)
+        # TODO: get these from self.chat, PROMPT_MANAGER has been removed.
         self.field_names = PROMPT_MANAGER.field_names(task)
         self.task = task
         self.log = log
@@ -328,44 +327,9 @@ class DuckDB(Pdb):
 
         if not self.silent:
             print(colored(self.duck_prompt, 'green'), end='')
-        res = ''
-        # Suppress jabberwocky auto-warning about codex model name.
-        with warnings.catch_warnings():
-            warnings.filterwarnings('ignore')
-            with ROBODUCK_GPT(self.backend, verbose=False):
-                prev_is_title = False
-                for i, (cur, full) in enumerate(PROMPT_MANAGER.query(
-                        self.task,
-                        prompt_kwargs,
-                        **self.query_kwargs,
-                        log=self.log,
-                        stream=True
-                )):
-                    # We do this BEFORE the checks around SOLUTION PART 2
-                    # because we don't want to print that line, but we do want
-                    # to retain it in our CodeCompletionCache so that our
-                    # jupyter magic can easily extract the code portion later.
-                    res += cur
-
-                    # Slightly fragile logic - openai currently returns this
-                    # in a single streaming step even though the current codex
-                    # tokenizer splits it into 5 tokens. If they return this
-                    # as multiple tokens, we'd need to change this logic.
-                    if cur == 'SOLUTION PART 2':
-                        prev_is_title = True
-                        continue
-                    # Avoid printing the ':' after 'SOLUTION PART 2'. Openai
-                    # returns this at a different streaming step.
-                    if prev_is_title and cur.startswith(':'):
-                        continue
-                    prev_is_title = False
-                    if not i:
-                        cur = cur.lstrip('\n')
-                    if self.silent:
-                        continue
-                    for char in cur:
-                        print(colored(char, 'green'), end='')
-                        time.sleep(self.sleep)
+        # TODO: figure out how to send appropriate reply type, e.g. contextful
+        # or contextless.
+        # res = self.chat.reply()
 
         # Strip trailing quotes because the entire prompt is inside a
         # docstring and codex may try to close it. We can't use it as a stop

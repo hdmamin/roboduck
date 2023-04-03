@@ -1021,8 +1021,27 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         ~ -[maybe wait] docstrings
             > Documented the big stuff so I won't forget. Maybe return to the helper methods later.
     -port other jabberwocky debug prompts to roboduck
+    ~ -check for necessary updates in:
+        ~ -debugger module (main pdb subclass, cache)
+            > WIP, non-exhaustive TODOs are sprinkled throughout file.
+        -errors module
+        -logging module
+        -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/3/23 mon
+-----------
+-nb04 langchain: Chat class improvements
+                > I guess this is more a property of the debugger cls than the prompt or chat. When we instantiate it, we could raise a warnning if a non-standard prompt is provided but a custom extract_attrs function is not.
     -check for necessary updates in:
-        -debugger module (main pdb subclass, cache)
+        -debugger module
+            -pdb subclass
+                -update how field_names is set
+                -pass necessary kwargs to self.chat instantiation and update debugger init signature accordingly
+                -enable self.silent mode w/ chat class (maybe can just set stream=False)?
+                -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
+            -update completion cache class if necessary
+            -look for other todos in file
         -errors module
         -logging module
         -magic module
