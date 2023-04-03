@@ -1001,19 +1001,33 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 4/2/23 sun
 -----------
 -nb04 langchain: Chat class improvements
-    -allow prompt config and/or chat class to accept custom extract_code func?
-        -first consider use case
-        -if above seems reasonable enough, figure out how to do this
-        -implement
-    -port chat class in nb04 to lib
-        -port
-        -[maybe wait] docstrings
+    X -allow prompt config and/or chat class to accept custom extract_code func?
+        X -first consider use case
+            > I (or user) might want to define a custom prompt that returns output that is formatted differently or has additional fields. E.g. returning json/yaml that also includes a boolean field is_solved. Easiest way to achieve this, I think, is to have a function that accepts the generated text as input and outputs a dict. We can use each kv pair to set an attr in completion cache (or do something similar to that).
+            > Options for how to specify this function:
+                > python snippet embedded in config yaml
+                    > This could get a bit gnarly. No.
+                > name of function or file containing function in yaml
+                    > Possible. Or maybe should have each prompt be a directory containing both a yaml file and (optionally?) a python file.
+                > don't specify it in config, leave it to user to pass in a function directly debugger class or something
+                    > Don't love this, seems like it should be baked into config.
+                    > Never mind, this doesn't belong in config, it's too specific to this use case. Might make sense to provide a set of post-completion asserts or postprocessing steps, but that's a bit different.
+                > I guess this is more a property of the debugger cls than the prompt or chat. When we instantiate it, we could raise a warnning if a non-standard prompt is provided but a custom extract_attrs function is not.
+        X -if above seems reasonable enough, figure out how to do this
+        _ -implement
+            > Not yet, do this at the debugger cls level as described above.
+    X -port chat class in nb04 to lib
+        X -port
+        ~ -[maybe wait] docstrings
+            > Documented the big stuff so I won't forget. Maybe return to the helper methods later.
     -port other jabberwocky debug prompts to roboduck
     -check for necessary updates in:
         -debugger module (main pdb subclass, cache)
         -errors module
         -logging module
         -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
 
 Backlog
 -------
@@ -1045,6 +1059,7 @@ Backlog
 
 Easy Backlog
 ------------
+-langchain.chat.chat various method docstrings
 -write more tests
     -manually
     -or try telling gpt to write some tests
