@@ -124,9 +124,9 @@ class DuckDB(Pdb):
         # TODO: add support for debugger cls self.silent mode.
         # TODO: Create chat cls in init, pass appropriate kwargs. Prob need to
         # update debugger init signature too. Prob rename `task`.
+        # Must create self.chat before calling _chat_prompt_keys.
         self.chat = Chat.from_config(task)
-        # TODO: get these from self.chat, PROMPT_MANAGER has been removed.
-        self.field_names = PROMPT_MANAGER.field_names(task)
+        self.default_user_key, self.backup_user_key = self._chat_prompt_keys()
         self.task = task
         self.log = log
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
@@ -134,6 +134,29 @@ class DuckDB(Pdb):
         self.sleep = sleep
         # This gets updated every time the user asks a question.
         self.prev_kwargs_hash = None
+
+    def _chat_prompt_keys(self):
+        """Retrieve default and backup user reply prompt keys (names) from
+        self.chat object. If the prompt template has only one reply type,
+        the backup key will equal the default key.
+        """
+        keys = list(self.chat.user_templates)
+        default = keys[0]
+        backup = default
+        if len(keys) > 1:
+            backup = keys[1]
+            if len(keys) > 2:
+                warnings.warn(
+                    'You\'re using a chat prompt template with >2 types or '
+                    'user replies. This is not recommended because it\'s '
+                    'not clear how to determine which reply type to use. We '
+                    'arbitrarily choose the first non-default key as the '
+                    f'backup reply type ("{backup}").'
+                )
+        return default, backup
+
+    def field_names(self, key=''):
+        return self.chat.input_variables(key)
 
     def _get_next_line(self, code_snippet):
         """Retrieve next line of code that will be executed. Must call this
@@ -298,23 +321,22 @@ class DuckDB(Pdb):
         kwargs_hash = hash(str(prompt_kwargs))
         if kwargs_hash == self.prev_kwargs_hash:
             prompt_kwargs.clear()
+            prompt_key = self.default_user_key
+        else:
+            prompt_key = self.backup_user_key
 
-        # TODO update prompts to use next_line? Currently need to pop bc they
-        # don't include that field.
-        print('next line:', prompt_kwargs.pop('next_line', None))
-
-        # TODO: if moving to langchain and/or multiple user message types
-        # (contextful vs contextless), will likely need to change logic around
-        # both setting and using self.field_names.
-        if 'question' in self.field_names:
+        # Perform surgery on kwargs depending on what fields are expected.
+        field_names = self.field_names(prompt_key)
+        if 'question' in field_names:
             prompt_kwargs['question'] = question
-        expect_stack_trace = 'stack_trace' in self.field_names
+        expect_stack_trace = 'stack_trace' in field_names
         if stack_trace and expect_stack_trace:
             prompt_kwargs['stack_trace'] = stack_trace
         assert bool(stack_trace) == expect_stack_trace,\
             f'Received stack_trace={stack_trace!r} but ' \
-            f'self.field_names={self.field_names}.'
+            f'field_names={field_names}.'
 
+        # TODO: update to get prompt from self.chat.
         prompt = PROMPT_MANAGER.prompt(self.task, prompt_kwargs)
         if len(prompt.split()) > 1_000:
             warnings.warn(
@@ -327,9 +349,7 @@ class DuckDB(Pdb):
 
         if not self.silent:
             print(colored(self.duck_prompt, 'green'), end='')
-        # TODO: figure out how to send appropriate reply type, e.g. contextful
-        # or contextless.
-        # res = self.chat.reply()
+        res = self.chat.reply(**prompt_kwargs, key_=prompt_key)
 
         # Strip trailing quotes because the entire prompt is inside a
         # docstring and codex may try to close it. We can't use it as a stop
@@ -342,8 +362,8 @@ class DuckDB(Pdb):
             if not self.silent:
                 print(colored(answer, 'green'))
 
-        # TODO: may need to update this logic if switch to more of a json/yaml
-        # structured completion.
+        # TODO: update this logic to use a user-provided parse_reply function
+        # that returns a dict.
         parts = answer.split("SOLUTION PART 2")
         if len(parts) != 2:
             # Avoid updating cache because the completion doesn't match our

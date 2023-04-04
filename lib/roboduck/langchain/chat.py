@@ -226,3 +226,20 @@ class Chat:
                 reply = f'{speaker}: {reply}'
             res.append(reply)
         return sep.join(res)
+
+    def input_variables(self, key=''):
+        """Get names of fields that user has to pass in when replying.
+
+        Parameters
+        ----------
+        key: str
+            Name of user reply type. Falls back to the default reply type if
+            none is provided.
+
+        Returns
+        -------
+        set[str]
+        """
+        template = self.user_templates[key or self.default_user_key]
+        return set(template.input_variables)
+
