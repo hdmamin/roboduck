@@ -1053,10 +1053,11 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 -nb04 langchain: Chat class improvements
     -check for necessary updates in:
         -debugger module
-            -pdb subclass
-                -pass necessary kwargs to self.chat instantiation and update debugger init signature accordingly
-                -enable self.silent mode w/ chat class (maybe can just set stream=False)?
-                -enable printing resolved prompt in dev mode
+            ~ -pdb subclass
+                X -pass necessary kwargs to self.chat instantiation and update debugger init signature accordingly
+                X -enable self.silent mode w/ chat class (maybe can just set stream=False)?
+                X -enable printing resolved prompt in dev mode
+                    > Maybe should move to a public method in chat cls though? Currently debugger cls calls chat internal method.
                 -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
                 -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
             -update completion cache class if necessary
@@ -1065,6 +1066,22 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         -logging module
         -magic module
 -reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/5/23 wed
+----------
+-nb04 langchain: Chat class improvements
+    -check for necessary updates in:
+        -debugger module
+            -pdb subclass
+                -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
+                -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+            -update completion cache class if necessary
+            -look for other todos in file
+        -errors module
+        -logging module
+        -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
 
 
 Backlog

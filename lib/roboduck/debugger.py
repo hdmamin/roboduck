@@ -63,27 +63,20 @@ class DuckDB(Pdb):
     making the query.
     """
 
-    def __init__(self, *args, backend='openai', model=None,
-                 task='debug', log=False, max_len_per_var=79, sleep=.02,
-                 silent=False, **kwargs):
+    def __init__(self, backend='openai', prompt_name='debug',
+                 max_len_per_var=79, silent=False, pdb_kwargs=None,
+                 **chat_kwargs):
         """
         Parameters
         ----------
-        args: any
-            Misc args for base Pdb class.
         backend: str
             Specifies which GPT api to use, e.g. 'openai' or 'gooseai'. Since
             we currently use codex, backends besides 'openai' are not
             supported.
-        model: str or int or None
-            Specifies which model to using format defined by
-            jabberwocky.openai_utils.EngineMap. If none is specified, we fall
-            back to whatever is defined in the jabberwocky `debug` or
-            `debug_full` prompts. 'code-davinci-002' is the current default,
-            though 'text-davinci-002' may be a decent option as well.
-        task: str
-            Name of task (a.k.a. a "prompt" in jabberwocky) to use when
-            querying gpt3. Current options are:
+        prompt_name: str
+            Name of prompt template to use when querying chatGPT. Roboduck
+            currently provides several builtin options
+            (see roboduck.prompts.chat):
                 debug - for interactive debugging sessions on the relevant
                     snippet of code.
                 debug_full - for interactive debugging sessions on the whole
@@ -91,9 +84,9 @@ class DuckDB(Pdb):
                     creating a context that is too long.
                 debug_stack_trace - for automatic error explanations or
                     logging.
-        log: bool
-            Specifies whether jabberwocky should log gpt api calls. If true,
-            these are stored as jsonlines files.
+            Alternatively, can also define your own template in a yaml file
+            mimicking the format of the builtin templates and pass in the
+            path to that file as a string.
         max_len_per_var: int
             Limits number of characters per variable when communicating
             current state (local or global depending on `full_context`) to
@@ -101,37 +94,34 @@ class DuckDB(Pdb):
             very big . I somewhat arbitrarily set 79 as the default, i.e.
             1 line of python per variable. I figure that's usually enough to
             communicate the gist of what's happening.
-        sleep: float
-            Seconds to sleep between characters when live typing completions.
-            0 means we type as fast as possible, higher numbers mean we type
-            more slowly. Our logging module sets this to zero because real time
-            typing is not important there.
         silent: bool
             If True, print gpt completions to stdout. One example of when False
             is appropriate is our logging module - we want to get the
             explanation and update the exception message which then gets
             logged, but we don't care about typing results in real time.
-        kwargs: any
+        pdb_kwargs: dict or None
             Additional kwargs for base Pdb class.
+        chat_kwargs: any
+            Additional kwargs to configure our Chat class (passed to
+            its `from_config` factory). Common example would be setting
+            `chat_class=roboduck.langchain.chat.DummyChatModel`
+            which mocks api calls (good for development, saves money).
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(**pdb_kwargs or {})
         self.prompt = '>>> '
         self.duck_prompt = '[Duck] '
-        # Check if None explicitly because model=0 is different.
-        self.query_kwargs = {'model': model} if model is not None else {}
+        self.query_kwargs = {}
         self.backend = backend
-        self.full_context = '_full' in task
-        # TODO: add support for debugger cls self.silent mode.
-        # TODO: Create chat cls in init, pass appropriate kwargs. Prob need to
-        # update debugger init signature too. Prob rename `task`.
-        # Must create self.chat before calling _chat_prompt_keys.
-        self.chat = Chat.from_config(task)
+        chat_kwargs['streaming'] = not silent
+        chat_kwargs['name'] = prompt_name
+        # Must create self.chat before setting _chat_prompt_keys,
+        # and full_context after both of those.
+        self.chat = Chat.from_config(**chat_kwargs)
         self.default_user_key, self.backup_user_key = self._chat_prompt_keys()
-        self.task = task
-        self.log = log
+        self.full_context = 'full_code' in self.field_names()
+        self.prompt_name = prompt_name
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
         self.silent = silent
-        self.sleep = sleep
         # This gets updated every time the user asks a question.
         self.prev_kwargs_hash = None
 
@@ -156,6 +146,9 @@ class DuckDB(Pdb):
         return default, backup
 
     def field_names(self, key=''):
+        """Get names of variables that are expected to be passed into default
+        user prompt template.
+        """
         return self.chat.input_variables(key)
 
     def _get_next_line(self, code_snippet):
@@ -336,8 +329,8 @@ class DuckDB(Pdb):
             f'Received stack_trace={stack_trace!r} but ' \
             f'field_names={field_names}.'
 
-        # TODO: update to get prompt from self.chat.
-        prompt = PROMPT_MANAGER.prompt(self.task, prompt_kwargs)
+        # TODO: maybe move to a public method in chat cls?
+        prompt = self.chat._user_message(key_=prompt_key, **prompt_kwargs)
         if len(prompt.split()) > 1_000:
             warnings.warn(
                 'Prompt is very long (>1k words). You\'re approaching a risky'
