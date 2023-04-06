@@ -1069,19 +1069,35 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 4/5/23 wed
 ----------
--nb04 langchain: Chat class improvements
-    -check for necessary updates in:
-        -debugger module
-            -pdb subclass
-                -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
-                -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
-            -update completion cache class if necessary
-            -look for other todos in file
-        -errors module
-        -logging module
-        -magic module
+-check for necessary updates (from langchain migration) in:
+    ~ -debugger module
+        ~ -pdb subclass
+            X -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
+                > Wrote new parse func in utils, kept "explanation" parsing logic very simple. We'll see how it does.
+            -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+        X -update completion cache class if necessary
+        -update duck func
+        -look for other todos in file
+    -errors module
+    -logging module
+    -magic module
 -reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
 
+4/6/23 thurs
+------------
+-easy: document utils.parse_debug_response
+-check for necessary updates in:
+    -debugger module
+        -consider better ways to specify defaults in cache cls so resetting them is cleaner
+        -pdb subclass
+            -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+
+        -look for other todos in file
+        -update duck func to match new signature
+    -errors module
+    -logging module
+    -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
 
 
 Backlog

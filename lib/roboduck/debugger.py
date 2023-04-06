@@ -30,7 +30,8 @@ import warnings
 
 from roboduck.langchain.chat import Chat
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
-    truncated_repr, load_current_ipython_session, colordiff_new_str
+    truncated_repr, load_current_ipython_session, colordiff_new_str, \
+    parse_code_response
 
 
 class CodeCompletionCache:
@@ -45,13 +46,18 @@ class CodeCompletionCache:
     last_code = ''
     last_new_code = ''
     last_code_diff = ''
+    last_extra = {}
 
     @classmethod
     def reset(cls):
         """Reset all class attributes like 'last_something' to empty strings.
         """
+        # TODO: maybe can find better way to specify defaults now that they're
+        # no longer all strs.
         for name in vars(CodeCompletionCache):
-            if name.startswith('last_'):
+            if name == 'last_extra':
+                setattr(cls, name, {})
+            elif name.startswith('last_'):
                 setattr(cls, name, '')
 
 
@@ -65,7 +71,7 @@ class DuckDB(Pdb):
 
     def __init__(self, backend='openai', prompt_name='debug',
                  max_len_per_var=79, silent=False, pdb_kwargs=None,
-                 **chat_kwargs):
+                 parse_func=parse_code_response, **chat_kwargs):
         """
         Parameters
         ----------
@@ -101,6 +107,11 @@ class DuckDB(Pdb):
             logged, but we don't care about typing results in real time.
         pdb_kwargs: dict or None
             Additional kwargs for base Pdb class.
+        parse_func: function
+            This will be called on the generated text each time gpt provides a
+            completion. It returns a dictionary whose values will be stored
+            in CodeCompletionCache in this module. See the default function's
+            docstring for guidance on writing a custom function.
         chat_kwargs: any
             Additional kwargs to configure our Chat class (passed to
             its `from_config` factory). Common example would be setting
@@ -122,6 +133,7 @@ class DuckDB(Pdb):
         self.prompt_name = prompt_name
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
         self.silent = silent
+        self.parse_func = parse_func
         # This gets updated every time the user asks a question.
         self.prev_kwargs_hash = None
 
@@ -355,28 +367,22 @@ class DuckDB(Pdb):
             if not self.silent:
                 print(colored(answer, 'green'))
 
-        # TODO: update this logic to use a user-provided parse_reply function
-        # that returns a dict.
-        parts = answer.split("SOLUTION PART 2")
-        if len(parts) != 2:
-            # Avoid updating cache because the completion doesn't match our
-            # expected explanation/code structure.
-            return
-        explanation, new_code = parts
-
+        parsed_kwargs = self.parse_func(answer)
         # When using the `duck` jupyter magic in "insert" mode, we reference
         # the CodeCompletionCache to populate the new code cell.
-        new_code = new_code.lstrip(":\n")
         CodeCompletionCache.last_completion = answer
-        CodeCompletionCache.last_explanation = explanation
-        # TODO: maybe check if code or full_code is more appropriate, either
-        # depending on self.full_context or by doing a quick str similarity
-        # to each.
-        old_code = prompt_kwargs['code']
-        CodeCompletionCache.last_code = old_code
+        CodeCompletionCache.last_explanation = parsed_kwargs['explanation']
+        # TODO: maybe check if code or full_code is more appropriate to store
+        # as last_code, either depending on self.full_context or by doing a
+        # quick str similarity to each.
+        old_code, new_code = prompt_kwargs['code'], parsed_kwargs['code']
         CodeCompletionCache.last_code_diff = colordiff_new_str(old_code,
                                                                new_code)
+        CodeCompletionCache.last_code = old_code
         CodeCompletionCache.last_new_code = new_code
+        # TODO: maybe support adding other kwargs to cache via some "extra" or
+        # "metadata" field?
+        CodeCompletionCache.last_extra = parsed_kwargs.get('extra', {})
         self.prev_kwargs_hash = kwargs_hash
 
     def precmd(self, line):

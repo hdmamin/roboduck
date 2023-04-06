@@ -467,3 +467,25 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
                   for i, chunk in enumerate(chunks, 1)]
         chunks[0] = chunks[0].lstrip()
     return ''.join(chunks)
+
+
+def parse_code_response(text):
+    """TODO docs
+
+    Parameters
+    ----------
+    text: str
+
+    Returns
+    -------
+    dict[str]
+    """
+    # Keep an eye out for how this performs - considered going with a more
+    # complex regex or other approach here but since part 2 is supposed to be
+    # code only, maybe that's okay. Extract_code could get weird if gpt
+    # uses triple backticks in a function docstring but that should be very
+    # rare, and the instructions sort of discourage it.
+    explanation = text.partition('```')[0]
+    code = extract_code(text)
+    return {'explanation': explanation,
+            'code': code}
