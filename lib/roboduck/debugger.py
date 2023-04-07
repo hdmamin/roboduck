@@ -31,9 +31,10 @@ import warnings
 from roboduck.langchain.chat import Chat
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
     truncated_repr, load_current_ipython_session, colordiff_new_str, \
-    parse_code_response
+    parse_completion, store_class_defaults
 
 
+@store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
 class CodeCompletionCache:
     """Just stores the last completion from DuckDB in a way that our
     `duck` jupyter magic can access (without relying on global variable, though
@@ -48,18 +49,6 @@ class CodeCompletionCache:
     last_code_diff = ''
     last_extra = {}
 
-    @classmethod
-    def reset(cls):
-        """Reset all class attributes like 'last_something' to empty strings.
-        """
-        # TODO: maybe can find better way to specify defaults now that they're
-        # no longer all strs.
-        for name in vars(CodeCompletionCache):
-            if name == 'last_extra':
-                setattr(cls, name, {})
-            elif name.startswith('last_'):
-                setattr(cls, name, '')
-
 
 class DuckDB(Pdb):
     """Conversational debugger powered by gpt models (currently codex, possibly
@@ -71,7 +60,7 @@ class DuckDB(Pdb):
 
     def __init__(self, backend='openai', prompt_name='debug',
                  max_len_per_var=79, silent=False, pdb_kwargs=None,
-                 parse_func=parse_code_response, **chat_kwargs):
+                 parse_func=parse_completion, **chat_kwargs):
         """
         Parameters
         ----------

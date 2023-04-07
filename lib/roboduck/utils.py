@@ -13,6 +13,7 @@ import pandas as pd
 from pathlib import Path
 import re
 import time
+import warnings
 import yaml
 
 from htools.core import random_str, load
@@ -469,12 +470,27 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
     return ''.join(chunks)
 
 
-def parse_code_response(text):
-    """TODO docs
+def parse_completion(text):
+    """This function is called on the gpt completion text in
+    roboduck.debugger.DuckDB.ask_language_model (i.e. when the user asks a
+    question during a debugging session, or when an error occurs when in
+    auto-explain errors mode).
+
+    Users can define their own custom function as a replacement (mostly
+    useful when defining custom prompts too). The only requirements are that
+    the function must take 1 string input and return a dict containing the
+    keys "explanation" and "code", with an optional key "extra" that can be
+    used to store any additional information (probably in a dict). For example,
+    if you wrote a prompt that asked gpt to return valid json, you could
+    potentially use json.loads() as your drop-in replacement (ignoring
+    validation/error handling, which you might prefer to handle via a langchain
+    chain anyway).
 
     Parameters
     ----------
     text: str
+        GPT completion. This should contain both a natural language explanation
+        and code.
 
     Returns
     -------
@@ -489,3 +505,71 @@ def parse_code_response(text):
     code = extract_code(text)
     return {'explanation': explanation,
             'code': code}
+
+
+def store_class_defaults(cls=None, attr_filter=None):
+    """Class decorator that stores default values of class attributes (can be
+    all or a subset). Default here refers to the value at class definition
+    time.
+
+    @store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
+    class Foo:
+        last_bar = 3
+        last_baz = 'abc'
+        other = True
+
+    >>> Foo._class_defaults
+
+    {'last_bar': 3, 'last_baz': 'abc'}
+
+    Or use the decorator without parentheses to store all values at definition
+    time. This is usually unnecessary. If you do provide an attr_filter, it
+    must be a named argument.
+
+    Foo.reset_class_vars() will reset all relevant class vars to their
+    default values.
+    """
+    if cls is None:
+        return partial(store_class_defaults, attr_filter=attr_filter)
+    if not isinstance(cls, type):
+        raise TypeError(
+            f'cls arg in store_class_defaults decorator has type {type(cls)} '
+            f'but expected type `type`, i.e. a class. You may be passing in '
+            f'an attr_filter as a positional arg which is not allowed - it '
+            f'must be a named arg if provided.'
+        )
+    if not attr_filter:
+        def attr_filter(x):
+            return True
+    defaults = {}
+    for k, v in vars(cls).items():
+        if attr_filter(k):
+            defaults[k] = v
+
+    name = '_class_defaults'
+    if hasattr(cls, name):
+        raise AttributeError(
+            f'Class {cls} already has attribute {name}. store_class_defaults '
+            'decorator would overwrite that. Exiting.'
+        )
+    setattr(cls, name, defaults)
+
+    @classmethod
+    def reset_class_vars(cls):
+        """Reset all default class attributes to their defaults.
+        """
+        for k, v in cls._class_defaults.items():
+            try:
+                setattr(cls, k, v)
+            except Exception as e:
+                warnings.warn(f'Could not reset class attribute {k} to its '
+                              f'default value:\n\n{e}')
+
+    meth_name = 'reset_class_vars'
+    if hasattr(cls, meth_name):
+        raise AttributeError(
+            f'Class {cls} already has attribute {meth_name}. '
+            f'store_class_defaults decorator would overwrite that. Exiting.'
+        )
+    setattr(cls, meth_name, reset)
+    return cls

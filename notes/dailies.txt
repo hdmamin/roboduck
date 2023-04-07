@@ -1085,15 +1085,29 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
 
 4/6/23 thurs
 ------------
--easy: document utils.parse_debug_response
+X -easy: document utils.parse_debug_response
 -check for necessary updates in:
-    -debugger module
-        -consider better ways to specify defaults in cache cls so resetting them is cleaner
+    ~ -debugger module
+        X -consider better ways to specify defaults in cache cls so resetting them is cleaner
+            > Wrote cls decorator that accomplishes this. Reset method is much prettier now.
         -pdb subclass
             -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
 
         -look for other todos in file
         -update duck func to match new signature
+    -errors module
+    -logging module
+    -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/7/23 fri
+----------
+-check for necessary updates in:
+    -debugger module
+        -pdb subclass
+            -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+        -update duck func to match new signature
+        -look for other todos in file
     -errors module
     -logging module
     -magic module
