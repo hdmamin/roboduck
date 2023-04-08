@@ -190,13 +190,27 @@ class Chat:
         kwargs = template.pop('kwargs', {})
         return cls(**template, **kwargs)
 
-    def _user_message(self, *, key_='', **kwargs):
+    def user_message(self, *, key_='', **kwargs):
+        """Get a fully resolved user reply as a string.
+
+        Parameters
+        ----------
+        key_: str
+            Determines which reply type to use. If empty, falls back to default
+            reply type.
+        kwargs: str
+            The required fields for the selected reply type.
+
+        Returns
+        -------
+        str
+        """
         key = key_ or self.default_user_key
         template = self.user_templates[key]
         return template.format(**kwargs)
 
     def _reply(self, *, key_='', **kwargs):
-        user_message = self._user_message(key_=key_, **kwargs)
+        user_message = self.user_message(key_=key_, **kwargs)
         self._history.append(user_message)
         try:
             response = self.chat(self._history)

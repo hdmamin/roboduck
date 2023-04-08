@@ -1102,16 +1102,37 @@ X -easy: document utils.parse_debug_response
 
 4/7/23 fri
 ----------
--check for necessary updates in:
-    -debugger module
-        -pdb subclass
-            -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
-        -update duck func to match new signature
-        -look for other todos in file
+~ -check for necessary updates in:
+    X -debugger module
+        _ -pdb subclass
+            _ -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+                > Idk, the whole point of conversational debugging is that you can ask for what you want. Can infer between two response types based on whether program state has changed. With arbitrary types, at some point you're just passing in a func to do everything.
+            X -check what happens with cache when asking a followup (contextless) question and consider if that's what's desired (i.e. should last_code be reset or not?)
+                > Will have empty str for last_code but after giving this some thought, I think that's desirable. Contextless response is only used in debugger mode (not errors/logging/magic) and Cache is only used in non-debugger modes.
+        X -update duck func to match new signature
+            > Tried using fastai.delegates, decided I like htools.add_docstring more here bc it includes documentation and does less weird hacking of the function signature.
+        X -look for other todos in file
+            > Changed chat._user_message to public and added some docs.
+            > 2 unrelated todos still present in file, but that's a separate task.
+    _ -magic module
+        > Looks like no changes needed :).
+    _ -logging module
+        > Looks like no changes needed :).
     -errors module
-    -logging module
-    -magic module
 -reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/8/23 sat
+----------
+-consider renaming debugger module to debug
+-check for visibly necessary updates in (consequence of jabberwocky -> langchain):
+    -errors module
+    -then test each module:
+        -debugger
+        -errors
+        -magic
+        -logging
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
 
 
 Backlog
@@ -1145,6 +1166,7 @@ Backlog
 Easy Backlog
 ------------
 -langchain.chat.chat various method docstrings
+-consider copy/pasting in some htools functions so I can rm dependency
 -write more tests
     -manually
     -or try telling gpt to write some tests

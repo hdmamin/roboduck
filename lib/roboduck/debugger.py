@@ -28,6 +28,7 @@ import sys
 import time
 import warnings
 
+from htools.meta import add_docstring
 from roboduck.langchain.chat import Chat
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
     truncated_repr, load_current_ipython_session, colordiff_new_str, \
@@ -58,16 +59,11 @@ class DuckDB(Pdb):
     making the query.
     """
 
-    def __init__(self, backend='openai', prompt_name='debug',
-                 max_len_per_var=79, silent=False, pdb_kwargs=None,
-                 parse_func=parse_completion, **chat_kwargs):
+    def __init__(self, prompt_name='debug', max_len_per_var=79, silent=False,
+                 pdb_kwargs=None, parse_func=parse_completion, **chat_kwargs):
         """
         Parameters
         ----------
-        backend: str
-            Specifies which GPT api to use, e.g. 'openai' or 'gooseai'. Since
-            we currently use codex, backends besides 'openai' are not
-            supported.
         prompt_name: str
             Name of prompt template to use when querying chatGPT. Roboduck
             currently provides several builtin options
@@ -111,7 +107,6 @@ class DuckDB(Pdb):
         self.prompt = '>>> '
         self.duck_prompt = '[Duck] '
         self.query_kwargs = {}
-        self.backend = backend
         chat_kwargs['streaming'] = not silent
         chat_kwargs['name'] = prompt_name
         # Must create self.chat before setting _chat_prompt_keys,
@@ -330,8 +325,7 @@ class DuckDB(Pdb):
             f'Received stack_trace={stack_trace!r} but ' \
             f'field_names={field_names}.'
 
-        # TODO: maybe move to a public method in chat cls?
-        prompt = self.chat._user_message(key_=prompt_key, **prompt_kwargs)
+        prompt = self.chat.user_message(key_=prompt_key, **prompt_kwargs)
         if len(prompt.split()) > 1_000:
             warnings.warn(
                 'Prompt is very long (>1k words). You\'re approaching a risky'
@@ -353,6 +347,9 @@ class DuckDB(Pdb):
         if not answer:
             answer = 'Sorry, I don\'t know. Can you try ' \
                      'rephrasing your question?'
+            # This is intentionally nested in if statement because if answer is
+            # truthy, we will have already printed it via our callback if not
+            # in silent mode.
             if not self.silent:
                 print(colored(answer, 'green'))
 
@@ -369,8 +366,6 @@ class DuckDB(Pdb):
                                                                new_code)
         CodeCompletionCache.last_code = old_code
         CodeCompletionCache.last_new_code = new_code
-        # TODO: maybe support adding other kwargs to cache via some "extra" or
-        # "metadata" field?
         CodeCompletionCache.last_extra = parsed_kwargs.get('extra', {})
         self.prev_kwargs_hash = kwargs_hash
 
@@ -387,7 +382,10 @@ class DuckDB(Pdb):
         return super().precmd(line)
 
 
-def duck(backend='openai', model=None, **kwargs):
-    # Equivalent of native breakpoint().
-    DuckDB(backend=backend, model=model, **kwargs)\
-        .set_trace(sys._getframe().f_back)
+@add_docstring(DuckDB.__init__)
+def duck(**kwargs):
+    """Roboduck equivalent of native python breakpoint().
+    The DuckDB docstring is below. Any kwargs passed in to this function
+    will be passed to its constructor.
+    """
+    DuckDB(**kwargs).set_trace(sys._getframe().f_back)

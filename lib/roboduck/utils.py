@@ -3,6 +3,7 @@
 from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib
+from functools import partial
 import hashlib
 import ipynbname
 from inspect import signature, Parameter
@@ -571,5 +572,5 @@ def store_class_defaults(cls=None, attr_filter=None):
             f'Class {cls} already has attribute {meth_name}. '
             f'store_class_defaults decorator would overwrite that. Exiting.'
         )
-    setattr(cls, meth_name, reset)
+    setattr(cls, meth_name, reset_class_vars)
     return cls
