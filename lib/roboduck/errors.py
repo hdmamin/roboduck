@@ -19,7 +19,7 @@ errors.enable(auto=True)
 """
 from functools import partial
 from IPython import get_ipython
-from roboduck.debugger import DuckDB, CodeCompletionCache
+from roboduck.debug import DuckDB, CodeCompletionCache
 import sys
 from traceback import TracebackException
 import warnings
@@ -54,7 +54,7 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
     question: str
         The question that gets asked to gpt when an error occurs. Usually just
         leave this as the default. If you want to do more custom/in-depth
-        debugging, it's better to use roboduck.debugger.duck() (our
+        debugging, it's better to use roboduck.debug.duck() (our
         breakpoint() replacement).
         NOTE: this gets ignored by our DuckDB class if the specified task
         does not accept a question field. debug_stack_trace does not, so this
@@ -62,7 +62,7 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
     task: str
         The prompt name that will be passed to our debugger class. Usually
         should leave this as the default. We expect the name to contain
-        'debug' and will warn if it it doesn't.
+        'debug' and will warn if it doesn't.
     kwargs: any
         Additional kwargs to pass to Pdb instantiation.
     """
@@ -133,7 +133,7 @@ def excepthook(etype, val, tb, task='debug_stack_trace',
     """Replaces sys.excepthook when module is imported. When an error is
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
-    roboduck.debugger.duck(), the user does not need to manually type a
+    roboduck.debug.duck(), the user does not need to manually type a
     question, and we don't linger in the debugger - we just write gpt's
     explanation and exit.
 

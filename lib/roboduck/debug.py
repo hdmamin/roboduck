@@ -6,7 +6,7 @@ you more effectively.
 Quickstart
 ----------
 # Our replacement for python's `breakpoint`.
-from roboduck.debugger import duck
+from roboduck.debug import duck
 
 # Broken version of bubble sort. Notice the duck() call on the second to last
 # line.

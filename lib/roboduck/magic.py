@@ -27,7 +27,7 @@ from IPython.core.magic_arguments import argument, magic_arguments, \
 import sys
 import warnings
 
-from roboduck.debugger import DuckDB, CodeCompletionCache
+from roboduck.debug import DuckDB, CodeCompletionCache
 
 
 @magics_class
@@ -64,7 +64,7 @@ class DebugMagic(Magics):
               help='Boolean flag: if provided, use INTERACTIVE mode. Start a '
                    'conversational debugger session and allow the user to ask '
                    'custom questions, just as they would if using '
-                   'roboduck.debugger.duck(). The default mode, meanwhile, '
+                   'roboduck.debug.duck(). The default mode, meanwhile, '
                    'simply asks gpt what caused the error that just '
                    'occurred and then exits, rather than lingering in a '
                    'debugger session.')

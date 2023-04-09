@@ -473,7 +473,7 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
 
 def parse_completion(text):
     """This function is called on the gpt completion text in
-    roboduck.debugger.DuckDB.ask_language_model (i.e. when the user asks a
+    roboduck.debug.DuckDB.ask_language_model (i.e. when the user asks a
     question during a debugging session, or when an error occurs when in
     auto-explain errors mode).
 
