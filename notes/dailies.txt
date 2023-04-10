@@ -1148,6 +1148,7 @@ X -reproduce jabberwocky.load_openai_key somewhere with langchain (make it so us
 
 4/10/23 mon
 -----------
+-look into how to re-enable pycharm static analysis to show missing imports
 -revise debug prompt to try to avoid getting section numbers too (already requested no titles, but maybe can be even clearer)
 -revise debug prompt OR parse func to avoid/handle case of '```python' vs '```'
     -consider which strategy is preferable (more explicit instructions or more flexible/permissive parser)
