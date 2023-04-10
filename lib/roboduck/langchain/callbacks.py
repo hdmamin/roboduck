@@ -1,4 +1,5 @@
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+import sys
 import time
 
 from roboduck.utils import colored

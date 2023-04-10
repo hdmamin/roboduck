@@ -3,7 +3,7 @@
 from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib
-from functools import partial
+from functools import partial, wraps
 import hashlib
 import ipynbname
 from inspect import signature, Parameter

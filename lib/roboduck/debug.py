@@ -310,9 +310,9 @@ class DuckDB(Pdb):
         kwargs_hash = hash(str(prompt_kwargs))
         if kwargs_hash == self.prev_kwargs_hash:
             prompt_kwargs.clear()
-            prompt_key = self.default_user_key
-        else:
             prompt_key = self.backup_user_key
+        else:
+            prompt_key = self.default_user_key
 
         # Perform surgery on kwargs depending on what fields are expected.
         field_names = self.field_names(prompt_key)
@@ -325,7 +325,8 @@ class DuckDB(Pdb):
             f'Received stack_trace={stack_trace!r} but ' \
             f'field_names={field_names}.'
 
-        prompt = self.chat.user_message(key_=prompt_key, **prompt_kwargs)
+        prompt = self.chat.user_message(key_=prompt_key,
+                                        **prompt_kwargs).content
         if len(prompt.split()) > 1_000:
             warnings.warn(
                 'Prompt is very long (>1k words). You\'re approaching a risky'
@@ -337,13 +338,11 @@ class DuckDB(Pdb):
 
         if not self.silent:
             print(colored(self.duck_prompt, 'green'), end='')
+
+        # The actual LLM call.
         res = self.chat.reply(**prompt_kwargs, key_=prompt_key)
 
-        # Strip trailing quotes because the entire prompt is inside a
-        # docstring and codex may try to close it. We can't use it as a stop
-        # phrase in case codex generates a fixed code snippet that includes
-        # a docstring.
-        answer = res.strip()
+        answer = res.content.strip()
         if not answer:
             answer = 'Sorry, I don\'t know. Can you try ' \
                      'rephrasing your question?'
@@ -361,7 +360,9 @@ class DuckDB(Pdb):
         # TODO: maybe check if code or full_code is more appropriate to store
         # as last_code, either depending on self.full_context or by doing a
         # quick str similarity to each.
-        old_code, new_code = prompt_kwargs['code'], parsed_kwargs['code']
+        # Contextless prompt has no `code` key.
+        old_code = prompt_kwargs.get('code', '')
+        new_code = parsed_kwargs['code']
         CodeCompletionCache.last_code_diff = colordiff_new_str(old_code,
                                                                new_code)
         CodeCompletionCache.last_code = old_code

@@ -1,17 +1,19 @@
+from functools import partial
 from langchain.callbacks.base import CallbackManager
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import ChatResult, ChatGeneration, AIMessage, \
     SystemMessage
 from langchain.prompts import HumanMessagePromptTemplate, \
     SystemMessagePromptTemplate
-
 import warnings
 
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.prompts.utils import load_template
+from roboduck.utils import add_kwargs
 
 
 class DummyChatModel:
+    # Drop-in replacement for ChatOpenAI that just repeats the last message.
     # We'd have to be a bit more rigid about expects init args if we want to
     # subclass from BaseChatModel. For now this is fine.
 
@@ -119,6 +121,7 @@ class Chat:
                 [LiveTypingCallbackHandler()]
             )
         self.chat = chat_class(**self.kwargs)
+        print('chat:', self.chat)# TODO rm
         self.system_message = SystemMessage(content=system)
         if isinstance(user, str):
             user = {'reply': user}
