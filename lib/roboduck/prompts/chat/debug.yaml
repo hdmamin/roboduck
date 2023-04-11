@@ -1,5 +1,3 @@
-# Technically we could omit logit_bias here, just including it as documentation
-# for future templates.
 kwargs:
     model_name: gpt-3.5-turbo
     max_tokens: 512
@@ -7,7 +5,11 @@ kwargs:
     top_p: 1.0
     frequency_penalty: 0.0
     presence_penalty: 0.0
-    logit_bias: {}
+    # Try to reduce probability of section titles - gpt3.5 sometimes ignores
+    # those instructions. {section, Section}
+    logit_bias:
+      2879: -20
+      9817: -20
     stop:
       - QUESTION
       - SOLUTION PART 3
@@ -16,7 +18,7 @@ system: |-
 # First key defines default message type.
 user:
   contextful: |-
-    This code snippet is not working as expected. Help me debug it. First read my question, then examine the snippet of code that is causing the issue and look at the values of the local and global variables. Your response must have exactly two sections, separated by an empty line. Do not include section titles of any kind. In section 1, use plain English to explain what the problem is and how to fix it (if you couldn't identify the problem, section 1 should instead list a few possible causes or things I could try in order to identify the issue). In section 2, write a corrected version of the input code snippet (if you don't know, section 2 should be empty). Section 2 must contain only python code - there must not be any English explanation outside of code comments or docstrings. Section 2 must be entirely enclosed in one pair of triple backticks ("```"). 
+    This code snippet is not working as expected. Help me debug it. First read my question, then examine the snippet of code that is causing the issue and look at the values of the local and global variables. Your response must have exactly two sections, separated by an empty line. (They should appear to the user as a single section, however - do NOT include section titles of any kind.) In section 1, use plain English to explain what the problem is and how to fix it (if you couldn't identify the problem, section 1 should instead list a few possible causes or things I could try in order to identify the issue). In section 2, write a corrected version of the input code snippet (if you don't know, section 2 should be empty). Section 2 must contain only python code - there must not be any English explanation outside of code comments or docstrings. Section 2 must be entirely enclosed in one pair of triple backticks ("```"). 
 
     QUESTION:
     {question}

@@ -461,7 +461,7 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
     b = ([0, 1], [2, 3])
     b = (b[0], b[1] + [a])
     """
-    chunks = re.findall("(?s)```\n(.*?)\n```", text)
+    chunks = re.findall("(?s)```(?:python)?\n(.*?)\n```", text)
     if not join_multi:
         return chunks
     if len(chunks) > 1:
@@ -502,7 +502,7 @@ def parse_completion(text):
     # code only, maybe that's okay. Extract_code could get weird if gpt
     # uses triple backticks in a function docstring but that should be very
     # rare, and the instructions sort of discourage it.
-    explanation = text.partition('```')[0]
+    explanation = text.partition('\n```')[0]
     code = extract_code(text)
     return {'explanation': explanation,
             'code': code}
