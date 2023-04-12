@@ -31,9 +31,8 @@ ipy = get_ipython()
 
 
 @add_docstring(DuckDB.__init__)
-def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
-                question='What caused this error?',
-                prompt_name='debug_stack_trace', colordiff=True, **kwargs):
+def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
+                colordiff=True, **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
     both the stack trace AND global/local vars from the program state right
@@ -50,16 +49,6 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
     trace: str
         Stack trace formatted as a single string. Required - default value
         just helps us maintain a consistent interface with pdb.post_mortem.
-    dev_mode: bool
-        If True, print the full gpt prompt before making the query.
-    question: str
-        The question that gets asked to gpt when an error occurs. Usually just
-        leave this as the default. If you want to do more custom/in-depth
-        debugging, it's better to use roboduck.debug.duck() (our
-        breakpoint() replacement).
-        NOTE: this gets ignored by our DuckDB class if the specified prompt_name
-        does not accept a question field. debug_stack_trace does not, so this
-        is ignored by default.
     prompt_name: str
         The prompt name that will be passed to our debugger class. Usually
         should leave this as the default. We expect the name to contain
@@ -82,11 +71,18 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
         )
     assert trace, 'Trace passed to post_mortem should be truthy.'
 
+    # This serves almost like a soft assert statement - if user defines some
+    # custom debugger class and the question leaks through, gpt should
+    # hopefully warn us.
+    dummy_question = (
+        'This is a fake question to ensure that our ask_language_model '
+        'method gets called. Our debugger class should remove this from the '
+        'prompt kwargs before calling gpt. If you can read this, can you '
+        'indicate that in your response?'
+    )
     p = Pdb(prompt_name=prompt_name, **kwargs)
     p.reset()
-    if dev_mode:
-        question = f'[dev] {question}'
-    p.cmdqueue.insert(0, (question, trace))
+    p.cmdqueue.insert(0, (dummy_question, trace))
     p.cmdqueue.insert(1, 'q')
     p.interaction(None, t)
 
