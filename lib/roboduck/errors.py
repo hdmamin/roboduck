@@ -24,6 +24,7 @@ import sys
 from traceback import TracebackException
 import warnings
 
+from htools.core import add_docstring
 
 default_excepthook = sys.excepthook
 ipy = get_ipython()
