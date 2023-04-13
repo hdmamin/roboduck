@@ -24,7 +24,7 @@ import sys
 from traceback import TracebackException
 import warnings
 
-from htools.core import add_docstring
+from htools.meta import add_docstring
 
 default_excepthook = sys.excepthook
 ipy = get_ipython()
@@ -80,6 +80,7 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
         'prompt kwargs before calling gpt. If you can read this, can you '
         'indicate that in your response?'
     )
+    kwargs['color'] = kwargs.get('color', 'red')
     p = Pdb(prompt_name=prompt_name, **kwargs)
     p.reset()
     p.cmdqueue.insert(0, (dummy_question, trace))

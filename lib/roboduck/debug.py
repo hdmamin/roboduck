@@ -23,13 +23,14 @@ from functools import partial
 from htools import load, is_ipy_name
 import inspect
 import ipynbname
+from langchain.callbacks.base import CallbackManager
 from pdb import Pdb
 import sys
-import time
 import warnings
 
 from htools.meta import add_docstring
 from roboduck.langchain.chat import Chat
+from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
     truncated_repr, load_current_ipython_session, colordiff_new_str, \
     parse_completion, store_class_defaults
@@ -60,7 +61,8 @@ class DuckDB(Pdb):
     """
 
     def __init__(self, prompt_name='debug', max_len_per_var=79, silent=False,
-                 pdb_kwargs=None, parse_func=parse_completion, **chat_kwargs):
+                 pdb_kwargs=None, parse_func=parse_completion, color='green',
+                 **chat_kwargs):
         """
         Parameters
         ----------
@@ -97,6 +99,10 @@ class DuckDB(Pdb):
             completion. It returns a dictionary whose values will be stored
             in CodeCompletionCache in this module. See the default function's
             docstring for guidance on writing a custom function.
+        color: str
+            Color to print gpt completions in. Sometimes we want to change this
+            to red, such as in the errors module, to make it clearer that an
+            error occurred.
         chat_kwargs: any
             Additional kwargs to configure our Chat class (passed to
             its `from_config` factory). Common example would be setting
@@ -109,9 +115,18 @@ class DuckDB(Pdb):
         self.query_kwargs = {}
         chat_kwargs['streaming'] = not silent
         chat_kwargs['name'] = prompt_name
+        # Dev color is what we print the prompt in when user asks a question
+        # in dev mode.
+        self.color = color
+        self.dev_color = 'blue' if self.color == 'red' else 'red'
         # Must create self.chat before setting _chat_prompt_keys,
         # and full_context after both of those.
-        self.chat = Chat.from_config(**chat_kwargs)
+        self.chat = Chat.from_config(
+            **chat_kwargs,
+            callback_manager=CallbackManager(
+                [LiveTypingCallbackHandler(color=color)]
+            )
+        )
         self.default_user_key, self.backup_user_key = self._chat_prompt_keys()
         self.full_context = 'full_code' in self.field_names()
         self.prompt_name = prompt_name
@@ -337,7 +352,7 @@ class DuckDB(Pdb):
             print(colored(prompt, 'red'))
 
         if not self.silent:
-            print(colored(self.duck_prompt, 'green'), end='')
+            print(colored(self.duck_prompt, self.color), end='')
 
         # The actual LLM call.
         res = self.chat.reply(**prompt_kwargs, key_=prompt_key)
@@ -350,7 +365,7 @@ class DuckDB(Pdb):
             # truthy, we will have already printed it via our callback if not
             # in silent mode.
             if not self.silent:
-                print(colored(answer, 'green'))
+                print(colored(answer, self.color))
 
         parsed_kwargs = self.parse_func(answer)
         # When using the `duck` jupyter magic in "insert" mode, we reference

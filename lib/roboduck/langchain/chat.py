@@ -3,8 +3,7 @@ from langchain.callbacks.base import CallbackManager
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import ChatResult, ChatGeneration, AIMessage, \
     SystemMessage
-from langchain.prompts import HumanMessagePromptTemplate, \
-    SystemMessagePromptTemplate
+from langchain.prompts import HumanMessagePromptTemplate
 import warnings
 
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
@@ -121,7 +120,6 @@ class Chat:
                 [LiveTypingCallbackHandler()]
             )
         self.chat = chat_class(**self.kwargs)
-        print('chat:', self.chat)# TODO rm
         self.system_message = SystemMessage(content=system)
         if isinstance(user, str):
             user = {'reply': user}
