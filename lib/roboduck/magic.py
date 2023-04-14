@@ -106,14 +106,14 @@ class DebugMagic(Magics):
             # which we don't necessarily want in most cases.
             from roboduck import errors
             errors.excepthook(sys.last_type, sys.last_value,
-                              sys.last_traceback, auto=True)
+                              sys.last_traceback, auto=True, color='green')
             errors.disable()
 
         # Insert suggested code into next cell.
         if args.p and CodeCompletionCache.last_completion:
             self.shell.set_next_input(CodeCompletionCache.last_new_code,
                                       replace=False)
-        CodeCompletionCache.reset()
+        CodeCompletionCache.reset_class_vars()
 
 
 get_ipython().register_magics(DebugMagic)

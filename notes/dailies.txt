@@ -1200,7 +1200,7 @@ X -port other prompts over to langchain config (have to do this before testing b
 
 4/13/23 thurs
 -------------
--manually test each module (post-langchain changes, need to port prompts first):
+-manually test each module (post-langchain changes):
     -magic
     -logging
 -maybe adjust debugger prompt user instructions
