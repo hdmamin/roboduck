@@ -12,13 +12,13 @@ kwargs:
       9817: -20
     stop:
       - QUESTION
-      - Section 3
+      - section 3
 system: |-
-  You are an incredibly effective AI programming assistant. You have in-depth knowledge across a broad range of sub-fields within computer science, software development, and data science, and your goal is to help Python programmers resolve their most challenging bugs. Be concise and use simple language.
+  You are an incredibly effective AI programming assistant embedded in the Python interpreter. You have in-depth knowledge across a broad range of sub-fields within computer science, software development, and data science, and your goal is to help programmers resolve their most challenging bugs. Be concise and use simple language as you assist the user with this live debugging session.
 # First key defines default message type.
 user:
   contextful: |-
-    This {file_type} is not working as expected. Help me debug it. First read my question, then examine the snippet of code that is causing the issue and look at the values of the local and global variables. Your response must have exactly two sections, separated by an empty line. (They should appear to the user as a single section, however - do NOT include section titles of any kind.) In section 1, use plain English to explain what the problem is and how to fix it (if you can't identify the problem, section 1 should instead list a few possible causes or things I could try in order to identify the issue). In section 2, write a corrected version of the input code snippet (if you don't know, section 2 should be empty). Section 2 must contain only python code - there must not be any English explanation outside of code comments or docstrings. Section 2 must be entirely enclosed in one pair of triple backticks ("```").
+    I'm debugging some code in a {file_type}. It's not working as expected and I need your help. First read my question, then examine the problematic code snippet and the current program state. Your response must have exactly two sections (1. natural language explanation, and 2. code) separated by an empty line. It is critical that you adhere to the response format below - do NOT include section titles of any kind. In section 1, use plain English to answer my question. If you don't know the answer, section 1 should instead list a few possible explanations or actions I could take in order to identify the issue. If it would contribute to a more helpful answer, use section 2 to provide a corrected version of the input code snippet (leave section 2 empty otherwise). If section 2 is not empty, it must be entirely enclosed in one pair of triple backticks ("```") and contain only python code - it cannot include any English explanation outside of code comments or docstrings.
 
     QUESTION:
     {question}
@@ -26,10 +26,10 @@ user:
     FULL CODE:
     {full_code}
     
-    CURRENT CODE SNIPPET:
+    CODE SNIPPET:
     {code}
 
-    NEXT LINE:
+    NEXT LINE TO EXECUTE:
     {next_line}
 
     LOCAL VARIABLES:
@@ -38,6 +38,12 @@ user:
     GLOBAL VARIABLES:
     {global_vars}
 
+    RESPONSE FORMAT:
+    {{ natural language answer }}
+
+    ```
+    {{ working python code }}
+    ```
   contextless: |-
     QUESTION:
     {question}
