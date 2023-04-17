@@ -192,7 +192,7 @@ class DuckDB(Pdb):
     def _get_prompt_kwargs(self):
         """Construct a dictionary describing the current state of our code
         (variable names and values, source code, file type). This will be
-        passed to our jabberwocky PromptManager to fill in the debug prompt
+        passed to our langchain chat.reply() method to fill in the debug prompt
         template.
 
         Returns

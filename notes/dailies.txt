@@ -1244,6 +1244,8 @@ X -consider renaming langchain module in roboduck lib (maybe the wrong way to th
     > Keep name but make some core classes available in roboduck init so user doesn't need to explicitly reference this in imports. We DO have a heavy reliance on langchain so the fact that the naming reflects that is reasonable, IMO.
 X -maybe add more flexible prompt kwarg surgery in debug cls ask_language_model (e.g. warn if unrecognized fields are provided, make sure error message is good if they're missing)
     > Raise error if receive unexpected kwargs OR fail to receive expected kwargs. (Langchain will error out in either of those cases so don't just warn.) Tested both variants on a dummy prompt.
+-update deps
+    > Added langchain (version will likely need to change before release due to their rapid dev speed), removed jabberwocky, removed some docstring refs to jabberwocky.
 ~ -look into support for models besides 3.5-turbo
     X -does gpt4 use same system/user instruction system?
         > 4 and 3.5-turbo both are chat only, no completion endpoint support. Should be same system/user setup.
