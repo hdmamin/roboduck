@@ -1021,12 +1021,249 @@ X -revert jabberwocky to prev commit (before enginemap changes and version bump)
         ~ -[maybe wait] docstrings
             > Documented the big stuff so I won't forget. Maybe return to the helper methods later.
     -port other jabberwocky debug prompts to roboduck
-    -check for necessary updates in:
-        -debugger module (main pdb subclass, cache)
+    ~ -check for necessary updates in:
+        ~ -debugger module (main pdb subclass, cache)
+            > WIP, non-exhaustive TODOs are sprinkled throughout file.
         -errors module
         -logging module
         -magic module
 -reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/3/23 mon
+-----------
+-nb04 langchain: Chat class improvements
+    -check for necessary updates in:
+        -debugger module
+            -pdb subclass
+                X -update how field_names is set
+                    > Wrote new chat method in the process and debugger helper method. Also changed how field names are retrieved and used by debugger cls.
+                X -rm popping next_line from kwargs bc it IS now supported (in the 1 prompt I ported over to langchain, at least)
+                -pass necessary kwargs to self.chat instantiation and update debugger init signature accordingly
+                -enable self.silent mode w/ chat class (maybe can just set stream=False)?
+                -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
+            -update completion cache class if necessary
+            -look for other todos in file
+        -errors module
+        -logging module
+        -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/4/23 tues
+-----------
+-nb04 langchain: Chat class improvements
+    -check for necessary updates in:
+        -debugger module
+            ~ -pdb subclass
+                X -pass necessary kwargs to self.chat instantiation and update debugger init signature accordingly
+                X -enable self.silent mode w/ chat class (maybe can just set stream=False)?
+                X -enable printing resolved prompt in dev mode
+                    > Maybe should move to a public method in chat cls though? Currently debugger cls calls chat internal method.
+                -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
+                -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+            -update completion cache class if necessary
+            -look for other todos in file
+        -errors module
+        -logging module
+        -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/5/23 wed
+----------
+-check for necessary updates (from langchain migration) in:
+    ~ -debugger module
+        ~ -pdb subclass
+            X -allow passing in custom extract_kwargs func to map from completion -> cache (or should this be done elsewhere? Probably not)
+                > Wrote new parse func in utils, kept "explanation" parsing logic very simple. We'll see how it does.
+            -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+        X -update completion cache class if necessary
+        -update duck func
+        -look for other todos in file
+    -errors module
+    -logging module
+    -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/6/23 thurs
+------------
+X -easy: document utils.parse_debug_response
+-check for necessary updates in:
+    ~ -debugger module
+        X -consider better ways to specify defaults in cache cls so resetting them is cleaner
+            > Wrote cls decorator that accomplishes this. Reset method is much prettier now.
+        -pdb subclass
+            -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+
+        -look for other todos in file
+        -update duck func to match new signature
+    -errors module
+    -logging module
+    -magic module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/7/23 fri
+----------
+~ -check for necessary updates in:
+    X -debugger module
+        _ -pdb subclass
+            _ -consider how we might add support for multiple reply types (perhaps user could define a number of prefixes like my use of [dev] to determine this?)
+                > Idk, the whole point of conversational debugging is that you can ask for what you want. Can infer between two response types based on whether program state has changed. With arbitrary types, at some point you're just passing in a func to do everything.
+            X -check what happens with cache when asking a followup (contextless) question and consider if that's what's desired (i.e. should last_code be reset or not?)
+                > Will have empty str for last_code but after giving this some thought, I think that's desirable. Contextless response is only used in debugger mode (not errors/logging/magic) and Cache is only used in non-debugger modes.
+        X -update duck func to match new signature
+            > Tried using fastai.delegates, decided I like htools.add_docstring more here bc it includes documentation and does less weird hacking of the function signature.
+        X -look for other todos in file
+            > Changed chat._user_message to public and added some docs.
+            > 2 unrelated todos still present in file, but that's a separate task.
+    _ -magic module
+        > Looks like no changes needed :).
+    _ -logging module
+        > Looks like no changes needed :).
+    -errors module
+-reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/8/23 sat
+----------
+X -consider renaming debugger module to debug
+    > Yep, like the shorter name. Done.
+X -check for visibly necessary updates in (consequence of jabberwocky -> langchain):
+    X -errors module
+    X -skim other modules for necessary updates as a result of errors module changes
+-then test each module:
+    -debugger
+    -errors
+    -magic
+    -logging
+X -reproduce jabberwocky.load_openai_key somewhere with langchain (make it so user has option of defining in ~/.openai or something, doesn't have to always set env var)
+
+4/9/23 sun
+----------
+~ -manually test each module (post-langchain changes):
+    X -debugger
+        > Lots of missing imports (pycharm seems to have stopped highlighting them) but fixed that. A few small bugs around when to use contextful vs contextless prompt, prompt being a langchain obj instead of str, assuming presence of 'code' key in prompt kwargs when contextless prompt doesn't actually have that. Fixed and confirmed works with dummy cls and openai cls.
+        > However, prompt seems to need some tweaking. Answer includes leading numbers per section ('1.' and '2.') which is a bit annoying but not disastrous. More problematic is that my logic failed to extract the code snippet, I think because it is prefixed by '```python' rather than simply '```'.
+    -errors
+    -magic
+    -logging
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/10/23 mon
+-----------
+X -check if I ever reserved roboduck name on pypi (and get it if not)
+    > Yes, already have it.
+X -look into how to re-enable pycharm static analysis to show missing imports
+    > Think key was setting python interpreter. Once I did that and pycharm finished indexing, it worked.
+~ -revise debug prompt to try to avoid getting section numbers too (already requested no titles, but maybe can be even clearer)
+    > Tweaked wording to include numbers and be a bit more forceful, but still not always effective. Also added moderate logit bias against "section" and "Section" - perhaps not ideal if you have a class called Section but it's not a huge bias. I'll think about this. Still getting sections prefixed with "1." and "2." fairly often.
+    > Added instructions saying it should appear as 1 section to the user. First response looks good, but I'll have to keep an eye on this to get a larger sample size. No need to test extensively now ($; testing in UI is free, I think, but doesn't let me change temperature; bettergpt.chat lets me chang temperature but presumably makes api calls so is not free).
+X -revise debug prompt OR parse func to avoid/handle case of '```python' vs '```'
+    X -consider which strategy is preferable (more explicit instructions or more flexible/permissive parser)
+        > More flexible parsing, unlike the section titles I don't really care if it uses ``` or ```python (even the section titles issue isn't particularly important, but this is even less so).
+    X -implement
+-port other prompts over to langchain config (have to do this before testing bc I think most non-debugging modes use this; need to confirm)
+-manually test each module (post-langchain changes):
+    -debugger
+    -errors
+    -magic
+    -logging
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/11/23 tues
+------------
+X -port other prompts over to langchain config (have to do this before testing bc I think most non-debugging modes use this; need to confirm)
+    X -debug_stack_track
+    X -debug_full_stack_trace (if exists? I forget)
+        > It does not. Added one since it's not too much lift.
+    X -debug_full
+    > Also made some other prompt tweaks: replaced stopword "SOLUTION PART 3" with "Section 3" and tweaked wording a bit in user instructions.
+    > Also fixed a missing import now that pycharm linting is working again.
+-manually test each module (post-langchain changes, need to port prompts first):
+    -debugger
+    -errors
+    -magic
+    -logging
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/12/23 wed
+-----------
+~ -manually test each module (post-langchain changes, need to port prompts first):
+    X -debugger
+    X -errors
+        > Also added ability to customize color in debug cls and made errors module print in red by default.
+    -magic
+    -logging
+-maybe adjust debugger prompt user instructions
+    -realized I explicitly tell it what to provide in section 1 and 2 and that's NOT answering the user question
+    -maybe move instructions about each section to system prompt? Or include it in contextless prompt?
+-allow magic to pass in kwargs (e.g. model, prompt_name, etc.)
+-maybe add more flexible prompt kwarg surgery in debug cls ask_language_model (e.g. warn if unrecognized fields are provided, make sure error message is good if they're missing)
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/13/23 thurs
+-------------
+-manually test each module (post-langchain changes):
+    X -magic
+        > Also add option for user to pass in custom prompt. Experimented a bit with allowing kwargs but that gets messy quickly. Main use case would be passing in a custom pdb class but maybe custom prompts allow enough customization (though I don't currently support passing in a custom parse_func, which constrains things a bit more). Added warning if user passes in custom prompt.
+    -logging
+-maybe adjust debugger prompt user instructions
+    -realized I explicitly tell it what to provide in section 1 and 2 and that's NOT answering the user question
+    -maybe move instructions about each section to system prompt? Or include it in contextless prompt?
+X -allow magic to pass in kwargs (e.g. model, prompt_name, etc.)
+-maybe add more flexible prompt kwarg surgery in debug cls ask_language_model (e.g. warn if unrecognized fields are provided, make sure error message is good if they're missing)
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/14/23 fri
+-----------
+X -manually test each module (post-langchain changes):
+    X -logging
+        > Ended up removing base logger *args and **kwargs, that class's signature only seems to accept a couple args so I'd rather use **kwargs for chat kwargs. Could have sworn it did accept kwargs though... 🤔
+~ -maybe adjust debugger prompt user instructions
+    ~ -realized I explicitly tell it what to provide in section 1 and 2 and that's NOT answering the user question
+        > Adjusted both system and user prompt in debug prompt a bit, and seeing some promising early results. Still considering exact wording and format - thinking an "output format" section might do nicely at preventing section titles/numbers, so keep an eye out for that issue popping up again.
+    -maybe move instructions about each section to system prompt? Or include it in contextless prompt?
+-maybe add more flexible prompt kwarg surgery in debug cls ask_language_model (e.g. warn if unrecognized fields are provided, make sure error message is good if they're missing)
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/15/23 sat
+-----------
+X -maybe adjust debugger prompt user instructions
+    X -[DO BEFORE UPDATING OTHER PROMPTS] additional changes to debug prompt
+        X -maybe move instructions about each section to system prompt? Or include it in contextless prompt?
+            > I now recall openai docs say system prompt doesn't have as much impact as user prompt so maybe best to keep the syntax-related stuff (which is a bit harder for gpt) out of there. Not clear that contextless prompt really needs that format atm - maybe need to test drive this a bit more in real or semi-real situations to get a better sense of what types of followup questions I'll ask. Did tweak system prompt a little to at least mention that this is a live debugging session, which contextless prompt has no mention of otherwise.
+        X -maybe include sample output section to demo format? Might be less confusing and maybe even more concise.
+            > I like this and first result worked well, keep an eye on this.
+    X -update other prompts to match updated debug.yaml (except for intentional differences)
+        X -debug_full
+        X -debug_stack
+        X -debug_full_stack
+-maybe add more flexible prompt kwarg surgery in debug cls ask_language_model (e.g. warn if unrecognized fields are provided, make sure error message is good if they're missing)
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/16/23 sun
+-----------
+X -consider renaming langchain module in roboduck lib (maybe the wrong way to think of this?)
+    > Keep name but make some core classes available in roboduck init so user doesn't need to explicitly reference this in imports. We DO have a heavy reliance on langchain so the fact that the naming reflects that is reasonable, IMO.
+X -maybe add more flexible prompt kwarg surgery in debug cls ask_language_model (e.g. warn if unrecognized fields are provided, make sure error message is good if they're missing)
+    > Raise error if receive unexpected kwargs OR fail to receive expected kwargs. (Langchain will error out in either of those cases so don't just warn.) Tested both variants on a dummy prompt.
+~ -look into support for models besides 3.5-turbo
+    X -does gpt4 use same system/user instruction system?
+        > 4 and 3.5-turbo both are chat only, no completion endpoint support. Should be same system/user setup.
+    X -check if langchain has added any non-openai models yet or if there are discussions to do so
+        > Added anthropic chatmodel support a couple days ago, no custom init method so hopefully its a dropin replacement for chatopenai cls. Need to confirm that though. Api key would obviously need to be set for it to work.
+        > Issues does have open requests for OpenAssistant and Vicuna. Re the latter, someone notes that a HuggingFacePipeline abstraction already exists in langchain.
+    -is it possible to make a single prompt template obj in chat obj w/ langchain? IIRC this might be possible. (This could unlock other models.)
+    -what format do other open source systems expect?
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
+
+4/17/23 mon
+-----------
+-look into support for models besides 3.5-turbo
+    -is it possible to make a single prompt template obj in chat obj w/ langchain vs just a list of message dicts? IIRC this might be possible. (This could unlock other models.)
+    -does chat_class=langchain.chat_models.anthropic.ChatAnthropic work?
+        -get api key if necessary?
+        -check if works
+        -fix if necessary
+    -what format do other open source systems expect?
+-groom backlog and take stock of project (what still needs to be done? Try partially autogenerated docs + tests?)
 
 
 Backlog
@@ -1060,12 +1297,16 @@ Backlog
 Easy Backlog
 ------------
 -langchain.chat.chat various method docstrings
+-consider copy/pasting in some htools functions so I can rm dependency
 -write more tests
     -manually
     -or try telling gpt to write some tests
 
 Keep an eye out for
 -------------------
+-debug prompt: hoping the section titles (e.g. "section 1." or "1.") are gone now, but see if they come back
+-in nb05 testing components, sometimes running func w/ duck() call just errors as usual (think maybe autoreload related, seems to happen after editing source code?)
+-dummychatmodel in debugger adds a couple newlines in the middle of the word "enclosed". Unsure why.
 -sometimes openai obj seems to be from an outdated version, restarting kernel helps. Not sure if it's a jabberwocky thing, a langchain thing, an openai thing, or some weird interaction between two or more of those.
 -debug slowness when using magic (is it calling query multiple times?) ~ - add option to add new cell w/ gpt-fixed function below (may need to adjust prompt a bit to encourage it to provide this)
     > 2/13/23: Haven't observed this in this round of work on the project, leftover from last time. Maybe just a transient issue w/ the codex API at the time?

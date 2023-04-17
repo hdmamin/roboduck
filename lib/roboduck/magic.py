@@ -20,6 +20,7 @@ nums.add(4)
 %duck
 """
 
+from functools import partial
 from IPython import get_ipython
 from IPython.core.magic import line_magic, magics_class, Magics
 from IPython.core.magic_arguments import argument, magic_arguments, \
@@ -27,7 +28,7 @@ from IPython.core.magic_arguments import argument, magic_arguments, \
 import sys
 import warnings
 
-from roboduck.debugger import DuckDB, CodeCompletionCache
+from roboduck.debug import DuckDB, CodeCompletionCache
 
 
 @magics_class
@@ -64,20 +65,29 @@ class DebugMagic(Magics):
               help='Boolean flag: if provided, use INTERACTIVE mode. Start a '
                    'conversational debugger session and allow the user to ask '
                    'custom questions, just as they would if using '
-                   'roboduck.debugger.duck(). The default mode, meanwhile, '
+                   'roboduck.debug.duck(). The default mode, meanwhile, '
                    'simply asks gpt what caused the error that just '
                    'occurred and then exits, rather than lingering in a '
                    'debugger session.')
+    @argument('--prompt', type=str, default=None)
     @line_magic
     def duck(self, line=''):
         """Silence warnings for a cell. The -p flag can be used to make the
         change persist, at least until the user changes it again.
         """
         args = parse_argstring(self.duck, line)
+        if args.prompt:
+            warnings.warn('Support for custom prompts is somewhat limited - '
+                          'your prompt must use the default parse_func '
+                          '(roboduck.utils.parse_completion).')
         if args.i:
-            cls = self.shell.debugger_cls
+            old_cls = self.shell.debugger_cls
+            if args.prompt:
+                new_cls = partial(DuckDB, prompt=args.prompt)
+            else:
+                new_cls = DuckDB
             try:
-                self.shell.debugger_cls = DuckDB
+                self.shell.debugger_cls = new_cls
             except AttributeError:
                 print(
                     'Roboduck is unavailable in your current ipython session. '
@@ -97,23 +107,28 @@ class DebugMagic(Magics):
                     '["from roboduck import magic"]'
                 )
                 return
-            self.shell.InteractiveTB.debugger_cls = DuckDB
+            self.shell.InteractiveTB.debugger_cls = new_cls
             self.shell.debugger(force=True)
-            self.shell.debugger_cls = self.shell.InteractiveTB.debugger_cls = cls
+            self.shell.debugger_cls = self.shell.InteractiveTB.debugger_cls = old_cls
         else:
             # Confine this import to this if clause rather than keeping a top
             # level import - importing this module overwrites sys.excepthook
             # which we don't necessarily want in most cases.
+            # Note that this uses the `debug_stack_trace` prompt by default
+            # whereas interactive mode uses `debug` by default.
             from roboduck import errors
+            kwargs = {'auto': True, 'color': 'green'}
+            if args.prompt:
+                kwargs['prompt'] = args.prompt
             errors.excepthook(sys.last_type, sys.last_value,
-                              sys.last_traceback, auto=True)
+                              sys.last_traceback, **kwargs)
             errors.disable()
 
         # Insert suggested code into next cell.
         if args.p and CodeCompletionCache.last_completion:
             self.shell.set_next_input(CodeCompletionCache.last_new_code,
                                       replace=False)
-        CodeCompletionCache.reset()
+        CodeCompletionCache.reset_class_vars()
 
 
 get_ipython().register_magics(DebugMagic)

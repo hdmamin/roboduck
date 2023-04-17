@@ -22,7 +22,7 @@ class DuckLogger(Logger):
     message in the original exception before logging.)
     """
 
-    def __init__(self, name, *args, excepthook_kwargs=None, colordiff=False,
+    def __init__(self, name, colordiff=False,
                  fmt='%(asctime)s [%(levelname)s]: %(message)s', stdout=True,
                  path='', fmode='a', **kwargs):
         """
@@ -30,15 +30,6 @@ class DuckLogger(Logger):
         ----------
         name: str
             Same as base logger name arg.
-        args: any
-            Additional positional args for base logger.
-        excepthook_kwargs: dict or None
-            Kwargs that can be passed to our excepthook function. Most of these
-            should generally be kwargs for your debugger class,
-            e.g. RoboDuckDb. These will be updated with the specified
-            `colordiff` as well - we want to set the default to False here
-             because we often want to log to a file, where this will probably
-             not render correctly.
         colordiff: bool
             Another kwarg to pass to our excepthook function. This is separate
             from the others because we want to use a different default than the
@@ -56,10 +47,15 @@ class DuckLogger(Logger):
             Write mode used when path is not None. Usually 'a' but 'w' might
             be a reasonable choice in some circumstances.
         kwargs: any
-            Additional kwargs for the base logger.
+            Kwargs that can be passed to our excepthook function. Most of these
+            should generally be kwargs for your debugger class,
+            e.g. RoboDuckDb. These will be updated with the specified
+            `colordiff` as well - we want to set the default to False here
+             because we often want to log to a file, where this will probably
+             not render correctly.
         """
-        super().__init__(name, *args, **kwargs)
-        self.excepthook_kwargs = excepthook_kwargs or {}
+        super().__init__(name)
+        self.excepthook_kwargs = kwargs or {}
         defaults = dict(auto=True, sleep=0, silent=True)
         for k, v in defaults.items():
             if self.excepthook_kwargs.get(k, v) != v:
@@ -96,6 +92,9 @@ class DuckLogger(Logger):
         Low-level logging routine which creates a LogRecord and then calls
         all the handlers of this logger to handle the record.
         """
+        print('isinstance(msg, Exception) ->', isinstance(msg, Exception))
+        tmp = sys.exc_info()[2]
+        print('exc_info:', tmp, bool(tmp))
         if isinstance(msg, Exception) and sys.exc_info()[2]:
             from roboduck import errors
             errors.excepthook(type(msg), msg, msg.__traceback__,

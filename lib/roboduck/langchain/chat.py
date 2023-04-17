@@ -1,17 +1,18 @@
+from functools import partial
 from langchain.callbacks.base import CallbackManager
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import ChatResult, ChatGeneration, AIMessage, \
     SystemMessage
-from langchain.prompts import HumanMessagePromptTemplate, \
-    SystemMessagePromptTemplate
-
+from langchain.prompts import HumanMessagePromptTemplate
 import warnings
 
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.prompts.utils import load_template
+from roboduck.utils import add_kwargs
 
 
 class DummyChatModel:
+    # Drop-in replacement for ChatOpenAI that just repeats the last message.
     # We'd have to be a bit more rigid about expects init args if we want to
     # subclass from BaseChatModel. For now this is fine.
 
@@ -190,13 +191,27 @@ class Chat:
         kwargs = template.pop('kwargs', {})
         return cls(**template, **kwargs)
 
-    def _user_message(self, *, key_='', **kwargs):
+    def user_message(self, *, key_='', **kwargs):
+        """Get a fully resolved user reply as a string.
+
+        Parameters
+        ----------
+        key_: str
+            Determines which reply type to use. If empty, falls back to default
+            reply type.
+        kwargs: str
+            The required fields for the selected reply type.
+
+        Returns
+        -------
+        str
+        """
         key = key_ or self.default_user_key
         template = self.user_templates[key]
         return template.format(**kwargs)
 
     def _reply(self, *, key_='', **kwargs):
-        user_message = self._user_message(key_=key_, **kwargs)
+        user_message = self.user_message(key_=key_, **kwargs)
         self._history.append(user_message)
         try:
             response = self.chat(self._history)
@@ -226,3 +241,20 @@ class Chat:
                 reply = f'{speaker}: {reply}'
             res.append(reply)
         return sep.join(res)
+
+    def input_variables(self, key=''):
+        """Get names of fields that user has to pass in when replying.
+
+        Parameters
+        ----------
+        key: str
+            Name of user reply type. Falls back to the default reply type if
+            none is provided.
+
+        Returns
+        -------
+        set[str]
+        """
+        template = self.user_templates[key or self.default_user_key]
+        return set(template.input_variables)
+

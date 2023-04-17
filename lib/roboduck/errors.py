@@ -19,19 +19,19 @@ errors.enable(auto=True)
 """
 from functools import partial
 from IPython import get_ipython
-from roboduck.debugger import DuckDB, CodeCompletionCache
+from roboduck.debug import DuckDB, CodeCompletionCache
 import sys
 from traceback import TracebackException
 import warnings
 
-
+from htools.meta import add_docstring
 
 default_excepthook = sys.excepthook
 ipy = get_ipython()
 
 
-def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
-                question='What caused this error?', task='debug_stack_trace',
+@add_docstring(DuckDB.__init__)
+def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
                 colordiff=True, **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
@@ -49,44 +49,46 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', dev_mode=False,
     trace: str
         Stack trace formatted as a single string. Required - default value
         just helps us maintain a consistent interface with pdb.post_mortem.
-    dev_mode: bool
-        If True, print the full gpt prompt before making the query.
-    question: str
-        The question that gets asked to gpt when an error occurs. Usually just
-        leave this as the default. If you want to do more custom/in-depth
-        debugging, it's better to use roboduck.debugger.duck() (our
-        breakpoint() replacement).
-        NOTE: this gets ignored by our DuckDB class if the specified task
-        does not accept a question field. debug_stack_trace does not, so this
-        is ignored by default.
-    task: str
+    prompt_name: str
         The prompt name that will be passed to our debugger class. Usually
         should leave this as the default. We expect the name to contain
-        'debug' and will warn if it it doesn't.
+        'debug' and will warn if it doesn't.
+    colordiff: bool
+        If True, the new code snippet in the exception will print new
+        parts in green.
     kwargs: any
-        Additional kwargs to pass to Pdb instantiation.
+        Additional kwargs to pass to debugger class constructor. The docstring
+        of the default class is included below for reference.
     """
     if t is None:
         t = sys.exc_info()[2]
         assert t is not None, "post_mortem outside of exception context"
-    if 'debug' not in task:
-        warnings.warn(f'You passed an unexpected task ({task}) to '
-                      f'post_mortem. Are you sure you didn\'t mean to use '
-                      f'debug_stack_trace?')
+    if 'debug' not in prompt_name:
+        warnings.warn(
+            f'You passed an unexpected prompt_name ({prompt_name}) to '
+            f'post_mortem. Are you sure you didn\'t mean to use '
+            f'debug_stack_trace?'
+        )
     assert trace, 'Trace passed to post_mortem should be truthy.'
 
-    p = Pdb(task=task, **kwargs)
+    # This serves almost like a soft assert statement - if user defines some
+    # custom debugger class and the question leaks through, gpt should
+    # hopefully warn us.
+    dummy_question = (
+        'This is a fake question to ensure that our ask_language_model '
+        'method gets called. Our debugger class should remove this from the '
+        'prompt kwargs before calling gpt. If you can read this, can you '
+        'indicate that in your response?'
+    )
+    kwargs['color'] = kwargs.get('color', 'red')
+    p = Pdb(prompt_name=prompt_name, **kwargs)
     p.reset()
-    if dev_mode:
-        question = f'[dev] {question}'
-    p.cmdqueue.insert(0, (question, trace))
+    p.cmdqueue.insert(0, (dummy_question, trace))
     p.cmdqueue.insert(1, 'q')
     p.interaction(None, t)
 
     # Make gpt explanation available as part of last error message,
     # accessible via sys.last_value.
-    # TODO: may need to update the answer parsing code if I change the prompt
-    # with chatgpt, i.e. no SOLUTION PART 2.
     last_value = getattr(sys, 'last_value', None)
     if CodeCompletionCache.last_completion and last_value:
         code_name = 'last_code_diff' if colordiff else 'last_new_code'
@@ -128,12 +130,12 @@ def print_exception(etype, value, tb, limit=None, file=None, chain=True):
     return trace
 
 
-def excepthook(etype, val, tb, task='debug_stack_trace',
+def excepthook(etype, val, tb, prompt_name='debug_stack_trace',
                auto=False, cls=DuckDB, **kwargs):
     """Replaces sys.excepthook when module is imported. When an error is
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
-    roboduck.debugger.duck(), the user does not need to manually type a
+    roboduck.debug.duck(), the user does not need to manually type a
     question, and we don't linger in the debugger - we just write gpt's
     explanation and exit.
 
@@ -145,7 +147,7 @@ def excepthook(etype, val, tb, task='debug_stack_trace',
     sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
     trace = print_exception(etype, val, tb)
     print(trace)
-    kwargs.update(task=task, trace=trace, t=tb, Pdb=cls)
+    kwargs.update(prompt_name=prompt_name, trace=trace, t=tb, Pdb=cls)
     if auto:
         return post_mortem(**kwargs)
     while True:
@@ -170,8 +172,8 @@ def enable(**kwargs):
             certainly want to keep this as the default of False for any
             interactive development.
         cls (type) - the debugger class to use.
-        task (str) - determines what prompt/task the custom debugger uses, e.g.
-            "debug_stack_trace"
+        prompt_name (str) - determines what prompt/prompt_name the custom
+            debugger uses, e.g. "debug_stack_trace"
         colordiff (bool) - if True, new code snippet will print new parts
             in green.
         Or any other args that can be passed to our debugger cls.

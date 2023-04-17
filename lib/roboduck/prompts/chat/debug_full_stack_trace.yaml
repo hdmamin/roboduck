@@ -1,0 +1,49 @@
+kwargs:
+    model_name: gpt-3.5-turbo
+    max_tokens: 512
+    temperature: 0.0
+    top_p: 1.0
+    frequency_penalty: 0.0
+    presence_penalty: 0.0
+    # Try to reduce probability of section titles - gpt3.5 sometimes ignores
+    # those instructions. {section, Section}
+    logit_bias:
+      2879: -20
+      9817: -20
+    stop:
+      - QUESTION
+      - section 3
+system: |-
+  You are an incredibly effective AI programming assistant embedded in the Python interpreter. You have in-depth knowledge across a broad range of sub-fields within computer science, software development, and data science, and your goal is to help Python programmers resolve their most challenging bugs. Be concise and use simple language.
+# First key defines default message type.
+user:
+  contextful: |-
+    This {file_type} throws an error and I need you to help me fix it. First examine the problematic code snippet and the current program state. Then provide a response with exactly two sections (1. natural language explanation, and 2. code) separated by an empty line. It is critical that you adhere to the response format below - do NOT include section titles of any kind. In section 1, use plain English to explain what the problem is and how to fix it. If you dont know, section 1 should instead list a few possible explanations or actions I could take in order to identify the issue. If it would contribute to a more helpful answer, use section 2 to provide a corrected version of the input code snippet (leave section 2 empty otherwise). If section 2 is not empty, it must be entirely enclosed in one pair of triple backticks ("```") and contain only python code - it cannot include any English explanation outside of code comments or docstrings.
+
+    FULL CODE:
+    {full_code}
+
+    CODE SNIPPET:
+    {code}
+    
+    STACK TRACE:
+    {stack_trace}
+
+    NEXT LINE TO EXECUTE:
+    {next_line}
+
+    LOCAL VARIABLES:
+    {local_vars}
+
+    GLOBAL VARIABLES:
+    {global_vars}
+
+    RESPONSE FORMAT:
+    {{ natural language answer }}
+
+    ```
+    {{ working python code }}
+    ```
+  contextless: |-
+    QUESTION:
+    {question}

@@ -6,7 +6,7 @@ you more effectively.
 Quickstart
 ----------
 # Our replacement for python's `breakpoint`.
-from roboduck.debugger import duck
+from roboduck.debug import duck
 
 # Broken version of bubble sort. Notice the duck() call on the second to last
 # line.
@@ -23,22 +23,20 @@ from functools import partial
 from htools import load, is_ipy_name
 import inspect
 import ipynbname
-from jabberwocky.openai_utils import PromptManager, GPTBackend
+from langchain.callbacks.base import CallbackManager
 from pdb import Pdb
 import sys
-import time
 import warnings
 
+from htools.meta import add_docstring
+from roboduck.langchain.chat import Chat
+from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
-    truncated_repr, load_current_ipython_session, colordiff_new_str
+    truncated_repr, load_current_ipython_session, colordiff_new_str, \
+    parse_completion, store_class_defaults
 
 
-ROBODUCK_GPT = GPTBackend(log_stdout=False)
-PROMPT_MANAGER = PromptManager(['debug', 'debug_full', 'debug_stack_trace'],
-                               verbose=False,
-                               gpt=ROBODUCK_GPT)
-
-
+@store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
 class CodeCompletionCache:
     """Just stores the last completion from DuckDB in a way that our
     `duck` jupyter magic can access (without relying on global variable, though
@@ -51,14 +49,7 @@ class CodeCompletionCache:
     last_code = ''
     last_new_code = ''
     last_code_diff = ''
-
-    @classmethod
-    def reset(cls):
-        """Reset all class attributes like 'last_something' to empty strings.
-        """
-        for name in vars(CodeCompletionCache):
-            if name.startswith('last_'):
-                setattr(cls, name, '')
+    last_extra = {}
 
 
 class DuckDB(Pdb):
@@ -69,27 +60,16 @@ class DuckDB(Pdb):
     making the query.
     """
 
-    def __init__(self, *args, backend='openai', model=None,
-                 task='debug', log=False, max_len_per_var=79, sleep=.02,
-                 silent=False, **kwargs):
+    def __init__(self, prompt_name='debug', max_len_per_var=79, silent=False,
+                 pdb_kwargs=None, parse_func=parse_completion, color='green',
+                 **chat_kwargs):
         """
         Parameters
         ----------
-        args: any
-            Misc args for base Pdb class.
-        backend: str
-            Specifies which GPT api to use, e.g. 'openai' or 'gooseai'. Since
-            we currently use codex, backends besides 'openai' are not
-            supported.
-        model: str or int or None
-            Specifies which model to using format defined by
-            jabberwocky.openai_utils.EngineMap. If none is specified, we fall
-            back to whatever is defined in the jabberwocky `debug` or
-            `debug_full` prompts. 'code-davinci-002' is the current default,
-            though 'text-davinci-002' may be a decent option as well.
-        task: str
-            Name of task (a.k.a. a "prompt" in jabberwocky) to use when
-            querying gpt3. Current options are:
+        prompt_name: str
+            Name of prompt template to use when querying chatGPT. Roboduck
+            currently provides several builtin options
+            (see roboduck.prompts.chat):
                 debug - for interactive debugging sessions on the relevant
                     snippet of code.
                 debug_full - for interactive debugging sessions on the whole
@@ -97,9 +77,9 @@ class DuckDB(Pdb):
                     creating a context that is too long.
                 debug_stack_trace - for automatic error explanations or
                     logging.
-        log: bool
-            Specifies whether jabberwocky should log gpt api calls. If true,
-            these are stored as jsonlines files.
+            Alternatively, can also define your own template in a yaml file
+            mimicking the format of the builtin templates and pass in the
+            path to that file as a string.
         max_len_per_var: int
             Limits number of characters per variable when communicating
             current state (local or global depending on `full_context`) to
@@ -107,34 +87,84 @@ class DuckDB(Pdb):
             very big . I somewhat arbitrarily set 79 as the default, i.e.
             1 line of python per variable. I figure that's usually enough to
             communicate the gist of what's happening.
-        sleep: float
-            Seconds to sleep between characters when live typing completions.
-            0 means we type as fast as possible, higher numbers mean we type
-            more slowly. Our logging module sets this to zero because real time
-            typing is not important there.
         silent: bool
             If True, print gpt completions to stdout. One example of when False
             is appropriate is our logging module - we want to get the
             explanation and update the exception message which then gets
             logged, but we don't care about typing results in real time.
-        kwargs: any
+        pdb_kwargs: dict or None
             Additional kwargs for base Pdb class.
+        parse_func: function
+            This will be called on the generated text each time gpt provides a
+            completion. It returns a dictionary whose values will be stored
+            in CodeCompletionCache in this module. See the default function's
+            docstring for guidance on writing a custom function.
+        color: str
+            Color to print gpt completions in. Sometimes we want to change this
+            to red, such as in the errors module, to make it clearer that an
+            error occurred.
+        chat_kwargs: any
+            Additional kwargs to configure our Chat class (passed to
+            its `from_config` factory). Common example would be setting
+            `chat_class=roboduck.langchain.chat.DummyChatModel`
+            which mocks api calls (good for development, saves money).
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(**pdb_kwargs or {})
         self.prompt = '>>> '
         self.duck_prompt = '[Duck] '
-        # Check if None explicitly because model=0 is different.
-        self.query_kwargs = {'model': model} if model is not None else {}
-        self.backend = backend
-        self.full_context = '_full' in task
-        self.field_names = PROMPT_MANAGER.field_names(task)
-        self.task = task
-        self.log = log
+        self.query_kwargs = {}
+        chat_kwargs['streaming'] = not silent
+        chat_kwargs['name'] = prompt_name
+        # Dev color is what we print the prompt in when user asks a question
+        # in dev mode.
+        self.color = color
+        self.dev_color = 'blue' if self.color == 'red' else 'red'
+        # Must create self.chat before setting _chat_prompt_keys,
+        # and full_context after both of those.
+        self.chat = Chat.from_config(
+            **chat_kwargs,
+            callback_manager=CallbackManager(
+                [LiveTypingCallbackHandler(color=color)]
+            )
+        )
+        self.default_user_key, self.backup_user_key = self._chat_prompt_keys()
+        self.full_context = 'full_code' in self.field_names()
+        self.prompt_name = prompt_name
         self.repr_func = partial(truncated_repr, max_len=max_len_per_var)
         self.silent = silent
-        self.sleep = sleep
+        self.parse_func = parse_func
         # This gets updated every time the user asks a question.
         self.prev_kwargs_hash = None
+
+    def _chat_prompt_keys(self):
+        """Retrieve default and backup user reply prompt keys (names) from
+        self.chat object. If the prompt template has only one reply type,
+        the backup key will equal the default key.
+        """
+        keys = list(self.chat.user_templates)
+        default = keys[0]
+        backup = default
+        if len(keys) > 1:
+            backup = keys[1]
+            if len(keys) > 2:
+                warnings.warn(
+                    'You\'re using a chat prompt template with >2 types or '
+                    'user replies. This is not recommended because it\'s '
+                    'not clear how to determine which reply type to use. We '
+                    'arbitrarily choose the first non-default key as the '
+                    f'backup reply type ("{backup}").'
+                )
+        return default, backup
+
+    def field_names(self, key=''):
+        """Get names of variables that are expected to be passed into default
+        user prompt template.
+
+        Returns
+        -------
+        set[str]
+        """
+        return self.chat.input_variables(key)
 
     def _get_next_line(self, code_snippet):
         """Retrieve next line of code that will be executed. Must call this
@@ -299,24 +329,36 @@ class DuckDB(Pdb):
         kwargs_hash = hash(str(prompt_kwargs))
         if kwargs_hash == self.prev_kwargs_hash:
             prompt_kwargs.clear()
+            prompt_key = self.backup_user_key
+        else:
+            prompt_key = self.default_user_key
 
-        # TODO update prompts to use next_line? Currently need to pop bc they
-        # don't include that field.
-        print('next line:', prompt_kwargs.pop('next_line', None))
-
-        # TODO: if moving to langchain and/or multiple user message types
-        # (contextful vs contextless), will likely need to change logic around
-        # both setting and using self.field_names.
-        if 'question' in self.field_names:
+        # Perform surgery on kwargs depending on what fields are expected.
+        field_names = self.field_names(prompt_key)
+        if 'question' in field_names:
             prompt_kwargs['question'] = question
-        expect_stack_trace = 'stack_trace' in self.field_names
-        if stack_trace and expect_stack_trace:
+        if stack_trace:
             prompt_kwargs['stack_trace'] = stack_trace
-        assert bool(stack_trace) == expect_stack_trace,\
-            f'Received stack_trace={stack_trace!r} but ' \
-            f'self.field_names={self.field_names}.'
 
-        prompt = PROMPT_MANAGER.prompt(self.task, prompt_kwargs)
+        # Validate that expected fields are present and provide interpretable
+        # error message if not.
+        kwargs_names = set(prompt_kwargs)
+        only_in_kwargs = kwargs_names - field_names
+        only_in_expected = field_names - kwargs_names
+        error_msg = 'If you are using a custom prompt, you may need to ' \
+                    'subclass roboduck.debug.DuckDB and override the ' \
+                    '_get_prompt_kwargs method.'
+        if only_in_kwargs:
+            raise RuntimeError(
+                f'Received unexpected kwarg(s): {only_in_kwargs}. {error_msg} '
+            )
+        if only_in_expected:
+            raise RuntimeError(
+                f'Missing required kwarg(s): {only_in_expected}. {error_msg}'
+            )
+
+        prompt = self.chat.user_message(key_=prompt_key,
+                                        **prompt_kwargs).content
         if len(prompt.split()) > 1_000:
             warnings.warn(
                 'Prompt is very long (>1k words). You\'re approaching a risky'
@@ -327,79 +369,37 @@ class DuckDB(Pdb):
             print(colored(prompt, 'red'))
 
         if not self.silent:
-            print(colored(self.duck_prompt, 'green'), end='')
-        res = ''
-        # Suppress jabberwocky auto-warning about codex model name.
-        with warnings.catch_warnings():
-            warnings.filterwarnings('ignore')
-            with ROBODUCK_GPT(self.backend, verbose=False):
-                prev_is_title = False
-                for i, (cur, full) in enumerate(PROMPT_MANAGER.query(
-                        self.task,
-                        prompt_kwargs,
-                        **self.query_kwargs,
-                        log=self.log,
-                        stream=True
-                )):
-                    # We do this BEFORE the checks around SOLUTION PART 2
-                    # because we don't want to print that line, but we do want
-                    # to retain it in our CodeCompletionCache so that our
-                    # jupyter magic can easily extract the code portion later.
-                    res += cur
+            print(colored(self.duck_prompt, self.color), end='')
 
-                    # Slightly fragile logic - openai currently returns this
-                    # in a single streaming step even though the current codex
-                    # tokenizer splits it into 5 tokens. If they return this
-                    # as multiple tokens, we'd need to change this logic.
-                    if cur == 'SOLUTION PART 2':
-                        prev_is_title = True
-                        continue
-                    # Avoid printing the ':' after 'SOLUTION PART 2'. Openai
-                    # returns this at a different streaming step.
-                    if prev_is_title and cur.startswith(':'):
-                        continue
-                    prev_is_title = False
-                    if not i:
-                        cur = cur.lstrip('\n')
-                    if self.silent:
-                        continue
-                    for char in cur:
-                        print(colored(char, 'green'), end='')
-                        time.sleep(self.sleep)
+        # The actual LLM call.
+        res = self.chat.reply(**prompt_kwargs, key_=prompt_key)
 
-        # Strip trailing quotes because the entire prompt is inside a
-        # docstring and codex may try to close it. We can't use it as a stop
-        # phrase in case codex generates a fixed code snippet that includes
-        # a docstring.
-        answer = res.strip()
+        answer = res.content.strip()
         if not answer:
             answer = 'Sorry, I don\'t know. Can you try ' \
                      'rephrasing your question?'
+            # This is intentionally nested in if statement because if answer is
+            # truthy, we will have already printed it via our callback if not
+            # in silent mode.
             if not self.silent:
-                print(colored(answer, 'green'))
+                print(colored(answer, self.color))
 
-        # TODO: may need to update this logic if switch to more of a json/yaml
-        # structured completion.
-        parts = answer.split("SOLUTION PART 2")
-        if len(parts) != 2:
-            # Avoid updating cache because the completion doesn't match our
-            # expected explanation/code structure.
-            return
-        explanation, new_code = parts
-
+        parsed_kwargs = self.parse_func(answer)
         # When using the `duck` jupyter magic in "insert" mode, we reference
         # the CodeCompletionCache to populate the new code cell.
-        new_code = new_code.lstrip(":\n")
         CodeCompletionCache.last_completion = answer
-        CodeCompletionCache.last_explanation = explanation
-        # TODO: maybe check if code or full_code is more appropriate, either
-        # depending on self.full_context or by doing a quick str similarity
-        # to each.
-        old_code = prompt_kwargs['code']
-        CodeCompletionCache.last_code = old_code
+        CodeCompletionCache.last_explanation = parsed_kwargs['explanation']
+        # TODO: maybe check if code or full_code is more appropriate to store
+        # as last_code, either depending on self.full_context or by doing a
+        # quick str similarity to each.
+        # Contextless prompt has no `code` key.
+        old_code = prompt_kwargs.get('code', '')
+        new_code = parsed_kwargs['code']
         CodeCompletionCache.last_code_diff = colordiff_new_str(old_code,
                                                                new_code)
+        CodeCompletionCache.last_code = old_code
         CodeCompletionCache.last_new_code = new_code
+        CodeCompletionCache.last_extra = parsed_kwargs.get('extra', {})
         self.prev_kwargs_hash = kwargs_hash
 
     def precmd(self, line):
@@ -415,7 +415,10 @@ class DuckDB(Pdb):
         return super().precmd(line)
 
 
-def duck(backend='openai', model=None, **kwargs):
-    # Equivalent of native breakpoint().
-    DuckDB(backend=backend, model=model, **kwargs)\
-        .set_trace(sys._getframe().f_back)
+@add_docstring(DuckDB.__init__)
+def duck(**kwargs):
+    """Roboduck equivalent of native python breakpoint().
+    The DuckDB docstring is below. Any kwargs passed in to this function
+    will be passed to its constructor.
+    """
+    DuckDB(**kwargs).set_trace(sys._getframe().f_back)
