@@ -159,6 +159,10 @@ class DuckDB(Pdb):
     def field_names(self, key=''):
         """Get names of variables that are expected to be passed into default
         user prompt template.
+
+        Returns
+        -------
+        set[str]
         """
         return self.chat.input_variables(key)
 
@@ -333,12 +337,25 @@ class DuckDB(Pdb):
         field_names = self.field_names(prompt_key)
         if 'question' in field_names:
             prompt_kwargs['question'] = question
-        expect_stack_trace = 'stack_trace' in field_names
-        if stack_trace and expect_stack_trace:
+        if stack_trace:
             prompt_kwargs['stack_trace'] = stack_trace
-        assert bool(stack_trace) == expect_stack_trace,\
-            f'Received stack_trace={stack_trace!r} but ' \
-            f'field_names={field_names}.'
+
+        # Validate that expected fields are present and provide interpretable
+        # error message if not.
+        kwargs_names = set(prompt_kwargs)
+        only_in_kwargs = kwargs_names - field_names
+        only_in_expected = field_names - kwargs_names
+        error_msg = 'If you are using a custom prompt, you may need to ' \
+                    'subclass roboduck.debug.DuckDB and override the ' \
+                    '_get_prompt_kwargs method.'
+        if only_in_kwargs:
+            raise RuntimeError(
+                f'Received unexpected kwarg(s): {only_in_kwargs}. {error_msg} '
+            )
+        if only_in_expected:
+            raise RuntimeError(
+                f'Missing required kwarg(s): {only_in_expected}. {error_msg}'
+            )
 
         prompt = self.chat.user_message(key_=prompt_key,
                                         **prompt_kwargs).content
