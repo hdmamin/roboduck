@@ -1,6 +1,6 @@
 IPython==7.25.0
 colorama>=0.3.0
-htools
+htools[speedup]
 ipynbname==2021.3.2
 langchain==0.0.118
 pandas>=1.3.0
