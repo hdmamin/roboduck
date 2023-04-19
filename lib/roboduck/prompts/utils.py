@@ -28,8 +28,10 @@ def available_templates(mode=''):
     the given mode, e.g. only the available chat prompts if mode='chat'.
     """
     def _prompt_names_in_dir(dir_):
+        # Ignore files like __template__.yaml.
         return set(path.stem for path in dir_.iterdir()
-                   if path.suffix == '.yaml')
+                   if path.suffix == '.yaml'
+                   and not path.stem.startswith('__'))
 
     assert isinstance(mode, str), f'Mode should be type str, not {type(mode)}.'
     keys = [mode] if mode else ('chat', 'completion')

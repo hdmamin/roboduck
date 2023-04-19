@@ -1,0 +1,20 @@
+kwargs:
+    model_name: gpt-3.5-turbo
+    max_tokens: 512
+    temperature: 0.0
+    top_p: 1.0
+    frequency_penalty: 0.0
+    presence_penalty: 0.0
+    logit_bias: {}
+      2879: -20
+    stop: []
+system: |-
+  TODO write instructions that will be included in a system message.
+# TODO rename "default_name" below to something else. If you define
+# multiple user reply types, they must have different names. The default type
+# will be the first one defined below.
+user:
+  default_name: |-
+    TODO write one or more prompt templates. Variables should be enclosed in
+    curly braces. To make literal curly braces appear in prompt, use two sets
+    e.g. {{ something }}.
