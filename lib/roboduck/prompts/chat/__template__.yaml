@@ -6,7 +6,6 @@ kwargs:
     frequency_penalty: 0.0
     presence_penalty: 0.0
     logit_bias: {}
-      2879: -20
     stop: []
 system: |-
   TODO write instructions that will be included in a system message.

@@ -28,6 +28,7 @@ setuptools.setup(
     package_data={
         'roboduck': ['**/*.yaml']
     },
+    entry_points={'console_scripts': ['duck=duck.cli:cli']},
     include_package_data=True
 )
 
