@@ -22,3 +22,6 @@ readmes:
 chat_prompt:
 	chmod u+x lib/scripts/make_chat_prompt.sh
 	lib/scripts/make_chat_prompt.sh
+
+reinstall:
+	pip uninstall -y roboduck && pip install -e ~/roboduck/lib
