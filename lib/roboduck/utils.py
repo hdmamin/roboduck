@@ -9,6 +9,7 @@ import ipynbname
 from inspect import signature, Parameter
 from IPython.display import display, Javascript
 from IPython import get_ipython
+import openai
 import json
 import pandas as pd
 from pathlib import Path
@@ -574,3 +575,25 @@ def store_class_defaults(cls=None, attr_filter=None):
         )
     setattr(cls, meth_name, reset_class_vars)
     return cls
+
+
+def available_models():
+    """Show user available values for model_name parameter in debug.DuckDB
+    class/ debug.duck function/errors.enable function etc.
+
+    Returns
+    -------
+    dict[str, list[str]]: Maps provider name (e.g. 'openai') to list of valid
+    model_name values. Provider name should correspond to a langchain or
+    roboduck class named like ChatOpenai (i.e. Chat{provider.title()}).
+    """
+    res = {}
+
+    # This logic may not always hold but as of April 2023, this returns
+    # openai's available chat models.
+    openai_res = openai.Model.list()
+    res['openai'] = [row['id'] for row in openai_res['data']
+                     if row['id'].startswith('gpt')]
+
+    # TODO: add anthropic/cohere/other?
+    return res
