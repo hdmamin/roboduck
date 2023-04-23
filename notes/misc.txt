@@ -21,3 +21,4 @@ Chain 0
 
 approaches O(n^2) wrt encoding questions (i.e. first question is encoded n times where n is number of questions). Whereas if we make this a single prompt, encoding is O(n) (i.e. each section is encoded once).
 
+

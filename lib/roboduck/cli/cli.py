@@ -1,14 +1,19 @@
+"""This file needs to be stashed in roboduck/cli subdir to avoid circular
+import error caused by logging.py name collision with standard library.
+"""
 import argparse
 import ast
-import importlib
 from pathlib import Path
 import subprocess
 
 
-def import_class(full_name):
-    module_name, _, cls_name = full_name.rpartition('.')
-    module = importlib.import_module(module_name)
-    return getattr(module, cls_name)
+def make_import_statement(cls_name):
+    parts = cls_name.split('.')
+    if len(parts) == 1:
+        return f'import {parts[0]}'
+    else:
+        lib = '.'.join(parts[:-1])
+        return f'from {lib} import {parts[-1]}'
 
 
 def run():
@@ -19,6 +24,7 @@ def run():
     parser.add_argument('file', help='The python script to execute.')
     args, kwargs_ = parser.parse_known_args()
     kwargs = {}
+    imports = []
     for x in kwargs_:
         if not (x.startswith('--') and '=' in x):
             raise ValueError(f'Malformed command. Encountered {x!r} when '
@@ -27,25 +33,32 @@ def run():
         k, v = x.split('=')
         k = k.strip('--')
         if k in ('cls', 'chat_class'):
-            # TODO: weird circular import error related to logging. Also occurs
-            # even if I manually import (not using importlib) the module and/or
-            # if I import a lib that itself imports logging, e.g. numpy or
-            # requests. Also happens if import occurs outside this function.
-            # kwargs[k] = import_class(v)
-            raise NotImplementedError(f'Support for option `{k}` has not'
-                                      ' yet been implemented.')
+            imports.append(make_import_statement(v))
+            kwargs[k] = v.rpartition('.')[-1]
         else:
             kwargs[k] = ast.literal_eval(v)
+
+    # Grab source code and insert our imports and enable error mode.
     path = Path(args.file).resolve()
     tmp_path = Path('/tmp')/path.name
     with open(path, 'r') as f:
         src_text = f.read()
     path.rename(tmp_path)
-    new_text = 'from roboduck import errors\n'
+    new_text = 'from roboduck import errors\n' + '\n'.join(imports) + '\n'
     if kwargs:
-        new_text += f'errors.enable(**{kwargs})\n'
+        kwargs_str = ''
+        for k, v in kwargs.items():
+            kwargs_str += f'{k}='
+            if k in ('cls', 'chat_class'):
+                kwargs_str += v
+            else:
+                kwargs_str += repr(v)
+            kwargs_str += ', '
+        new_text += f'errors.enable(**dict({kwargs_str}))\n'
     src_text = new_text + src_text
 
+    # Create copy file with imports and errors enabled, try to execute it, then
+    # restore original file.
     try:
         with open(path, 'w') as f:
             f.write(src_text)
