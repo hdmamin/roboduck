@@ -1,3 +1,8 @@
+"""Functionality related to langchain chat models. This includes both a wrapper
+class `Chat` that makes it easier to load and use multiple user reply types
+from a config file as well as ChatModel replacements (i.e. instead of
+ChatOpenAI).
+"""
 from functools import partial
 from langchain.callbacks.base import CallbackManager
 from langchain.chat_models import ChatOpenAI

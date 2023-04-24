@@ -1,3 +1,6 @@
+"""Utilities for working with prompts (usually prompt templates, to be more
+precise).
+"""
 from pathlib import Path
 
 from roboduck.utils import load_yaml
@@ -81,7 +84,7 @@ def load_template(name, mode='chat'):
     templates = available_templates(mode=mode)
     if name in templates:
         path = PROMPT_DIR/f'{mode}/{name}.yaml'
-    elif Path(name).is_file():
+    elif Path(name).expanduser().is_file():
         path = Path(name)
     else:
         raise ValueError(

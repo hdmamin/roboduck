@@ -1,4 +1,7 @@
-"""This file needs to be stashed in roboduck/cli subdir to avoid circular
+"""Command line tool that allows us to run files with explainable error mode
+enabled without changing the file itself (perhaps not that useful given that
+errors mode can be enabled with a single import, but just another option).
+This file needs to be stashed in roboduck/cli subdir to avoid circular
 import error caused by logging.py name collision with standard library.
 """
 import argparse
@@ -8,6 +11,20 @@ import subprocess
 
 
 def make_import_statement(cls_name):
+    """Given a class name like 'roboduck.debug.DuckDB', construct the import
+    statement (str) that should likely be used to import that class (in this
+    case 'from roboduck.debug import DuckDB'.
+
+    Parameters
+    ----------
+    cls_name: str
+        Class name including module (essentially __qualname__?), e.g.
+        roboduck.debug.DuckDB.
+
+    Returns
+    -------
+    str
+    """
     parts = cls_name.split('.')
     if len(parts) == 1:
         return f'import {parts[0]}'
@@ -19,7 +36,11 @@ def make_import_statement(cls_name):
 def run():
     parser = argparse.ArgumentParser(
         description='Run a python script with roboduck\'s errors mode '
-                    'automatically enabled. Example:\n\nduck my_script.py'
+                    'automatically enabled.\n\nExamples:\n\nduck my_script.py'
+                    '\nduck my_script.py --chat_class=roboduck.DummyChatClass'
+                    '\nduck my_script.py --auto=True '
+                    '--prompt_name=~/my_custom_prompt.yaml',
+        formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument('file', help='The python script to execute.')
     args, kwargs_ = parser.parse_known_args()

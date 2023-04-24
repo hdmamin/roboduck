@@ -1,3 +1,6 @@
+"""Langchain callbacks. This allows us to do things like type output
+incrementally rather than waiting for a full completion to finish.
+"""
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import sys
 import time
