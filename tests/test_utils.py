@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from roboduck.utils import truncated_repr
+from roboduck import utils
 
 
 @pytest.mark.parametrize(
@@ -16,7 +16,7 @@ from roboduck.utils import truncated_repr
     ]
 )
 def test_truncated_repr_short_inputs(obj):
-    assert truncated_repr(obj) == repr(obj)
+    assert utils.truncated_repr(obj) == repr(obj)
 
 
 @pytest.mark.parametrize(
@@ -37,4 +37,20 @@ def test_truncated_repr_short_inputs(obj):
     ]
 )
 def test_truncated_repr_long_inputs(obj, n, expected):
-    assert truncated_repr(obj, n) == expected
+    assert utils.truncated_repr(obj, n) == expected
+
+
+# TODO: gpt-generated test. Think the last case may not have correct output due
+# its custom format func. Need to check that once I get pytest working again,
+# started getting import error recently.
+@pytest.mark.parametrize(
+    "d, func, expected",
+    [
+        ({}, repr, '{}'),
+        ({'a': 1, 'b': 'two', 'c': 3}, repr, "{\n    'a': 1,   # type: int\n    'b': 'two',   # type: str\n    'c': 3,   # type: int\n}"),
+        ({'x': 1.23, 'y': True, 'z': False}, repr, "{\n    'x': 1.23,   # type: float\n    'y': True,   # type: bool\n    'z': False,   # type: bool\n}"),
+        ({'foo': [1, 2, 3], 'bar': {'x': 4, 'y': 5}}, lambda x: f"'{x}'", "{\n    'foo': [1, 2, 3],   # type: list\n    'bar': {'x': 4, 'y': 5},   # type: dict\n}"),
+    ]
+)
+def test_type_annotated_dict_str(d, func, expected):
+    assert utils.type_annotated_dict_str(d, func) == expected
