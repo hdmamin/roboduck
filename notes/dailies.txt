@@ -1391,9 +1391,27 @@ _ -take stock of project and plan next steps
 
 4/24/23 mon
 -----------
--get pytest working again (recall roboduck import error)
--fix last test case for type_dict_str func if necessary
--add more tests
+X -get pytest working again (recall roboduck import error)
+    > Tried pip installing pytest since it turned out it wasn't installed in py38 env, did not help. Tried removing init file in tests dir at stackoverflow's suggestion but didn't work either. What did work was running python -m pytest instead of pytest, also suggested by stackoverflow. GPT did not help here.
+X -fix last test case for type_dict_str func if necessary
+~ -add more tests
+    X -utils.extract_code
+        > Also pleasantly surprised to find that backticks in code already works fine - thought that might break my parsing func and I'd have to fix it.
+    X -utils.store_class_defaults
+    > Done (at least enough for now) with utils module. Other modules may be a bit trickier to test.
+-look into how to add coverage % badge on github
+
+4/25/23 tues
+------------
+-add more tests (intentionally excluding magic.py, shell.py; can revisit later if figure out a useful and effective way to do this)
+    -logging module
+    -errors module
+    -debug module
+    -prompts.utils module
+    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        -callbacks
+        -chat
+        -utils
 -look into how to add coverage % badge on github
 
 

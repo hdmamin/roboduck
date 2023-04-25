@@ -201,7 +201,17 @@ def type_annotated_dict_str(dict_, func=repr):
         The dict to represent.
     func: function
         The function to apply to each key and value in the dict to get some
-        kind of str representation.
+        kind of str representation. Note that it is applied to each key/value
+        as a whole, not to each item within that key/value. For example, notice
+        below how foo and cat are not in quotes but ('bar',) and ['x'] do
+        contain quotes.
+
+        >>> d = {'foo': 'cat', ('bar',): ['x']}
+        >>> type_annotated_dict_str(d, str)
+        {
+            foo: cat,   # type: str
+            ('bar',): ['x'],   # type: list
+        }
 
     Returns
     --------

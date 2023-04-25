@@ -25,3 +25,7 @@ chat_prompt:
 
 reinstall:
 	pip uninstall -y roboduck && pip install -e ~/roboduck/lib
+
+test:
+	# `pytest` does not work.
+	python -m pytest
