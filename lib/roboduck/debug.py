@@ -113,20 +113,21 @@ class DuckDB(Pdb):
         self.prompt = '>>> '
         self.duck_prompt = '[Duck] '
         self.query_kwargs = {}
-        chat_kwargs['streaming'] = not silent
         chat_kwargs['name'] = prompt_name
+        if silent:
+            chat_kwargs['streaming'] = False
+        else:
+            chat_kwargs['streaming'] = True
+            chat_kwargs['callback_manager'] = CallbackManager(
+                [LiveTypingCallbackHandler(color=color)]
+            )
         # Dev color is what we print the prompt in when user asks a question
         # in dev mode.
         self.color = color
         self.dev_color = 'blue' if self.color == 'red' else 'red'
         # Must create self.chat before setting _chat_prompt_keys,
         # and full_context after both of those.
-        self.chat = Chat.from_config(
-            **chat_kwargs,
-            callback_manager=CallbackManager(
-                [LiveTypingCallbackHandler(color=color)]
-            )
-        )
+        self.chat = Chat.from_config(**chat_kwargs)
         self.default_user_key, self.backup_user_key = self._chat_prompt_keys()
         self.full_context = 'full_code' in self.field_names()
         self.prompt_name = prompt_name
@@ -320,7 +321,7 @@ class DuckDB(Pdb):
         verbose: bool
             If True, print the full gpt prompt in red before making the api
             call. User activates this mode by prefixing their question with
-            '[dev]'.
+            '[dev]'. This overrides self.silent.
         """
         # Don't provide long context-laden prompt if nothing has changed since
         # the user's last question. This is often a followup/clarifying

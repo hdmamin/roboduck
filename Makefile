@@ -27,5 +27,5 @@ reinstall:
 	pip uninstall -y roboduck && pip install -e ~/roboduck/lib
 
 test:
-	# `pytest` does not work.
-	python -m pytest
+	# `pytest` does not work. -s flag allows us to see stdout.
+	python -m pytest -s

@@ -40,6 +40,9 @@ class DuckLogger(Logger):
             this when an error is logged:
             2023-03-08 19:20:52,514 [ERROR]: list indices must be integers or
             slices, not tuple
+        stdout: bool
+            If True, logged items will appear in stdout. You are free to log
+            to both stdout and a file, neither, or one or the other.
         path: str or Path
             If provided, we log to this file (the dir structure does not need
             to exist already). If None, we do not log to a file.
@@ -56,6 +59,8 @@ class DuckLogger(Logger):
         """
         super().__init__(name)
         self.excepthook_kwargs = kwargs or {}
+        # TODO testing. Previously had silent=True hardcoded. Still considering
+        # desired behavior here.
         defaults = dict(auto=True, sleep=0, silent=True)
         for k, v in defaults.items():
             if self.excepthook_kwargs.get(k, v) != v:
@@ -92,9 +97,7 @@ class DuckLogger(Logger):
         Low-level logging routine which creates a LogRecord and then calls
         all the handlers of this logger to handle the record.
         """
-        print('isinstance(msg, Exception) ->', isinstance(msg, Exception))
         tmp = sys.exc_info()[2]
-        print('exc_info:', tmp, bool(tmp))
         if isinstance(msg, Exception) and sys.exc_info()[2]:
             from roboduck import errors
             errors.excepthook(type(msg), msg, msg.__traceback__,

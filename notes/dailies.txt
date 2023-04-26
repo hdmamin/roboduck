@@ -1403,8 +1403,29 @@ X -fix last test case for type_dict_str func if necessary
 
 4/25/23 tues
 ------------
--add more tests (intentionally excluding magic.py, shell.py; can revisit later if figure out a useful and effective way to do this)
-    -logging module
+~ -add more tests (intentionally excluding magic.py, shell.py; can revisit later if figure out a useful and effective way to do this)
+    ~ -logging module
+        > Mostly there, but still trying to figure out why we're still printing something to stdout when logging exceptions even when stdout=False. Some notable clues/notes:
+            > Standard lib logging class does this too even after removing all handlers and setting propagate=False.
+            > Easy to get tricked by logging level. Logging.info is often silent bc of default level, not bc we disabled stdout logging.
+            > Error message is preceded by standard logging format when stdout=True but NOT when stdout=False. This makes me wonder if I inadvertently left some print statement somewhere (logging/debug/errors modules) and it's not actually coming from the logger. I haven't managed to uncover that yet though.
+        > Other changes: documented a couple misc params I came across. Added check in excepthook to not print stack trace if kwargs['silent'] is True. Trying out making logger set `silent=not stdout` rather than hardcoded to true (forget my original logic here. Still considering. Don't want to halt program so logger can get explanation but maybe doesn't matter since it'll take just as long without streaming mode. Bain is kind of fried at this point, no use thinking about it more right now.)
+    -errors module
+    -debug module
+    -prompts.utils module
+    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        -callbacks
+        -chat
+        -utils
+X -fix bug in truncated_repr that occurred when objects were iterable but didn't support obj[:i].
+X -update makefile to run pytest in -s mode (show stdout)
+-look into how to add coverage % badge on github
+
+4/26/23 wed
+-----------
+-figure out how to remove 'In' and 'Out' vars from vars included in prompt when in ipython
+ -add more tests (intentionally excluding magic.py, shell.py; can revisit later if figure out a useful and effective way to do this)
+    -fix failing test in logging module (still printing output even in stdout=False mode instead of being silent. See yesterday's notes for clues.)
     -errors module
     -debug module
     -prompts.utils module

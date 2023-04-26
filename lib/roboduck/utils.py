@@ -308,7 +308,12 @@ def truncated_repr(obj, max_len=79):
         if isinstance(obj, set):
             slice_ = set(list(obj)[:n])
         else:
-            slice_ = obj[:n]
+            try:
+                slice_ = obj[:n]
+            except Exception as e:
+                warnings.warn(f'Failed to slice obj {obj}. Result may not be '
+                              f'truncated as much as desired. Error:\n{e}')
+                slice_ = obj
         repr_ = truncated_repr(slice_, max_len)
         non_brace_idx = len(repr_) - 1
         while repr_[non_brace_idx] in open2close.values():

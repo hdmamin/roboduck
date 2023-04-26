@@ -146,7 +146,8 @@ def excepthook(etype, val, tb, prompt_name='debug_stack_trace',
     """
     sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
     trace = print_exception(etype, val, tb)
-    print(trace)
+    if not kwargs.get('silent', False):
+        print(trace)
     kwargs.update(prompt_name=prompt_name, trace=trace, t=tb, Pdb=cls)
     if auto:
         return post_mortem(**kwargs)
@@ -200,13 +201,16 @@ def disable():
     """Revert to default behavior when exceptions are thrown.
     """
     sys.excepthook = default_excepthook
-    # Tried doing `ipy.set_custom_exc((Exception,), None)` as suggested by
-    # stackoverflow and chatgpt but it didn't quite restore the default
-    # behavior. Manually remove this instead. I'm assuming only one custom
-    # exception handler can be assigned for any one exception type and that
-    # if we call disable(), we wish to remove the handler for Exception.
-    ipy.custom_exceptions = tuple(x for x in ipy.custom_exceptions
-                                  if x != Exception)
+    try:
+        # Tried doing `ipy.set_custom_exc((Exception,), None)` as suggested by
+        # stackoverflow and chatgpt but it didn't quite restore the default
+        # behavior. Manually remove this instead. I'm assuming only one custom
+        # exception handler can be assigned for any one exception type and that
+        # if we call disable(), we wish to remove the handler for Exception.
+        ipy.custom_exceptions = tuple(x for x in ipy.custom_exceptions
+                                      if x != Exception)
+    except AttributeError:
+        pass
 
 
 def stack_trace():
