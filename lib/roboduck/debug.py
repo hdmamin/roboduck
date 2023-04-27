@@ -415,6 +415,29 @@ class DuckDB(Pdb):
             return super().precmd(line), trace
         return super().precmd(line)
 
+    def print_stack_entry(self, frame_lineno, prompt_prefix='\n-> '):
+        """This is called automatically when entering a debugger session
+        and it prints a message to stdout like
+
+        ```
+        > <ipython-input-20-9c67d40d0f93>(2)<module>()
+        -> print + 6
+        ```
+
+        In silent mode (like when using the roboduck logger with stdout=False),
+        we want to disable that message.
+        """
+        if self.silent:
+            return
+        frame, lineno = frame_lineno
+        if frame is self.curframe:
+            prefix = '> '
+        else:
+            prefix = '  '
+        self.message(prefix +
+                     self.format_stack_entry(frame_lineno, prompt_prefix))
+
+
 
 @add_docstring(DuckDB.__init__)
 def duck(**kwargs):

@@ -42,6 +42,8 @@ def test_file_logging(tmp_path, capfd):
 
     # Dummy model just returns uppercase version of prompt.
     assert 'TYPEERROR: UNSUPPORTED OPERAND TYPE(S) FOR +:' in logged_msg
-    # TODO: still prints something to stdout.
-    print('OUT:', out)
+    # Note: if we make this function much bigger or make our prompt much
+    # longer, we could run into issues here where our DuckDB class will raise a
+    # warning, thus polluting stdout and breaking the test below. But in our
+    # current state this should be fine.
     assert not out.strip()
