@@ -1,5 +1,4 @@
 import pytest
-import logging
 
 from roboduck import logging, DummyChatModel
 

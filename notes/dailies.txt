@@ -1441,15 +1441,27 @@ X -figure out how to remove 'In' and 'Out' vars from vars included in prompt whe
 
 4/26/23 wed
 -----------
--write/generate more tests
-    -errors module
+~ -write/generate more tests
+    X -errors module
+        > Only tested that enable/disable works. Not sure how to test components that require human interaction. /shrug
     -debug module
-    -prompts.utils module
+    X -prompts.utils module
     -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
         -callbacks
         -chat
         -utils
 -look into how to add coverage % badge on github
+
+4/27/23 thurs
+-------------
+-write/generate more tests
+    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        -callbacks
+        -chat
+        -utils
+    -debug module (consider how to even test this?)
+-look into how to add coverage % badge on github
+
 
 Backlog
 -------
