@@ -1,5 +1,4 @@
 """File name must differ from tests/test_utils.py to avoid pytest error.
-
 """
 from pathlib import Path
 import pytest
