@@ -1461,10 +1461,14 @@ X -figure out how to remove 'In' and 'Out' vars from vars included in prompt whe
             > Only 1 function and it just loads api key. Skip.
         -chat
     -debug module (consider how to even test this?)
+~ -fix failing build
+    > Seems to be tied (at least partially) to missing openai dep. Assumed langchain included it but I guess not.
+    > Still need to check if build passes - might be other issues.
 -look into how to add coverage % badge on github
 
 4/29/23 sat
 -----------
+-check if build passed (recall added openai dep)
 -remove htools dep
     -identify all functions/classes used
     -port over each component
