@@ -1,6 +1,5 @@
 IPython==7.25.0
 colorama>=0.3.0
-htools[speedup]
 ipynbname==2021.3.2
 langchain==0.0.118
 openai==0.27.*

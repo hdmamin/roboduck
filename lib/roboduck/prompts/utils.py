@@ -25,8 +25,8 @@ def available_templates(mode=''):
     Returns
     -------
     dict[str, set[str]] or set[str]: If mode is an empty str, we return a dict
-    mapping keys ("chat" and "completion") to set of prompt name strings,
-    e.g. "debug" (notice file extension is excluded).
+    mapping keys (should be "chat" and "completion") to set of prompt name
+    strings, e.g. "debug" (notice file extension is excluded).
     If a non-empty string is provided, we only return the set of strings for
     the given mode, e.g. only the available chat prompts if mode='chat'.
     """
@@ -37,11 +37,13 @@ def available_templates(mode=''):
                    and not path.stem.startswith('__'))
 
     assert isinstance(mode, str), f'Mode should be type str, not {type(mode)}.'
-    keys = [mode] if mode else ('chat', 'completion')
+    keys = [mode] if mode else VALID_MODES
     for key in keys:
         if key not in VALID_MODES:
-            raise ValueError(f'Invalid mode "{mode}". Valid modes are: '
-                             f'{VALID_MODES}.')
+            raise ValueError(
+                f'Encountered unrecognized key "{key}". This might mean you '
+                f'specified an invalid mode. Valid modes are: {VALID_MODES}.'
+            )
 
     res = {key: _prompt_names_in_dir(PROMPT_DIR/key) for key in keys}
     return next(iter(res.values())) if len(keys) == 1 else res

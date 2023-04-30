@@ -14,12 +14,10 @@ import json
 import pandas as pd
 from pathlib import Path
 import re
+import secrets
 import time
 import warnings
 import yaml
-
-from htools.core import random_str, load
-from htools.meta import typecheck
 
 
 def colored(text, color):
@@ -177,9 +175,10 @@ def load_current_ipython_session(formatted=True):
     list or str
     """
     shell = get_ipython()
-    path = Path('/tmp')/f'{random_str(24)}.txt'
+    path = Path('/tmp')/f'{secrets.token_hex(24)}.txt'
     shell.magic(f'%history -n -f {path}')
-    res = load(path)
+    with open(path, 'r') as f:
+        res = f.read()
     path.unlink()
     cells = []
     for row in res.splitlines():
@@ -351,6 +350,91 @@ def load_yaml(path, section=None):
     with open(path, 'r') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     return data.get(section, data)
+
+
+def typecheck(func_=None, **types):
+    """Decorator to enforce type checking for a function or method. There are
+    two ways to call this: either explicitly passing argument types to the
+    decorator, or letting it infer them using type annotations in the function
+    that will be decorated. We allow multiple both usage methods since older
+    versions of Python lack type annotations, and also because I feel the
+    annotation syntax can hurt readability.
+
+    Ported from htools to avoid extra dependency.
+
+    Parameters
+    ----------
+    func_: function
+        The function to decorate. When using decorator with
+        manually-specified types, this is None. Underscore is used so that
+        `func` can still be used as a valid keyword argument for the wrapped
+        function.
+    types: type
+        Optional way to specify variable types. Use standard types rather than
+        importing from the typing library, as subscripted generics are not
+        supported (e.g. typing.List[str] will not work; typing.List will but at
+        that point there is no benefit over the standard `list`).
+
+    Examples
+    --------
+    In the first example, we specify types directly in the decorator. Notice
+    that they can be single types or tuples of types. You can choose to
+    specify types for all arguments or just a subset.
+
+    @typecheck(x=float, y=(int, float), iters=int, verbose=bool)
+    def process(x, y, z, iters=5, verbose=True):
+        print(f'z = {z}')
+        for i in range(iters):
+            if verbose: print(f'Iteration {i}...')
+            x *= y
+        return x
+
+    >>> process(3.1, 4.5, 0, 2.0)
+    TypeError: iters must be <class 'int'>, not <class 'float'>.
+
+    >>> process(3.1, 4, 'a', 1, False)
+    z = a
+    12.4
+
+    Alternatively, you can let the decorator infer types using annotations
+    in the function that is to be decorated. The example below behaves
+    equivalently to the explicit example shown above. Note that annotations
+    regarding the returned value are ignored.
+
+    @typecheck
+    def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
+        print(f'z = {z}')
+        for i in range(iters):
+            if verbose: print(f'Iteration {i}...')
+            x *= y
+        return x
+
+    >>> process(3.1, 4.5, 0, 2.0)
+    TypeError: iters must be <class 'int'>, not <class 'float'>.
+
+    >>> process(3.1, 4, 'a', 1, False)
+    z = a
+    12.4
+    """
+    # Case 1: Pass keyword args to decorator specifying types.
+    if not func_:
+        return partial(typecheck, **types)
+    # Case 2: Infer types from annotations. Skip if Case 1 already occurred.
+    elif not types:
+        types = {k: v.annotation
+                 for k, v in signature(func_).parameters.items()
+                 if not v.annotation == Parameter.empty}
+
+    @wraps(func_)
+    def wrapper(*args, **kwargs):
+        fargs = signature(wrapper).bind(*args, **kwargs).arguments
+        for k, v in types.items():
+            if k in fargs and not isinstance(fargs[k], v):
+                raise TypeError(
+                    f'{k} must be {str(v)}, not {type(fargs[k])}.'
+                )
+        return func_(*args, **kwargs)
+    return wrapper
 
 
 def add_kwargs(func, fields, hide_fields=(), strict=False):
@@ -612,3 +696,62 @@ def available_models():
 
     # TODO: add anthropic/cohere/other?
     return res
+
+
+def is_ipy_name(
+        name,
+        count_as_true=('In', 'Out', '_dh', '_ih', '_ii', '_iii', '_oh')
+):
+    """Check if a variable name looks like an ipython output cell, e.g.
+    "_49", "_", or "__".
+
+    Ported from htools to avoid extra dependency.
+
+    More examples:
+    Returns True for names like (technically not sure if something like "__i3"
+    is actually used in ipython, but it looks like something we probably want
+    to remove in these contexts anyway /shrug):
+    ['_', '__', '_i3', '__i3', '_4', '_9913', '__7', '__23874']
+
+    Returns False for names like
+    ['_a', 'i22', '__0i', '_03z', '__99t']
+    and most "normal" variable names.
+
+    Parameters
+    ----------
+    name: str
+    count_as_true: Iterable[str]
+        Additional variable names that don't necessarily fit the standard
+        pattern but should nonetheless return True if we encounter them.
+
+    Returns
+    -------
+    bool: True if it looks like an ipython output cell name, False otherwise.
+    """
+    # First check if it fits the standard leading underscore format.
+    # Easier to handle the "only underscores" case separately because we want
+    # to limit the number of underscores for names like "_i3".
+    pat = '^_{1,2}i?\\d*$'
+    is_under = bool(re.match(pat, name)) or not name.strip('_')
+    return is_under or name in count_as_true
+
+
+def add_docstring(func):
+    """Add the docstring from another function/class to the decorated
+    function/class.
+
+    Ported from htools to avoid extra dependency.
+
+    Examples
+    --------
+    @add_docstring(nn.Conv2d)
+    class ReflectionPaddedConv2d(nn.Module):
+        ...
+    """
+    def decorator(new_func):
+        new_func.__doc__ = f'{new_func.__doc__}\n\n{func.__doc__}'
+        @wraps(new_func)
+        def wrapper(*args, **kwargs):
+            return new_func(*args, **kwargs)
+        return wrapper
+    return decorator

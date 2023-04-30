@@ -20,7 +20,6 @@ def bubble_sort(nums):
 """
 import cmd
 from functools import partial
-from htools import load, is_ipy_name
 import inspect
 import ipynbname
 from langchain.callbacks.base import CallbackManager
@@ -28,12 +27,11 @@ from pdb import Pdb
 import sys
 import warnings
 
-from htools.meta import add_docstring
 from roboduck.langchain.chat import Chat
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
     truncated_repr, load_current_ipython_session, colordiff_new_str, \
-    parse_completion, store_class_defaults
+    parse_completion, store_class_defaults, is_ipy_name, add_docstring
 
 
 @store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
@@ -243,7 +241,8 @@ class DuckDB(Pdb):
                     full_code = load_current_ipython_session()
                     res['file_type'] = 'ipython session'
             else:
-                full_code = load(file, verbose=False)
+                with open(file, 'r') as f:
+                    full_code = f.read()
                 res['file_type'] = 'python script'
             res['full_code'] = self._remove_debugger_call(full_code)
             used_tokens = set(res['full_code'].split())

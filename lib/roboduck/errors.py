@@ -19,12 +19,12 @@ errors.enable(auto=True)
 """
 from functools import partial
 from IPython import get_ipython
-from roboduck.debug import DuckDB, CodeCompletionCache
 import sys
 from traceback import TracebackException
 import warnings
 
-from htools.meta import add_docstring
+from roboduck.debug import DuckDB, CodeCompletionCache
+from roboduck.utils import add_docstring
 
 default_excepthook = sys.excepthook
 ipy = get_ipython()
