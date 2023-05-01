@@ -1495,7 +1495,8 @@ X -fix cli entrypoint
 
 4/30/23 sun
 -----------
--check if build passed (issue from sat re VALID_MODES should work, though still unclear why 'conversations' dir is missing remotely but not locally.)
+~ -check if build passed (issue from sat re VALID_MODES should work, though still unclear why 'conversations' dir is missing remotely but not locally.)
+    > Same test fails bc missing completion dir causes results to differ from expected vals. Now I'm thinking maybe bc the dir is empty, git is excluding it when running actions. Added gitkeep file.
 -look into options for auto doc generation
 -write/generate more tests
     -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)

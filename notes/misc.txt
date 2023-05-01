@@ -21,4 +21,28 @@ Chain 0
 
 approaches O(n^2) wrt encoding questions (i.e. first question is encoded n times where n is number of questions). Whereas if we make this a single prompt, encoding is O(n) (i.e. each section is encoded once).
 
+4/30/23 sun
+-----------
+dynamic docs thoughts
 
+goals
+-make it easy for a new user or dev to quickly answer questions about how to do something with the library
+-this means supporting/streamlining relevant actions:
+    -search
+    -grok
+    -understand (I use "grok" to mean understanding implementation details, "understand" to mean understand design decisions)
+-easy to maintain (ideally avoid having to write actual docs. But keeping dynamic docs updated might be even harder realistically.)
+    
+implementation
+-stick whole codebase into a long prompt for gpt4 (long context window version), then inject user question
+    -could retrieve relevant commit from github and do this live, potentially no manual updates whatsoever
+-embed file chunks (or maybe 1 chunk per function/class/variable?). Then use vector-based retriever to get top k relevant results, and pass only those to gpt (no need for super long context window)
+    -use openai or try free option here? Lower stakes than the actual debugging functionality itself.
+    -prob means need to generate new embeddings on each release. Maybe include them in setup.py data_files or something? Maybe can add github build action to do this automatically.
+-just ask gpt to write static docs and I revise as needed
+-fine tuned codex-like model. No docs, just better code generation.
+    -new fine-tuning job one each release. Maybe can add github build action to do this automatically.
+
+thoughts
+-dynamic approaches are interesting but could be a whole project in and of themselves
+-leaning towards starting with standard auto docs + maybe a few quickstart examples (the latter could perhaps be gpt-assisted but not sure if that would really even help much - compiling prompt takes some time and I tried to design everything to be very simple to use anyway)
