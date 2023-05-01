@@ -1,0 +1,24 @@
+site_name: RoboDuck
+theme: 'material'
+plugins:
+  - search
+  - mkdocstrings
+markdown_extensions:
+  # TODO Trying to get docstring params to be parsed correctly. Just shows type, not name, atm.
+  - pymdownx.superfences:
+      custom_fences:
+        - name: python
+          class: python
+          format: !!python/str '{lineno} {pyobject}'
+
+# Bullets below will be tabs in left navbar.
+nav:
+  - index.md
+  - debug.md
+  - errors.md
+  - logging.md
+  - magic.md
+  - utils.md
+  - shell.md
+  - CLI:
+    - cli/cli.md

@@ -4,9 +4,16 @@ not streamed because the intended use case is not focused on live development.
 
 Quickstart
 ----------
+```
 from roboduck import logging
 
-logger = logging.getLogger()
+logger = logging.getLogger(path='/tmp/log.txt')
+data = {'x': 0}
+try:
+    x = data.x
+except Exception as e:
+    logger.error(e)
+```
 """
 from logging import Logger, Formatter, StreamHandler, FileHandler
 from pathlib import Path

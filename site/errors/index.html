@@ -1,0 +1,2265 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../debug/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+    
+    
+      
+        <title>Errors - RoboDuck</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ded33207.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lib.roboduck.errors" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RoboDuck" class="md-header__button md-logo" aria-label="RoboDuck" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoboDuck
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Errors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RoboDuck" class="md-nav__button md-logo" aria-label="RoboDuck" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    RoboDuck
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Welcome to MkDocs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Errors
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Errors
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors" class="md-nav__link">
+    lib.roboduck.errors
+  </a>
+  
+    <nav class="md-nav" aria-label="lib.roboduck.errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--after-this-import-error-explanations-are-automatically-enabled" class="md-nav__link">
+    After this import, error explanations are automatically enabled.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--go-back-to-pythons-regular-behavior-on-errors" class="md-nav__link">
+    Go back to python's regular behavior on errors.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--you-can-use-enable-to-change-settings-or-manually-re-enable-gpt" class="md-nav__link">
+    You can use 
+
+
+
+
+
+  
+  
+      Errors that explain themselves! Or more precisely, that are explained to you
+by a gpt-esque model. Simply importing this module will change python's default
+behavior when it encounters an error.
+Quickstart
+After this import, error explanations are automatically enabled.
+from roboduck import errors
+Go back to python's regular behavior on errors.
+errors.disable()
+You can use enable to change settings or manually re-enable gpt
+explanations. By default, we ask the user if they want an explanation after
+each error (y/n). Setting auto=True skips this step and always explains
+errors (not recommended in most cases, but it's an option).
+errors.enable(auto=True)
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+disable()
+
+
+
+
+  
+  
+      Revert to default behavior when exceptions are thrown.
+
+      
+        Source code in lib/roboduck/errors.py
+        200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213def disable():
+    &quot;&quot;&quot;Revert to default behavior when exceptions are thrown.
+    &quot;&quot;&quot;
+    sys.excepthook = default_excepthook
+    try:
+        # Tried doing `ipy.set_custom_exc((Exception,), None)` as suggested by
+        # stackoverflow and chatgpt but it didn&#39;t quite restore the default
+        # behavior. Manually remove this instead. I&#39;m assuming only one custom
+        # exception handler can be assigned for any one exception type and that
+        # if we call disable(), we wish to remove the handler for Exception.
+        ipy.custom_exceptions = tuple(x for x in ipy.custom_exceptions
+                                      if x != Exception)
+    except AttributeError:
+        pass
+
+      
+  
+
+
+
+
+
+
+
+
+enable(**kwargs)
+
+
+
+
+  
+  
+      Enable conversational debugging mode. This is called automatically on
+module import. However, users may wish to make changes, e.g. set auto=True
+or pass in a custom debugger cls, and this function makes that possible.
+Parameters
+
+
+  any
+  auto (bool) - if True, automatically have gpt explain every error that
+    occurs. Mostly useful for logging in production. You almost
+    certainly want to keep this as the default of False for any
+    interactive development.
+cls (type) - the debugger class to use.
+prompt_name (str) - determines what prompt/prompt_name the custom
+    debugger uses, e.g. "debug_stack_trace"
+colordiff (bool) - if True, new code snippet will print new parts
+    in green.
+Or any other args that can be passed to our debugger cls.
+
+      
+        Source code in lib/roboduck/errors.py
+        163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197def enable(**kwargs):
+    &quot;&quot;&quot;Enable conversational debugging mode. This is called automatically on
+    module import. However, users may wish to make changes, e.g. set auto=True
+    or pass in a custom debugger cls, and this function makes that possible.
+
+    Parameters
+    ----------
+    kwargs: any
+        auto (bool) - if True, automatically have gpt explain every error that
+            occurs. Mostly useful for logging in production. You almost
+            certainly want to keep this as the default of False for any
+            interactive development.
+        cls (type) - the debugger class to use.
+        prompt_name (str) - determines what prompt/prompt_name the custom
+            debugger uses, e.g. &quot;debug_stack_trace&quot;
+        colordiff (bool) - if True, new code snippet will print new parts
+            in green.
+        Or any other args that can be passed to our debugger cls.
+    &quot;&quot;&quot;
+    hook = partial(excepthook, **kwargs)
+
+    def ipy_excepthook(self, etype, evalue, tb, tb_offset):
+        &quot;&quot;&quot;IPython doesn&#39;t use sys.excepthook. We have to handle this case
+        separately and make sure it expects the right argument names.
+        &quot;&quot;&quot;
+        return hook(etype, evalue, tb)
+
+    # Overwrite default error handling.
+    sys.excepthook = hook
+
+    # Only necessary/possible when in ipython.
+    try:
+        ipy.set_custom_exc((Exception,), ipy_excepthook)
+    except AttributeError:
+        pass
+
+      
+  
+
+
+
+
+
+
+
+
+excepthook(etype, val, tb, prompt_name=&#39;debug_stack_trace&#39;, auto=False, cls=DuckDB, **kwargs)
+
+
+
+
+  
+  
+      Replaces sys.excepthook when module is imported. When an error is
+thrown, the user is asked whether they want an explanation of what went
+wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
+roboduck.debug.duck(), the user does not need to manually type a
+question, and we don't linger in the debugger - we just write gpt's
+explanation and exit.
+Disable by calling roboduck.errors.disable().
+Parameters are the same as the default sys.excepthook function. Kwargs
+are forwarded to our custom postmortem function.
+
+      
+        Source code in lib/roboduck/errors.py
+        133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160def excepthook(etype, val, tb, prompt_name=&#39;debug_stack_trace&#39;,
+               auto=False, cls=DuckDB, **kwargs):
+    &quot;&quot;&quot;Replaces sys.excepthook when module is imported. When an error is
+    thrown, the user is asked whether they want an explanation of what went
+    wrong. If they enter &#39;y&#39; or &#39;yes&#39;, it will query gpt for help. Unlike
+    roboduck.debug.duck(), the user does not need to manually type a
+    question, and we don&#39;t linger in the debugger - we just write gpt&#39;s
+    explanation and exit.
+
+    Disable by calling roboduck.errors.disable().
+
+    Parameters are the same as the default sys.excepthook function. Kwargs
+    are forwarded to our custom postmortem function.
+    &quot;&quot;&quot;
+    sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
+    trace = print_exception(etype, val, tb)
+    if not kwargs.get(&#39;silent&#39;, False):
+        print(trace)
+    kwargs.update(prompt_name=prompt_name, trace=trace, t=tb, Pdb=cls)
+    if auto:
+        return post_mortem(**kwargs)
+    while True:
+        cmd = input(&#39;Explain error message? [y/n]\n&#39;).lower().strip()
+        if cmd in (&#39;y&#39;, &#39;yes&#39;):
+            return post_mortem(**kwargs)
+        if cmd in (&#39;n&#39;, &#39;no&#39;):
+            return
+        print(&#39;Unrecognized command. Valid choices are &quot;y&quot; or &quot;n&quot;.\n&#39;)
+
+      
+  
+
+
+
+
+
+
+
+
+post_mortem(t=None, Pdb=DuckDB, trace=&#39;&#39;, prompt_name=&#39;debug_stack_trace&#39;, colordiff=True, **kwargs)
+
+
+
+
+  
+  
+      Drop-in replacement (hence the slightly odd arg order, where trace is
+required but third positionally) for pdb.post_mortem that allows us to get
+both the stack trace AND global/local vars from the program state right
+before an exception occurred.
+Parameters
+
+
+  some kind of traceback type?
+  A holdover from the default post_mortem class, not actually sure what
+type this is but it doesn't really matter for our use.
+
+
+  type
+  Debugger class. Name is capitalized to provide consistent interface
+with default post_mortem function.
+
+
+  str
+  Stack trace formatted as a single string. Required - default value
+just helps us maintain a consistent interface with pdb.post_mortem.
+
+
+  str
+  The prompt name that will be passed to our debugger class. Usually
+should leave this as the default. We expect the name to contain
+'debug' and will warn if it doesn't.
+
+
+  bool
+  If True, the new code snippet in the exception will print new
+parts in green.
+
+
+  any
+  Additional kwargs to pass to debugger class constructor. The docstring
+of the default class is included below for reference.
+
+      
+        Source code in lib/roboduck/errors.py
+        33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99@add_docstring(DuckDB.__init__)
+def post_mortem(t=None, Pdb=DuckDB, trace=&#39;&#39;, prompt_name=&#39;debug_stack_trace&#39;,
+                colordiff=True, **kwargs):
+    &quot;&quot;&quot;Drop-in replacement (hence the slightly odd arg order, where trace is
+    required but third positionally) for pdb.post_mortem that allows us to get
+    both the stack trace AND global/local vars from the program state right
+    before an exception occurred.
+
+    Parameters
+    ----------
+    t: some kind of traceback type?
+        A holdover from the default post_mortem class, not actually sure what
+        type this is but it doesn&#39;t really matter for our use.
+    Pdb: type
+        Debugger class. Name is capitalized to provide consistent interface
+        with default post_mortem function.
+    trace: str
+        Stack trace formatted as a single string. Required - default value
+        just helps us maintain a consistent interface with pdb.post_mortem.
+    prompt_name: str
+        The prompt name that will be passed to our debugger class. Usually
+        should leave this as the default. We expect the name to contain
+        &#39;debug&#39; and will warn if it doesn&#39;t.
+    colordiff: bool
+        If True, the new code snippet in the exception will print new
+        parts in green.
+    kwargs: any
+        Additional kwargs to pass to debugger class constructor. The docstring
+        of the default class is included below for reference.
+    &quot;&quot;&quot;
+    if t is None:
+        t = sys.exc_info()[2]
+        assert t is not None, &quot;post_mortem outside of exception context&quot;
+    if &#39;debug&#39; not in prompt_name:
+        warnings.warn(
+            f&#39;You passed an unexpected prompt_name ({prompt_name}) to &#39;
+            f&#39;post_mortem. Are you sure you didn\&#39;t mean to use &#39;
+            f&#39;debug_stack_trace?&#39;
+        )
+    assert trace, &#39;Trace passed to post_mortem should be truthy.&#39;
+
+    # This serves almost like a soft assert statement - if user defines some
+    # custom debugger class and the question leaks through, gpt should
+    # hopefully warn us.
+    dummy_question = (
+        &#39;This is a fake question to ensure that our ask_language_model &#39;
+        &#39;method gets called. Our debugger class should remove this from the &#39;
+        &#39;prompt kwargs before calling gpt. If you can read this, can you &#39;
+        &#39;indicate that in your response?&#39;
+    )
+    kwargs[&#39;color&#39;] = kwargs.get(&#39;color&#39;, &#39;red&#39;)
+    p = Pdb(prompt_name=prompt_name, **kwargs)
+    p.reset()
+    p.cmdqueue.insert(0, (dummy_question, trace))
+    p.cmdqueue.insert(1, &#39;q&#39;)
+    p.interaction(None, t)
+
+    # Make gpt explanation available as part of last error message,
+    # accessible via sys.last_value.
+    last_value = getattr(sys, &#39;last_value&#39;, None)
+    if CodeCompletionCache.last_completion and last_value:
+        code_name = &#39;last_code_diff&#39; if colordiff else &#39;last_new_code&#39;
+        last_value.args = tuple(
+            arg if i else f&#39;{arg}\n\n{CodeCompletionCache.last_explanation}&#39;
+                          f&#39;\n\n{getattr(CodeCompletionCache, code_name)}&#39;
+            for i, arg in enumerate(last_value.args)
+        )
+
+      
+  
+
+
+
+
+
+
+
+
+print_exception(etype, value, tb, limit=None, file=None, chain=True)
+
+
+
+
+  
+  
+      Replacement for traceback.print_exception() that returns the
+whole stack trace as a single string. Used in roboduck's custom excepthook
+to allow us to show the stack trace to gpt. The original function's
+docstring is below:
+Print exception up to 'limit' stack trace entries from 'tb' to 'file'.
+This differs from print_tb() in the following ways: (1) if
+traceback is not None, it prints a header "Traceback (most recent
+call last):"; (2) it prints the exception type and value after the
+stack trace; (3) if type is SyntaxError and value has the
+appropriate format, it prints the line where the syntax error
+occurred with a caret on the next line indicating the approximate
+position of the error.
+
+      
+        Source code in lib/roboduck/errors.py
+        102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130def print_exception(etype, value, tb, limit=None, file=None, chain=True):
+    &quot;&quot;&quot;Replacement for traceback.print_exception() that returns the
+    whole stack trace as a single string. Used in roboduck&#39;s custom excepthook
+    to allow us to show the stack trace to gpt. The original function&#39;s
+    docstring is below:
+
+    Print exception up to &#39;limit&#39; stack trace entries from &#39;tb&#39; to &#39;file&#39;.
+
+    This differs from print_tb() in the following ways: (1) if
+    traceback is not None, it prints a header &quot;Traceback (most recent
+    call last):&quot;; (2) it prints the exception type and value after the
+    stack trace; (3) if type is SyntaxError and value has the
+    appropriate format, it prints the line where the syntax error
+    occurred with a caret on the next line indicating the approximate
+    position of the error.
+    &quot;&quot;&quot;
+    # format_exception has ignored etype for some time, and code such as cgitb
+    # passes in bogus values as a result. For compatibility with such code we
+    # ignore it here (rather than in the new TracebackException API).
+    if file is None:
+        file = sys.stderr
+    trace = &#39;&#39;.join(
+        TracebackException(type(value), value, tb, limit=limit)
+        .format(chain=chain)
+    )
+    if file != sys.stderr:
+        with open(file, &#39;w&#39;) as f:
+            f.write(trace)
+    return trace
+
+      
+  
+
+
+
+
+
+  
+
+  
+
+ to change settings or manually re-enable gpt
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--explanations-by-default-we-ask-the-user-if-they-want-an-explanation-after" class="md-nav__link">
+    explanations. By default, we ask the user if they want an explanation after
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--each-error-yn-setting-autotrue-skips-this-step-and-always-explains" class="md-nav__link">
+    each error (y/n). Setting auto=True skips this step and always explains
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--errors-not-recommended-in-most-cases-but-its-an-option" class="md-nav__link">
+    errors (not recommended in most cases, but it's an option).
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.disable" class="md-nav__link">
+    disable()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.enable" class="md-nav__link">
+    enable()
+  </a>
+  
+    <nav class="md-nav" aria-label="enable()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.enable--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.excepthook" class="md-nav__link">
+    excepthook()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.post_mortem" class="md-nav__link">
+    post_mortem()
+  </a>
+  
+    <nav class="md-nav" aria-label="post_mortem()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.post_mortem--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.print_exception" class="md-nav__link">
+    print_exception()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors" class="md-nav__link">
+    lib.roboduck.errors
+  </a>
+  
+    <nav class="md-nav" aria-label="lib.roboduck.errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--after-this-import-error-explanations-are-automatically-enabled" class="md-nav__link">
+    After this import, error explanations are automatically enabled.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--go-back-to-pythons-regular-behavior-on-errors" class="md-nav__link">
+    Go back to python's regular behavior on errors.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--you-can-use-enable-to-change-settings-or-manually-re-enable-gpt" class="md-nav__link">
+    You can use 
+
+
+
+
+
+  
+  
+      Errors that explain themselves! Or more precisely, that are explained to you
+by a gpt-esque model. Simply importing this module will change python's default
+behavior when it encounters an error.
+Quickstart
+After this import, error explanations are automatically enabled.
+from roboduck import errors
+Go back to python's regular behavior on errors.
+errors.disable()
+You can use enable to change settings or manually re-enable gpt
+explanations. By default, we ask the user if they want an explanation after
+each error (y/n). Setting auto=True skips this step and always explains
+errors (not recommended in most cases, but it's an option).
+errors.enable(auto=True)
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+disable()
+
+
+
+
+  
+  
+      Revert to default behavior when exceptions are thrown.
+
+      
+        Source code in lib/roboduck/errors.py
+        200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213def disable():
+    &quot;&quot;&quot;Revert to default behavior when exceptions are thrown.
+    &quot;&quot;&quot;
+    sys.excepthook = default_excepthook
+    try:
+        # Tried doing `ipy.set_custom_exc((Exception,), None)` as suggested by
+        # stackoverflow and chatgpt but it didn&#39;t quite restore the default
+        # behavior. Manually remove this instead. I&#39;m assuming only one custom
+        # exception handler can be assigned for any one exception type and that
+        # if we call disable(), we wish to remove the handler for Exception.
+        ipy.custom_exceptions = tuple(x for x in ipy.custom_exceptions
+                                      if x != Exception)
+    except AttributeError:
+        pass
+
+      
+  
+
+
+
+
+
+
+
+
+enable(**kwargs)
+
+
+
+
+  
+  
+      Enable conversational debugging mode. This is called automatically on
+module import. However, users may wish to make changes, e.g. set auto=True
+or pass in a custom debugger cls, and this function makes that possible.
+Parameters
+
+
+  any
+  auto (bool) - if True, automatically have gpt explain every error that
+    occurs. Mostly useful for logging in production. You almost
+    certainly want to keep this as the default of False for any
+    interactive development.
+cls (type) - the debugger class to use.
+prompt_name (str) - determines what prompt/prompt_name the custom
+    debugger uses, e.g. "debug_stack_trace"
+colordiff (bool) - if True, new code snippet will print new parts
+    in green.
+Or any other args that can be passed to our debugger cls.
+
+      
+        Source code in lib/roboduck/errors.py
+        163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197def enable(**kwargs):
+    &quot;&quot;&quot;Enable conversational debugging mode. This is called automatically on
+    module import. However, users may wish to make changes, e.g. set auto=True
+    or pass in a custom debugger cls, and this function makes that possible.
+
+    Parameters
+    ----------
+    kwargs: any
+        auto (bool) - if True, automatically have gpt explain every error that
+            occurs. Mostly useful for logging in production. You almost
+            certainly want to keep this as the default of False for any
+            interactive development.
+        cls (type) - the debugger class to use.
+        prompt_name (str) - determines what prompt/prompt_name the custom
+            debugger uses, e.g. &quot;debug_stack_trace&quot;
+        colordiff (bool) - if True, new code snippet will print new parts
+            in green.
+        Or any other args that can be passed to our debugger cls.
+    &quot;&quot;&quot;
+    hook = partial(excepthook, **kwargs)
+
+    def ipy_excepthook(self, etype, evalue, tb, tb_offset):
+        &quot;&quot;&quot;IPython doesn&#39;t use sys.excepthook. We have to handle this case
+        separately and make sure it expects the right argument names.
+        &quot;&quot;&quot;
+        return hook(etype, evalue, tb)
+
+    # Overwrite default error handling.
+    sys.excepthook = hook
+
+    # Only necessary/possible when in ipython.
+    try:
+        ipy.set_custom_exc((Exception,), ipy_excepthook)
+    except AttributeError:
+        pass
+
+      
+  
+
+
+
+
+
+
+
+
+excepthook(etype, val, tb, prompt_name=&#39;debug_stack_trace&#39;, auto=False, cls=DuckDB, **kwargs)
+
+
+
+
+  
+  
+      Replaces sys.excepthook when module is imported. When an error is
+thrown, the user is asked whether they want an explanation of what went
+wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
+roboduck.debug.duck(), the user does not need to manually type a
+question, and we don't linger in the debugger - we just write gpt's
+explanation and exit.
+Disable by calling roboduck.errors.disable().
+Parameters are the same as the default sys.excepthook function. Kwargs
+are forwarded to our custom postmortem function.
+
+      
+        Source code in lib/roboduck/errors.py
+        133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160def excepthook(etype, val, tb, prompt_name=&#39;debug_stack_trace&#39;,
+               auto=False, cls=DuckDB, **kwargs):
+    &quot;&quot;&quot;Replaces sys.excepthook when module is imported. When an error is
+    thrown, the user is asked whether they want an explanation of what went
+    wrong. If they enter &#39;y&#39; or &#39;yes&#39;, it will query gpt for help. Unlike
+    roboduck.debug.duck(), the user does not need to manually type a
+    question, and we don&#39;t linger in the debugger - we just write gpt&#39;s
+    explanation and exit.
+
+    Disable by calling roboduck.errors.disable().
+
+    Parameters are the same as the default sys.excepthook function. Kwargs
+    are forwarded to our custom postmortem function.
+    &quot;&quot;&quot;
+    sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
+    trace = print_exception(etype, val, tb)
+    if not kwargs.get(&#39;silent&#39;, False):
+        print(trace)
+    kwargs.update(prompt_name=prompt_name, trace=trace, t=tb, Pdb=cls)
+    if auto:
+        return post_mortem(**kwargs)
+    while True:
+        cmd = input(&#39;Explain error message? [y/n]\n&#39;).lower().strip()
+        if cmd in (&#39;y&#39;, &#39;yes&#39;):
+            return post_mortem(**kwargs)
+        if cmd in (&#39;n&#39;, &#39;no&#39;):
+            return
+        print(&#39;Unrecognized command. Valid choices are &quot;y&quot; or &quot;n&quot;.\n&#39;)
+
+      
+  
+
+
+
+
+
+
+
+
+post_mortem(t=None, Pdb=DuckDB, trace=&#39;&#39;, prompt_name=&#39;debug_stack_trace&#39;, colordiff=True, **kwargs)
+
+
+
+
+  
+  
+      Drop-in replacement (hence the slightly odd arg order, where trace is
+required but third positionally) for pdb.post_mortem that allows us to get
+both the stack trace AND global/local vars from the program state right
+before an exception occurred.
+Parameters
+
+
+  some kind of traceback type?
+  A holdover from the default post_mortem class, not actually sure what
+type this is but it doesn't really matter for our use.
+
+
+  type
+  Debugger class. Name is capitalized to provide consistent interface
+with default post_mortem function.
+
+
+  str
+  Stack trace formatted as a single string. Required - default value
+just helps us maintain a consistent interface with pdb.post_mortem.
+
+
+  str
+  The prompt name that will be passed to our debugger class. Usually
+should leave this as the default. We expect the name to contain
+'debug' and will warn if it doesn't.
+
+
+  bool
+  If True, the new code snippet in the exception will print new
+parts in green.
+
+
+  any
+  Additional kwargs to pass to debugger class constructor. The docstring
+of the default class is included below for reference.
+
+      
+        Source code in lib/roboduck/errors.py
+        33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99@add_docstring(DuckDB.__init__)
+def post_mortem(t=None, Pdb=DuckDB, trace=&#39;&#39;, prompt_name=&#39;debug_stack_trace&#39;,
+                colordiff=True, **kwargs):
+    &quot;&quot;&quot;Drop-in replacement (hence the slightly odd arg order, where trace is
+    required but third positionally) for pdb.post_mortem that allows us to get
+    both the stack trace AND global/local vars from the program state right
+    before an exception occurred.
+
+    Parameters
+    ----------
+    t: some kind of traceback type?
+        A holdover from the default post_mortem class, not actually sure what
+        type this is but it doesn&#39;t really matter for our use.
+    Pdb: type
+        Debugger class. Name is capitalized to provide consistent interface
+        with default post_mortem function.
+    trace: str
+        Stack trace formatted as a single string. Required - default value
+        just helps us maintain a consistent interface with pdb.post_mortem.
+    prompt_name: str
+        The prompt name that will be passed to our debugger class. Usually
+        should leave this as the default. We expect the name to contain
+        &#39;debug&#39; and will warn if it doesn&#39;t.
+    colordiff: bool
+        If True, the new code snippet in the exception will print new
+        parts in green.
+    kwargs: any
+        Additional kwargs to pass to debugger class constructor. The docstring
+        of the default class is included below for reference.
+    &quot;&quot;&quot;
+    if t is None:
+        t = sys.exc_info()[2]
+        assert t is not None, &quot;post_mortem outside of exception context&quot;
+    if &#39;debug&#39; not in prompt_name:
+        warnings.warn(
+            f&#39;You passed an unexpected prompt_name ({prompt_name}) to &#39;
+            f&#39;post_mortem. Are you sure you didn\&#39;t mean to use &#39;
+            f&#39;debug_stack_trace?&#39;
+        )
+    assert trace, &#39;Trace passed to post_mortem should be truthy.&#39;
+
+    # This serves almost like a soft assert statement - if user defines some
+    # custom debugger class and the question leaks through, gpt should
+    # hopefully warn us.
+    dummy_question = (
+        &#39;This is a fake question to ensure that our ask_language_model &#39;
+        &#39;method gets called. Our debugger class should remove this from the &#39;
+        &#39;prompt kwargs before calling gpt. If you can read this, can you &#39;
+        &#39;indicate that in your response?&#39;
+    )
+    kwargs[&#39;color&#39;] = kwargs.get(&#39;color&#39;, &#39;red&#39;)
+    p = Pdb(prompt_name=prompt_name, **kwargs)
+    p.reset()
+    p.cmdqueue.insert(0, (dummy_question, trace))
+    p.cmdqueue.insert(1, &#39;q&#39;)
+    p.interaction(None, t)
+
+    # Make gpt explanation available as part of last error message,
+    # accessible via sys.last_value.
+    last_value = getattr(sys, &#39;last_value&#39;, None)
+    if CodeCompletionCache.last_completion and last_value:
+        code_name = &#39;last_code_diff&#39; if colordiff else &#39;last_new_code&#39;
+        last_value.args = tuple(
+            arg if i else f&#39;{arg}\n\n{CodeCompletionCache.last_explanation}&#39;
+                          f&#39;\n\n{getattr(CodeCompletionCache, code_name)}&#39;
+            for i, arg in enumerate(last_value.args)
+        )
+
+      
+  
+
+
+
+
+
+
+
+
+print_exception(etype, value, tb, limit=None, file=None, chain=True)
+
+
+
+
+  
+  
+      Replacement for traceback.print_exception() that returns the
+whole stack trace as a single string. Used in roboduck's custom excepthook
+to allow us to show the stack trace to gpt. The original function's
+docstring is below:
+Print exception up to 'limit' stack trace entries from 'tb' to 'file'.
+This differs from print_tb() in the following ways: (1) if
+traceback is not None, it prints a header "Traceback (most recent
+call last):"; (2) it prints the exception type and value after the
+stack trace; (3) if type is SyntaxError and value has the
+appropriate format, it prints the line where the syntax error
+occurred with a caret on the next line indicating the approximate
+position of the error.
+
+      
+        Source code in lib/roboduck/errors.py
+        102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130def print_exception(etype, value, tb, limit=None, file=None, chain=True):
+    &quot;&quot;&quot;Replacement for traceback.print_exception() that returns the
+    whole stack trace as a single string. Used in roboduck&#39;s custom excepthook
+    to allow us to show the stack trace to gpt. The original function&#39;s
+    docstring is below:
+
+    Print exception up to &#39;limit&#39; stack trace entries from &#39;tb&#39; to &#39;file&#39;.
+
+    This differs from print_tb() in the following ways: (1) if
+    traceback is not None, it prints a header &quot;Traceback (most recent
+    call last):&quot;; (2) it prints the exception type and value after the
+    stack trace; (3) if type is SyntaxError and value has the
+    appropriate format, it prints the line where the syntax error
+    occurred with a caret on the next line indicating the approximate
+    position of the error.
+    &quot;&quot;&quot;
+    # format_exception has ignored etype for some time, and code such as cgitb
+    # passes in bogus values as a result. For compatibility with such code we
+    # ignore it here (rather than in the new TracebackException API).
+    if file is None:
+        file = sys.stderr
+    trace = &#39;&#39;.join(
+        TracebackException(type(value), value, tb, limit=limit)
+        .format(chain=chain)
+    )
+    if file != sys.stderr:
+        with open(file, &#39;w&#39;) as f:
+            f.write(trace)
+    return trace
+
+      
+  
+
+
+
+
+
+  
+
+  
+
+ to change settings or manually re-enable gpt
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--explanations-by-default-we-ask-the-user-if-they-want-an-explanation-after" class="md-nav__link">
+    explanations. By default, we ask the user if they want an explanation after
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--each-error-yn-setting-autotrue-skips-this-step-and-always-explains" class="md-nav__link">
+    each error (y/n). Setting auto=True skips this step and always explains
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors--errors-not-recommended-in-most-cases-but-its-an-option" class="md-nav__link">
+    errors (not recommended in most cases, but it's an option).
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.disable" class="md-nav__link">
+    disable()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.enable" class="md-nav__link">
+    enable()
+  </a>
+  
+    <nav class="md-nav" aria-label="enable()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.enable--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.excepthook" class="md-nav__link">
+    excepthook()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.post_mortem" class="md-nav__link">
+    post_mortem()
+  </a>
+  
+    <nav class="md-nav" aria-label="post_mortem()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.post_mortem--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.errors.print_exception" class="md-nav__link">
+    print_exception()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Errors</h1>
+
+<div class="doc doc-object doc-module">
+
+
+<a id="lib.roboduck.errors"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Errors that explain themselves! Or more precisely, that are explained to you
+by a gpt-esque model. Simply importing this module will change python's default
+behavior when it encounters an error.</p>
+<h3 id="lib.roboduck.errors--quickstart">Quickstart</h3>
+<h2 id="lib.roboduck.errors--after-this-import-error-explanations-are-automatically-enabled">After this import, error explanations are automatically enabled.</h2>
+<p>from roboduck import errors</p>
+<h2 id="lib.roboduck.errors--go-back-to-pythons-regular-behavior-on-errors">Go back to python's regular behavior on errors.</h2>
+<p>errors.disable()</p>
+<h2 id="lib.roboduck.errors--you-can-use-enable-to-change-settings-or-manually-re-enable-gpt">You can use <code>enable</code> to change settings or manually re-enable gpt</h2>
+<h2 id="lib.roboduck.errors--explanations-by-default-we-ask-the-user-if-they-want-an-explanation-after">explanations. By default, we ask the user if they want an explanation after</h2>
+<h2 id="lib.roboduck.errors--each-error-yn-setting-autotrue-skips-this-step-and-always-explains">each error (y/n). Setting auto=True skips this step and always explains</h2>
+<h2 id="lib.roboduck.errors--errors-not-recommended-in-most-cases-but-its-an-option">errors (not recommended in most cases, but it's an option).</h2>
+<p>errors.enable(auto=True)</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.errors.disable" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">disable</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Revert to default behavior when exceptions are thrown.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-200">200</a></span>
+<span class="normal"><a href="#__codelineno-0-201">201</a></span>
+<span class="normal"><a href="#__codelineno-0-202">202</a></span>
+<span class="normal"><a href="#__codelineno-0-203">203</a></span>
+<span class="normal"><a href="#__codelineno-0-204">204</a></span>
+<span class="normal"><a href="#__codelineno-0-205">205</a></span>
+<span class="normal"><a href="#__codelineno-0-206">206</a></span>
+<span class="normal"><a href="#__codelineno-0-207">207</a></span>
+<span class="normal"><a href="#__codelineno-0-208">208</a></span>
+<span class="normal"><a href="#__codelineno-0-209">209</a></span>
+<span class="normal"><a href="#__codelineno-0-210">210</a></span>
+<span class="normal"><a href="#__codelineno-0-211">211</a></span>
+<span class="normal"><a href="#__codelineno-0-212">212</a></span>
+<span class="normal"><a href="#__codelineno-0-213">213</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-200"><a id="__codelineno-0-200" name="__codelineno-0-200"></a><span class="k">def</span> <span class="nf">disable</span><span class="p">():</span>
+</span><span id="__span-0-201"><a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Revert to default behavior when exceptions are thrown.</span>
+</span><span id="__span-0-202"><a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-203"><a id="__codelineno-0-203" name="__codelineno-0-203"></a>    <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">default_excepthook</span>
+</span><span id="__span-0-204"><a id="__codelineno-0-204" name="__codelineno-0-204"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-0-205"><a id="__codelineno-0-205" name="__codelineno-0-205"></a>        <span class="c1"># Tried doing `ipy.set_custom_exc((Exception,), None)` as suggested by</span>
+</span><span id="__span-0-206"><a id="__codelineno-0-206" name="__codelineno-0-206"></a>        <span class="c1"># stackoverflow and chatgpt but it didn&#39;t quite restore the default</span>
+</span><span id="__span-0-207"><a id="__codelineno-0-207" name="__codelineno-0-207"></a>        <span class="c1"># behavior. Manually remove this instead. I&#39;m assuming only one custom</span>
+</span><span id="__span-0-208"><a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="c1"># exception handler can be assigned for any one exception type and that</span>
+</span><span id="__span-0-209"><a id="__codelineno-0-209" name="__codelineno-0-209"></a>        <span class="c1"># if we call disable(), we wish to remove the handler for Exception.</span>
+</span><span id="__span-0-210"><a id="__codelineno-0-210" name="__codelineno-0-210"></a>        <span class="n">ipy</span><span class="o">.</span><span class="n">custom_exceptions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ipy</span><span class="o">.</span><span class="n">custom_exceptions</span>
+</span><span id="__span-0-211"><a id="__codelineno-0-211" name="__codelineno-0-211"></a>                                      <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="ne">Exception</span><span class="p">)</span>
+</span><span id="__span-0-212"><a id="__codelineno-0-212" name="__codelineno-0-212"></a>    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+</span><span id="__span-0-213"><a id="__codelineno-0-213" name="__codelineno-0-213"></a>        <span class="k">pass</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.errors.enable" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">enable</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Enable conversational debugging mode. This is called automatically on
+module import. However, users may wish to make changes, e.g. set auto=True
+or pass in a custom debugger cls, and this function makes that possible.</p>
+<h4 id="lib.roboduck.errors.enable--parameters">Parameters</h4>
+
+<details class="kwargs">
+  <summary>any</summary>
+  <p>auto (bool) - if True, automatically have gpt explain every error that
+    occurs. Mostly useful for logging in production. You almost
+    certainly want to keep this as the default of False for any
+    interactive development.
+cls (type) - the debugger class to use.
+prompt_name (str) - determines what prompt/prompt_name the custom
+    debugger uses, e.g. "debug_stack_trace"
+colordiff (bool) - if True, new code snippet will print new parts
+    in green.
+Or any other args that can be passed to our debugger cls.</p>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-163">163</a></span>
+<span class="normal"><a href="#__codelineno-0-164">164</a></span>
+<span class="normal"><a href="#__codelineno-0-165">165</a></span>
+<span class="normal"><a href="#__codelineno-0-166">166</a></span>
+<span class="normal"><a href="#__codelineno-0-167">167</a></span>
+<span class="normal"><a href="#__codelineno-0-168">168</a></span>
+<span class="normal"><a href="#__codelineno-0-169">169</a></span>
+<span class="normal"><a href="#__codelineno-0-170">170</a></span>
+<span class="normal"><a href="#__codelineno-0-171">171</a></span>
+<span class="normal"><a href="#__codelineno-0-172">172</a></span>
+<span class="normal"><a href="#__codelineno-0-173">173</a></span>
+<span class="normal"><a href="#__codelineno-0-174">174</a></span>
+<span class="normal"><a href="#__codelineno-0-175">175</a></span>
+<span class="normal"><a href="#__codelineno-0-176">176</a></span>
+<span class="normal"><a href="#__codelineno-0-177">177</a></span>
+<span class="normal"><a href="#__codelineno-0-178">178</a></span>
+<span class="normal"><a href="#__codelineno-0-179">179</a></span>
+<span class="normal"><a href="#__codelineno-0-180">180</a></span>
+<span class="normal"><a href="#__codelineno-0-181">181</a></span>
+<span class="normal"><a href="#__codelineno-0-182">182</a></span>
+<span class="normal"><a href="#__codelineno-0-183">183</a></span>
+<span class="normal"><a href="#__codelineno-0-184">184</a></span>
+<span class="normal"><a href="#__codelineno-0-185">185</a></span>
+<span class="normal"><a href="#__codelineno-0-186">186</a></span>
+<span class="normal"><a href="#__codelineno-0-187">187</a></span>
+<span class="normal"><a href="#__codelineno-0-188">188</a></span>
+<span class="normal"><a href="#__codelineno-0-189">189</a></span>
+<span class="normal"><a href="#__codelineno-0-190">190</a></span>
+<span class="normal"><a href="#__codelineno-0-191">191</a></span>
+<span class="normal"><a href="#__codelineno-0-192">192</a></span>
+<span class="normal"><a href="#__codelineno-0-193">193</a></span>
+<span class="normal"><a href="#__codelineno-0-194">194</a></span>
+<span class="normal"><a href="#__codelineno-0-195">195</a></span>
+<span class="normal"><a href="#__codelineno-0-196">196</a></span>
+<span class="normal"><a href="#__codelineno-0-197">197</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-163"><a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-0-164"><a id="__codelineno-0-164" name="__codelineno-0-164"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable conversational debugging mode. This is called automatically on</span>
+</span><span id="__span-0-165"><a id="__codelineno-0-165" name="__codelineno-0-165"></a><span class="sd">    module import. However, users may wish to make changes, e.g. set auto=True</span>
+</span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="sd">    or pass in a custom debugger cls, and this function makes that possible.</span>
+</span><span id="__span-0-167"><a id="__codelineno-0-167" name="__codelineno-0-167"></a>
+</span><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="sd">    Parameters</span>
+</span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a><span class="sd">    ----------</span>
+</span><span id="__span-0-170"><a id="__codelineno-0-170" name="__codelineno-0-170"></a><span class="sd">    kwargs: any</span>
+</span><span id="__span-0-171"><a id="__codelineno-0-171" name="__codelineno-0-171"></a><span class="sd">        auto (bool) - if True, automatically have gpt explain every error that</span>
+</span><span id="__span-0-172"><a id="__codelineno-0-172" name="__codelineno-0-172"></a><span class="sd">            occurs. Mostly useful for logging in production. You almost</span>
+</span><span id="__span-0-173"><a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="sd">            certainly want to keep this as the default of False for any</span>
+</span><span id="__span-0-174"><a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="sd">            interactive development.</span>
+</span><span id="__span-0-175"><a id="__codelineno-0-175" name="__codelineno-0-175"></a><span class="sd">        cls (type) - the debugger class to use.</span>
+</span><span id="__span-0-176"><a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">        prompt_name (str) - determines what prompt/prompt_name the custom</span>
+</span><span id="__span-0-177"><a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">            debugger uses, e.g. &quot;debug_stack_trace&quot;</span>
+</span><span id="__span-0-178"><a id="__codelineno-0-178" name="__codelineno-0-178"></a><span class="sd">        colordiff (bool) - if True, new code snippet will print new parts</span>
+</span><span id="__span-0-179"><a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">            in green.</span>
+</span><span id="__span-0-180"><a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">        Or any other args that can be passed to our debugger cls.</span>
+</span><span id="__span-0-181"><a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-182"><a id="__codelineno-0-182" name="__codelineno-0-182"></a>    <span class="n">hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">excepthook</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="__span-0-183"><a id="__codelineno-0-183" name="__codelineno-0-183"></a>
+</span><span id="__span-0-184"><a id="__codelineno-0-184" name="__codelineno-0-184"></a>    <span class="k">def</span> <span class="nf">ipy_excepthook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">evalue</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">tb_offset</span><span class="p">):</span>
+</span><span id="__span-0-185"><a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;IPython doesn&#39;t use sys.excepthook. We have to handle this case</span>
+</span><span id="__span-0-186"><a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="sd">        separately and make sure it expects the right argument names.</span>
+</span><span id="__span-0-187"><a id="__codelineno-0-187" name="__codelineno-0-187"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-188"><a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="k">return</span> <span class="n">hook</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">evalue</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span>
+</span><span id="__span-0-189"><a id="__codelineno-0-189" name="__codelineno-0-189"></a>
+</span><span id="__span-0-190"><a id="__codelineno-0-190" name="__codelineno-0-190"></a>    <span class="c1"># Overwrite default error handling.</span>
+</span><span id="__span-0-191"><a id="__codelineno-0-191" name="__codelineno-0-191"></a>    <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">hook</span>
+</span><span id="__span-0-192"><a id="__codelineno-0-192" name="__codelineno-0-192"></a>
+</span><span id="__span-0-193"><a id="__codelineno-0-193" name="__codelineno-0-193"></a>    <span class="c1"># Only necessary/possible when in ipython.</span>
+</span><span id="__span-0-194"><a id="__codelineno-0-194" name="__codelineno-0-194"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-0-195"><a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="n">ipy</span><span class="o">.</span><span class="n">set_custom_exc</span><span class="p">((</span><span class="ne">Exception</span><span class="p">,),</span> <span class="n">ipy_excepthook</span><span class="p">)</span>
+</span><span id="__span-0-196"><a id="__codelineno-0-196" name="__codelineno-0-196"></a>    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+</span><span id="__span-0-197"><a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="k">pass</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.errors.excepthook" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">excepthook</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DuckDB</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Replaces sys.excepthook when module is imported. When an error is
+thrown, the user is asked whether they want an explanation of what went
+wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
+roboduck.debug.duck(), the user does not need to manually type a
+question, and we don't linger in the debugger - we just write gpt's
+explanation and exit.</p>
+<p>Disable by calling roboduck.errors.disable().</p>
+<p>Parameters are the same as the default sys.excepthook function. Kwargs
+are forwarded to our custom postmortem function.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-133">133</a></span>
+<span class="normal"><a href="#__codelineno-0-134">134</a></span>
+<span class="normal"><a href="#__codelineno-0-135">135</a></span>
+<span class="normal"><a href="#__codelineno-0-136">136</a></span>
+<span class="normal"><a href="#__codelineno-0-137">137</a></span>
+<span class="normal"><a href="#__codelineno-0-138">138</a></span>
+<span class="normal"><a href="#__codelineno-0-139">139</a></span>
+<span class="normal"><a href="#__codelineno-0-140">140</a></span>
+<span class="normal"><a href="#__codelineno-0-141">141</a></span>
+<span class="normal"><a href="#__codelineno-0-142">142</a></span>
+<span class="normal"><a href="#__codelineno-0-143">143</a></span>
+<span class="normal"><a href="#__codelineno-0-144">144</a></span>
+<span class="normal"><a href="#__codelineno-0-145">145</a></span>
+<span class="normal"><a href="#__codelineno-0-146">146</a></span>
+<span class="normal"><a href="#__codelineno-0-147">147</a></span>
+<span class="normal"><a href="#__codelineno-0-148">148</a></span>
+<span class="normal"><a href="#__codelineno-0-149">149</a></span>
+<span class="normal"><a href="#__codelineno-0-150">150</a></span>
+<span class="normal"><a href="#__codelineno-0-151">151</a></span>
+<span class="normal"><a href="#__codelineno-0-152">152</a></span>
+<span class="normal"><a href="#__codelineno-0-153">153</a></span>
+<span class="normal"><a href="#__codelineno-0-154">154</a></span>
+<span class="normal"><a href="#__codelineno-0-155">155</a></span>
+<span class="normal"><a href="#__codelineno-0-156">156</a></span>
+<span class="normal"><a href="#__codelineno-0-157">157</a></span>
+<span class="normal"><a href="#__codelineno-0-158">158</a></span>
+<span class="normal"><a href="#__codelineno-0-159">159</a></span>
+<span class="normal"><a href="#__codelineno-0-160">160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-133"><a id="__codelineno-0-133" name="__codelineno-0-133"></a><span class="k">def</span> <span class="nf">excepthook</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span>
+</span><span id="__span-0-134"><a id="__codelineno-0-134" name="__codelineno-0-134"></a>               <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DuckDB</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-0-135"><a id="__codelineno-0-135" name="__codelineno-0-135"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces sys.excepthook when module is imported. When an error is</span>
+</span><span id="__span-0-136"><a id="__codelineno-0-136" name="__codelineno-0-136"></a><span class="sd">    thrown, the user is asked whether they want an explanation of what went</span>
+</span><span id="__span-0-137"><a id="__codelineno-0-137" name="__codelineno-0-137"></a><span class="sd">    wrong. If they enter &#39;y&#39; or &#39;yes&#39;, it will query gpt for help. Unlike</span>
+</span><span id="__span-0-138"><a id="__codelineno-0-138" name="__codelineno-0-138"></a><span class="sd">    roboduck.debug.duck(), the user does not need to manually type a</span>
+</span><span id="__span-0-139"><a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="sd">    question, and we don&#39;t linger in the debugger - we just write gpt&#39;s</span>
+</span><span id="__span-0-140"><a id="__codelineno-0-140" name="__codelineno-0-140"></a><span class="sd">    explanation and exit.</span>
+</span><span id="__span-0-141"><a id="__codelineno-0-141" name="__codelineno-0-141"></a>
+</span><span id="__span-0-142"><a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="sd">    Disable by calling roboduck.errors.disable().</span>
+</span><span id="__span-0-143"><a id="__codelineno-0-143" name="__codelineno-0-143"></a>
+</span><span id="__span-0-144"><a id="__codelineno-0-144" name="__codelineno-0-144"></a><span class="sd">    Parameters are the same as the default sys.excepthook function. Kwargs</span>
+</span><span id="__span-0-145"><a id="__codelineno-0-145" name="__codelineno-0-145"></a><span class="sd">    are forwarded to our custom postmortem function.</span>
+</span><span id="__span-0-146"><a id="__codelineno-0-146" name="__codelineno-0-146"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-147"><a id="__codelineno-0-147" name="__codelineno-0-147"></a>    <span class="n">sys</span><span class="o">.</span><span class="n">last_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">last_value</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">last_traceback</span> <span class="o">=</span> <span class="n">etype</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">tb</span>
+</span><span id="__span-0-148"><a id="__codelineno-0-148" name="__codelineno-0-148"></a>    <span class="n">trace</span> <span class="o">=</span> <span class="n">print_exception</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span>
+</span><span id="__span-0-149"><a id="__codelineno-0-149" name="__codelineno-0-149"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;silent&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+</span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+</span><span id="__span-0-151"><a id="__codelineno-0-151" name="__codelineno-0-151"></a>    <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prompt_name</span><span class="o">=</span><span class="n">prompt_name</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">tb</span><span class="p">,</span> <span class="n">Pdb</span><span class="o">=</span><span class="bp">cls</span><span class="p">)</span>
+</span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>    <span class="k">if</span> <span class="n">auto</span><span class="p">:</span>
+</span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>        <span class="k">return</span> <span class="n">post_mortem</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154"></a>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>        <span class="n">cmd</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Explain error message? [y/n]</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="__span-0-156"><a id="__codelineno-0-156" name="__codelineno-0-156"></a>        <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">):</span>
+</span><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a>            <span class="k">return</span> <span class="n">post_mortem</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>        <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">):</span>
+</span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>            <span class="k">return</span>
+</span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unrecognized command. Valid choices are &quot;y&quot; or &quot;n&quot;.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.errors.post_mortem" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">post_mortem</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Pdb</span><span class="o">=</span><span class="n">DuckDB</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span> <span class="n">colordiff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Drop-in replacement (hence the slightly odd arg order, where trace is
+required but third positionally) for pdb.post_mortem that allows us to get
+both the stack trace AND global/local vars from the program state right
+before an exception occurred.</p>
+<h4 id="lib.roboduck.errors.post_mortem--parameters">Parameters</h4>
+
+<details class="t">
+  <summary>some kind of traceback type?</summary>
+  <p>A holdover from the default post_mortem class, not actually sure what
+type this is but it doesn't really matter for our use.</p>
+</details>
+<details class="pdb">
+  <summary>type</summary>
+  <p>Debugger class. Name is capitalized to provide consistent interface
+with default post_mortem function.</p>
+</details>
+<details class="trace">
+  <summary>str</summary>
+  <p>Stack trace formatted as a single string. Required - default value
+just helps us maintain a consistent interface with pdb.post_mortem.</p>
+</details>
+<details class="prompt_name">
+  <summary>str</summary>
+  <p>The prompt name that will be passed to our debugger class. Usually
+should leave this as the default. We expect the name to contain
+'debug' and will warn if it doesn't.</p>
+</details>
+<details class="colordiff">
+  <summary>bool</summary>
+  <p>If True, the new code snippet in the exception will print new
+parts in green.</p>
+</details>
+<details class="kwargs">
+  <summary>any</summary>
+  <p>Additional kwargs to pass to debugger class constructor. The docstring
+of the default class is included below for reference.</p>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span>
+<span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span>
+<span class="normal"><a href="#__codelineno-0-42">42</a></span>
+<span class="normal"><a href="#__codelineno-0-43">43</a></span>
+<span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span>
+<span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span>
+<span class="normal"><a href="#__codelineno-0-53">53</a></span>
+<span class="normal"><a href="#__codelineno-0-54">54</a></span>
+<span class="normal"><a href="#__codelineno-0-55">55</a></span>
+<span class="normal"><a href="#__codelineno-0-56">56</a></span>
+<span class="normal"><a href="#__codelineno-0-57">57</a></span>
+<span class="normal"><a href="#__codelineno-0-58">58</a></span>
+<span class="normal"><a href="#__codelineno-0-59">59</a></span>
+<span class="normal"><a href="#__codelineno-0-60">60</a></span>
+<span class="normal"><a href="#__codelineno-0-61">61</a></span>
+<span class="normal"><a href="#__codelineno-0-62">62</a></span>
+<span class="normal"><a href="#__codelineno-0-63">63</a></span>
+<span class="normal"><a href="#__codelineno-0-64">64</a></span>
+<span class="normal"><a href="#__codelineno-0-65">65</a></span>
+<span class="normal"><a href="#__codelineno-0-66">66</a></span>
+<span class="normal"><a href="#__codelineno-0-67">67</a></span>
+<span class="normal"><a href="#__codelineno-0-68">68</a></span>
+<span class="normal"><a href="#__codelineno-0-69">69</a></span>
+<span class="normal"><a href="#__codelineno-0-70">70</a></span>
+<span class="normal"><a href="#__codelineno-0-71">71</a></span>
+<span class="normal"><a href="#__codelineno-0-72">72</a></span>
+<span class="normal"><a href="#__codelineno-0-73">73</a></span>
+<span class="normal"><a href="#__codelineno-0-74">74</a></span>
+<span class="normal"><a href="#__codelineno-0-75">75</a></span>
+<span class="normal"><a href="#__codelineno-0-76">76</a></span>
+<span class="normal"><a href="#__codelineno-0-77">77</a></span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span>
+<span class="normal"><a href="#__codelineno-0-80">80</a></span>
+<span class="normal"><a href="#__codelineno-0-81">81</a></span>
+<span class="normal"><a href="#__codelineno-0-82">82</a></span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span>
+<span class="normal"><a href="#__codelineno-0-84">84</a></span>
+<span class="normal"><a href="#__codelineno-0-85">85</a></span>
+<span class="normal"><a href="#__codelineno-0-86">86</a></span>
+<span class="normal"><a href="#__codelineno-0-87">87</a></span>
+<span class="normal"><a href="#__codelineno-0-88">88</a></span>
+<span class="normal"><a href="#__codelineno-0-89">89</a></span>
+<span class="normal"><a href="#__codelineno-0-90">90</a></span>
+<span class="normal"><a href="#__codelineno-0-91">91</a></span>
+<span class="normal"><a href="#__codelineno-0-92">92</a></span>
+<span class="normal"><a href="#__codelineno-0-93">93</a></span>
+<span class="normal"><a href="#__codelineno-0-94">94</a></span>
+<span class="normal"><a href="#__codelineno-0-95">95</a></span>
+<span class="normal"><a href="#__codelineno-0-96">96</a></span>
+<span class="normal"><a href="#__codelineno-0-97">97</a></span>
+<span class="normal"><a href="#__codelineno-0-98">98</a></span>
+<span class="normal"><a href="#__codelineno-0-99">99</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="k">def</span> <span class="nf">post_mortem</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Pdb</span><span class="o">=</span><span class="n">DuckDB</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>                <span class="n">colordiff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop-in replacement (hence the slightly odd arg order, where trace is</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">    required but third positionally) for pdb.post_mortem that allows us to get</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">    both the stack trace AND global/local vars from the program state right</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">    before an exception occurred.</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">    Parameters</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">    ----------</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">    t: some kind of traceback type?</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">        A holdover from the default post_mortem class, not actually sure what</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">        type this is but it doesn&#39;t really matter for our use.</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">    Pdb: type</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">        Debugger class. Name is capitalized to provide consistent interface</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">        with default post_mortem function.</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">    trace: str</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="sd">        Stack trace formatted as a single string. Required - default value</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="sd">        just helps us maintain a consistent interface with pdb.post_mortem.</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">    prompt_name: str</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">        The prompt name that will be passed to our debugger class. Usually</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">        should leave this as the default. We expect the name to contain</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">        &#39;debug&#39; and will warn if it doesn&#39;t.</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">    colordiff: bool</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">        If True, the new code snippet in the exception will print new</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">        parts in green.</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">    kwargs: any</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">        Additional kwargs to pass to debugger class constructor. The docstring</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="sd">        of the default class is included below for reference.</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="n">t</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="k">assert</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;post_mortem outside of exception context&quot;</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a>    <span class="k">if</span> <span class="s1">&#39;debug&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prompt_name</span><span class="p">:</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>            <span class="sa">f</span><span class="s1">&#39;You passed an unexpected prompt_name (</span><span class="si">{</span><span class="n">prompt_name</span><span class="si">}</span><span class="s1">) to &#39;</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>            <span class="sa">f</span><span class="s1">&#39;post_mortem. Are you sure you didn</span><span class="se">\&#39;</span><span class="s1">t mean to use &#39;</span>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>            <span class="sa">f</span><span class="s1">&#39;debug_stack_trace?&#39;</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="p">)</span>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>    <span class="k">assert</span> <span class="n">trace</span><span class="p">,</span> <span class="s1">&#39;Trace passed to post_mortem should be truthy.&#39;</span>
+</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a>
+</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="c1"># This serves almost like a soft assert statement - if user defines some</span>
+</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>    <span class="c1"># custom debugger class and the question leaks through, gpt should</span>
+</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a>    <span class="c1"># hopefully warn us.</span>
+</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="n">dummy_question</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="s1">&#39;This is a fake question to ensure that our ask_language_model &#39;</span>
+</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a>        <span class="s1">&#39;method gets called. Our debugger class should remove this from the &#39;</span>
+</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="s1">&#39;prompt kwargs before calling gpt. If you can read this, can you &#39;</span>
+</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="s1">&#39;indicate that in your response?&#39;</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a>    <span class="p">)</span>
+</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="n">p</span> <span class="o">=</span> <span class="n">Pdb</span><span class="p">(</span><span class="n">prompt_name</span><span class="o">=</span><span class="n">prompt_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="__span-0-85"><a id="__codelineno-0-85" name="__codelineno-0-85"></a>    <span class="n">p</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</span><span id="__span-0-86"><a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="n">p</span><span class="o">.</span><span class="n">cmdqueue</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">dummy_question</span><span class="p">,</span> <span class="n">trace</span><span class="p">))</span>
+</span><span id="__span-0-87"><a id="__codelineno-0-87" name="__codelineno-0-87"></a>    <span class="n">p</span><span class="o">.</span><span class="n">cmdqueue</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">)</span>
+</span><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88"></a>    <span class="n">p</span><span class="o">.</span><span class="n">interaction</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</span><span id="__span-0-89"><a id="__codelineno-0-89" name="__codelineno-0-89"></a>
+</span><span id="__span-0-90"><a id="__codelineno-0-90" name="__codelineno-0-90"></a>    <span class="c1"># Make gpt explanation available as part of last error message,</span>
+</span><span id="__span-0-91"><a id="__codelineno-0-91" name="__codelineno-0-91"></a>    <span class="c1"># accessible via sys.last_value.</span>
+</span><span id="__span-0-92"><a id="__codelineno-0-92" name="__codelineno-0-92"></a>    <span class="n">last_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;last_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-0-93"><a id="__codelineno-0-93" name="__codelineno-0-93"></a>    <span class="k">if</span> <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_completion</span> <span class="ow">and</span> <span class="n">last_value</span><span class="p">:</span>
+</span><span id="__span-0-94"><a id="__codelineno-0-94" name="__codelineno-0-94"></a>        <span class="n">code_name</span> <span class="o">=</span> <span class="s1">&#39;last_code_diff&#39;</span> <span class="k">if</span> <span class="n">colordiff</span> <span class="k">else</span> <span class="s1">&#39;last_new_code&#39;</span>
+</span><span id="__span-0-95"><a id="__codelineno-0-95" name="__codelineno-0-95"></a>        <span class="n">last_value</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+</span><span id="__span-0-96"><a id="__codelineno-0-96" name="__codelineno-0-96"></a>            <span class="n">arg</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_explanation</span><span class="si">}</span><span class="s1">&#39;</span>
+</span><span id="__span-0-97"><a id="__codelineno-0-97" name="__codelineno-0-97"></a>                          <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">CodeCompletionCache</span><span class="p">,</span><span class="w"> </span><span class="n">code_name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+</span><span id="__span-0-98"><a id="__codelineno-0-98" name="__codelineno-0-98"></a>            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">last_value</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+</span><span id="__span-0-99"><a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.errors.print_exception" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">print_exception</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chain</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Replacement for traceback.print_exception() that returns the
+whole stack trace as a single string. Used in roboduck's custom excepthook
+to allow us to show the stack trace to gpt. The original function's
+docstring is below:</p>
+<p>Print exception up to 'limit' stack trace entries from 'tb' to 'file'.</p>
+<p>This differs from print_tb() in the following ways: (1) if
+traceback is not None, it prints a header "Traceback (most recent
+call last):"; (2) it prints the exception type and value after the
+stack trace; (3) if type is SyntaxError and value has the
+appropriate format, it prints the line where the syntax error
+occurred with a caret on the next line indicating the approximate
+position of the error.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-102">102</a></span>
+<span class="normal"><a href="#__codelineno-0-103">103</a></span>
+<span class="normal"><a href="#__codelineno-0-104">104</a></span>
+<span class="normal"><a href="#__codelineno-0-105">105</a></span>
+<span class="normal"><a href="#__codelineno-0-106">106</a></span>
+<span class="normal"><a href="#__codelineno-0-107">107</a></span>
+<span class="normal"><a href="#__codelineno-0-108">108</a></span>
+<span class="normal"><a href="#__codelineno-0-109">109</a></span>
+<span class="normal"><a href="#__codelineno-0-110">110</a></span>
+<span class="normal"><a href="#__codelineno-0-111">111</a></span>
+<span class="normal"><a href="#__codelineno-0-112">112</a></span>
+<span class="normal"><a href="#__codelineno-0-113">113</a></span>
+<span class="normal"><a href="#__codelineno-0-114">114</a></span>
+<span class="normal"><a href="#__codelineno-0-115">115</a></span>
+<span class="normal"><a href="#__codelineno-0-116">116</a></span>
+<span class="normal"><a href="#__codelineno-0-117">117</a></span>
+<span class="normal"><a href="#__codelineno-0-118">118</a></span>
+<span class="normal"><a href="#__codelineno-0-119">119</a></span>
+<span class="normal"><a href="#__codelineno-0-120">120</a></span>
+<span class="normal"><a href="#__codelineno-0-121">121</a></span>
+<span class="normal"><a href="#__codelineno-0-122">122</a></span>
+<span class="normal"><a href="#__codelineno-0-123">123</a></span>
+<span class="normal"><a href="#__codelineno-0-124">124</a></span>
+<span class="normal"><a href="#__codelineno-0-125">125</a></span>
+<span class="normal"><a href="#__codelineno-0-126">126</a></span>
+<span class="normal"><a href="#__codelineno-0-127">127</a></span>
+<span class="normal"><a href="#__codelineno-0-128">128</a></span>
+<span class="normal"><a href="#__codelineno-0-129">129</a></span>
+<span class="normal"><a href="#__codelineno-0-130">130</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-102"><a id="__codelineno-0-102" name="__codelineno-0-102"></a><span class="k">def</span> <span class="nf">print_exception</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chain</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</span><span id="__span-0-103"><a id="__codelineno-0-103" name="__codelineno-0-103"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Replacement for traceback.print_exception() that returns the</span>
+</span><span id="__span-0-104"><a id="__codelineno-0-104" name="__codelineno-0-104"></a><span class="sd">    whole stack trace as a single string. Used in roboduck&#39;s custom excepthook</span>
+</span><span id="__span-0-105"><a id="__codelineno-0-105" name="__codelineno-0-105"></a><span class="sd">    to allow us to show the stack trace to gpt. The original function&#39;s</span>
+</span><span id="__span-0-106"><a id="__codelineno-0-106" name="__codelineno-0-106"></a><span class="sd">    docstring is below:</span>
+</span><span id="__span-0-107"><a id="__codelineno-0-107" name="__codelineno-0-107"></a>
+</span><span id="__span-0-108"><a id="__codelineno-0-108" name="__codelineno-0-108"></a><span class="sd">    Print exception up to &#39;limit&#39; stack trace entries from &#39;tb&#39; to &#39;file&#39;.</span>
+</span><span id="__span-0-109"><a id="__codelineno-0-109" name="__codelineno-0-109"></a>
+</span><span id="__span-0-110"><a id="__codelineno-0-110" name="__codelineno-0-110"></a><span class="sd">    This differs from print_tb() in the following ways: (1) if</span>
+</span><span id="__span-0-111"><a id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="sd">    traceback is not None, it prints a header &quot;Traceback (most recent</span>
+</span><span id="__span-0-112"><a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="sd">    call last):&quot;; (2) it prints the exception type and value after the</span>
+</span><span id="__span-0-113"><a id="__codelineno-0-113" name="__codelineno-0-113"></a><span class="sd">    stack trace; (3) if type is SyntaxError and value has the</span>
+</span><span id="__span-0-114"><a id="__codelineno-0-114" name="__codelineno-0-114"></a><span class="sd">    appropriate format, it prints the line where the syntax error</span>
+</span><span id="__span-0-115"><a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="sd">    occurred with a caret on the next line indicating the approximate</span>
+</span><span id="__span-0-116"><a id="__codelineno-0-116" name="__codelineno-0-116"></a><span class="sd">    position of the error.</span>
+</span><span id="__span-0-117"><a id="__codelineno-0-117" name="__codelineno-0-117"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-118"><a id="__codelineno-0-118" name="__codelineno-0-118"></a>    <span class="c1"># format_exception has ignored etype for some time, and code such as cgitb</span>
+</span><span id="__span-0-119"><a id="__codelineno-0-119" name="__codelineno-0-119"></a>    <span class="c1"># passes in bogus values as a result. For compatibility with such code we</span>
+</span><span id="__span-0-120"><a id="__codelineno-0-120" name="__codelineno-0-120"></a>    <span class="c1"># ignore it here (rather than in the new TracebackException API).</span>
+</span><span id="__span-0-121"><a id="__codelineno-0-121" name="__codelineno-0-121"></a>    <span class="k">if</span> <span class="n">file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-122"><a id="__codelineno-0-122" name="__codelineno-0-122"></a>        <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+</span><span id="__span-0-123"><a id="__codelineno-0-123" name="__codelineno-0-123"></a>    <span class="n">trace</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+</span><span id="__span-0-124"><a id="__codelineno-0-124" name="__codelineno-0-124"></a>        <span class="n">TracebackException</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+</span><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chain</span><span class="o">=</span><span class="n">chain</span><span class="p">)</span>
+</span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>    <span class="p">)</span>
+</span><span id="__span-0-127"><a id="__codelineno-0-127" name="__codelineno-0-127"></a>    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
+</span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-0-129"><a id="__codelineno-0-129" name="__codelineno-0-129"></a>            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+</span><span id="__span-0-130"><a id="__codelineno-0-130" name="__codelineno-0-130"></a>    <span class="k">return</span> <span class="n">trace</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+    
+  </body>
+</html>

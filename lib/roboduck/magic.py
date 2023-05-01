@@ -9,15 +9,21 @@ functionality.
 
 Quickstart
 ----------
+```
 # cell 1
 from roboduck import magic
+```
 
+```
 # cell 2
 nums = [1, 2, 3]
 nums.add(4)
+```
 
+```
 # cell 3
 %duck
+```
 """
 
 from functools import partial

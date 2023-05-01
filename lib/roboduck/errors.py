@@ -4,18 +4,23 @@ behavior when it encounters an error.
 
 Quickstart
 ----------
-# After this import, error explanations are automatically enabled.
+Importing the errors module automatically enables optional error explanations.
+`disable()` reverts to python's regular behavior on errors. `enable()` can be
+used to re-enable error explanations or to change settings. For example,
+setting auto=True automatically explains all errors rather than asking the user
+if they want an explanation (y/n) when an error occurs.
+```
 from roboduck import errors
 
-# Go back to python's regular behavior on errors.
+data = {'x': 0}
+y = data.x
+
 errors.disable()
+y = data.x
 
-# You can use `enable` to change settings or manually re-enable gpt
-# explanations. By default, we ask the user if they want an explanation after
-# each error (y/n). Setting auto=True skips this step and always explains
-# errors (not recommended in most cases, but it's an option).
 errors.enable(auto=True)
-
+y = data.x
+```
 """
 from functools import partial
 from IPython import get_ipython

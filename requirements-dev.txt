@@ -1,2 +1,5 @@
 pytest
 -e ./lib
+mkdocs
+mkdocstrings[python]
+mkdocs-material

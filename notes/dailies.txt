@@ -1497,13 +1497,30 @@ X -fix cli entrypoint
 -----------
 ~ -check if build passed (issue from sat re VALID_MODES should work, though still unclear why 'conversations' dir is missing remotely but not locally.)
     > Same test fails bc missing completion dir causes results to differ from expected vals. Now I'm thinking maybe bc the dir is empty, git is excluding it when running actions. Added gitkeep file.
--look into options for auto doc generation
+X -look into options for auto doc generation
+    > Lots of progress. Noodled a bit on dynamic docs in misc.txt but decided a bit too ambitious for what's supposed to be a quick add on. Tentatively moving forward with mkdocs (fastapi's docs are pretty nice, and didn't have the greatest experience with sphinx). Got basic version running, though still lots of bugs. Guess maybe auto-doc generation is finicky in general.
 -write/generate more tests
     -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
         -chat
     -debug module (consider how to even test this?)
 -look into how to add coverage % badge on github
 
+5/1/23 mon
+----------
+-make commands
+    -make env (for devs)
+    -make docs
+    -make serve/serve_docs?
+-docs
+    -maybe restructure so mkdocs.yml isn't in repo root (i.e. have docs contain config file and docs and site subdirs. Might need to update some paths in configs?)
+    -figure out how to add nested py files to nav (e.g. cli, see docs/cli.md notes)
+    -look through docs and make changes as needed
+-maybe break down utils module into multiple smaller modules
+-write/generate more tests
+    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        -chat
+    -debug module (consider how to even test this?)
+-look into how to add coverage % badge on github
 
 Backlog
 -------

@@ -94,6 +94,7 @@ class Chat:
 
         Examples
         --------
+        ```
         # Instantiate from builtin roboduck debugging prompt template (see
         # roboduck.prompts.chat.debug).
         chat = Chat.from_config('debug')
@@ -117,6 +118,7 @@ class Chat:
             question='Could you expand on the part of your explanation where '
             'you said...'
         )
+        ```
         """
         self.kwargs = dict(kwargs)
         self.kwargs.update(streaming=streaming)

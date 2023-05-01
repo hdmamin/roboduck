@@ -5,18 +5,20 @@ you more effectively.
 
 Quickstart
 ----------
-# Our replacement for python's `breakpoint`.
+Here's a broken version of bubble sort that places a `duck()` call on the
+second to last line where you might normally call `breakpoint()`.
+
+```
 from roboduck.debug import duck
 
-# Broken version of bubble sort. Notice the duck() call on the second to last
-# line.
 def bubble_sort(nums):
     for i in range(len(nums)):
         for j in range(len(nums)):
             if nums[j] > nums[j + 1]:
                 nums[j + 1], nums[j] = nums[j], nums[j + 1]
-                duck()
+                duck()   # <--------------------------- instead of breakpoint()
     return nums
+```
 """
 import cmd
 from functools import partial
@@ -435,7 +437,6 @@ class DuckDB(Pdb):
             prefix = '  '
         self.message(prefix +
                      self.format_stack_entry(frame_lineno, prompt_prefix))
-
 
 
 @add_docstring(DuckDB.__init__)

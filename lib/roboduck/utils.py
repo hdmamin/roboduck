@@ -381,6 +381,7 @@ def typecheck(func_=None, **types):
     that they can be single types or tuples of types. You can choose to
     specify types for all arguments or just a subset.
 
+    ```
     @typecheck(x=float, y=(int, float), iters=int, verbose=bool)
     def process(x, y, z, iters=5, verbose=True):
         print(f'z = {z}')
@@ -388,6 +389,7 @@ def typecheck(func_=None, **types):
             if verbose: print(f'Iteration {i}...')
             x *= y
         return x
+    ```
 
     >>> process(3.1, 4.5, 0, 2.0)
     TypeError: iters must be <class 'int'>, not <class 'float'>.
@@ -401,6 +403,7 @@ def typecheck(func_=None, **types):
     equivalently to the explicit example shown above. Note that annotations
     regarding the returned value are ignored.
 
+    ```
     @typecheck
     def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
         print(f'z = {z}')
@@ -408,6 +411,7 @@ def typecheck(func_=None, **types):
             if verbose: print(f'Iteration {i}...')
             x *= y
         return x
+    ```
 
     >>> process(3.1, 4.5, 0, 2.0)
     TypeError: iters must be <class 'int'>, not <class 'float'>.
@@ -744,9 +748,11 @@ def add_docstring(func):
 
     Examples
     --------
+    ```
     @add_docstring(nn.Conv2d)
     class ReflectionPaddedConv2d(nn.Module):
-        ...
+        # ...
+    ```
     """
     def decorator(new_func):
         new_func.__doc__ = f'{new_func.__doc__}\n\n{func.__doc__}'
