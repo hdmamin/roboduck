@@ -1,4 +1,4 @@
-.PHONY: todo nb clean lib pypi readmes
+.PHONY: todo nb clean lib pypi readmes docs serve_docs
 
 # Convention: add _ between comment sign and TODO to hide an item that you don't want to delete entirely. This will still be findable if you run `ack TODO`.
 todo:
@@ -29,3 +29,16 @@ reinstall:
 test:
 	# `pytest` does not work. -s flag allows us to see stdout.
 	python -m pytest -s
+
+dev_env:
+	chmod u+x lib/scripts/make_dev_env.sh && ./lib/scripts/make_dev_env.sh
+
+docs:
+	mkdocs build
+
+serve_docs:
+	mkdocs serve
+
+# This updates the gh-pages branch and updates the deployed docs at http://hdmamin.github.io/roboduck.
+deploy_docs:
+	mkdocs gh-deploy

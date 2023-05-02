@@ -1495,8 +1495,9 @@ X -fix cli entrypoint
 
 4/30/23 sun
 -----------
-~ -check if build passed (issue from sat re VALID_MODES should work, though still unclear why 'conversations' dir is missing remotely but not locally.)
+X -check if build passed (issue from sat re VALID_MODES should work, though still unclear why 'conversations' dir is missing remotely but not locally.)
     > Same test fails bc missing completion dir causes results to differ from expected vals. Now I'm thinking maybe bc the dir is empty, git is excluding it when running actions. Added gitkeep file.
+    > Passes!
 X -look into options for auto doc generation
     > Lots of progress. Noodled a bit on dynamic docs in misc.txt but decided a bit too ambitious for what's supposed to be a quick add on. Tentatively moving forward with mkdocs (fastapi's docs are pretty nice, and didn't have the greatest experience with sphinx). Got basic version running, though still lots of bugs. Guess maybe auto-doc generation is finicky in general.
 -write/generate more tests
@@ -1507,14 +1508,20 @@ X -look into options for auto doc generation
 
 5/1/23 mon
 ----------
--make commands
-    -make env (for devs)
-    -make docs
-    -make serve/serve_docs?
+X -make commands
+    X -make env (for devs)
+    X -make docs
+    X -make serve/serve_docs?
 -docs
-    -maybe restructure so mkdocs.yml isn't in repo root (i.e. have docs contain config file and docs and site subdirs. Might need to update some paths in configs?)
+    ! -maybe restructure so mkdocs.yml isn't in repo root (i.e. have docs contain config file and docs and site subdirs. Might need to update some paths in configs?)
+        > Tried this for a bit but it seems more complex than is worth it. Reverted to current structure.
     -figure out how to add nested py files to nav (e.g. cli, see docs/cli.md notes)
     -look through docs and make changes as needed
+    X -get gh pages deploy working
+X -update readme
+    X -link to docs
+    X -misc dev notes: unit tests, build docs, etc.
+X -update git remote repo url
 -maybe break down utils module into multiple smaller modules
 -write/generate more tests
     -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)

@@ -1,6 +1,6 @@
-"""Errors that explain themselves! Or more precisely, that are explained to you
-by a gpt-esque model. Simply importing this module will change python's default
-behavior when it encounters an error.
+"""Errors that explain themselves! Or more precisely, errors that are explained
+to you by a gpt-esque model. Simply importing this module will change python's
+default behavior when it encounters an error.
 
 Quickstart
 ----------
