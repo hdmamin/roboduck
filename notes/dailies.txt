@@ -1512,10 +1512,11 @@ X -make commands
     X -make env (for devs)
     X -make docs
     X -make serve/serve_docs?
--docs
+~ -docs
     ! -maybe restructure so mkdocs.yml isn't in repo root (i.e. have docs contain config file and docs and site subdirs. Might need to update some paths in configs?)
         > Tried this for a bit but it seems more complex than is worth it. Reverted to current structure.
-    -figure out how to add nested py files to nav (e.g. cli, see docs/cli.md notes)
+    ! -figure out how to add nested py files to nav (e.g. cli, see docs/cli.md notes)
+        > No luck yet, chatgpt and stackoverflow are both coming up short here.
     -look through docs and make changes as needed
     X -get gh pages deploy working
 X -update readme
@@ -1528,6 +1529,19 @@ X -update git remote repo url
         -chat
     -debug module (consider how to even test this?)
 -look into how to add coverage % badge on github
+
+5/2/23 tues
+-----------
+-maybe break down utils module into multiple smaller modules
+-docs
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
+-write/generate more tests
+    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        -chat
+    -debug module (consider how to even test this?)
+-look into how to add coverage % badge on github
+
 
 Backlog
 -------
