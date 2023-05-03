@@ -1532,7 +1532,12 @@ X -update git remote repo url
 
 5/2/23 tues
 -----------
--figure out how to rm Welcome to Mkdocs page on generated docs
+X -figure out how to rm Welcome to Mkdocs page on generated docs
+    > Updated make commands to copy readme into docs dir before relevant commands. Should not use mkdocs commands anymore since they obviously don't do that.
+X -flesh out readme
+    X -brief description
+    X -resize img
+        > Still need to add demos/quickstarts, but save that for later.
 -maybe break down utils module into multiple smaller modules
 -docs
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below

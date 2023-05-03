@@ -10,13 +10,9 @@
 ## About
 
 Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 95 to 100. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:
-- debugging  
-- error handling  
-- logging  
-
-## Quickstart
-
-# TODO add code snippets and gifs
+- debugging
+- error handling
+- logging
 
 ## Contributing
 

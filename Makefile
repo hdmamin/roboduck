@@ -34,11 +34,14 @@ dev_env:
 	chmod u+x lib/scripts/make_dev_env.sh && ./lib/scripts/make_dev_env.sh
 
 docs:
+	cp README.md docs/
 	mkdocs build
 
 serve_docs:
+	cp README.md docs/
 	mkdocs serve
 
 # This updates the gh-pages branch and updates the deployed docs at http://hdmamin.github.io/roboduck.
 deploy_docs:
+	cp README.md docs/
 	mkdocs gh-deploy

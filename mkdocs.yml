@@ -13,7 +13,7 @@ markdown_extensions:
 
 # Bullets below will be tabs in left navbar.
 nav:
-  - index.md
+  - About: README.md
   - debug.md
   - errors.md
   - logging.md
