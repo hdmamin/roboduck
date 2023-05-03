@@ -31,9 +31,12 @@ import warnings
 
 from roboduck.langchain.chat import Chat
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
-from roboduck.utils import type_annotated_dict_str, colored, load_ipynb, \
-    truncated_repr, load_current_ipython_session, colordiff_new_str, \
-    parse_completion, store_class_defaults, is_ipy_name, add_docstring
+from roboduck.utils import type_annotated_dict_str, colored, truncated_repr, \
+    colordiff_new_str, \
+    parse_completion
+from roboduck.decorators import store_class_defaults, add_docstring
+from roboduck.ipy_utils import load_ipynb, load_current_ipython_session, \
+    is_ipy_name
 
 
 @store_class_defaults(attr_filter=lambda x: x.startswith('last_'))

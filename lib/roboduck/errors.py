@@ -29,7 +29,7 @@ from traceback import TracebackException
 import warnings
 
 from roboduck.debug import DuckDB, CodeCompletionCache
-from roboduck.utils import add_docstring
+from roboduck.decorators import add_docstring
 
 default_excepthook = sys.excepthook
 ipy = get_ipython()

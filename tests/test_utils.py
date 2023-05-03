@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 from textwrap import dedent
 
+import roboduck.decorators
 from roboduck import utils
 
 
@@ -99,7 +100,7 @@ def test_extract_code_with_backticks_in_code():
 
 
 def test_store_class_defaults():
-    @utils.store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
+    @roboduck.decorators.store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
     class Foo:
         last_bar = 3
         last_baz = 'abc'

@@ -28,6 +28,7 @@ jobs:
       run: |
         python -m pip install -e ./lib
         python -m pip install pytest
+        make deploy_docs
     - name: Test with pytest
       run: |
         pytest

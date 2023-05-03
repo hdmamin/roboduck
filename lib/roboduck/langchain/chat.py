@@ -13,7 +13,7 @@ import warnings
 
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.prompts.utils import load_template
-from roboduck.utils import add_kwargs
+from roboduck.decorators import add_kwargs
 
 
 class DummyChatModel:
