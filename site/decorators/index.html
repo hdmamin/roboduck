@@ -1,0 +1,1387 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../ipy_utils/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+    
+    
+      
+        <title>Decorators - RoboDuck</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ded33207.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lib.roboduck.decorators" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RoboDuck" class="md-header__button md-logo" aria-label="RoboDuck" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoboDuck
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Decorators
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RoboDuck" class="md-nav__button md-logo" aria-label="RoboDuck" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    RoboDuck
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logging/" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../magic/" class="md-nav__link">
+        Magic
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          CLI
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          CLI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/cli/" class="md-nav__link">
+        TODO: not working. Also tried leading ".." but that throws empty import error.
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shell/" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        Utils
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipy_utils/" class="md-nav__link">
+        IPython utils
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Decorators
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Decorators
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators" class="md-nav__link">
+    lib.roboduck.decorators
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_docstring" class="md-nav__link">
+    add_docstring()
+  </a>
+  
+    <nav class="md-nav" aria-label="add_docstring()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_docstring--examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_kwargs" class="md-nav__link">
+    add_kwargs()
+  </a>
+  
+    <nav class="md-nav" aria-label="add_kwargs()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_kwargs--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_kwargs--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.store_class_defaults" class="md-nav__link">
+    store_class_defaults()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.typecheck" class="md-nav__link">
+    typecheck()
+  </a>
+  
+    <nav class="md-nav" aria-label="typecheck()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.typecheck--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.typecheck--examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators" class="md-nav__link">
+    lib.roboduck.decorators
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_docstring" class="md-nav__link">
+    add_docstring()
+  </a>
+  
+    <nav class="md-nav" aria-label="add_docstring()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_docstring--examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_kwargs" class="md-nav__link">
+    add_kwargs()
+  </a>
+  
+    <nav class="md-nav" aria-label="add_kwargs()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_kwargs--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.add_kwargs--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.store_class_defaults" class="md-nav__link">
+    store_class_defaults()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.typecheck" class="md-nav__link">
+    typecheck()
+  </a>
+  
+    <nav class="md-nav" aria-label="typecheck()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.typecheck--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.decorators.typecheck--examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Decorators</h1>
+
+<div class="doc doc-object doc-module">
+
+
+<a id="lib.roboduck.decorators"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Miscellaneous decorators used throughout the library.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.decorators.add_docstring" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_docstring</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Add the docstring from another function/class to the decorated
+function/class.</p>
+<p>Ported from htools to avoid extra dependency.</p>
+<h4 id="lib.roboduck.decorators.add_docstring--examples">Examples</h4>
+<div class="highlight"><pre><span></span><code>@add_docstring(nn.Conv2d)
+class ReflectionPaddedConv2d(nn.Module):
+    # ...
+</code></pre></div>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_docstring</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the docstring from another function/class to the decorated</span>
+<span class="sd">    function/class.</span>
+
+<span class="sd">    Ported from htools to avoid extra dependency.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    ```</span>
+<span class="sd">    @add_docstring(nn.Conv2d)</span>
+<span class="sd">    class ReflectionPaddedConv2d(nn.Module):</span>
+<span class="sd">        # ...</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">new_func</span><span class="p">):</span>
+        <span class="n">new_func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">new_func</span><span class="o">.</span><span class="vm">__doc__</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">new_func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.decorators.add_kwargs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_kwargs</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">hide_fields</span><span class="o">=</span><span class="p">(),</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Decorator that adds parameters into the signature and docstring of a
+function that accepts **kwargs.</p>
+<h4 id="lib.roboduck.decorators.add_kwargs--parameters">Parameters</h4>
+
+<details class="func">
+  <summary>function</summary>
+  <p>Function to decorate.</p>
+</details>
+<details class="fields">
+  <summary>list[str]</summary>
+  <p>Names of params to insert into signature + docstring.</p>
+</details>
+<details class="hide_fields">
+  <summary>list[str]</summary>
+  <p>Names of params that are <em>already</em> in the function's signature that
+we want to hide. To use a non-empty value here, we must set strict=True
+and the param must have a default value, as this is what will be used
+in all subsequent calls.</p>
+</details>
+<details class="strict">
+  <summary>bool</summary>
+  <p>If true, we do two things:
+1. On decorated function call, check that the user provided all
+expected arguments.
+2. Enable the use of the <code>hide_fields</code> param.</p>
+</details>      <h4 id="lib.roboduck.decorators.add_kwargs--returns">Returns</h4>
+<p>function</p>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_kwargs</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">hide_fields</span><span class="o">=</span><span class="p">(),</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator that adds parameters into the signature and docstring of a</span>
+<span class="sd">    function that accepts **kwargs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func: function</span>
+<span class="sd">        Function to decorate.</span>
+<span class="sd">    fields: list[str]</span>
+<span class="sd">        Names of params to insert into signature + docstring.</span>
+<span class="sd">    hide_fields: list[str]</span>
+<span class="sd">        Names of params that are *already* in the function&#39;s signature that</span>
+<span class="sd">        we want to hide. To use a non-empty value here, we must set strict=True</span>
+<span class="sd">        and the param must have a default value, as this is what will be used</span>
+<span class="sd">        in all subsequent calls.</span>
+<span class="sd">    strict: bool</span>
+<span class="sd">        If true, we do two things:</span>
+<span class="sd">        1. On decorated function call, check that the user provided all</span>
+<span class="sd">        expected arguments.</span>
+<span class="sd">        2. Enable the use of the `hide_fields` param.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Hide_fields must have default values in existing function. They will not</span>
+    <span class="c1"># show up in the new docstring and the user will not be able to pass in a</span>
+    <span class="c1"># value when calling the new function - it will always use the default.</span>
+    <span class="c1"># To set different defaults, you can pass in a partial rather than a</span>
+    <span class="c1"># function as the first arg here.</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">hide_fields</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">strict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;You must set strict=True when providing one or more &#39;</span>
+            <span class="s1">&#39;hide_fields. Otherwise the user can still pass in those args.&#39;</span>
+        <span class="p">)</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span>
+    <span class="n">params_</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="c1"># Remove any fields we want to hide.</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">hide_fields</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params_</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No need to hide field </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s1"> because it</span><span class="se">\&#39;</span><span class="s1">s not &#39;</span>
+                          <span class="s1">&#39;in the existing function signature.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">params_</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Field &quot;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s1">&quot; is not a valid hide_field because it has &#39;</span>
+                <span class="s1">&#39;no default value in the original function.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params_</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;kwargs&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s1">&#39;kind&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Function </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s1"> must accept **kwargs.&#39;</span><span class="p">)</span>
+    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">field</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
+    <span class="p">}</span>
+    <span class="n">overlap</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">new_params</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">params_</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Some of the kwargs you tried to inject into </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s1"> already &#39;</span>
+            <span class="s1">&#39;exist in its signature. This is not allowed because it</span><span class="se">\&#39;</span><span class="s1">s &#39;</span>
+            <span class="s1">&#39;unclear how to resolve default values and parameter type.&#39;</span>
+        <span class="p">)</span>
+
+    <span class="n">params_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_params</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">__signature__</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="n">params_</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+        <span class="c1"># In practice langchain checks for this anyway if we ask for a</span>
+        <span class="c1"># completion, but outside of that context we need typecheck</span>
+        <span class="c1"># because otherwise we could provide no kwargs and _func wouldn&#39;t</span>
+        <span class="c1"># complain. Just use generic type because we only care that a value is</span>
+        <span class="c1"># provided.</span>
+        <span class="n">wrapper</span> <span class="o">=</span> <span class="n">typecheck</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">f</span><span class="p">:</span> <span class="nb">object</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.decorators.store_class_defaults" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">store_class_defaults</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Class decorator that stores default values of class attributes (can be
+all or a subset). Default here refers to the value at class definition
+time.</p>
+<p>@store_class_defaults(attr_filter=lambda x: x.startswith('last_'))</p>
+
+<details class="class-foo">
+  <summary>class Foo</summary>
+  <p>last_bar = 3
+last_baz = 'abc'
+other = True</p>
+</details>      <blockquote>
+<blockquote>
+<blockquote>
+<p>Foo._class_defaults</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>{'last_bar': 3, 'last_baz': 'abc'}</p>
+<p>Or use the decorator without parentheses to store all values at definition
+time. This is usually unnecessary. If you do provide an attr_filter, it
+must be a named argument.</p>
+<p>Foo.reset_class_vars() will reset all relevant class vars to their
+default values.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">store_class_defaults</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class decorator that stores default values of class attributes (can be</span>
+<span class="sd">    all or a subset). Default here refers to the value at class definition</span>
+<span class="sd">    time.</span>
+
+<span class="sd">    @store_class_defaults(attr_filter=lambda x: x.startswith(&#39;last_&#39;))</span>
+<span class="sd">    class Foo:</span>
+<span class="sd">        last_bar = 3</span>
+<span class="sd">        last_baz = &#39;abc&#39;</span>
+<span class="sd">        other = True</span>
+
+<span class="sd">    &gt;&gt;&gt; Foo._class_defaults</span>
+
+<span class="sd">    {&#39;last_bar&#39;: 3, &#39;last_baz&#39;: &#39;abc&#39;}</span>
+
+<span class="sd">    Or use the decorator without parentheses to store all values at definition</span>
+<span class="sd">    time. This is usually unnecessary. If you do provide an attr_filter, it</span>
+<span class="sd">    must be a named argument.</span>
+
+<span class="sd">    Foo.reset_class_vars() will reset all relevant class vars to their</span>
+<span class="sd">    default values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">store_class_defaults</span><span class="p">,</span> <span class="n">attr_filter</span><span class="o">=</span><span class="n">attr_filter</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;cls arg in store_class_defaults decorator has type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;but expected type `type`, i.e. a class. You may be passing in &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;an attr_filter as a positional arg which is not allowed - it &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;must be a named arg if provided.&#39;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_filter</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">attr_filter</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">defaults</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">attr_filter</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">defaults</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;_class_defaults&#39;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Class </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s1"> already has attribute </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">. store_class_defaults &#39;</span>
+            <span class="s1">&#39;decorator would overwrite that. Exiting.&#39;</span>
+        <span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">reset_class_vars</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset all default class attributes to their defaults.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_class_defaults</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not reset class attribute </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> to its &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;default value:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">meth_name</span> <span class="o">=</span> <span class="s1">&#39;reset_class_vars&#39;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">meth_name</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Class </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s1"> already has attribute </span><span class="si">{</span><span class="n">meth_name</span><span class="si">}</span><span class="s1">. &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;store_class_defaults decorator would overwrite that. Exiting.&#39;</span>
+        <span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">meth_name</span><span class="p">,</span> <span class="n">reset_class_vars</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.decorators.typecheck" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">typecheck</span><span class="p">(</span><span class="n">func_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">types</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Decorator to enforce type checking for a function or method. There are
+two ways to call this: either explicitly passing argument types to the
+decorator, or letting it infer them using type annotations in the function
+that will be decorated. We allow multiple both usage methods since older
+versions of Python lack type annotations, and also because I feel the
+annotation syntax can hurt readability.</p>
+<p>Ported from htools to avoid extra dependency.</p>
+<h4 id="lib.roboduck.decorators.typecheck--parameters">Parameters</h4>
+
+<details class="func_">
+  <summary>function</summary>
+  <p>The function to decorate. When using decorator with
+manually-specified types, this is None. Underscore is used so that
+<code>func</code> can still be used as a valid keyword argument for the wrapped
+function.</p>
+</details>
+<details class="types">
+  <summary>type</summary>
+  <p>Optional way to specify variable types. Use standard types rather than
+importing from the typing library, as subscripted generics are not
+supported (e.g. typing.List[str] will not work; typing.List will but at
+that point there is no benefit over the standard <code>list</code>).</p>
+</details>      <h4 id="lib.roboduck.decorators.typecheck--examples">Examples</h4>
+<p>In the first example, we specify types directly in the decorator. Notice
+that they can be single types or tuples of types. You can choose to
+specify types for all arguments or just a subset.</p>
+<div class="highlight"><pre><span></span><code>@typecheck(x=float, y=(int, float), iters=int, verbose=bool)
+def process(x, y, z, iters=5, verbose=True):
+    print(f&#39;z = {z}&#39;)
+    for i in range(iters):
+        if verbose: print(f&#39;Iteration {i}...&#39;)
+        x *= y
+    return x
+</code></pre></div>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>process(3.1, 4.5, 0, 2.0)
+TypeError: iters must be <class 'int'>, not <class 'float'>.</p>
+<p>process(3.1, 4, 'a', 1, False)
+z = a
+12.4</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Alternatively, you can let the decorator infer types using annotations
+in the function that is to be decorated. The example below behaves
+equivalently to the explicit example shown above. Note that annotations
+regarding the returned value are ignored.</p>
+<div class="highlight"><pre><span></span><code>@typecheck
+def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
+    print(f&#39;z = {z}&#39;)
+    for i in range(iters):
+        if verbose: print(f&#39;Iteration {i}...&#39;)
+        x *= y
+    return x
+</code></pre></div>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>process(3.1, 4.5, 0, 2.0)
+TypeError: iters must be <class 'int'>, not <class 'float'>.</p>
+<p>process(3.1, 4, 'a', 1, False)
+z = a
+12.4</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">typecheck</span><span class="p">(</span><span class="n">func_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">types</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to enforce type checking for a function or method. There are</span>
+<span class="sd">    two ways to call this: either explicitly passing argument types to the</span>
+<span class="sd">    decorator, or letting it infer them using type annotations in the function</span>
+<span class="sd">    that will be decorated. We allow multiple both usage methods since older</span>
+<span class="sd">    versions of Python lack type annotations, and also because I feel the</span>
+<span class="sd">    annotation syntax can hurt readability.</span>
+
+<span class="sd">    Ported from htools to avoid extra dependency.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func_: function</span>
+<span class="sd">        The function to decorate. When using decorator with</span>
+<span class="sd">        manually-specified types, this is None. Underscore is used so that</span>
+<span class="sd">        `func` can still be used as a valid keyword argument for the wrapped</span>
+<span class="sd">        function.</span>
+<span class="sd">    types: type</span>
+<span class="sd">        Optional way to specify variable types. Use standard types rather than</span>
+<span class="sd">        importing from the typing library, as subscripted generics are not</span>
+<span class="sd">        supported (e.g. typing.List[str] will not work; typing.List will but at</span>
+<span class="sd">        that point there is no benefit over the standard `list`).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In the first example, we specify types directly in the decorator. Notice</span>
+<span class="sd">    that they can be single types or tuples of types. You can choose to</span>
+<span class="sd">    specify types for all arguments or just a subset.</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    @typecheck(x=float, y=(int, float), iters=int, verbose=bool)</span>
+<span class="sd">    def process(x, y, z, iters=5, verbose=True):</span>
+<span class="sd">        print(f&#39;z = {z}&#39;)</span>
+<span class="sd">        for i in range(iters):</span>
+<span class="sd">            if verbose: print(f&#39;Iteration {i}...&#39;)</span>
+<span class="sd">            x *= y</span>
+<span class="sd">        return x</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    &gt;&gt;&gt; process(3.1, 4.5, 0, 2.0)</span>
+<span class="sd">    TypeError: iters must be &lt;class &#39;int&#39;&gt;, not &lt;class &#39;float&#39;&gt;.</span>
+
+<span class="sd">    &gt;&gt;&gt; process(3.1, 4, &#39;a&#39;, 1, False)</span>
+<span class="sd">    z = a</span>
+<span class="sd">    12.4</span>
+
+<span class="sd">    Alternatively, you can let the decorator infer types using annotations</span>
+<span class="sd">    in the function that is to be decorated. The example below behaves</span>
+<span class="sd">    equivalently to the explicit example shown above. Note that annotations</span>
+<span class="sd">    regarding the returned value are ignored.</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    @typecheck</span>
+<span class="sd">    def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):</span>
+<span class="sd">        print(f&#39;z = {z}&#39;)</span>
+<span class="sd">        for i in range(iters):</span>
+<span class="sd">            if verbose: print(f&#39;Iteration {i}...&#39;)</span>
+<span class="sd">            x *= y</span>
+<span class="sd">        return x</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    &gt;&gt;&gt; process(3.1, 4.5, 0, 2.0)</span>
+<span class="sd">    TypeError: iters must be &lt;class &#39;int&#39;&gt;, not &lt;class &#39;float&#39;&gt;.</span>
+
+<span class="sd">    &gt;&gt;&gt; process(3.1, 4, &#39;a&#39;, 1, False)</span>
+<span class="sd">    z = a</span>
+<span class="sd">    12.4</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Case 1: Pass keyword args to decorator specifying types.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">func_</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">typecheck</span><span class="p">,</span> <span class="o">**</span><span class="n">types</span><span class="p">)</span>
+    <span class="c1"># Case 2: Infer types from annotations. Skip if Case 1 already occurred.</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">types</span><span class="p">:</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">annotation</span>
+                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">func_</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                 <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">annotation</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">}</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func_</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">fargs</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">arguments</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">fargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fargs</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">v</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> must be </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">fargs</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">func_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+    
+  </body>
+</html>

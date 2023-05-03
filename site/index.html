@@ -60,6 +60,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#roboduck" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -91,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              About
             
           </span>
         </div>
@@ -183,10 +188,50 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
-        Home
+        About
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about" class="md-nav__link">
+    About
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -259,10 +304,44 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          CLI
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          CLI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="utils/" class="md-nav__link">
-        Utils
+      <a href="cli/cli/" class="md-nav__link">
+        TODO: not working. Also tried leading ".." but that throws empty import error.
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -289,44 +368,40 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
-          CLI
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_8">
-          <span class="md-nav__icon md-icon"></span>
-          CLI
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
     <li class="md-nav__item">
-      <a href="cli/cli/" class="md-nav__link">
-        TODO: not working. Also tried leading ".." but that throws empty import error.
+      <a href="utils/" class="md-nav__link">
+        Utils
       </a>
     </li>
   
 
-            
-          
-        </ul>
-      </nav>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ipy_utils/" class="md-nav__link">
+        IPython utils
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="decorators/" class="md-nav__link">
+        Decorators
+      </a>
     </li>
   
 
@@ -348,6 +423,30 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about" class="md-nav__link">
+    About
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -362,9 +461,36 @@
                   
 
 
-  <h1>Home</h1>
-
-<p>--8&lt;-- "README.md"</p>
+<h1 id="roboduck">RoboDuck</h1>
+<p><img alt="roboduck logo" src="data/images/roboduck_blue_small.png" /></p>
+<p><strong>Documentation</strong>: https://hdmamin.github.io/roboduck/</p>
+<p><em>rubber duck debugging</em>: a method of debugging code by articulating a problem in spoken or written natural language. The name is a reference to a story in the book The Pragmatic Programmer in which a programmer would carry around a rubber duck and debug their code by forcing themselves to explain it, line-by-line, to the duck. [<a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">1</a>]</p>
+<p><em>robo duck debugging</em>: like rubber duck debugging, but the duck talks back.</p>
+<h2 id="about">About</h2>
+<p>Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 95 to 100. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:
+- debugging<br />
+- error handling<br />
+- logging  </p>
+<h2 id="quickstart">Quickstart</h2>
+<h1 id="todo-add-code-snippets-and-gifs">TODO add code snippets and gifs</h1>
+<h2 id="contributing">Contributing</h2>
+<p>To create a virtual environment and install relevant packages:
+<div class="highlight"><pre><span></span><code>make dev_env
+</code></pre></div></p>
+<p>To run unit tests:
+<div class="highlight"><pre><span></span><code>make test
+</code></pre></div></p>
+<p>To rebuild the docs locally:
+<div class="highlight"><pre><span></span><code>make docs
+</code></pre></div></p>
+<h3 id="repo-structure">Repo Structure</h3>
+<div class="highlight"><pre><span></span><code>roboduck/
+├── data         # Raw and processed data. Actual files are excluded from github.
+├── notes        # Miscellaneous developer notes stored as text files.
+├── notebooks    # Jupyter notebooks for experimentation and exploratory analysis.
+├── bin          # Executable scripts to be run from the project root directory.
+└── lib          # Python package. Code can be imported in analysis notebooks, py scripts, etc.
+</code></pre></div>
 
 
 
