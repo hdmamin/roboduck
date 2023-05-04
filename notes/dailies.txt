@@ -1554,7 +1554,8 @@ X -maybe break down utils module into multiple smaller modules
 5/3/23 wed
 ----------
 X -add html files (or sites/* files) to .gitattributes
--fix deploy_docs action in gh workflow
+~ -fix deploy_docs action in gh workflow
+	> Some progress. Install from txt file rather than with script bc we already have python installed in workflow. Had to give gh actions permissions to read/write in repo settings. Tried rebuilding after that and failed due to remote having refs local lacks, but I wonder if that might be resolved by just pushing a new commit rather than rebuilding.
 -look into how to add various badges (e.g. coverage %) badge on github
 -docs
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below

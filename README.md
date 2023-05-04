@@ -1,6 +1,8 @@
 # RoboDuck
 ![roboduck logo](data/images/roboduck_blue_small.png)
 
+[![Build Status](https://github.com/hdmamin/roboduck/actions/workflows/ci.yml/badge.svg)](https://github.com/hdmamin/roboduck/actions/workflows/ci.yml)
+
 **Documentation**: https://hdmamin.github.io/roboduck/
 
 *rubber duck debugging*: a method of debugging code by articulating a problem in spoken or written natural language. The name is a reference to a story in the book The Pragmatic Programmer in which a programmer would carry around a rubber duck and debug their code by forcing themselves to explain it, line-by-line, to the duck. [[1](https://en.wikipedia.org/wiki/Rubber_duck_debugging)]
