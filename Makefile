@@ -44,4 +44,4 @@ serve_docs:
 # This updates the gh-pages branch and updates the deployed docs at http://hdmamin.github.io/roboduck.
 deploy_docs:
 	cp README.md docs/
-	mkdocs gh-deploy
+	mkdocs gh-deploy --force
