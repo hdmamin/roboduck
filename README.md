@@ -1,4 +1,4 @@
-|||
+|<th style="display:none"></th> | <th style="display:none"></th> |
 |---|---|
 | ![roboduck logo](data/images/roboduck_blue_small.png) | <h1>RoboDuck</h1> [![Documentation](https://img.shields.io/badge/Documentation-Online-blue.svg)](https://hdmamin.github.io/roboduck/) [![PyPI version](https://badge.fury.io/py/roboduck.svg)](https://badge.fury.io/py/roboduck) [![Build Status](https://github.com/hdmamin/roboduck/actions/workflows/main.yml/badge.svg)](https://github.com/hdmamin/roboduck/actions/workflows/main.yml) |
 
