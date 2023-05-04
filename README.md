@@ -2,6 +2,7 @@
 ![roboduck logo](data/images/roboduck_blue_small.png)
 
 [![Build Status](https://github.com/hdmamin/roboduck/actions/workflows/main.yml/badge.svg)](https://github.com/hdmamin/roboduck/actions/workflows/main.yml)
+[![PyPI version](https://badge.fury.io/py/roboduck.svg)](https://badge.fury.io/py/roboduck)
 
 **Documentation**: https://hdmamin.github.io/roboduck/
 
