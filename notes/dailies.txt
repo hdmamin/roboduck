@@ -1553,7 +1553,7 @@ X -maybe break down utils module into multiple smaller modules
 
 5/3/23 wed
 ----------
--add html files (or sites/* files) to .gitattributes
+X -add html files (or sites/* files) to .gitattributes
 -fix deploy_docs action in gh workflow
 -look into how to add various badges (e.g. coverage %) badge on github
 -docs
