@@ -1,2 +1,3 @@
 *.ipynb linguist-documentation
-site/* linguist-documentation
+*.md linguist-documentation
+*.html linguist-documentation
