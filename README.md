@@ -1,7 +1,7 @@
 # RoboDuck
 ![roboduck logo](data/images/roboduck_blue_small.png)
 
-[![Build Status](https://github.com/hdmamin/roboduck/actions/workflows/ci/main.yml/badge.svg)](https://github.com/hdmamin/roboduck/actions/workflows/ci/main.yml)
+[![Build Status](https://github.com/hdmamin/roboduck/actions/workflows/main.yml/badge.svg)](https://github.com/hdmamin/roboduck/actions/workflows/main.yml)
 
 **Documentation**: https://hdmamin.github.io/roboduck/
 
