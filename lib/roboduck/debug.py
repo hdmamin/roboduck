@@ -364,12 +364,6 @@ class DuckDB(Pdb):
 
         prompt = self.chat.user_message(key_=prompt_key,
                                         **prompt_kwargs).content
-        if len(prompt.split()) > 1_000:
-            warnings.warn(
-                'Prompt is very long (>1k words). You\'re approaching a risky'
-                ' zone where your prompt + completion might exceed the max '
-                'sequence length.'
-            )
         if verbose:
             print(colored(prompt, 'red'))
 

@@ -12,6 +12,7 @@ from langchain.prompts import HumanMessagePromptTemplate
 import warnings
 
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
+from roboduck.langchain.utils import model_context_window
 from roboduck.prompts.utils import load_template
 from roboduck.decorators import add_kwargs
 
@@ -127,6 +128,19 @@ class Chat:
                 [LiveTypingCallbackHandler()]
             )
         self.chat = chat_class(**self.kwargs)
+        self.context_window = model_context_window(
+            self.kwargs.get('model_name')
+        )
+        # This is approximate and counts words, not tokens. It is soft in the
+        # sense that it marks not where the user exceeds the model's context
+        # window, but where it's long enough that the context window will be a
+        # bigger limiting factor than the max_tokens kwarg.
+        self.prompt_words_soft_limit = int(
+            0.75 * (self.context_window - self.kwargs.get('max_tokens', 0))
+        )
+        self.prompt_words_hard_limit = int(0.75 * self.context_window)
+
+        # Create system and user messages and templates.
         self.system_message = SystemMessage(content=system)
         if isinstance(user, str):
             user = {'reply': user}
@@ -220,6 +234,25 @@ class Chat:
     def _reply(self, *, key_='', **kwargs):
         user_message = self.user_message(key_=key_, **kwargs)
         self._history.append(user_message)
+        # Technically I don't think this is the exact prompt that gets sent
+        # but it's close enough for our estimate. We're doing some pretty rough
+        # arithmetic anyway with the token->word conversions.
+        n_words = len(self.history(sep='\n').split())
+        if n_words > self.prompt_words_hard_limit:
+            raise ValueError(
+                f'Chat history contains ~{n_words:,} words which is more than '
+                f'the model can support. Context window is ~'
+                f'{self.prompt_words_hard_limit:,} words '
+                f'({self.context_window:,} tokens).'
+            )
+        elif n_words > self.prompt_words_soft_limit:
+            warnings.warn(
+                f'Chat history contains ~{n_words:,} words which means the '
+                f'model\'s context window of ~'
+                f'{self.prompt_words_hard_limit:,} words '
+                f'({self.context_window:,} tokens) will be the bigger limiting '
+                f'factor than your max_length hyperparameter.'
+            )
         try:
             response = self.chat(self._history)
         except Exception as e:

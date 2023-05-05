@@ -1571,9 +1571,15 @@ X -readme formatting tweaks
 
 5/4/23 thurs
 ------------
--long prompt handling updates
-	-maybe can make warning length depend on current chat_class? (e.g. no need to warn if 4k tokens and using gpt4 w/ long context window)
-	-confirm what happens if prompt is too long
+! -check if api key load happens on every debug cls init (if not, user could set env var and next call would still fail)
+	> No, but actually I realized that func just sets the env var. If user does this manually, next chat cls instantiation should catch it, so should be fine.
+~ -long prompt handling updates
+	X -maybe can make warning length depend on current chat_class? (e.g. no need to warn if 4k tokens and using gpt4 w/ long context window)
+		> Should be able to retrieve max_tokens in debug cls by self.chat.kwargs.get('max_tokens'). But confirmed max_tokens refers JUST to completion. However, the prompt length + completion length are still subject to the model context window.
+		> Context window, however, is not automatically retrievable from chat (that I know of - maybe langchain tucks it away somewhere?). Could retrieve self.chat.kwargs.get('model_name') and compare it to a hardcoded dict of context lengths in lib, or just let things fail if prompt gets too long. OR maybe need param to control how many of last n user responses to include (like in jabberwocky conv manager) bc otherwise I think the debug prompt will just get longer and longer).
+		> Do this in langchain.chat.Chat class now. Probably will adjust logic a bit later to allow the last_n_turns behavior I describe above.
+	~ -confirm what happens if prompt is too long
+		> Read that openai just raises an error and won't start the request. Now I preemptively error out to control error message.
 	-vaguely recall ipy session often produce massive prompts. Maybe see if there's a more intelligent way to handle this.
 -docs
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
@@ -1583,6 +1589,18 @@ X -readme formatting tweaks
         -chat
     -debug module (consider how to even test this?)
 
+5/5/23 fri
+----------
+-long prompt handling updates
+	-vaguely recall ipy session often produce massive prompts. Maybe see if there's a more intelligent way to handle this.
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+-docs
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
+-write/generate more tests
+    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        -chat
+    -debug module (consider how to even test this?)
 
 Backlog
 -------
