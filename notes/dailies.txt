@@ -1591,20 +1591,36 @@ X -readme formatting tweaks
 
 5/5/23 fri
 ----------
--long prompt handling updates
-	-vaguely recall ipy session often produce massive prompts. Maybe see if there's a more intelligent way to handle this.
+~ -long prompt handling updates
+	X -vaguely recall ipy session often produce massive prompts. Maybe see if there's a more intelligent way to handle this.
+		> Turns out the ipython-specific issue I feared existed did not (at least in the sense that non-"full" prompts only use the last executed cell). However, my "local_vars" key filtering was overly permissive regardless of file type. Adjusted it to work like global_vars and only keep used tokens. A little worrisome since it seems like the difference in how they were handled might have been intentional, but the output looked more sensible when testing this time and as long as tests pass I guess it's fine.
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
 -docs
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
     -look through docs and make changes as needed
--write/generate more tests
-    -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
-        -chat
-    -debug module (consider how to even test this?)
+X -write/generate more tests
+    X -langchain (in some cases, may be able to see how langchain tests their built in components and use that as a guide)
+        X -chat
+    _ -debug module (consider how to even test this?)
+
+5/6/23 sat
+----------
+-logging TODO re silent mode (see notes in py file; currently hardcoded to always silent but does stdout=True work then?)
+-debug todo re storing code vs full code
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+-docs
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
+
 
 Backlog
 -------
--Consider removing things like __builtins__ from prompt kwargs in debugger cls. (they're not ipython-specific it should occur outside the is_ipy_name function if at all. Not super harmful like some of the ipy _ih vars which quietly add a dangerous number of tokens to our prompt but maybe still worth excluding to save a few tokens and improve signal:noise ratio in prompt?
+-record demo gifs for readme
+-write a couple quickstart code snippets for readme
+-write a short guide/example for defining a custom:
+	-prompt
+	-anything else? have to consider, seems like there would be but not coming to mind. Chat class should typically be provided by langchain, I guess model_kwargs might need to be overridden but that's part of making a custom prompt.
 -other model support
 	-does chat_class=langchain.chat_models.anthropic.ChatAnthropic work?
 		-check non-55 email for access, set up api key if so

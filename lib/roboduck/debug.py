@@ -219,11 +219,6 @@ class DuckDB(Pdb):
             res['code'] = self._remove_debugger_call(code_snippet)
         except OSError as err:
             self.error(err)
-        res['local_vars'] = type_annotated_dict_str(
-            {k: v for k, v in self.curframe_locals.items()
-             if not is_ipy_name(k)},
-            self.repr_func
-        )
 
         # Get full source code if necessary.
         if self.full_context:
@@ -237,12 +232,6 @@ class DuckDB(Pdb):
                     full_code = load_ipynb(ipynbname.path())
                     res['file_type'] = 'jupyter notebook'
                 except FileNotFoundError:
-                    # TODO: maybe ipython session needs to use a modified
-                    # version of this func regardless of self.full_context,
-                    # and should return full code as list initially and
-                    # override res['code'] with last executed cell. Otherwise
-                    # I think getsource(curframe) may load a lot more code than
-                    # we usually want in ipython session.
                     full_code = load_current_ipython_session()
                     res['file_type'] = 'ipython session'
             else:
@@ -259,6 +248,11 @@ class DuckDB(Pdb):
         # Namespace is often polluted with lots of unused globals (htools is
         # very much guilty of this 😬) and we don't want to clutter up the
         # prompt with these.
+        res['local_vars'] = type_annotated_dict_str(
+            {k: v for k, v in self.curframe_locals.items()
+             if k in used_tokens and not is_ipy_name(k)},
+            self.repr_func
+        )
         res['global_vars'] = type_annotated_dict_str(
             {k: v for k, v in self.curframe.f_globals.items()
              if k in used_tokens and not is_ipy_name(k)},

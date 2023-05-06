@@ -66,8 +66,9 @@ class DuckLogger(Logger):
         """
         super().__init__(name)
         self.excepthook_kwargs = kwargs or {}
-        # TODO testing. Previously had silent=True hardcoded. Still considering
-        # desired behavior here.
+        # TODO testing. Should silent be True or "not stdout"? Think it was
+        # hardcoded initially, then switched to latter, then back to former
+        # but forget why. Need to investigate more.
         defaults = dict(auto=True, sleep=0, silent=True)
         for k, v in defaults.items():
             if self.excepthook_kwargs.get(k, v) != v:
