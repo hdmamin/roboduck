@@ -1606,6 +1606,7 @@ X -write/generate more tests
 5/6/23 sat
 ----------
 -fix failing chat tests
+-add instructions for setting api key
 -logging TODO re silent mode (see notes in py file; currently hardcoded to always silent but does stdout=True work then?)
 -debug todo re storing code vs full code
 -long prompt handling updates
