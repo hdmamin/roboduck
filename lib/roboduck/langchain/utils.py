@@ -24,7 +24,8 @@ def set_openai_api_key(key=None, config_path='~/.openai', strict=False):
         config path and try to load a key. If it is provided, we don't check
         config_path.
     config_path: str or Path
-        Local file containing openai api key and nothing else.
+        Local file containing openai api key and nothing else. Only checked if
+        `key` is not provided. We never write to this file.
     strict: bool
         Determines what happens when key is None and config path does not
         exist. Strict=True raises a runtime error, False just warns user.

@@ -27,6 +27,14 @@ def test_stdout_logging(capfd):
     assert 'this is a warning' in out
 
 
+def test_no_stdout_logging(tmp_path, capfd):
+    logger = logging.DuckLogger('test', chat_class=DummyChatModel,
+                                stdout=False, path=tmp_path/'test.log')
+    logger.warning('this is a warning')
+    out, _ = capfd.readouterr()
+    assert not out
+
+
 def test_file_logging(tmp_path, capfd):
     log_file = tmp_path/'test.log'
     logger = logging.getLogger('test', path=log_file, stdout=False,
@@ -46,3 +54,8 @@ def test_file_logging(tmp_path, capfd):
     # warning, thus polluting stdout and breaking the test below. But in our
     # current state this should be fine.
     assert not out.strip()
+
+
+def test_logger_requires_at_least_one_handler():
+    with pytest.raises(RuntimeError):
+        logger = logging.getLogger('test', stdout=False, path='')

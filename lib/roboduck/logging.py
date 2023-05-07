@@ -49,7 +49,8 @@ class DuckLogger(Logger):
             slices, not tuple
         stdout: bool
             If True, logged items will appear in stdout. You are free to log
-            to both stdout and a file, neither, or one or the other.
+            to both stdout and a file OR just one (selecting neither will raise
+            an error because logger would be useless in that case).
         path: str or Path
             If provided, we log to this file (the dir structure does not need
             to exist already). If None, we do not log to a file.
@@ -64,11 +65,18 @@ class DuckLogger(Logger):
              because we often want to log to a file, where this will probably
              not render correctly.
         """
+        if not stdout and not path:
+            raise RuntimeError(
+                f'{type(self).__name__} requires that you set stdout=True '
+                f'and/or provide a non-empty path. Currently, your logger '
+                f'would do neither and be useless.'
+            )
+
         super().__init__(name)
         self.excepthook_kwargs = kwargs or {}
-        # TODO testing. Should silent be True or "not stdout"? Think it was
-        # hardcoded initially, then switched to latter, then back to former
-        # but forget why. Need to investigate more.
+        # Always want silent=True because we don't care about live typing here.
+        # If stdout=True, our super()._log() call still ensures that we log to
+        # stdout after the gpt call completes.
         defaults = dict(auto=True, sleep=0, silent=True)
         for k, v in defaults.items():
             if self.excepthook_kwargs.get(k, v) != v:
@@ -88,6 +96,11 @@ class DuckLogger(Logger):
         handlers = []
         if stdout:
             handlers.append(StreamHandler(sys.stdout))
+        else:
+            # If we don't set this when stdout is False, the root logger ends
+            # up logging to stdout anyway.
+            self.propagate = False
+
         if path:
             path = Path(path).resolve()
             os.makedirs(path.parent, exist_ok=True)
@@ -105,7 +118,6 @@ class DuckLogger(Logger):
         Low-level logging routine which creates a LogRecord and then calls
         all the handlers of this logger to handle the record.
         """
-        tmp = sys.exc_info()[2]
         if isinstance(msg, Exception) and sys.exc_info()[2]:
             from roboduck import errors
             errors.excepthook(type(msg), msg, msg.__traceback__,
