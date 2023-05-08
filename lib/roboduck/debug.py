@@ -9,15 +9,19 @@ Here's a broken version of bubble sort that places a `duck()` call on the
 second to last line where you might normally call `breakpoint()`.
 
 ```
-from roboduck.debug import duck
+from roboduck import duck
 
 def bubble_sort(nums):
     for i in range(len(nums)):
         for j in range(len(nums)):
             if nums[j] > nums[j + 1]:
-                nums[j + 1], nums[j] = nums[j], nums[j + 1]
+                nums[j + 1] = nums[j]
+                nums[j] = nums[j + 1]
                 duck()   # <--------------------------- instead of breakpoint()
     return nums
+
+nums = [3, 1, 9, 2, 1]
+bubble_sort(nums)
 ```
 """
 import cmd
@@ -382,9 +386,9 @@ class DuckDB(Pdb):
         # the CodeCompletionCache to populate the new code cell.
         CodeCompletionCache.last_completion = answer
         CodeCompletionCache.last_explanation = parsed_kwargs['explanation']
-        # TODO: maybe check if code or full_code is more appropriate to store
-        # as last_code, either depending on self.full_context or by doing a
-        # quick str similarity to each.
+        # Built-in prompts always ask for a fixed version of the relevant
+        # snippet, not the whole code, so that's what we store here and use for
+        # the diff operation.
         # Contextless prompt has no `code` key.
         old_code = prompt_kwargs.get('code', '')
         new_code = parsed_kwargs['code']

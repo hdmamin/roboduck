@@ -36,7 +36,9 @@ def make_import_statement(cls_name):
 def run():
     parser = argparse.ArgumentParser(
         description='Run a python script with roboduck\'s errors mode '
-                    'automatically enabled.\n\nExamples:\n\nduck my_script.py'
+                    'automatically enabled.\n\nExamples:\nMake sure to include'
+                    'the equals sign between option name and value.'
+                    '\n\nduck my_script.py'
                     '\nduck my_script.py --chat_class=roboduck.DummyChatClass'
                     '\nduck my_script.py --auto=True '
                     '--prompt_name=~/my_custom_prompt.yaml',

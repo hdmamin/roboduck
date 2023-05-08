@@ -542,12 +542,11 @@ functionality.</p>
 <h3 id="lib.roboduck.magic--quickstart">Quickstart</h3>
 <div class="highlight"><pre><span></span><code># cell 1
 from roboduck import magic
-</code></pre></div>
-<div class="highlight"><pre><span></span><code># cell 2
+
 nums = [1, 2, 3]
 nums.add(4)
 </code></pre></div>
-<div class="highlight"><pre><span></span><code># cell 3
+<div class="highlight"><pre><span></span><code># cell 2
 %duck
 </code></pre></div>
 
@@ -595,7 +594,10 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 
         <details class="quote">
           <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 40</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
 <span class="normal"> 41</span>
 <span class="normal"> 42</span>
 <span class="normal"> 43</span>
@@ -689,10 +691,7 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
+<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
 <span class="k">class</span> <span class="nc">DebugMagic</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter a conversational debugging session after an error is thrown by a</span>
 <span class="sd">    jupyter notebook code cell.</span>
@@ -822,7 +821,10 @@ change persist, at least until the user changes it again.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 66</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
 <span class="normal"> 67</span>
 <span class="normal"> 68</span>
 <span class="normal"> 69</span>
@@ -890,10 +892,7 @@ change persist, at least until the user changes it again.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
+<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
                <span class="s1">&#39;new code cell below.&#39;</span><span class="p">)</span>

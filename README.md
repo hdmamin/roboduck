@@ -16,11 +16,91 @@ Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 9
 
 ## Quickstart
 
-# TODO add code snippets and gifs
+# TODO add gifs
 
 ### API Key Setup
 
-You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is to store it in a text file at `~/.openai`. Alternatively, you can call `roboduck.set_openai_api_key(api_key)` or manually set `os.environ['OPENAI_API_KEY'] = api_key`.
+You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is to store it in a text file at `~/.openai`. Alternatively, you can call `roboduck.set_openai_api_key(api_key)` or manually set `os.environ['OPENAI_API_KEY'] = api_key`. Roboduck does not store your API key.
+
+
+### Debugger
+
+We provide a natural language equivalent of python's built-in `breakpoint` function. Once you're in an interactive session, you can use the standard pdb commands to navigate your code (cmd+f "debugger commands" [here](https://docs.python.org/3/library/pdb.html). TLDR: type `n` to execute the next line, a variable name to view its current value, or `q` to quit the debugging session). However, you can also type a question like "Why do we get an index error when j changes from 3 to 4?" or "Why does nums have three 9s in it when the input list only had one?". Concretely, any time you type something including a question mark, an LLM will try to answer. This is not just performing static analysis - the LLM can access information about the current state of your program.
+
+```
+from roboduck import duck
+
+def bubble_sort(nums):
+    for i in range(len(nums)):
+        for j in range(len(nums)):
+            if nums[j] > nums[j + 1]:
+                nums[j + 1] = nums[j]
+                nums[j] = nums[j + 1]
+                duck()   # <--------------------------- instead of breakpoint()
+    return nums
+
+nums = [3, 1, 9, 2, 1]
+bubble_sort(nums)
+```
+
+### Errors
+
+Roboduck is also good at explaining error messages.  Importing the errors module automatically enables *optional* error explanations. `errors.disable()` reverts to python's regular behavior on errors. `errors.enable()` can be used to re-enable error explanations or to change settings. For example, setting auto=True automatically explains all errors rather than asking the user if they want an explanation (y/n) when an error occurs (this is probably excessive for most use cases, but you're free to do it).
+
+```
+from roboduck import errors
+
+data = {'x': 0}
+y = data.x
+
+errors.disable()
+y = data.x
+
+errors.enable(auto=True)
+y = data.x
+```
+
+### Jupyter Magic
+
+Jupyter provides a `%debug` magic that can be used after an error occurs to enter a postmortem debugging session. Roboduck's `%duck` magic works similarly, but with all of our debugging module's conversational capabilities:
+
+```
+# cell 1
+from roboduck import magic
+
+nums = [1, 2, 3]
+nums.add(4)
+```
+
+```
+# cell 2
+%duck
+```
+
+### Logging
+
+Roboduck also provides a logger that can write to stdout and/or a file. Whenever you log an Exception object, an LLM will try to diagnose and suggest a fix for the problem. (Unlike the debug module, the logger does not type responses live because we assume logs will typically be viewed after the fact.)
+
+```
+from roboduck import logging
+
+logger = logging.getLogger(path='/tmp/log.txt')
+data = {'x': 0}
+try:
+    x = data.x
+except Exception as e:
+    logger.error(e)
+```
+
+### CLI
+
+You can also run a python script with error explanations enabled:
+
+```bash
+duck my_script.py
+```
+
+Run `duck --help` for more info.
 
 ## Contributing
 

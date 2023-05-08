@@ -726,15 +726,19 @@ you more effectively.</p>
 <h3 id="lib.roboduck.debug--quickstart">Quickstart</h3>
 <p>Here's a broken version of bubble sort that places a <code>duck()</code> call on the
 second to last line where you might normally call <code>breakpoint()</code>.</p>
-<div class="highlight"><pre><span></span><code>from roboduck.debug import duck
+<div class="highlight"><pre><span></span><code>from roboduck import duck
 
 def bubble_sort(nums):
     for i in range(len(nums)):
         for j in range(len(nums)):
             if nums[j] &gt; nums[j + 1]:
-                nums[j + 1], nums[j] = nums[j], nums[j + 1]
+                nums[j + 1] = nums[j]
+                nums[j] = nums[j + 1]
                 duck()   # &lt;--------------------------- instead of breakpoint()
     return nums
+
+nums = [3, 1, 9, 2, 1]
+bubble_sort(nums)
 </code></pre></div>
 
   
@@ -771,11 +775,7 @@ code cell.</p>
 
         <details class="quote">
           <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
@@ -784,7 +784,11 @@ code cell.</p>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
-<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@store_class_defaults</span><span class="p">(</span><span class="n">attr_filter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;last_&#39;</span><span class="p">))</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@store_class_defaults</span><span class="p">(</span><span class="n">attr_filter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;last_&#39;</span><span class="p">))</span>
 <span class="k">class</span> <span class="nc">CodeCompletionCache</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Just stores the last completion from DuckDB in a way that our</span>
 <span class="sd">    `duck` jupyter magic can access (without relying on global variable, though</span>
@@ -846,11 +850,7 @@ making the query.</p>
 
         <details class="quote">
           <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 62</span>
 <span class="normal"> 63</span>
 <span class="normal"> 64</span>
 <span class="normal"> 65</span>
@@ -1222,15 +1222,7 @@ making the query.</p>
 <span class="normal">431</span>
 <span class="normal">432</span>
 <span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DuckDB</span><span class="p">(</span><span class="n">Pdb</span><span class="p">):</span>
+<span class="normal">434</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DuckDB</span><span class="p">(</span><span class="n">Pdb</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Conversational debugger powered by gpt models (currently codex, possibly</span>
 <span class="sd">    eventually chatGPT). Once you&#39;re in a debugging session, any user command</span>
 <span class="sd">    containing a question mark will be interpreted as a question for gpt.</span>
@@ -1394,11 +1386,6 @@ making the query.</p>
             <span class="n">res</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_debugger_call</span><span class="p">(</span><span class="n">code_snippet</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;local_vars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_annotated_dict_str</span><span class="p">(</span>
-            <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">curframe_locals</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipy_name</span><span class="p">(</span><span class="n">k</span><span class="p">)},</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">repr_func</span>
-        <span class="p">)</span>
 
         <span class="c1"># Get full source code if necessary.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_context</span><span class="p">:</span>
@@ -1412,12 +1399,6 @@ making the query.</p>
                     <span class="n">full_code</span> <span class="o">=</span> <span class="n">load_ipynb</span><span class="p">(</span><span class="n">ipynbname</span><span class="o">.</span><span class="n">path</span><span class="p">())</span>
                     <span class="n">res</span><span class="p">[</span><span class="s1">&#39;file_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;jupyter notebook&#39;</span>
                 <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-                    <span class="c1"># TODO: maybe ipython session needs to use a modified</span>
-                    <span class="c1"># version of this func regardless of self.full_context,</span>
-                    <span class="c1"># and should return full code as list initially and</span>
-                    <span class="c1"># override res[&#39;code&#39;] with last executed cell. Otherwise</span>
-                    <span class="c1"># I think getsource(curframe) may load a lot more code than</span>
-                    <span class="c1"># we usually want in ipython session.</span>
                     <span class="n">full_code</span> <span class="o">=</span> <span class="n">load_current_ipython_session</span><span class="p">()</span>
                     <span class="n">res</span><span class="p">[</span><span class="s1">&#39;file_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ipython session&#39;</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1434,6 +1415,11 @@ making the query.</p>
         <span class="c1"># Namespace is often polluted with lots of unused globals (htools is</span>
         <span class="c1"># very much guilty of this 😬) and we don&#39;t want to clutter up the</span>
         <span class="c1"># prompt with these.</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;local_vars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_annotated_dict_str</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">curframe_locals</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">used_tokens</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ipy_name</span><span class="p">(</span><span class="n">k</span><span class="p">)},</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">repr_func</span>
+        <span class="p">)</span>
         <span class="n">res</span><span class="p">[</span><span class="s1">&#39;global_vars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_annotated_dict_str</span><span class="p">(</span>
             <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">curframe</span><span class="o">.</span><span class="n">f_globals</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
              <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">used_tokens</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ipy_name</span><span class="p">(</span><span class="n">k</span><span class="p">)},</span>
@@ -1539,12 +1525,6 @@ making the query.</p>
 
         <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">user_message</span><span class="p">(</span><span class="n">key_</span><span class="o">=</span><span class="n">prompt_key</span><span class="p">,</span>
                                         <span class="o">**</span><span class="n">prompt_kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1_000</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s1">&#39;Prompt is very long (&gt;1k words). You</span><span class="se">\&#39;</span><span class="s1">re approaching a risky&#39;</span>
-                <span class="s1">&#39; zone where your prompt + completion might exceed the max &#39;</span>
-                <span class="s1">&#39;sequence length.&#39;</span>
-            <span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">colored</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">))</span>
 
@@ -1569,9 +1549,9 @@ making the query.</p>
         <span class="c1"># the CodeCompletionCache to populate the new code cell.</span>
         <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_completion</span> <span class="o">=</span> <span class="n">answer</span>
         <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_explanation</span> <span class="o">=</span> <span class="n">parsed_kwargs</span><span class="p">[</span><span class="s1">&#39;explanation&#39;</span><span class="p">]</span>
-        <span class="c1"># TODO: maybe check if code or full_code is more appropriate to store</span>
-        <span class="c1"># as last_code, either depending on self.full_context or by doing a</span>
-        <span class="c1"># quick str similarity to each.</span>
+        <span class="c1"># Built-in prompts always ask for a fixed version of the relevant</span>
+        <span class="c1"># snippet, not the whole code, so that&#39;s what we store here and use for</span>
+        <span class="c1"># the diff operation.</span>
         <span class="c1"># Contextless prompt has no `code` key.</span>
         <span class="n">old_code</span> <span class="o">=</span> <span class="n">prompt_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;code&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">new_code</span> <span class="o">=</span> <span class="n">parsed_kwargs</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
@@ -1702,11 +1682,7 @@ which mocks api calls (good for development, saves money).</p>
 </details>
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 70</span>
 <span class="normal"> 71</span>
 <span class="normal"> 72</span>
 <span class="normal"> 73</span>
@@ -1777,7 +1753,11 @@ which mocks api calls (good for development, saves money).</p>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">max_len_per_var</span><span class="o">=</span><span class="mi">79</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">max_len_per_var</span><span class="o">=</span><span class="mi">79</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
              <span class="n">pdb_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_func</span><span class="o">=</span><span class="n">parse_completion</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span>
              <span class="o">**</span><span class="n">chat_kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1894,7 +1874,9 @@ call. User activates this mode by prefixing their question with
 </details>
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
 <span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
@@ -1982,15 +1964,7 @@ call. User activates this mode by prefixing their question with
 <span class="normal">397</span>
 <span class="normal">398</span>
 <span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
-<span class="normal">403</span>
-<span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ask_language_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">stack_trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">400</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ask_language_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">stack_trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;When the user asks a question during a debugging session, query</span>
 <span class="sd">    gpt for the answer and type it back to them live.</span>
 
@@ -2045,12 +2019,6 @@ call. User activates this mode by prefixing their question with
 
     <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">user_message</span><span class="p">(</span><span class="n">key_</span><span class="o">=</span><span class="n">prompt_key</span><span class="p">,</span>
                                     <span class="o">**</span><span class="n">prompt_kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1_000</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s1">&#39;Prompt is very long (&gt;1k words). You</span><span class="se">\&#39;</span><span class="s1">re approaching a risky&#39;</span>
-            <span class="s1">&#39; zone where your prompt + completion might exceed the max &#39;</span>
-            <span class="s1">&#39;sequence length.&#39;</span>
-        <span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">colored</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">))</span>
 
@@ -2075,9 +2043,9 @@ call. User activates this mode by prefixing their question with
     <span class="c1"># the CodeCompletionCache to populate the new code cell.</span>
     <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_completion</span> <span class="o">=</span> <span class="n">answer</span>
     <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_explanation</span> <span class="o">=</span> <span class="n">parsed_kwargs</span><span class="p">[</span><span class="s1">&#39;explanation&#39;</span><span class="p">]</span>
-    <span class="c1"># TODO: maybe check if code or full_code is more appropriate to store</span>
-    <span class="c1"># as last_code, either depending on self.full_context or by doing a</span>
-    <span class="c1"># quick str similarity to each.</span>
+    <span class="c1"># Built-in prompts always ask for a fixed version of the relevant</span>
+    <span class="c1"># snippet, not the whole code, so that&#39;s what we store here and use for</span>
+    <span class="c1"># the diff operation.</span>
     <span class="c1"># Contextless prompt has no `code` key.</span>
     <span class="n">old_code</span> <span class="o">=</span> <span class="n">prompt_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;code&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">new_code</span> <span class="o">=</span> <span class="n">parsed_kwargs</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
@@ -2112,15 +2080,15 @@ user prompt template.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get names of variables that are expected to be passed into default</span>
 <span class="sd">    user prompt template.</span>
 
@@ -2165,7 +2133,9 @@ cmdqueue). This is for use with the debug_stack_trace mode.</p>
 </details>
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">278</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
 <span class="normal">281</span>
@@ -2195,9 +2165,7 @@ cmdqueue). This is for use with the debug_stack_trace mode.</p>
 <span class="normal">305</span>
 <span class="normal">306</span>
 <span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">onecmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="normal">308</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">onecmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class describes this as follows:</span>
 
 <span class="sd">    Interpret the argument as though it had been typed in response to the</span>
@@ -2256,17 +2224,17 @@ because it does nothing with its line argument.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">410</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
 <span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">precmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="normal">412</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">precmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;We need to define this to make our errors module work. Our</span>
 <span class="sd">    post_mortem function sometimes places a tuple in our debugger&#39;s</span>
 <span class="sd">    cmdqueue and precmd is called as part of the default cmdloop method.</span>
@@ -2305,7 +2273,15 @@ we want to disable that message.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">422</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
 <span class="normal">423</span>
 <span class="normal">424</span>
 <span class="normal">425</span>
@@ -2317,15 +2293,7 @@ we want to disable that message.</p>
 <span class="normal">431</span>
 <span class="normal">432</span>
 <span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_stack_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_lineno</span><span class="p">,</span> <span class="n">prompt_prefix</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-&gt; &#39;</span><span class="p">):</span>
+<span class="normal">434</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_stack_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_lineno</span><span class="p">,</span> <span class="n">prompt_prefix</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-&gt; &#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is called automatically when entering a debugger session</span>
 <span class="sd">    and it prints a message to stdout like</span>
 
@@ -2379,13 +2347,13 @@ will be passed to its constructor.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Roboduck equivalent of native python breakpoint().</span>
 <span class="sd">    The DuckDB docstring is below. Any kwargs passed in to this function</span>

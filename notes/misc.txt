@@ -46,3 +46,12 @@ implementation
 thoughts
 -dynamic approaches are interesting but could be a whole project in and of themselves
 -leaning towards starting with standard auto docs + maybe a few quickstart examples (the latter could perhaps be gpt-assisted but not sure if that would really even help much - compiling prompt takes some time and I tried to design everything to be very simple to use anyway)
+
+5/7/23 sun
+----------
+storing code vs full_code options:
+-check prompt name/kwargs, store one or the other depending
+-always store both
+-always store all kwargs
+
+Only last_new_code is every used atm, nothing uses last_code (though someone could). And I believe I always ask gpt to generate a fixed version of the current snippet. So I'm leaning towards just always storing code snippet.
