@@ -20,8 +20,16 @@ Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 9
 
 ### API Key Setup
 
-You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is to store it in a text file at `~/.openai`. Alternatively, you can call `roboduck.set_openai_api_key(api_key)` or manually set `os.environ['OPENAI_API_KEY'] = api_key`. Roboduck does not store your API key.
+You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is to call `roboduck.set_openai_api_key(api_key, update_config=True)` which essentially does the following: 
 
+```bash
+mkdir ~/.roboduck/config.yaml
+echo "openai_api_key: your_api_key_here" > !$
+```
+
+Alternatively, you can also set `os.environ['OPENAI_API_KEY'] = api_key`.
+
+Roboduck does not store your API key.
 
 ### Debugger
 

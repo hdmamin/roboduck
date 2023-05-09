@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib
 import openai
+import os
 import pandas as pd
 from pathlib import Path
 import re
@@ -231,6 +232,28 @@ def load_yaml(path, section=None):
     with open(path, 'r') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     return data.get(section, data)
+
+
+def update_yaml(path, **kwargs):
+    """Update a yaml file with new values.
+
+    Parameters
+    ----------
+    path: str or Path
+        Path to yaml file to update. If it doesn't exist, it will be created.
+        Any necessary intermediate directories will be created too.
+    kwargs: any
+        Key-value pairs to update the yaml file with.
+    """
+    path = Path(path).expanduser()
+    os.makedirs(path.parent, exist_ok=True)
+    try:
+        data = load_yaml(path)
+    except FileNotFoundError:
+        data = {}
+    data.update(kwargs)
+    with open(path, 'w') as f:
+        yaml.dump(data, f)
 
 
 def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
