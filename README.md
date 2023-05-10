@@ -23,13 +23,13 @@ Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 9
 You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is to call `roboduck.set_openai_api_key(api_key, update_config=True)` which essentially does the following: 
 
 ```bash
-mkdir ~/.roboduck/config.yaml
-echo "openai_api_key: your_api_key_here" > !$
+mkdir ~/.roboduck
+echo "openai_api_key: your_api_key_here" > ~/.roboduck/config.yaml
 ```
 
 Alternatively, you can also set `os.environ['OPENAI_API_KEY'] = api_key`.
 
-Roboduck does not store your API key.
+Roboduck does not store your API key or collect any usage data.
 
 ### Debugger
 
@@ -130,9 +130,9 @@ make docs
 ### Repo Structure
 ```
 roboduck/
+├── lib          # Python package source code
 ├── data         # Raw and processed data. Actual files are excluded from github.
 ├── notes        # Miscellaneous developer notes stored as text files.
 ├── notebooks    # Jupyter notebooks for experimentation and exploratory analysis.
-├── bin          # Executable scripts to be run from the project root directory.
-└── lib          # Python package. Code can be imported in analysis notebooks, py scripts, etc.
+└── bin          # Executable scripts to be run from the project root directory.
 ```

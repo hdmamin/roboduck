@@ -24,3 +24,4 @@ nav:
   - utils.md
   - IPython utils: ipy_utils.md
   - decorators.md
+  - Custom Prompts: custom_prompts.md

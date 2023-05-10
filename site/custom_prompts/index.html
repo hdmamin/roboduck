@@ -9,17 +9,15 @@
       
       
       
-        <link rel="prev" href="../cli/cli/">
+        <link rel="prev" href="../decorators/">
       
-      
-        <link rel="next" href="../utils/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
     
     
       
-        <title>Shell - RoboDuck</title>
+        <title>Custom Prompts - RoboDuck</title>
       
     
     
@@ -62,11 +60,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#lib.roboduck.shell" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -98,7 +91,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Shell
+              Custom Prompts
             
           </span>
         </div>
@@ -306,55 +299,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Shell
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../shell/" class="md-nav__link">
         Shell
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lib.roboduck.shell" class="md-nav__link">
-    lib.roboduck.shell
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lib.roboduck.shell.RoboDuckTerminalInteractiveShell" class="md-nav__link">
-    RoboDuckTerminalInteractiveShell
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -410,11 +359,19 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../custom_prompts/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Custom Prompts
       </a>
+      
     </li>
   
 
@@ -437,28 +394,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lib.roboduck.shell" class="md-nav__link">
-    lib.roboduck.shell
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lib.roboduck.shell.RoboDuckTerminalInteractiveShell" class="md-nav__link">
-    RoboDuckTerminalInteractiveShell
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -472,109 +407,9 @@
                   
 
 
-  <h1>Shell</h1>
+  <h1>Custom Prompts</h1>
 
-<div class="doc doc-object doc-module">
-
-
-<a id="lib.roboduck.shell"></a>
-  <div class="doc doc-contents first">
-  
-      <p>This module allows our roboduck <code>%duck</code> magic to work in ipython. Ipython
-uses a TerminalInteractiveShell class which makes its debugger_cls attribute
-read only. We provide a drop-in replacement that allows our magic class to
-set that attribute when necessary. Note that you'd need to start an ipython
-session with the command:</p>
-<div class="highlight"><pre><span></span><code>ipython --TerminalIPythonApp.interactive_shell_class=roboduck.shell.RoboDuckTerminalInteractiveShell
-</code></pre></div>
-<p>for this to work. You'll still need to run <code>from roboduck import magic</code> inside
-your session to make it avaialble.</p>
-<p>Alternatively, you can make it available automatically for all ipython
-sessions by adding the following lines to your ipython config (usually found at
-~/.ipython/profile_default/ipython_config.py):</p>
-<div class="highlight"><pre><span></span><code>cfg = get_config()
-cfg.TerminalIPythonApp.interactive_shell_class = roboduck.shell.RoboDuckTerminalInteractiveShell
-cfg.InteractiveShellApp.exec_lines = [&quot;from roboduck import magic&quot;]
-</code></pre></div>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="lib.roboduck.shell.RoboDuckTerminalInteractiveShell" class="doc doc-heading">
-        <code>RoboDuckTerminalInteractiveShell</code>
-
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="IPython.terminal.interactiveshell.TerminalInteractiveShell">TerminalInteractiveShell</span></code></p>
-
-  
-      <p>TerminalInteractiveShell replacement class whose debugger_cls attribute
-is NOT read-only, thereby allowing our <code>duck</code> magic to overwrite it when
-necessary.</p>
-
-
-        <details class="quote">
-          <summary>Source code in <code>lib/roboduck/shell.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RoboDuckTerminalInteractiveShell</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;TerminalInteractiveShell replacement class whose debugger_cls attribute</span>
-<span class="sd">    is NOT read-only, thereby allowing our `duck` magic to overwrite it when</span>
-<span class="sd">    necessary.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">Pdb</span>
-</code></pre></div></td></tr></table></div>
-        </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
+<p>Testing</p>
 
 
 

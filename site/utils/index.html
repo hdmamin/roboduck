@@ -589,6 +589,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.update_yaml" class="md-nav__link">
+    update_yaml()
+  </a>
+  
+    <nav class="md-nav" aria-label="update_yaml()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.update_yaml--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -622,6 +642,21 @@
     <li class="md-nav__item">
       <a href="../decorators/" class="md-nav__link">
         Decorators
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_prompts/" class="md-nav__link">
+        Custom Prompts
       </a>
     </li>
   
@@ -888,6 +923,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.update_yaml" class="md-nav__link">
+    update_yaml()
+  </a>
+  
+    <nav class="md-nav" aria-label="update_yaml()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.update_yaml--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -946,26 +1001,26 @@ roboduck class named like ChatOpenai (i.e. Chat{provider.title()}).</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">available_models</span><span class="p">():</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">available_models</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show user available values for model_name parameter in debug.DuckDB</span>
 <span class="sd">    class/ debug.duck function/errors.enable function etc.</span>
 
@@ -1030,8 +1085,7 @@ https://gist.github.com/ines/04b47597eb9d011ade5e77a068389521</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
-<span class="normal">37</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
@@ -1065,7 +1119,8 @@ https://gist.github.com/ines/04b47597eb9d011ade5e77a068389521</p>
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
-<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colordiff_new_str</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">):</span>
+<span class="normal">71</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colordiff_new_str</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given two strings, return the new one with new parts in green. Note that</span>
 <span class="sd">    deletions are ignored because we want to retain only characters in the new</span>
 <span class="sd">    string. Remember colors are only displayed correctly when printing the</span>
@@ -1136,8 +1191,7 @@ or empty str, just return the text unchanged.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -1155,7 +1209,8 @@ or empty str, just return the text unchanged.</p>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colored</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colored</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add tags to color text and then reset color afterwards. Note that this</span>
 <span class="sd">    does NOT actually print anything.</span>
 
@@ -1235,30 +1290,7 @@ b = (b[0], b[1] + [a])</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
 <span class="normal">260</span>
 <span class="normal">261</span>
 <span class="normal">262</span>
@@ -1287,7 +1319,30 @@ b = (b[0], b[1] + [a])</p>
 <span class="normal">285</span>
 <span class="normal">286</span>
 <span class="normal">287</span>
-<span class="normal">288</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_code</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">join_multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multi_prefix_template</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"># </span><span class="si">{i}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_code</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">join_multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multi_prefix_template</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"># </span><span class="si">{i}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract code snippet from a GPT response (e.g. from our `debug` chat</span>
 <span class="sd">    prompt. See `Examples` for expected format.</span>
 
@@ -1373,8 +1428,7 @@ returns the whole contents.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
-<span class="normal">215</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
@@ -1392,7 +1446,8 @@ returns the whole contents.</p>
 <span class="normal">230</span>
 <span class="normal">231</span>
 <span class="normal">232</span>
-<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">233</span>
+<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a yaml file. Useful for loading prompts.</span>
 
 <span class="sd">    Borrowed from jabberwocky.</span>
@@ -1454,30 +1509,7 @@ and code.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">314</span>
 <span class="normal">315</span>
 <span class="normal">316</span>
 <span class="normal">317</span>
@@ -1488,7 +1520,30 @@ and code.</p>
 <span class="normal">322</span>
 <span class="normal">323</span>
 <span class="normal">324</span>
-<span class="normal">325</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_completion</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_completion</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is called on the gpt completion text in</span>
 <span class="sd">    roboduck.debug.DuckDB.ask_language_model (i.e. when the user asks a</span>
 <span class="sd">    question during a debugging session, or when an error occurs when in</span>
@@ -1568,8 +1623,7 @@ least at the moment. I can always revisit that later if necessary.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
-<span class="normal">106</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
 <span class="normal">109</span>
@@ -1674,7 +1728,8 @@ least at the moment. I can always revisit that later if necessary.</p>
 <span class="normal">208</span>
 <span class="normal">209</span>
 <span class="normal">210</span>
-<span class="normal">211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">79</span><span class="p">):</span>
+<span class="normal">211</span>
+<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">79</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an object&#39;s repr, truncated to ensure that it doesn&#39;t take up</span>
 <span class="sd">    more characters than we want. This is used to reduce our chances of using</span>
 <span class="sd">    up all our available tokens in a gpt prompt simply communicating that a</span>
@@ -1831,8 +1886,7 @@ type_annotated_dict_str(d, str)
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 74</span>
-<span class="normal"> 75</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
 <span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
@@ -1859,7 +1913,8 @@ type_annotated_dict_str(d, str)
 <span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span>
-<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">type_annotated_dict_str</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="nb">repr</span><span class="p">):</span>
+<span class="normal">102</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">type_annotated_dict_str</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="nb">repr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String representation (or repr) of a dict, where each line includes</span>
 <span class="sd">    an inline comment showing the type of the value.</span>
 
@@ -1888,6 +1943,77 @@ type_annotated_dict_str(d, str)
     <span class="n">type_strs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    </span><span class="si">{</span><span class="n">func</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">func</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">,   # type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
                  <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict_</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
     <span class="k">return</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">type_strs</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">}&#39;</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="lib.roboduck.utils.update_yaml" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">update_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Update a yaml file with new values.</p>
+<h4 id="lib.roboduck.utils.update_yaml--parameters">Parameters</h4>
+
+<details class="path">
+  <summary>str or Path</summary>
+  <p>Path to yaml file to update. If it doesn't exist, it will be created.
+Any necessary intermediate directories will be created too.</p>
+</details>
+<details class="kwargs">
+  <summary>any</summary>
+  <p>Key-value pairs to update the yaml file with.</p>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a yaml file with new values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str or Path</span>
+<span class="sd">        Path to yaml file to update. If it doesn&#39;t exist, it will be created.</span>
+<span class="sd">        Any necessary intermediate directories will be created too.</span>
+<span class="sd">    kwargs: any</span>
+<span class="sd">        Key-value pairs to update the yaml file with.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
