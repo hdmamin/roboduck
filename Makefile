@@ -20,8 +20,8 @@ readmes:
 	htools update_readmes "['bin', 'notebooks', 'lib/roboduck']"
 
 chat_prompt:
-	chmod u+x lib/scripts/make_chat_prompt.sh
-	lib/scripts/make_chat_prompt.sh
+	chmod u+x bin/make_chat_prompt.sh
+	bin/make_chat_prompt.sh
 
 reinstall:
 	pip uninstall -y roboduck && pip install -e ~/roboduck/lib
@@ -31,7 +31,7 @@ test:
 	python -m pytest -s
 
 dev_env:
-	chmod u+x lib/scripts/make_dev_env.sh && ./lib/scripts/make_dev_env.sh
+	chmod u+x bin/make_dev_env.sh && ./bin/make_dev_env.sh
 
 docs:
 	cp README.md docs/
