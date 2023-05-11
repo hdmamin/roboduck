@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import warnings
 
+from roboduck import config
 from roboduck.utils import load_yaml, update_yaml
 
 
@@ -16,7 +17,7 @@ MODEL_CONTEXT_WINDOWS = {
 }
 
 
-def set_openai_api_key(key=None, config_path='~/.roboduck/config.yaml',
+def set_openai_api_key(key=None, config_path=config.config_path,
                        strict=False, update_config=False):
     """Set OPENAI_API_KEY environment variable for langchain.
 

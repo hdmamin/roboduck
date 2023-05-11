@@ -11,6 +11,8 @@ import re
 import warnings
 import yaml
 
+from roboduck import config
+
 
 def colored(text, color):
     """Add tags to color text and then reset color afterwards. Note that this
@@ -254,6 +256,48 @@ def update_yaml(path, **kwargs):
     data.update(kwargs)
     with open(path, 'w') as f:
         yaml.dump(data, f)
+
+
+def update_config(**kwargs):
+    """Update roboduck config file with settings that persist for future
+    sessions.
+
+    # TODO: still considering this model_name resolution order. Haven't
+    # implemented any global config use yet and am torn about making it 2 or 3.
+    # Having it #2 makes it easier for user to make a persistent change like
+    # "Always use gpt4" but makes it kind of unintuitive if they define a
+    # custom prompt that should use a different model. Having it #3 would make
+    # it easy to define custom prompts with non-standard models but very clunky
+    # to use a different global default. I *think* setting a global default is
+    # a more common use case than setting prompt-specific exceptions, but I'm
+    # not totally sure about that.
+
+    # TODO: still considering what fields should be configurable here.
+
+    Parameters
+    ----------
+    kwargs: any
+        Available fields include:
+            - model_name: name like 'gpt-3.5-turbo' that controls what model
+            to use for completions. Model_name is resolved as follows:
+            1. kwargs explicitly passed in by user (e.g.
+            `duck(model_name='gpt-4')` always override everything else.
+            2. if global config file (which this function updates) has a
+            model_name, it is the next highest priority.
+            3. specific chat template (e.g. roboduck/prompts/chat/debug.yaml)
+            model name is used if neither #1 or #2 are provided.
+    """
+    update_yaml(config.config_path, **kwargs)
+    
+    
+def load_config():
+    """Load roboduck config.
+
+    Returns
+    -------
+    dict
+    """
+    return load_yaml(config.config_path)
 
 
 def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):

@@ -1660,6 +1660,7 @@ X -write a short guide/example for defining a custom:
 	_ -consider if any other custom guide needed? seems like there would be but not coming to mind. Chat class should typically be provided by langchain, I guess model_kwargs might need to be overridden but that's part of making a custom prompt.
 X -mv scripts to bin/ and update makefile accordingly
 X -readme tweaks
+X -add github "About" description/url/topics
 -record demo gifs for readme
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
@@ -1669,8 +1670,10 @@ X -readme tweaks
 
 5/10/23 wed
 -----------
--consider major config improvements
-	-allow specifying default model between gpt-3.5 and gpt-4? (So user doesn't have to always type duck('gpt-4') if they always want to use that. Have to think about how config would interact with prompt template default. Maybe set it to none by default and only override if `config['defaults']['default_model'] is truthy?)
+~ -consider major config improvements
+	~ -allow specifying default model between gpt-3.5 and gpt-4? (So user doesn't have to always type duck('gpt-4') if they always want to use that. Have to think about how config would interact with prompt template default. Maybe set it to none by default and only override if `config['defaults']['default_model'] is truthy?)
+		> Wrote utils funcs to update and load config. Did some thinking about resolution order and wrote notes in func docstring but didn't yet incorporate global config into resolution in Chat class.
+		> Also added config module with config path and updated a couple other refs to it.
 	-allow adding paths to custom prompt templates so users can use names rather than paths?
 	-support loading/setting/writing arbitrary number of api keys (e.g. huggingface, anthropic, ???). (Perhaps more of an update of set_openai_api_key)
 -record demo gifs for readme
@@ -1680,6 +1683,26 @@ X -readme tweaks
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
     -look through docs and make changes as needed
 
+5/11/23 thurs
+-------------
+-consider major config improvements
+	-incorporate global config into model_name resolution in chat instantiation
+		-decide where this should occur. Inside init, or before?
+		-implement
+	-[WAIT: I think it's easier to implement just model_name first and then genenralize if necessary rather than generalizing upfront.] consider adding support for setting nested kwargs in config.yaml (e.g. have one group for api keys, one for things like model_name or temperature, one for roboudck kwargs like max_len_per_var/color/prompt_name)
+		-decide
+		-if yes:
+			-update update_config func
+			-update kwarg resolution in chat cls (extend from just model_name)
+			-write more unit tests 😭
+	-allow adding paths to custom prompt templates so users can use names rather than paths?
+	-support loading/setting/writing arbitrary number of api keys (e.g. huggingface, anthropic, ???). (Perhaps more of an update of set_openai_api_key)
+-record demo gifs for readme
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+-docs
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
 
 Backlog
 -------
@@ -1703,7 +1726,6 @@ Backlog
 
 Easy Backlog
 ------------
--add github "About" description/url/topics
 -langchain.chat.chat various method docstrings
 
 Keep an eye out for
