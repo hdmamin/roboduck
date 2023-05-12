@@ -55,3 +55,14 @@ storing code vs full_code options:
 -always store all kwargs
 
 Only last_new_code is every used atm, nothing uses last_code (though someone could). And I believe I always ask gpt to generate a fixed version of the current snippet. So I'm leaning towards just always storing code snippet.
+
+5/11/23 thurs
+-------------
+from_config
+	[optional] user kwargs
+	template_kwargs
+	> Safest way: just update template_kwargs with global config kwargs. Then update the result with user kwargs.
+
+init
+	[optional] kwargs (may be form user OR template)
+	> If kwargs are from template, assume that from_config already updated them with global config kwargs. If kwargs are from user, we don't want to update them anyway. So we only use global kwargs if field is NOT already set in passed in kwargs.

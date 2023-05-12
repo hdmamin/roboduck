@@ -117,6 +117,9 @@ class DuckDB(Pdb):
             which mocks api calls (good for development, saves money).
         """
         super().__init__(**pdb_kwargs or {})
+        # These are prompts in the pdb sense, not the LLM sense. I.e. they
+        # are shown at the start of the line, right before the place where the
+        # user or the LLM will begin typing.
         self.prompt = '>>> '
         self.duck_prompt = '[Duck] '
         self.query_kwargs = {}
