@@ -5,7 +5,6 @@ from pathlib import Path
 import warnings
 
 from roboduck import config
-from roboduck.utils import load_yaml, update_yaml
 
 
 MODEL_CONTEXT_WINDOWS = {
@@ -13,7 +12,9 @@ MODEL_CONTEXT_WINDOWS = {
     'gpt-4': 8_192,
     'gpt-4-32k': 32_768,
     'code-davinci-002': 8_001,
-    'claude': 8_000,   # Anthropic says this is approximate.
+    # Anthropic says this is approximate. Not supported in roboduck v1 because
+    # anthropic never gave me api access 🤷‍♂️.
+    'claude': 8_000,
 }
 
 
@@ -42,7 +43,7 @@ def set_openai_api_key(key=None, config_path=config.config_path,
     key = key or os.environ.get(var_name)
     if not key:
         try:
-            data = load_yaml(config_path)
+            data = config.load_config(config_path)
             key = data[var_name.lower()]
         except (FileNotFoundError, IsADirectoryError) as e:
             msg = 'Openai api key must either be passed into this function ' \
@@ -56,7 +57,7 @@ def set_openai_api_key(key=None, config_path=config.config_path,
                 return
     os.environ[var_name] = key
     if update_config:
-        update_yaml(config_path, **{var_name.lower(): key})
+        config.update_config(config_path, **{var_name.lower(): key})
 
 
 def model_context_window(model_name,

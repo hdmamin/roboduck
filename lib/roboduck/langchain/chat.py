@@ -11,10 +11,11 @@ from langchain.schema import ChatResult, ChatGeneration, AIMessage, \
 from langchain.prompts import HumanMessagePromptTemplate
 import warnings
 
+from roboduck.config import apply_config_defaults
+from roboduck.decorators import add_kwargs
 from roboduck.langchain.callbacks import LiveTypingCallbackHandler
 from roboduck.langchain.utils import model_context_window
 from roboduck.prompts.utils import load_template
-from roboduck.decorators import add_kwargs
 
 
 class DummyChatModel:
@@ -123,6 +124,7 @@ class Chat:
         """
         self.kwargs = dict(kwargs)
         self.kwargs.update(streaming=streaming)
+        apply_config_defaults(self.kwargs, template_only=False)
         if streaming and 'callback_manager' not in self.kwargs:
             self.kwargs['callback_manager'] = CallbackManager(
                 [LiveTypingCallbackHandler()]
@@ -207,6 +209,10 @@ class Chat:
         Chat
         """
         template = load_template(name)
+        # Important that we call this BEFORE taking user kwargs into account.
+        # Init will handle the resolution that occurs afterwards, do not make
+        # a second call to apply defaults in this method.
+        apply_config_defaults(template['kwargs'], template_only=True)
         if kwargs:
             template['kwargs'].update(kwargs)
         kwargs = template.pop('kwargs', {})

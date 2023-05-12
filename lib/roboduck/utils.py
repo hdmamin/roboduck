@@ -11,8 +11,6 @@ import re
 import warnings
 import yaml
 
-from roboduck import config
-
 
 def colored(text, color):
     """Add tags to color text and then reset color afterwards. Note that this
@@ -236,7 +234,7 @@ def load_yaml(path, section=None):
     return data.get(section, data)
 
 
-def update_yaml(path, **kwargs):
+def update_yaml(path, delete_if_none=True, **kwargs):
     """Update a yaml file with new values.
 
     Parameters
@@ -244,6 +242,10 @@ def update_yaml(path, **kwargs):
     path: str or Path
         Path to yaml file to update. If it doesn't exist, it will be created.
         Any necessary intermediate directories will be created too.
+    delete_if_none: bool
+        If True, any k-v pairs in kwargs where v is None will be treated as an
+        instruction to delete key k from the yaml file. If False, we will
+        actually set `{field}: None` in the yaml file.
     kwargs: any
         Key-value pairs to update the yaml file with.
     """
@@ -253,51 +255,13 @@ def update_yaml(path, **kwargs):
         data = load_yaml(path)
     except FileNotFoundError:
         data = {}
-    data.update(kwargs)
+    for k, v in kwargs.items():
+        if v is None and delete_if_none:
+            data.pop(k, None)
+        else:
+            data[k] = v
     with open(path, 'w') as f:
         yaml.dump(data, f)
-
-
-def update_config(**kwargs):
-    """Update roboduck config file with settings that persist for future
-    sessions.
-
-    # TODO: still considering this model_name resolution order. Haven't
-    # implemented any global config use yet and am torn about making it 2 or 3.
-    # Having it #2 makes it easier for user to make a persistent change like
-    # "Always use gpt4" but makes it kind of unintuitive if they define a
-    # custom prompt that should use a different model. Having it #3 would make
-    # it easy to define custom prompts with non-standard models but very clunky
-    # to use a different global default. I *think* setting a global default is
-    # a more common use case than setting prompt-specific exceptions, but I'm
-    # not totally sure about that.
-
-    # TODO: still considering what fields should be configurable here.
-
-    Parameters
-    ----------
-    kwargs: any
-        Available fields include:
-            - model_name: name like 'gpt-3.5-turbo' that controls what model
-            to use for completions. Model_name is resolved as follows:
-            1. kwargs explicitly passed in by user (e.g.
-            `duck(model_name='gpt-4')` always override everything else.
-            2. if global config file (which this function updates) has a
-            model_name, it is the next highest priority.
-            3. specific chat template (e.g. roboduck/prompts/chat/debug.yaml)
-            model name is used if neither #1 or #2 are provided.
-    """
-    update_yaml(config.config_path, **kwargs)
-    
-    
-def load_config():
-    """Load roboduck config.
-
-    Returns
-    -------
-    dict
-    """
-    return load_yaml(config.config_path)
 
 
 def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):

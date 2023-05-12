@@ -1685,24 +1685,42 @@ X -add github "About" description/url/topics
 
 5/11/23 thurs
 -------------
--consider major config improvements
-	-incorporate global config into model_name resolution in chat instantiation
-		-decide where this should occur. Inside init, or before?
-		-implement
-	-[WAIT: I think it's easier to implement just model_name first and then genenralize if necessary rather than generalizing upfront.] consider adding support for setting nested kwargs in config.yaml (e.g. have one group for api keys, one for things like model_name or temperature, one for roboudck kwargs like max_len_per_var/color/prompt_name)
-		-decide
-		-if yes:
-			-update update_config func
-			-update kwarg resolution in chat cls (extend from just model_name)
-			-write more unit tests 😭
-	-allow adding paths to custom prompt templates so users can use names rather than paths?
-	-support loading/setting/writing arbitrary number of api keys (e.g. huggingface, anthropic, ???). (Perhaps more of an update of set_openai_api_key)
+X -consider major config improvements
+	X -incorporate global config into model_name resolution in chat instantiation
+		X -decide where this should occur. Inside init, or before?
+			> Logic turned out to be quite tricky to get right and handle elegantly, but worked it out in misc.txt and implemented.
+		X -implement
+			> In the process, also moved some funcs from utils to config module and updated update_config to allow deleting keys via passing in key=None and also warn user if they're working with an unexpected key. Informally tested model_name resolution in ipython but still need to write unit tests.
+	_ -[WAIT: I think it's easier to implement just model_name first and then genenralize if necessary rather than generalizing upfront.] consider adding support for setting nested kwargs in config.yaml (e.g. have one group for api keys, one for things like model_name or temperature, one for roboudck kwargs like max_len_per_var/color/prompt_name)
+		X -decide
+		_ -if yes:
+			_ -update update_config func
+			_ -update kwarg resolution in chat cls (extend from just model_name)
+			_ -write more unit tests 😭
+	_ -allow adding paths to custom prompt templates so users can use names rather than paths?
+	_ -support loading/setting/writing arbitrary number of api keys (e.g. huggingface, anthropic, ???). (Perhaps more of an update of set_openai_api_key)
+	> Decided to limit scope for now, easy to let this grow indefinitely. Just support setting model_name in config and openai backend for now.
 -record demo gifs for readme
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
 -docs
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
     -look through docs and make changes as needed
+
+5/12/23 fri
+-----------
+-check if roboduck config is auto-created on new machine or if I have to do that explicitly
+-maybe warn user on import (of which module?) if they have (or have not) set a default model_name?
+-update readme w/ section on updating config file and model_name resolution
+-write new tests
+	-formally test that model_name resolution works as expected (may need to figure out how to mock config file?)
+-record demo gifs for readme
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+-docs
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
+
 
 Backlog
 -------
