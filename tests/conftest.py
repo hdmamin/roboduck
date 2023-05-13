@@ -1,6 +1,6 @@
 import pytest
 
-from roboduck.langchain import set_openai_api_key
+from roboduck import set_openai_api_key
 
 
 @pytest.fixture(autouse=True)

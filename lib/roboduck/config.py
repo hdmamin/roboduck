@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import warnings
 
@@ -96,3 +97,45 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
     # set it to None, which could break things.
     if config_model_name:
         chat_kwargs['model_name'] = config_model_name
+
+
+def set_openai_api_key(key=None, config_path=config_path,
+                       strict=False, update_config=False):
+    """Set OPENAI_API_KEY environment variable for langchain.
+
+    Parameters
+    ----------
+    key: str or None
+        Optionally pass in openai api key (str). If not provided, we check the
+        config path and try to load a key. If it is provided, we don't check
+        config_path.
+    config_path: str or Path
+        Local yaml file containing the field openai_api_key. We only try to
+        load the key from it if `key` is not provided. We do not write to
+        this file by default.
+    strict: bool
+        Determines what happens when key is None and config path does not
+        exist. Strict=True raises a runtime error, False just warns user.
+    update_config: bool
+        If True, we update the yaml config file with that api key.
+    """
+    config_path = Path(config_path).expanduser()
+    var_name = 'OPENAI_API_KEY'
+    key = key or os.environ.get(var_name)
+    if not key:
+        try:
+            data = load_config(config_path)
+            key = data[var_name.lower()]
+        except Exception as e:
+            msg = 'Openai api key must either be passed into this function ' \
+                  f'or stored in {config_path} with field name ' \
+                  f'{var_name.lower()}. No key found.'
+            if strict:
+                raise RuntimeError(msg)
+            else:
+                warnings.warn(msg + ' Not raising error because strict=False, '
+                              'but openai API will not be available.')
+                return
+    os.environ[var_name] = key
+    if update_config:
+        update_config(config_path, **{var_name.lower(): key})

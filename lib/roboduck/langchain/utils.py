@@ -1,63 +1,15 @@
-"""Miscellaneous functions to help us interact with langchain.
-"""
-import os
-from pathlib import Path
-import warnings
-
-from roboduck import config
+"""Miscellaneous functions to help us interact with langchain."""
 
 
 MODEL_CONTEXT_WINDOWS = {
     'gpt-3.5-turbo': 4_096,
     'gpt-4': 8_192,
     'gpt-4-32k': 32_768,
-    'code-davinci-002': 8_001,
-    # Anthropic says this is approximate. Not supported in roboduck v1 because
-    # anthropic never gave me api access 🤷‍♂️.
-    'claude': 8_000,
+    # Eventually would like to support anthropic's claude, but it's not
+    # supported in roboduck v1 because they never gave me api access so I can't
+    # test it. 🤷‍♂️.
+    # 'claude': 8_000,
 }
-
-
-def set_openai_api_key(key=None, config_path=config.config_path,
-                       strict=False, update_config=False):
-    """Set OPENAI_API_KEY environment variable for langchain.
-
-    Parameters
-    ----------
-    key: str or None
-        Optionally pass in openai api key (str). If not provided, we check the
-        config path and try to load a key. If it is provided, we don't check
-        config_path.
-    config_path: str or Path
-        Local yaml file containing the field openai_api_key. We only try to
-        load the key from it if `key` is not provided. We do not write to
-        this file by default.
-    strict: bool
-        Determines what happens when key is None and config path does not
-        exist. Strict=True raises a runtime error, False just warns user.
-    update_config: bool
-        If True, we update the yaml config file with that api key.
-    """
-    config_path = Path(config_path).expanduser()
-    var_name = 'OPENAI_API_KEY'
-    key = key or os.environ.get(var_name)
-    if not key:
-        try:
-            data = config.load_config(config_path)
-            key = data[var_name.lower()]
-        except Exception as e:
-            msg = 'Openai api key must either be passed into this function ' \
-                  f'or stored in {config_path} with field name ' \
-                  f'{var_name.lower()}. No key found.'
-            if strict:
-                raise RuntimeError(msg)
-            else:
-                warnings.warn(msg + ' Not raising error because strict=False, '
-                              'but openai API will not be available.')
-                return
-    os.environ[var_name] = key
-    if update_config:
-        config.update_config(config_path, **{var_name.lower(): key})
 
 
 def model_context_window(model_name,

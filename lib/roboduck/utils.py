@@ -365,7 +365,12 @@ def available_models():
     dict[str, list[str]]: Maps provider name (e.g. 'openai') to list of valid
     model_name values. Provider name should correspond to a langchain or
     roboduck class named like ChatOpenai (i.e. Chat{provider.title()}).
+    Eventually would like to support other providers like anthropic but never
+    got off API waitlist.
     """
+    # Weirdly, env var is set and available but openai can't seem to find it
+    # unless we explicitly set it here.
+    openai.api_key = os.environ.get('OPENAI_API_KEY')
     res = {}
 
     # This logic may not always hold but as of April 2023, this returns
@@ -373,6 +378,4 @@ def available_models():
     openai_res = openai.Model.list()
     res['openai'] = [row['id'] for row in openai_res['data']
                      if row['id'].startswith('gpt')]
-
-    # TODO: add anthropic/cohere/other?
     return res
