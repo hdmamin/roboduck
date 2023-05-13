@@ -230,7 +230,7 @@ def load_yaml(path, section=None):
     dict
     """
     with open(path, 'r') as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
+        data = yaml.load(f, Loader=yaml.FullLoader) or {}
     return data.get(section, data)
 
 

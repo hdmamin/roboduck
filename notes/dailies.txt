@@ -1709,7 +1709,7 @@ X -consider major config improvements
 
 5/12/23 fri
 -----------
--check if roboduck config is auto-created on new machine or if I have to do that explicitly
+-check if roboduck config is auto-created on new machine or if I have to do that explicitly (update: looks like it's not, see failing build in github CI)
 -maybe warn user on import (of which module?) if they have (or have not) set a default model_name?
 -update readme w/ section on updating config file and model_name resolution
 -write new tests

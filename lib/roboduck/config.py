@@ -54,6 +54,10 @@ def load_config(config_path=config_path):
     -------
     dict
     """
+    config_path = Path(config_path)
+    if not config_path.is_file():
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        config_path.touch()
     return load_yaml(path=config_path)
 
 
