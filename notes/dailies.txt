@@ -1713,7 +1713,18 @@ X -check if roboduck config is auto-created on new machine or if I have to do th
 	> Was not previously but it is now. Had to update load_config and set_openai_api_key.
 _ -maybe warn user on import (of which module?) if they have (or have not) set a default model_name?
 	> Thought a bit more, doesn't really feel necessary. Config never auto-sets model_name, only happens if user explicitly adds it at some point.
--update readme w/ section on updating config file and model_name resolution
+X -update readme w/ section on updating config file and model_name resolution
+-write new tests
+	-formally test that model_name resolution works as expected (may need to figure out how to mock config file?)
+-record demo gifs for readme
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+-docs
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
+
+5/13/23 sat
+-----------
 -write new tests
 	-formally test that model_name resolution works as expected (may need to figure out how to mock config file?)
 -record demo gifs for readme

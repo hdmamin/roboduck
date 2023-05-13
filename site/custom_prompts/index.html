@@ -12,6 +12,8 @@
         <link rel="prev" href="../decorators/">
       
       
+        <link rel="next" href="../config_file/">
+      
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
     
@@ -376,6 +378,21 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config_file/" class="md-nav__link">
+        Config File
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -409,7 +426,36 @@
 
   <h1>Custom Prompts</h1>
 
-<p>Testing</p>
+<p>Roboduck provides prompts for interactive debugging and stack trace analysis, but you can also define your own. This involves a few steps:</p>
+<ol>
+<li>
+<p><strong>Construct a prompt template.</strong><br />
+Roboduck defines prompt templates using yaml files. You can find an example <a href="https://github.com/hdmamin/roboduck/tree/main/lib/roboduck/prompts/chat">here</a>. The kwargs are passed to langchain and correspond to common model hyperaparameters you can find in the openai api docs. Roboduck typically defines two types of user messages: first is the default message type (called "contextful" in the example linked above) which is used whenever program state has changed since the user's last question. The second ("contextless" in our example) is used when state has not changed, e.g. when asking a followup question during an interactive debugging session. You can create a similar yaml file locally containing whatever instructions you want to show the model. We expect model output to consist of a natural language explanation followed by an optional code snippet - it's technically possible to override this expectation by writing a custom replacement for roboduck's <code>utils.parse_completion</code> function, but we don't anticipate that being a common workflow.</p>
+</li>
+<li>
+<p><strong>[Optional] Subclass <code>roboduck.DuckDB</code> and implement a custom <code>_get_prompt_kwargs</code> method.</strong><br />
+If your custom prompt expects different fields than our default prompt, you need to provide the debugger with a way to access them. <code>_get_prompt_kwargs</code> must return a dictionary with values for all of these fields. You can find roboduck's default implementation <a href="https://github.com/hdmamin/roboduck/blob/fb2c7865c6435812d44d2df8fa12d53d7776d73d/lib/roboduck/debug.py#L200">here</a>. If your prompt contains the same fields and merely changes the instruction wording, you can skip this step.</p>
+</li>
+<li>
+<p><strong>Specify desired <code>prompt_name</code>.</strong><br />
+Use your custom template as follows:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code># In a debugger:
+from roboduck import duck
+
+duck(prompt_name=your_template_path)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code># In a logger:
+from roboduck import logging
+
+logger = logging.getLogger(prompt_name=your_template_path)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code># In error explanation mode:
+from roboduck import errors
+
+errors.enable(prompt_name=your_template_path)
+</code></pre></div>
 
 
 
