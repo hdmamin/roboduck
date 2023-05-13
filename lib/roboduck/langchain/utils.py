@@ -45,7 +45,7 @@ def set_openai_api_key(key=None, config_path=config.config_path,
         try:
             data = config.load_config(config_path)
             key = data[var_name.lower()]
-        except (FileNotFoundError, IsADirectoryError) as e:
+        except Exception as e:
             msg = 'Openai api key must either be passed into this function ' \
                   f'or stored in {config_path} with field name ' \
                   f'{var_name.lower()}. No key found.'
