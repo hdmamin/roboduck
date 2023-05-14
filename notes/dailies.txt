@@ -1726,8 +1726,12 @@ X -update readme w/ section on updating config file and model_name resolution
 5/13/23 sat
 -----------
 X -rename update_config param in set_openai_api_key to avoid clobbering function
--write new tests
-	-formally test that model_name resolution works as expected (may need to figure out how to mock config file?)
+X -clean up old print statements in init
+X -delete empty test files
+X -write new tests
+	X -update conftest so a temp config file is available during testing
+	X -formally test that model_name resolution works as expected (may need to figure out how to mock config file?)
+	X -test that updating config works
 -record demo gifs for readme
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
@@ -1735,9 +1739,22 @@ X -rename update_config param in set_openai_api_key to avoid clobbering function
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
     -look through docs and make changes as needed
 
+5/14/23 sun
+-----------
+-docs
+	-look into issue where params only show type, not name, in built docs. Think numpy format is causing the issue. Options:
+		-see if switching to a non-numpy format works
+		-see if adding space before colon works (IIRC I tried this to no avail, but can confirm one more time)
+		-google/chatgpt for additional ideas
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
+    -look through docs and make changes as needed
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+
 
 Backlog
 -------
+-record demo gifs for readme
 -other model support
 	-does chat_class=langchain.chat_models.anthropic.ChatAnthropic work?
 		-check non-55 email for access, set up api key if so
