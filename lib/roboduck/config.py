@@ -100,7 +100,7 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
 
 
 def set_openai_api_key(key=None, config_path=config_path,
-                       strict=False, update_config=False):
+                       strict=False, update_config_=False):
     """Set OPENAI_API_KEY environment variable for langchain.
 
     Parameters
@@ -116,7 +116,7 @@ def set_openai_api_key(key=None, config_path=config_path,
     strict: bool
         Determines what happens when key is None and config path does not
         exist. Strict=True raises a runtime error, False just warns user.
-    update_config: bool
+    update_config_: bool
         If True, we update the yaml config file with that api key.
     """
     config_path = Path(config_path).expanduser()
@@ -137,5 +137,5 @@ def set_openai_api_key(key=None, config_path=config_path,
                               'but openai API will not be available.')
                 return
     os.environ[var_name] = key
-    if update_config:
+    if update_config_:
         update_config(config_path, **{var_name.lower(): key})

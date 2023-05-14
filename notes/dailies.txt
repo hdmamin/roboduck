@@ -1725,6 +1725,7 @@ X -update readme w/ section on updating config file and model_name resolution
 
 5/13/23 sat
 -----------
+X -rename update_config param in set_openai_api_key to avoid clobbering function
 -write new tests
 	-formally test that model_name resolution works as expected (may need to figure out how to mock config file?)
 -record demo gifs for readme

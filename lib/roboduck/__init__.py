@@ -6,6 +6,3 @@ from roboduck.utils import available_models
 
 __version__ = '0.2.0'
 set_openai_api_key()
-# TODO rm
-import os
-print('after:', os.environ.get('OPENAI_API_KEY'))
