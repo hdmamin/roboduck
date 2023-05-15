@@ -1,5 +1,4 @@
-"""Miscellaneous decorators used throughout the library.
-"""
+"""Miscellaneous decorators used throughout the library."""
 import warnings
 from functools import partial, wraps
 from inspect import signature, Parameter
@@ -17,12 +16,12 @@ def typecheck(func_=None, **types):
 
     Parameters
     ----------
-    func_: function
+    func_ : function
         The function to decorate. When using decorator with
         manually-specified types, this is None. Underscore is used so that
         `func` can still be used as a valid keyword argument for the wrapped
         function.
-    types: type
+    types : type
         Optional way to specify variable types. Use standard types rather than
         importing from the typing library, as subscripted generics are not
         supported (e.g. typing.List[str] will not work; typing.List will but at
@@ -100,16 +99,16 @@ def add_kwargs(func, fields, hide_fields=(), strict=False):
 
     Parameters
     ----------
-    func: function
+    func : function
         Function to decorate.
-    fields: list[str]
+    fields : list[str]
         Names of params to insert into signature + docstring.
-    hide_fields: list[str]
+    hide_fields : list[str]
         Names of params that are *already* in the function's signature that
         we want to hide. To use a non-empty value here, we must set strict=True
         and the param must have a default value, as this is what will be used
         in all subsequent calls.
-    strict: bool
+    strict : bool
         If true, we do two things:
         1. On decorated function call, check that the user provided all
         expected arguments.
@@ -222,8 +221,7 @@ def store_class_defaults(cls=None, attr_filter=None):
 
     @classmethod
     def reset_class_vars(cls):
-        """Reset all default class attributes to their defaults.
-        """
+        """Reset all default class attributes to their defaults."""
         for k, v in cls._class_defaults.items():
             try:
                 setattr(cls, k, v)

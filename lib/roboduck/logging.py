@@ -35,29 +35,29 @@ class DuckLogger(Logger):
         """
         Parameters
         ----------
-        name: str
+        name : str
             Same as base logger name arg.
-        colordiff: bool
+        colordiff : bool
             Another kwarg to pass to our excepthook function. This is separate
             from the others because we want to use a different default than the
             function has since we often log to a file, in which case
             colordiff=True may be undesirable.
-        fmt: str
+        fmt : str
             Defines logging format. The default format produces output like
             this when an error is logged:
             2023-03-08 19:20:52,514 [ERROR]: list indices must be integers or
             slices, not tuple
-        stdout: bool
+        stdout : bool
             If True, logged items will appear in stdout. You are free to log
             to both stdout and a file OR just one (selecting neither will raise
             an error because logger would be useless in that case).
-        path: str or Path
+        path : str or Path
             If provided, we log to this file (the dir structure does not need
             to exist already). If None, we do not log to a file.
-        fmode: str
+        fmode : str
             Write mode used when path is not None. Usually 'a' but 'w' might
             be a reasonable choice in some circumstances.
-        kwargs: any
+        kwargs : any
             Kwargs that can be passed to our excepthook function. Most of these
             should generally be kwargs for your debugger class,
             e.g. RoboDuckDb. These will be updated with the specified

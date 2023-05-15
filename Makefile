@@ -1,4 +1,4 @@
-.PHONY: todo nb clean lib pypi readmes docs serve_docs
+.PHONY: todo nb clean lib pypi readmes docs serve_docs lint
 
 # Convention: add _ between comment sign and TODO to hide an item that you don't want to delete entirely. This will still be findable if you run `ack TODO`.
 todo:
@@ -45,3 +45,7 @@ serve_docs:
 deploy_docs:
 	cp README.md docs/
 	mkdocs gh-deploy --force
+
+lint:
+	# Only lints docstrings.
+	pydocstyle lib/roboduck

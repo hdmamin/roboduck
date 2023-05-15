@@ -2,7 +2,19 @@ site_name: RoboDuck
 theme: 'material'
 plugins:
   - search
-  - mkdocstrings
+  # From https://github.com/mkdocstrings/mkdocstrings/issues/365#issuecomment-1017748179
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+            show_category_heading: true
+            members_order: source
+            show_if_no_docstring: true
+          selection:
+            docstring_style: numpy
+            filters: ["!^_"]
 markdown_extensions:
   # TODO Trying to get docstring params to be parsed correctly. Just shows type, not name, atm.
   - pymdownx.superfences:

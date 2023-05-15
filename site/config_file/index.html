@@ -427,6 +427,7 @@
 <p>Roboduck creates a config file at <code>~/.roboduck/config.yaml</code>. This currently supports only two fields:<br />
 - <code>openai_api_key</code>: See the <a href="https://hdmamin.github.io/roboduck/">Quickstart</a> for setup help.  <br />
 - <code>model_name</code> (optional): Roboduck is configured to use gpt-3.5-turbo by default. This field lets you change that (e.g. to gpt-4). If present in the config file, this will take priority over any model_name field specified in a chat template (e.g. https://github.com/hdmamin/roboduck/blob/7ff904972921fd3f82b8b9fd862c4ffc7b61aee4/lib/roboduck/prompts/chat/debug.yaml#L2). You can view valid options with <code>roboduck.available_models()</code>. You can still override the config default by manually passing a value into a function, e.g. <code>duck(model_name='gpt-4-32k')</code>.</p>
+<p>You can manually edit your config file or use a command like <code>roboduck.update_config(model_name='gpt-4')</code>. Passing in a value of None (e.g. <code>roboduck.update_config(model_name=None)</code>) will delete that field from your config file.</p>
 
 
 

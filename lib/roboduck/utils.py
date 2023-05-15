@@ -1,5 +1,5 @@
-"""Utility functions used by other roboduck modules.
-"""
+"""Utility functions used by other roboduck modules."""
+
 from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib
@@ -18,15 +18,18 @@ def colored(text, color):
 
     Parameters
     ----------
-    text: str
+    text : str
         Text that should be colored.
-    color:
+    color : str
         Color name, e.g. "red". Must be available in the colorama lib. If None
         or empty str, just return the text unchanged.
 
     Returns
     -------
     str
+        Note that you need to print() the result for it to show up in the
+        desired color. Otherwise it will just have some unintelligible
+        characters appended and prepended.
     """
     if not color:
         return text
@@ -49,16 +52,17 @@ def colordiff_new_str(old, new, color='green'):
 
     Parameters
     ----------
-    old: str
+    old : str
         This is what `new` is compared to when identifying differences.
-    new: str
+    new : str
         Determines content of output str.
-    color: str
+    color : str
         Text color for new characters.
 
     Returns
     -------
-    str: Same content as `new` but color new parts in a different color.
+    str
+        Same content as `new` but color new parts in a different color.
     """
     res = []
     matcher = difflib.SequenceMatcher(None, old, new)
@@ -78,9 +82,9 @@ def type_annotated_dict_str(dict_, func=repr):
 
     Parameters
     ----------
-    dict_: dict
+    dict_ : dict
         The dict to represent.
-    func: function
+    func : function
         The function to apply to each key and value in the dict to get some
         kind of str representation. Note that it is applied to each key/value
         as a whole, not to each item within that key/value. For example, notice
@@ -95,7 +99,7 @@ def type_annotated_dict_str(dict_, func=repr):
         }
 
     Returns
-    --------
+    -------
     str
     """
     type_strs = [f'\n    {func(k)}: {func(v)},   # type: {type(v).__name__}'
@@ -114,8 +118,8 @@ def truncated_repr(obj, max_len=79):
 
     Parameters
     ----------
-    obj: any
-    max_len: int
+    obj : any
+    max_len : int
         Max number of characters for resulting repr. Think of this more as an
         estimate than a hard guarantee - precision isn't important in our use
         case. The result will likely be shorter than this because we want to
@@ -125,13 +129,14 @@ def truncated_repr(obj, max_len=79):
 
     Returns
     -------
-    str: Repr for obj, truncated to approximately max_len characters or fewer.
-    When possible, we insert ellipses into the repr to show that truncation
-    occurred. Technically there are some edge cases we don't handle (e.g. if
-    obj is a class with an insanely long name) but that's not a big deal, at
-    least at the moment. I can always revisit that later if necessary.
+    str
+        Repr for obj, truncated to approximately max_len characters or fewer.
+        When possible, we insert ellipses into the repr to show that truncation
+        occurred. Technically there are some edge cases we don't handle (e.g.
+        if obj is a class with an insanely long name) but that's not a big
+        deal, at least at the moment. I can always revisit that later if
+        necessary.
     """
-
     def qualname(obj):
         """Similar to type(obj).__qualname__() but that method doesn't always
         include the module(s). e.g. pandas Index has __qualname__ "Index" but
@@ -219,8 +224,8 @@ def load_yaml(path, section=None):
 
     Parameters
     ----------
-    path: str or Path
-    section: str or None
+    path : str or Path
+    section : str or None
         I vaguely recall yaml files can define different subsections. This lets
         you return a specific one if you want. Usually leave as None which
         returns the whole contents.
@@ -239,14 +244,14 @@ def update_yaml(path, delete_if_none=True, **kwargs):
 
     Parameters
     ----------
-    path: str or Path
+    path : str or Path
         Path to yaml file to update. If it doesn't exist, it will be created.
         Any necessary intermediate directories will be created too.
-    delete_if_none: bool
+    delete_if_none : bool
         If True, any k-v pairs in kwargs where v is None will be treated as an
         instruction to delete key k from the yaml file. If False, we will
         actually set `{field}: None` in the yaml file.
-    kwargs: any
+    kwargs : any
         Key-value pairs to update the yaml file with.
     """
     path = Path(path).expanduser()
@@ -270,13 +275,13 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
 
     Parameters
     ----------
-    text: str
-    join_multi: bool
+    text : str
+    join_multi : bool
         If multiple code snippets are found, we can either choose to join them
         into one string or return a list of strings. If the former, we prefix
         each snippet with `multi_prefix_template` to make it clearer where
         each new snippet starts.
-    multi_prefix_template: str
+    multi_prefix_template : str
         If join_multi=True and multiple code snippets are found, we prepend
         this to each code snippet before joining into a single string. It
         should accept a single parameter {i} which numbers each code snippet
@@ -284,9 +289,10 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
 
     Returns
     -------
-    str or list: code snippet from `text`. If we find multiple snippets, we
-    either join them into one big string (if join_multi is True) or return a
-    list of strings otherwise.
+    str or list
+        Code snippet from `text`. If we find multiple snippets, we either join
+        them into one big string (if join_multi is True) or return a
+        list of strings otherwise.
 
     Examples
     --------
@@ -337,7 +343,7 @@ def parse_completion(text):
 
     Parameters
     ----------
-    text: str
+    text : str
         GPT completion. This should contain both a natural language explanation
         and code.
 
@@ -362,11 +368,12 @@ def available_models():
 
     Returns
     -------
-    dict[str, list[str]]: Maps provider name (e.g. 'openai') to list of valid
-    model_name values. Provider name should correspond to a langchain or
-    roboduck class named like ChatOpenai (i.e. Chat{provider.title()}).
-    Eventually would like to support other providers like anthropic but never
-    got off API waitlist.
+    dict[str, list[str]]
+        Maps provider name (e.g. 'openai') to list of valid
+        model_name values. Provider name should correspond to a langchain or
+        roboduck class named like ChatOpenai (i.e. Chat{provider.title()}).
+        Eventually would like to support other providers like anthropic but
+        never got off API waitlist.
     """
     # Weirdly, env var is set and available but openai can't seem to find it
     # unless we explicitly set it here.

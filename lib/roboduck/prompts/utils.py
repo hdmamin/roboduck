@@ -16,7 +16,7 @@ def available_templates(mode=''):
 
     Parameters
     ----------
-    mode: str
+    mode : str
         Type of prompt template to list available names for, e.g. "chat" or
         "completion". Concretely, the name of a subdir in roboduck.prompts.
         If empty, return a dict mapping mode -> set of names rather than just
@@ -24,11 +24,12 @@ def available_templates(mode=''):
 
     Returns
     -------
-    dict[str, set[str]] or set[str]: If mode is an empty str, we return a dict
-    mapping keys (should be "chat" and "completion") to set of prompt name
-    strings, e.g. "debug" (notice file extension is excluded).
-    If a non-empty string is provided, we only return the set of strings for
-    the given mode, e.g. only the available chat prompts if mode='chat'.
+    dict[str, set[str]] or set[str]
+        If mode is an empty str, we return a dict mapping keys (should be
+        "chat" and "completion") to set of prompt name strings, e.g. "debug"
+        (notice file extension is excluded). If a non-empty string is provided,
+        we only return the set of strings for the given mode, e.g. only the
+        available chat prompts if mode='chat'.
     """
     def _prompt_names_in_dir(dir_):
         # Ignore files like __template__.yaml.
@@ -55,11 +56,11 @@ def load_template(name, mode='chat'):
 
     Parameters
     ----------
-    name: str or Path
+    name : str or Path
         Either the name of a prompt provided in the roboduck library, e.g.
         "debug", or the path to a yaml config file defining a custom prompt
         template.
-    mode: str
+    mode : str
         Type of prompt, currently either "chat" or "completion". As of March
         2023, we usually want to use "chat" because those models
         (gpt-3.5-turbo or gpt-4) are currently better for most tasks and,
@@ -68,7 +69,8 @@ def load_template(name, mode='chat'):
 
     Returns
     -------
-    dict: Chat templates should have the following keys:
+    dict
+        Chat templates should have the following keys:
         "kwargs" (dict): used to instantiate a class like
         langchain.chat.ChatOpenAI. Mostly openai params but can also include
         'chat_model' for langchain. Note that unlike jabberwocky, we use the

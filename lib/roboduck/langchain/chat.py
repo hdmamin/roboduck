@@ -67,28 +67,28 @@ class Chat:
 
     def __init__(self, system, user, chat_class=ChatOpenAI,
                  history=(), streaming=True, **kwargs):
-        """
+        r"""
         Parameters
         ----------
-        system: str
+        system : str
             "system" message for chatGPT. This typically contains instructions
             for how GPT should behave when talking to the user.
-        user: str or dict
+        user : str or dict
             Defines one or more types of "user" messages for chatGPT. If you
             have multiple types, the keys in your dict will be used to
             define methods, so name them accordingly. E.g. if you pass in a
             dict with keys "question" and "comment", you will be able to call
             chat.comment(**kwargs) and chat.question(**kwargs).
-        chat_class: type
+        chat_class : type
             The class (usually provided by langchain) that represents the chat
             model we'll be conversing with.
-        history: listlike
+        history : listlike
             This will be used to store all the messages in our conversation.
-        streaming: bool
+        streaming : bool
             Determines whether to query the chat model in streaming mode.
             This is often desirable so that we can see incremental results
             instead of waiting for the whole completion to finish.
-        kwargs: any
+        kwargs : any
             Additional kwargs for chat_class. This can include both
             model_kwargs like temperature or top_p that affect completion
             directly, or other miscellaneous kwargs like `callback_manager`
@@ -195,11 +195,11 @@ class Chat:
 
         Parameters
         ----------
-        name: str
+        name : str
             Name of a builtin roboduck prompt template
             (see roboduck.prompts.utils.available_templates()) or a file
             containing a user-defined prompt template.
-        kwargs: any
+        kwargs : any
             Additional kwargs to pass to constructor. These take precedence
             over the config file if their is a collision, i.e. the config
             provides the defaults but you can override them.
@@ -223,10 +223,10 @@ class Chat:
 
         Parameters
         ----------
-        key_: str
+        key_ : str
             Determines which reply type to use. If empty, falls back to default
             reply type.
-        kwargs: str
+        kwargs : str
             The required fields for the selected reply type.
 
         Returns
@@ -272,10 +272,10 @@ class Chat:
 
         Parameters
         ----------
-        sep: str
+        sep : str
             Character(s) used to separate conversational turns in the output.
             The default leaves 1 blank line between each turn.
-        speaker_prefix: bool
+        speaker_prefix : bool
             If True, preprend each turn with "Human" or "AI" depending on the
             speaker.
         """
@@ -293,7 +293,7 @@ class Chat:
 
         Parameters
         ----------
-        key: str
+        key : str
             Name of user reply type. Falls back to the default reply type if
             none is provided.
 

@@ -45,23 +45,23 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
 
     Parameters
     ----------
-    t: some kind of traceback type?
+    t : some kind of traceback type?
         A holdover from the default post_mortem class, not actually sure what
         type this is but it doesn't really matter for our use.
-    Pdb: type
+    Pdb : type
         Debugger class. Name is capitalized to provide consistent interface
         with default post_mortem function.
-    trace: str
+    trace : str
         Stack trace formatted as a single string. Required - default value
         just helps us maintain a consistent interface with pdb.post_mortem.
-    prompt_name: str
+    prompt_name : str
         The prompt name that will be passed to our debugger class. Usually
         should leave this as the default. We expect the name to contain
         'debug' and will warn if it doesn't.
-    colordiff: bool
+    colordiff : bool
         If True, the new code snippet in the exception will print new
         parts in green.
-    kwargs: any
+    kwargs : any
         Additional kwargs to pass to debugger class constructor. The docstring
         of the default class is included below for reference.
     """
@@ -172,7 +172,7 @@ def enable(**kwargs):
 
     Parameters
     ----------
-    kwargs: any
+    kwargs : any
         auto (bool) - if True, automatically have gpt explain every error that
             occurs. Mostly useful for logging in production. You almost
             certainly want to keep this as the default of False for any
@@ -203,8 +203,7 @@ def enable(**kwargs):
 
 
 def disable():
-    """Revert to default behavior when exceptions are thrown.
-    """
+    """Revert to default behavior when exceptions are thrown."""
     sys.excepthook = default_excepthook
     try:
         # Tried doing `ipy.set_custom_exc((Exception,), None)` as suggested by

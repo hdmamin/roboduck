@@ -20,9 +20,9 @@ def load_ipynb(path, save_if_self=True):
 
     Parameters
     ----------
-    path: Path
+    path : Path
         Path to notebook to load.
-    save_if_self: bool
+    save_if_self : bool
         If True, check if this is being called from the current notebook. If
         so, save it. (If not, we never save - auto saving is only intended to
         address the scenario where we're in an active notebook and call this
@@ -32,8 +32,9 @@ def load_ipynb(path, save_if_self=True):
 
     Returns
     -------
-    str: Code contents of notebook. Each cell is enclosed in triple backticks
-    and separated by newlines.
+    str
+        Code contents of notebook. Each cell is enclosed in triple backticks
+        and separated by newlines.
     """
     if save_if_self:
         try:
@@ -49,7 +50,8 @@ def load_ipynb(path, save_if_self=True):
 
     cell_str = ''
     for cell in cells:
-        if not cell['source']: continue
+        if not cell['source']:
+            continue
         source = '\n' + ''.join(cell['source']) + '\n'
         if cell['cell_type'] == 'code':
             source = '\n```' + source + '```\n'
@@ -63,7 +65,7 @@ def load_current_ipython_session(formatted=True):
 
     Parameters
     ----------
-    formatted: bool
+    formatted : bool
         If True, format list of cells into a single str like:
 
         ```
@@ -118,14 +120,15 @@ def is_ipy_name(
 
     Parameters
     ----------
-    name: str
-    count_as_true: Iterable[str]
+    name : str
+    count_as_true : Iterable[str]
         Additional variable names that don't necessarily fit the standard
         pattern but should nonetheless return True if we encounter them.
 
     Returns
     -------
-    bool: True if it looks like an ipython output cell name, False otherwise.
+    bool
+        True if it looks like an ipython output cell name, False otherwise.
     """
     # First check if it fits the standard leading underscore format.
     # Easier to handle the "only underscores" case separately because we want
@@ -143,10 +146,9 @@ def save_notebook(file_path):
 
     Parameters
     ----------
-    file_path: str
+    file_path : str
         Path to notebook that you want to save.
     """
-
     def file_md5(path):
         with open(path, 'rb') as f:
             text = f.read()

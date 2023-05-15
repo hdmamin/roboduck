@@ -1,3 +1,4 @@
+"""Allow us to easily read from and write to roboduck's config file."""
 import os
 from pathlib import Path
 import warnings
@@ -17,7 +18,7 @@ def update_config(config_path=config_path, **kwargs):
 
     Parameters
     ----------
-    kwargs: any
+    kwargs : any
         Available fields include:
             - openai_api_key
             - model_name: name like 'gpt-3.5-turbo' that controls what model
@@ -51,6 +52,10 @@ def update_config(config_path=config_path, **kwargs):
 def load_config(config_path=config_path):
     """Load roboduck config.
 
+    Parameters
+    ----------
+    config_path: str or Path
+
     Returns
     -------
     dict
@@ -63,7 +68,7 @@ def load_config(config_path=config_path):
 
 
 def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
-    """Helps resolve model_name in place. Recall we prioritize sources in this
+    """Help resolve model_name in place. Recall we prioritize sources in this
     order:
 
     1. value a user specified explicitly, e.g. Chat(..., model_name='gpt-4').
@@ -73,17 +78,18 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
 
     Parameters
     ----------
-    chat_kwargs: dict
+    chat_kwargs : dict
         Kwargs to pass to our langchain.chat.Chat constructor. May include a
         model_name str field.
-    template_only: bool
+    template_only : bool
         Specifies whether chat_kwargs are passed in directly from a prompt
         template (template_only=True) or include kwargs that a user passed in
         explicitly (template_only=False).
 
     Returns
     -------
-    None: update happens in place (if at all)
+    None
+        Update happens in place (if at all).
     """
     # If both are true, it means the user has already explicitly passed in a
     # model name so we should NOT override it with our config default.
@@ -105,18 +111,18 @@ def set_openai_api_key(key=None, config_path=config_path,
 
     Parameters
     ----------
-    key: str or None
+    key : str or None
         Optionally pass in openai api key (str). If not provided, we check the
         config path and try to load a key. If it is provided, we don't check
         config_path.
-    config_path: str or Path
+    config_path : str or Path
         Local yaml file containing the field openai_api_key. We only try to
         load the key from it if `key` is not provided. We do not write to
         this file by default.
-    strict: bool
+    strict : bool
         Determines what happens when key is None and config path does not
         exist. Strict=True raises a runtime error, False just warns user.
-    update_config_: bool
+    update_config_ : bool
         If True, we update the yaml config file with that api key.
     """
     config_path = Path(config_path).expanduser()

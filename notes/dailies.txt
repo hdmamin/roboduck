@@ -1741,13 +1741,46 @@ X -write new tests
 
 5/14/23 sun
 -----------
--docs
-	-look into issue where params only show type, not name, in built docs. Think numpy format is causing the issue. Options:
-		-see if switching to a non-numpy format works
-		-see if adding space before colon works (IIRC I tried this to no avail, but can confirm one more time)
-		-google/chatgpt for additional ideas
+X -document various methods and params in debugger cls
+X -add pydocstyle linting
+	X -add config file
+	X -add to CI
+~ -docs
+	X -update docs/config.md with demo on using update_config to set and delete values
+	X -look into issue where params only show type, not name, in built docs. Think numpy format is causing the issue. Options:
+		X -see if switching to a non-numpy format works
+		X -see if adding space before colon works (IIRC I tried this to no avail, but can confirm one more time)
+			> Actually yes, not sure why it didn't before.
+		_ -google/chatgpt for additional ideas
+		X -start manually transitioning files over
+			X -debug
+			X -langchain/callbacks
+			X -langchain/chat
+			X -langchain/utils
+			X -prompts/utils
+			X -config
+			X -decorators
+			X -errors
+			X -ipy_utils
+			X -logging
+			_ -magic
+			_ -shell
+			X -utils
+			X -cli/cli
     -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
     -look through docs and make changes as needed
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+
+5/15/23 mon
+-----------
+-fix issue w/ new numpy format stuff in mkdocs.yaml (mkdocstrings: DEPRECATION: 'selection' and 'rendering' are deprecated and merged into a single 'options' YAML key) (Seems to work fine, but prob should update it if it's deprecated.)
+-docs
+	-consider if better way to show sample snippet/result (currently use >>> for code, mkdocs displays that as a triple quotation block)
+	-manually review built docs and make changes as needed (make sure all the format changes I made sunday worked as expected for all modules)
+		-look more into suspicious debug docs behavior (only 1 method listed for DuckDB cls?)
+		-check other modules
+    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues). List out possible options below
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
 

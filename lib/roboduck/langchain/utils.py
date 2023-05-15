@@ -19,10 +19,10 @@ def model_context_window(model_name,
 
     Parameters
     ----------
-    model_name: str
+    model_name : str
         Model name to pass to langchain chat_class, e.g. 'gpt-3.5-turbo'.
         Typically specified in a prompt yaml file.
-    default: int
+    default : int
         What to return if the model name isn't found in MODEL_CONTEXT_WINDOWS.
         Technically you could set this to any type (e.g. you could also
         choose to return None or float('inf') if the name was missing).

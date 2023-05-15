@@ -51,6 +51,7 @@ class CodeCompletionCache:
     it in insert mode (-i flag) to insert the fixed code snippet into a new
     code cell.
     """
+
     last_completion = ''
     last_explanation = ''
     last_code = ''
@@ -73,7 +74,7 @@ class DuckDB(Pdb):
         """
         Parameters
         ----------
-        prompt_name: str
+        prompt_name : str
             Name of prompt template to use when querying chatGPT. Roboduck
             currently provides several builtin options
             (see roboduck.prompts.chat):
@@ -87,30 +88,30 @@ class DuckDB(Pdb):
             Alternatively, can also define your own template in a yaml file
             mimicking the format of the builtin templates and pass in the
             path to that file as a string.
-        max_len_per_var: int
+        max_len_per_var : int
             Limits number of characters per variable when communicating
             current state (local or global depending on `full_context`) to
             gpt. If unbounded, that section of the prompt alone could grow
             very big . I somewhat arbitrarily set 79 as the default, i.e.
             1 line of python per variable. I figure that's usually enough to
             communicate the gist of what's happening.
-        silent: bool
+        silent : bool
             If True, print gpt completions to stdout. One example of when False
             is appropriate is our logging module - we want to get the
             explanation and update the exception message which then gets
             logged, but we don't care about typing results in real time.
-        pdb_kwargs: dict or None
+        pdb_kwargs : dict or None
             Additional kwargs for base Pdb class.
-        parse_func: function
+        parse_func : function
             This will be called on the generated text each time gpt provides a
             completion. It returns a dictionary whose values will be stored
             in CodeCompletionCache in this module. See the default function's
             docstring for guidance on writing a custom function.
-        color: str
+        color : str
             Color to print gpt completions in. Sometimes we want to change this
             to red, such as in the errors module, to make it clearer that an
             error occurred.
-        chat_kwargs: any
+        chat_kwargs : any
             Additional kwargs to configure our Chat class (passed to
             its `from_config` factory). Common example would be setting
             `chat_class=roboduck.langchain.chat.DummyChatModel`
@@ -171,6 +172,15 @@ class DuckDB(Pdb):
         """Get names of variables that are expected to be passed into default
         user prompt template.
 
+        Parameters
+        ----------
+        key : str
+            Determines which user prompt type to use. By default, roboduck
+            provides "contextful" (which will include the source code, variable
+            values, and the stack trace when appropriate) and "contextless"
+            (which includes only the user question). We default to
+            "contextful" here.
+
         Returns
         -------
         set[str]
@@ -179,11 +189,12 @@ class DuckDB(Pdb):
 
     def _get_next_line(self, code_snippet):
         """Retrieve next line of code that will be executed. Must call this
-        before we remove the duck() call.
+        before we remove the duck() call. We use this in `_get_prompt_kwargs`
+        during interactive debugging sessions.
 
         Parameters
         ----------
-        code_snippet: str
+        code_snippet : str
         """
         lines = code_snippet.splitlines()
         max_idx = len(lines) - 1
@@ -208,9 +219,10 @@ class DuckDB(Pdb):
 
         Returns
         -------
-        dict: contains keys 'code', 'local_vars', 'global_vars', 'file_type'.
-        If we specified full_context=True on init, we also include the key
-        'full_code'.
+        dict
+            contains keys 'code', 'local_vars', 'global_vars', 'file_type'.
+            If we specified full_context=True on init, we also include the key
+            'full_code'.
         """
         res = {}
 
@@ -272,6 +284,17 @@ class DuckDB(Pdb):
         """Remove `duck` function call (our equivalent of `breakpoint` from
         source code string. Including it introduces a slight risk that gpt
         will fixate on this mistery function as a potential bug cause.
+
+        Parameters
+        ----------
+        code_str : str
+            Source code snippet. We want to remove the `duck()` call (which
+            sometimes includes kwargs) to prevent this from distracting the
+            LLM.
+
+        Returns
+        -------
+        str
         """
         return '\n'.join(line for line in code_str.splitlines()
                          if not line.strip().startswith('duck('))
@@ -289,7 +312,7 @@ class DuckDB(Pdb):
 
         Parameters
         ----------
-        line: str or tuple
+        line : str or tuple
             If str, this is a regular line like in the standard debugger.
             If tuple, this contains (line str, stack trace str - see
             roboduck.errors.post_mortem for the actual insertion into the
@@ -316,14 +339,14 @@ class DuckDB(Pdb):
 
         Parameters
         ----------
-        question: str
+        question : str
             User question, e.g. "Why are the first three values in nums equal
             to 5 when the input list only had a single 5?". (Example is from
             a faulty bubble sort implementation.)
-        stack_trace: str
+        stack_trace : str
             When using the "debug_stack_trace" prompt, we need to pass a
             stack trace string into the prompt.
-        verbose: bool
+        verbose : bool
             If True, print the full gpt prompt in red before making the api
             call. User activates this mode by prefixing their question with
             '[dev]'. This overrides self.silent.
@@ -408,6 +431,14 @@ class DuckDB(Pdb):
         cmdqueue and precmd is called as part of the default cmdloop method.
         Technically it calls postcmd too but we don't need to override that
         because it does nothing with its line argument.
+
+        Parameters
+        ----------
+        line : str or tuple
+            If a tuple, it means roboduck.errors.excepthook is being called
+            and an error has occurred. The stack trace is passed in as the
+            second of two items, where the first item is the same object that
+            is normally passed in.
         """
         if isinstance(line, tuple):
             line, trace = line
@@ -424,7 +455,8 @@ class DuckDB(Pdb):
         ```
 
         In silent mode (like when using the roboduck logger with stdout=False),
-        we want to disable that message.
+        we want to disable that message. When silent=False, this behaves
+        identically to the standard pdb equivalent.
         """
         if self.silent:
             return

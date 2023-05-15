@@ -27,6 +27,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install -r requirements-dev.txt
+    - name: Lint docstrings
+      run: |
+        make lint
     - name: Test with pytest
       run: |
         pytest

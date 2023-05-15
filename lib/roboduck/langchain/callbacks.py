@@ -16,16 +16,17 @@ class LiveTypingCallbackHandler(StreamingStdOutCallbackHandler):
     bunch of boilerplate methods that do nothing, but it does make sense
     since this callback implements a specific subcase of streaming to stdout.
     """
+
     always_verbose = True
 
     def __init__(self, color='green', sleep=.01):
         """
         Parameters
         ----------
-        color: str
+        color : str
             Color to print gpt response in. Passing in an empty str (or None)
             will use the default color.
-        sleep: float
+        sleep : float
             Time to wait after "typing" each character. Using zero pause is a
             bit annoying to read comfortably, IMO.
         """
@@ -33,7 +34,12 @@ class LiveTypingCallbackHandler(StreamingStdOutCallbackHandler):
         self.sleep = sleep
 
     def on_llm_new_token(self, token, **kwargs):
-        """Runs on new LLM token. Only called when streaming is enabled."""
+        """Runs on new LLM token. Only called when streaming is enabled.
+
+        Parameters
+        ----------
+        token : str
+        """
         for char in token:
             sys.stdout.write(colored(char, self.color))
             time.sleep(self.sleep)

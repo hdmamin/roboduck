@@ -17,7 +17,7 @@ def make_import_statement(cls_name):
 
     Parameters
     ----------
-    cls_name: str
+    cls_name : str
         Class name including module (essentially __qualname__?), e.g.
         roboduck.debug.DuckDB.
 
@@ -34,6 +34,7 @@ def make_import_statement(cls_name):
 
 
 def run():
+    """Execute a python script with auto error mode enabled."""
     parser = argparse.ArgumentParser(
         description='Run a python script with roboduck\'s errors mode '
                     'automatically enabled.\n\nExamples:\nMake sure to include'
