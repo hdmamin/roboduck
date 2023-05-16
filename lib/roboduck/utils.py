@@ -87,20 +87,22 @@ def type_annotated_dict_str(dict_, func=repr):
     func : function
         The function to apply to each key and value in the dict to get some
         kind of str representation. Note that it is applied to each key/value
-        as a whole, not to each item within that key/value. For example, notice
-        below how foo and cat are not in quotes but ('bar',) and ['x'] do
-        contain quotes.
-
-        >>> d = {'foo': 'cat', ('bar',): ['x']}
-        >>> type_annotated_dict_str(d, str)
-        {
-            foo: cat,   # type: str
-            ('bar',): ['x'],   # type: list
-        }
+        as a whole, not to each item within that key/value. See examples.
 
     Returns
     -------
     str
+
+    Examples
+    --------
+    Notice below how foo and cat are not in quotes but ('bar',) and ['x'] do
+    contain quotes.
+    >>> d = {'foo': 'cat', ('bar',): ['x']}
+    >>> type_annotated_dict_str(d, str)
+    {
+        foo: cat,   # type: str
+        ('bar',): ['x'],   # type: list
+    }
     """
     type_strs = [f'\n    {func(k)}: {func(v)},   # type: {type(v).__name__}'
                  for k, v in dict_.items()]
@@ -296,24 +298,29 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
 
     Examples
     --------
+    ```plaintext
     text = '''Appending to a tuple is not allowed because tuples are immutable.
     However, in this code snippet, the tuple b contains two lists, and lists
     are mutable. Therefore, appending to b[1] (which is a list) does not raise
     an error. To fix this, you can either change b[1] to a tuple or create a
     new tuple that contains the original elements of b and the new list.
 
-    ```
+    ```python
     # Corrected code snippet
     a = 3
     b = ([0, 1], [2, 3])
     b = (b[0], b[1] + [a])
     ```'''
+
     print(extract_code(text))
 
-    # Corrected code snippet
+    # Extracted code snippet
+    '''
     a = 3
     b = ([0, 1], [2, 3])
     b = (b[0], b[1] + [a])
+    '''
+    ```
     """
     chunks = re.findall("(?s)```(?:python)?\n(.*?)\n```", text)
     if not join_multi:

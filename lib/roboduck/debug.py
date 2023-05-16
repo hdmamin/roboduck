@@ -61,11 +61,12 @@ class CodeCompletionCache:
 
 
 class DuckDB(Pdb):
-    """Conversational debugger powered by gpt models (currently codex, possibly
-    eventually chatGPT). Once you're in a debugging session, any user command
-    containing a question mark will be interpreted as a question for gpt.
-    Prefixing your question with "[dev]" will print out the full prompt before
-    making the query.
+    """Conversational debugger powered by LLM (e.g. gpt-3.5-turbo or gpt-4).
+    Once you're in a debugging session, regular pdb commands will work as usual
+    but any user command containing a question mark will be interpreted as a
+    question for the lLM. Prefixing your question with "[dev]" will print out
+    the full prompt before making the query (mostly useful when working on the
+    library).
     """
 
     def __init__(self, prompt_name='debug', max_len_per_var=79, silent=False,

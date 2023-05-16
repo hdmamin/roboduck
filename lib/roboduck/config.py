@@ -1,4 +1,25 @@
-"""Allow us to easily read from and write to roboduck's config file."""
+"""Allow us to easily read from and write to roboduck's config file.
+
+Roboduck creates a config file at `~/.roboduck/config.yaml`. This currently
+supports only two fields:
+
+- `openai_api_key`: See the [Quickstart](https://hdmamin.github.io/roboduck/)
+for setup help.
+
+- `model_name` (optional): Roboduck is configured to use gpt-3.5-turbo by
+default. This field lets you change that (e.g. to gpt-4). If present in the
+config file, this will take priority over any model_name field specified in a
+chat template
+(e.g. our [default debug prompt template](https://github.com/hdmamin/roboduck/blob/7ff904972921fd3f82b8b9fd862c4ffc7b61aee4/lib/roboduck/prompts/chat/debug.yaml#L2)).
+You can view valid options with `roboduck.available_models()`.
+You can still override the config default by manually passing a value into a
+function, e.g. `duck(model_name='gpt-4-32k')`.
+
+You can manually edit your config file or use a command like
+`roboduck.update_config(model_name='gpt-4')`. Passing in a value of None
+(e.g. `roboduck.update_config(model_name=None)`) will delete that field from
+your config file.
+"""
 import os
 from pathlib import Path
 import warnings
@@ -18,6 +39,8 @@ def update_config(config_path=config_path, **kwargs):
 
     Parameters
     ----------
+    config_path : str or Path
+        Location of the roboduck config file.
     kwargs : any
         Available fields include:
             - openai_api_key
@@ -54,7 +77,8 @@ def load_config(config_path=config_path):
 
     Parameters
     ----------
-    config_path: str or Path
+    config_path : str or Path
+        Location of the roboduck config file.
 
     Returns
     -------
@@ -85,6 +109,8 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
         Specifies whether chat_kwargs are passed in directly from a prompt
         template (template_only=True) or include kwargs that a user passed in
         explicitly (template_only=False).
+    config_path : str or Path
+        Location of the roboduck config file.
 
     Returns
     -------

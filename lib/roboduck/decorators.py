@@ -8,11 +8,12 @@ def typecheck(func_=None, **types):
     """Decorator to enforce type checking for a function or method. There are
     two ways to call this: either explicitly passing argument types to the
     decorator, or letting it infer them using type annotations in the function
-    that will be decorated. We allow multiple both usage methods since older
+    that will be decorated. We allow both usage methods since older
     versions of Python lack type annotations, and also because I feel the
     annotation syntax can hurt readability.
 
-    Ported from htools to avoid extra dependency.
+    Ported from [htools](https://github.com/hdmamin/htools) to avoid extra
+    dependency.
 
     Parameters
     ----------
@@ -177,11 +178,15 @@ def store_class_defaults(cls=None, attr_filter=None):
     all or a subset). Default here refers to the value at class definition
     time.
 
+    Examples
+    --------
+    ```
     @store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
     class Foo:
         last_bar = 3
         last_baz = 'abc'
         other = True
+    ```
 
     >>> Foo._class_defaults
 
@@ -243,7 +248,13 @@ def add_docstring(func):
     """Add the docstring from another function/class to the decorated
     function/class.
 
-    Ported from htools to avoid extra dependency.
+    Ported from [htools](https://github.com/hdmamin/htools) to avoid extra
+    dependency.
+
+    Parameters
+    ----------
+    func : function
+        Function to decorate.
 
     Examples
     --------

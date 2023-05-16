@@ -66,8 +66,13 @@ def load_current_ipython_session(formatted=True):
     Parameters
     ----------
     formatted : bool
-        If True, format list of cells into a single str like:
+        If True, format list of cells into a single str like this (note: if
+        you don't see any backticks below, know that each print statement is
+        enclosed in a separate pair of triple backticks. Rendering this nicely
+        with mkdocs is very tricky and even if it worked, it would badly mess
+        up readability for people viewing the docstring in their IDE):
 
+        '''
         ```
         print('This is cell 1 code.')
         ```
@@ -75,6 +80,7 @@ def load_current_ipython_session(formatted=True):
         ```
         print('This is cell 2 code.')
         ```
+        '''
 
         If False, leave it as a list of strings where each string contains
         content from one cell.
@@ -103,24 +109,28 @@ def is_ipy_name(
         name,
         count_as_true=('In', 'Out', '_dh', '_ih', '_ii', '_iii', '_oh')
 ):
-    """Check if a variable name looks like an ipython output cell, e.g.
+    """```plaintext
+    Check if a variable name looks like an ipython output cell name, e.g.
     "_49", "_", or "__".
 
-    Ported from htools to avoid extra dependency.
+    Ported from [htools](https://github.com/hdmamin/htools) to avoid extra
+    dependency.
 
     More examples:
-    Returns True for names like (technically not sure if something like "__i3"
-    is actually used in ipython, but it looks like something we probably want
-    to remove in these contexts anyway /shrug):
+    Returns True for names like this (technically not sure if something like
+    "__i3" is actually used in ipython, but it looks like something we
+    probably want to remove it in these contexts anyway.
     ['_', '__', '_i3', '__i3', '_4', '_9913', '__7', '__23874']
 
     Returns False for names like
     ['_a', 'i22', '__0i', '_03z', '__99t']
     and most "normal" variable names.
+    ```
 
     Parameters
     ----------
     name : str
+        The variable name to check.
     count_as_true : Iterable[str]
         Additional variable names that don't necessarily fit the standard
         pattern but should nonetheless return True if we encounter them.

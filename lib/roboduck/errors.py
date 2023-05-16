@@ -45,9 +45,9 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
 
     Parameters
     ----------
-    t : some kind of traceback type?
-        A holdover from the default post_mortem class, not actually sure what
-        type this is but it doesn't really matter for our use.
+    t : traceback
+        Error traceback if one is available. Single character name is a
+        holdover from the default post_mortem.
     Pdb : type
         Debugger class. Name is capitalized to provide consistent interface
         with default post_mortem function.
@@ -148,6 +148,28 @@ def excepthook(etype, val, tb, prompt_name='debug_stack_trace',
 
     Parameters are the same as the default sys.excepthook function. Kwargs
     are forwarded to our custom postmortem function.
+
+    Parameters
+    ----------
+    etype : type
+        The class of exception that just occurred.
+    val : Exception
+        The error that just occurred.
+    tb : traceback
+        The traceback from the error that just occurred.
+    prompt_name : str
+        The roboduck prompt to use (can be a builtin option in
+        roboduck.prompts.chat or a path to a user-defined yaml file).
+    auto : bool
+        If True, automatically start explaining every error that occurs
+        (usually not recommended). If False, user will be asked to type y/n
+        before asking an LLM.
+    cls : type
+        The debugger class to use. By default it's the roboduck equivalent of
+        pdb.Pdb, but you could also subclass DuckDB and do something custom.
+    kwargs : any
+        Additional kwargs to pass to the debugger cls,
+        e.g. "model_name='gpt-4'".
     """
     sys.last_type, sys.last_value, sys.last_traceback = etype, val, tb
     trace = print_exception(etype, val, tb)
@@ -218,10 +240,12 @@ def disable():
 
 
 def stack_trace():
-    # Lets us recover stack trace as string outside of the functions defined
-    # above, which generally only execute automatically when exceptions are
-    # thrown. Don't just define this as a partial because that requires
-    # sys.last_value etc. to be available at import time, which it often isn't.
+    """Lets us recover stack trace as string outside of the functions defined
+    above, which generally only execute automatically when exceptions are
+    thrown. Don't just define this as a partial because that requires
+    sys.last_value etc. to be available at import time, which it often isn't.
+    In the end I think I only used this for development purposes.
+    """
     try:
         return print_exception(sys.last_type, sys.last_value,
                                sys.last_traceback)
