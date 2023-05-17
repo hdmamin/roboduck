@@ -38,7 +38,7 @@ def make_import_statement(cls_name):
 def run():
     """Execute a python script with auto error mode enabled.
 
-    Run a python script with roboduck\'s errors mode
+    Run a python script with roboduck's errors mode
     automatically enabled.
 
     Examples
