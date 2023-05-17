@@ -1793,10 +1793,20 @@ X -docs config page improvements
 
 5/16/23 tues
 ------------
--docs
-    -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues).
-		-remind myself of what problem is (review old notes? or could try changing the path in docs/cli.md)
-		-list out some potential options (maybe just hardcode the md file content for this one file?)
+X -docs
+    X -consider what to do about nested py file problem (e.g. cli, has to be in nested dir to avoid import issues).
+		X -remind myself of what problem is (review old notes? or could try changing the path in docs/cli.md)
+		_ -list out some potential options (maybe just hardcode the md file content for this one file?)
+			> Instead, listed out some potential causes and was able to narrow down the problem this way. Helped lead me to a stackoverflow that revealed the problem was the subdir needed an init file.
+	X -flesh out cli docs a bit
+X -debug file not found error with cli
+-long prompt handling updates
+	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+
+5/17/23 wed
+-----------
+-maybe make the 'q' cmd insertion in errors.post_mortem a configurable setting? (i.e. by default give a 1-turn explanation, but optionally allow entering an innteractive debugging session)
+-consider changing various refs from "auto error mode" to something like "talkative errors" or "talking errors" or "chatty errors"
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
 

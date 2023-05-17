@@ -66,3 +66,11 @@ from_config
 init
 	[optional] kwargs (may be form user OR template)
 	> If kwargs are from template, assume that from_config already updated them with global config kwargs. If kwargs are from user, we don't want to update them anyway. So we only use global kwargs if field is NOT already set in passed in kwargs.
+
+5/16/23 tues
+------------
+possible causes of nested dir docs error:
+X -nested dir inside docs/ causes a problem
+	> Can't be this bc we're able to successfully build docs for errors.py from inside docs/cli.
+-nested dir inside lib/roboduck causes a problem
+-having module and dir with same name causes problem

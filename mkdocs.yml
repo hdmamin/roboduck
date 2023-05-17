@@ -29,8 +29,7 @@ nav:
   - errors.md
   - logging.md
   - magic.md
-  - CLI:
-    - cli/cli.md
+  - CLI: cli/cli.md
   - shell.md
   - utils.md
   - IPython utils: ipy_utils.md
