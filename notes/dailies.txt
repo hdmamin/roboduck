@@ -1805,7 +1805,11 @@ X -debug file not found error with cli
 
 5/17/23 wed
 -----------
--maybe make the 'q' cmd insertion in errors.post_mortem a configurable setting? (i.e. by default give a 1-turn explanation, but optionally allow entering an innteractive debugging session)
+-maybe make the 'q' cmd insertion in errors.post_mortem a configurable setting? (i.e. by default give a 1-turn explanation, but optionally allow entering an interactive debugging session)
+	X -first confirm current behavior
+		> Like I thought, no option to continue conv.
+	-confirm what I want to do
+	-if want to implement, add todos below:
 -consider changing various refs from "auto error mode" to something like "talkative errors" or "talking errors" or "chatty errors"
 -check if we can rm the old markdown extension (superfences etc.) section from mkdocs.yml (originally used to parse numpy docstrings, ended up finding a different way that I'm not sure requires that anymore)
 -long prompt handling updates
