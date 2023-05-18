@@ -9,7 +9,7 @@
 
 ## About
 
-Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 90 to 100. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:  
+Many AI-powered dev tools help you write boilerplate more quickly, but the hardest and most time-consuming part of programming is often the last mile. Roboduck's goal is to help you understand and fix those bugs. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:  
 - debugging  
 - error handling  
 - logging  
@@ -17,6 +17,12 @@ Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 9
 ## Quickstart
 
 # TODO add gifs
+
+### Install
+
+```
+pip install roboduck
+```
 
 ### API Key Setup
 

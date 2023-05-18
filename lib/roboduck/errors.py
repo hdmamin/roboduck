@@ -37,7 +37,7 @@ ipy = get_ipython()
 
 @add_docstring(DuckDB.__init__)
 def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
-                colordiff=True, **kwargs):
+                colordiff=True, interactive=False, **kwargs):
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
     both the stack trace AND global/local vars from the program state right
@@ -61,6 +61,10 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
     colordiff : bool
         If True, the new code snippet in the exception will print new
         parts in green.
+    interactive : bool
+        If False, LLM will just explain the error and exit. If True, user
+        instead will be thrown into an interactive debugging session where
+        they can ask followup questions.
     kwargs : any
         Additional kwargs to pass to debugger class constructor. The docstring
         of the default class is included below for reference.
@@ -89,7 +93,10 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
     p = Pdb(prompt_name=prompt_name, **kwargs)
     p.reset()
     p.cmdqueue.insert(0, (dummy_question, trace))
-    p.cmdqueue.insert(1, 'q')
+    if interactive:
+        print('When done, enter `q` to quit.\n')
+    else:
+        p.cmdqueue.insert(1, 'q')
     p.interaction(None, t)
 
     # Make gpt explanation available as part of last error message,
@@ -141,13 +148,14 @@ def excepthook(etype, val, tb, prompt_name='debug_stack_trace',
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
     roboduck.debug.duck(), the user does not need to manually type a
-    question, and we don't linger in the debugger - we just write gpt's
-    explanation and exit.
+    question. By default we don't linger in the debugger - we just provide an
+    explanation and exit. Passing in interactive=True allows the user to ask
+    followup questions.
 
     Disable by calling roboduck.errors.disable().
 
     Parameters are the same as the default sys.excepthook function. Kwargs
-    are forwarded to our custom postmortem function.
+    are forwarded to our custom post_mortem function.
 
     Parameters
     ----------
@@ -195,16 +203,26 @@ def enable(**kwargs):
     Parameters
     ----------
     kwargs : any
-        auto (bool) - if True, automatically have gpt explain every error that
-            occurs. Mostly useful for logging in production. You almost
-            certainly want to keep this as the default of False for any
+        These are passed to our custom debugger class. Some common args are
+        below:
+
+        auto (bool) - if True, automatically have an LLM explain every error
+            that occurs without asking the user for confirmation. This is used
+            in our logging module, for instance. You almost
+            certainly want to keep this as False (the default) for any
             interactive development.
+        interactive (bool) - if True, error explanations will leave the user in
+            an interactive session where they can ask followup questions. If
+            False (the default), we will simply explain the error and exit the
+            session (more similar to standard python error handling).
         cls (type) - the debugger class to use.
         prompt_name (str) - determines what prompt/prompt_name the custom
-            debugger uses, e.g. "debug_stack_trace"
+            debugger uses, e.g. "debug_stack_trace". Users can also define
+            their own custom prompt
+            (https://hdmamin.github.io/roboduck/custom_prompts/)
+            and pass in the file path here.
         colordiff (bool) - if True, new code snippet will print new parts
             in green.
-        Or any other args that can be passed to our debugger cls.
     """
     hook = partial(excepthook, **kwargs)
 

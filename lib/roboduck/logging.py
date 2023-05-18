@@ -77,12 +77,13 @@ class DuckLogger(Logger):
         # Always want silent=True because we don't care about live typing here.
         # If stdout=True, our super()._log() call still ensures that we log to
         # stdout after the gpt call completes.
-        defaults = dict(auto=True, sleep=0, silent=True)
+        defaults = dict(auto=True, sleep=0, silent=True, interactive=False)
         for k, v in defaults.items():
             if self.excepthook_kwargs.get(k, v) != v:
                 warnings.warn(
                     f'You tried to set {k}={self.excepthook_kwargs[k]} '
-                    f'but it must equal {v} in logger.'
+                    f'but it must equal {v} in logger. Your arg will be'
+                    f'overridden.'
                 )
         self.excepthook_kwargs.update(defaults)
         self.excepthook_kwargs['colordiff'] = self.excepthook_kwargs.get(

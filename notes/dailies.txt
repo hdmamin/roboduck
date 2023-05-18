@@ -1805,12 +1805,18 @@ X -debug file not found error with cli
 
 5/17/23 wed
 -----------
--maybe make the 'q' cmd insertion in errors.post_mortem a configurable setting? (i.e. by default give a 1-turn explanation, but optionally allow entering an interactive debugging session)
+X -maybe make the 'q' cmd insertion in errors.post_mortem a configurable setting? (i.e. by default give a 1-turn explanation, but optionally allow entering an interactive debugging session)
 	X -first confirm current behavior
 		> Like I thought, no option to continue conv.
-	-confirm what I want to do
-	-if want to implement, add todos below:
--consider changing various refs from "auto error mode" to something like "talkative errors" or "talking errors" or "chatty errors"
+	X -confirm what I want to do
+		> Add support :)
+	_ -if want to implement, add todos below:
+		> Whoops, just implemented. Updated errors and logging modules but not magic atm (aside from comments). If it aint' broke etc.
+		> Fleshed out enable() docs a bit since that's user-facing.
+X -various readme tweaks
+	> Added pip install snippet.
+_ -consider changing various refs from "auto error mode" to something like "talkative errors" or "talking errors" or "chatty errors"
+	> Did update repo description in github UI though.
 -check if we can rm the old markdown extension (superfences etc.) section from mkdocs.yml (originally used to parse numpy docstrings, ended up finding a different way that I'm not sure requires that anymore)
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)

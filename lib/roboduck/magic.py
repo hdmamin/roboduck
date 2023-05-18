@@ -119,6 +119,11 @@ class DebugMagic(Magics):
             # which we don't necessarily want in most cases.
             # Note that this uses the `debug_stack_trace` prompt by default
             # whereas interactive mode uses `debug` by default.
+            # UPDATE: we could probably use excepthook for both cases
+            # (args.i = True or False) now that
+            # I added interactive support in the errors module. However,
+            # everything is working nicely now and I don't see a compelling
+            # reason to change things at the moment.
             from roboduck import errors
             kwargs = {'auto': True, 'color': 'green'}
             if args.prompt:

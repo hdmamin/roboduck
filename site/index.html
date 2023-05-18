@@ -234,6 +234,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    Install
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#api-key-setup" class="md-nav__link">
     API Key Setup
   </a>
@@ -375,44 +382,10 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-          CLI
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_6">
-          <span class="md-nav__icon md-icon"></span>
-          CLI
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
     <li class="md-nav__item">
       <a href="cli/cli/" class="md-nav__link">
-        TODO: not working. Also tried leading ".." but that throws empty import error.
+        CLI
       </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -500,8 +473,8 @@
   
   
     <li class="md-nav__item">
-      <a href="config_file/" class="md-nav__link">
-        Config File
+      <a href="config/" class="md-nav__link">
+        Config
       </a>
     </li>
   
@@ -552,6 +525,13 @@
   
     <nav class="md-nav" aria-label="TODO add gifs">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    Install
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#api-key-setup" class="md-nav__link">
@@ -652,12 +632,15 @@
 <p><em>rubber duck debugging</em>: a method of debugging code by articulating a problem in spoken or written natural language. The name is a reference to a story in the book The Pragmatic Programmer in which a programmer would carry around a rubber duck and debug their code by forcing themselves to explain it, line-by-line, to the duck. [<a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">1</a>]</p>
 <p><em>robo duck debugging</em>: like rubber duck debugging, but the duck talks back.</p>
 <h2 id="about">About</h2>
-<p>Copilot takes your programs from 0 to 50; RoboDuck is designed to get you from 90 to 100. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:<br />
+<p>Many AI-powered dev tools help you write boilerplate more quickly, but the hardest and most time-consuming part of programming is often the last mile. Roboduck's goal is to help you understand and fix those bugs. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:<br />
 - debugging<br />
 - error handling<br />
 - logging  </p>
 <h2 id="quickstart">Quickstart</h2>
 <h1 id="todo-add-gifs">TODO add gifs</h1>
+<h3 id="install">Install</h3>
+<div class="highlight"><pre><span></span><code>pip install roboduck
+</code></pre></div>
 <h3 id="api-key-setup">API Key Setup</h3>
 <p>You need an openai API key to begin using roboduck. Once you have an account (<a href="https://platform.openai.com/signup">sign up here</a>), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is then to call <code>roboduck.set_openai_api_key(api_key, update_config=True)</code> which essentially does the following: </p>
 <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>~/.roboduck

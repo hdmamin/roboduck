@@ -294,6 +294,14 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lib.roboduck.magic-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav" aria-label="Classes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#lib.roboduck.magic.DebugMagic" class="md-nav__link">
     DebugMagic
   </a>
@@ -302,16 +310,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lib.roboduck.magic.DebugMagic--examples" class="md-nav__link">
-    Examples
+  <a href="#lib.roboduck.magic.DebugMagic-functions" class="md-nav__link">
+    Functions
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#lib.roboduck.magic.DebugMagic.duck" class="md-nav__link">
     duck()
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -335,44 +354,10 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-          CLI
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_6">
-          <span class="md-nav__icon md-icon"></span>
-          CLI
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
     <li class="md-nav__item">
       <a href="../cli/cli/" class="md-nav__link">
-        TODO: not working. Also tried leading ".." but that throws empty import error.
+        CLI
       </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -460,8 +445,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../config_file/" class="md-nav__link">
-        Config File
+      <a href="../config/" class="md-nav__link">
+        Config
       </a>
     </li>
   
@@ -512,6 +497,14 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lib.roboduck.magic-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav" aria-label="Classes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#lib.roboduck.magic.DebugMagic" class="md-nav__link">
     DebugMagic
   </a>
@@ -520,16 +513,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lib.roboduck.magic.DebugMagic--examples" class="md-nav__link">
-    Examples
+  <a href="#lib.roboduck.magic.DebugMagic-functions" class="md-nav__link">
+    Functions
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#lib.roboduck.magic.DebugMagic.duck" class="md-nav__link">
     duck()
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -589,17 +593,17 @@ nums.add(4)
 
 
 
-
+<h2 id="lib.roboduck.magic-classes">Classes</h2>
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="lib.roboduck.magic.DebugMagic" class="doc doc-heading">
+<h3 id="lib.roboduck.magic.DebugMagic" class="doc doc-heading">
         <code>DebugMagic</code>
 
 
-</h2>
+</h3>
 
 
   <div class="doc doc-contents ">
@@ -609,8 +613,9 @@ nums.add(4)
   
       <p>Enter a conversational debugging session after an error is thrown by a
 jupyter notebook code cell.</p>
-<h4 id="lib.roboduck.magic.DebugMagic--examples">Examples</h4>
-<p>After a cell execution throws an error, enter this in the next cell to
+
+<p><strong>Examples:</strong></p>
+    <p>After a cell execution throws an error, enter this in the next cell to
 get an explanation of what caused the error and how to fix it:</p>
 <p>%duck</p>
 <p>To instead enter an Interactive conversational debugging session:</p>
@@ -721,7 +726,12 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
 <span class="k">class</span> <span class="nc">DebugMagic</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter a conversational debugging session after an error is thrown by a</span>
 <span class="sd">    jupyter notebook code cell.</span>
@@ -806,6 +816,11 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
             <span class="c1"># which we don&#39;t necessarily want in most cases.</span>
             <span class="c1"># Note that this uses the `debug_stack_trace` prompt by default</span>
             <span class="c1"># whereas interactive mode uses `debug` by default.</span>
+            <span class="c1"># UPDATE: we could probably use excepthook for both cases</span>
+            <span class="c1"># (args.i = True or False) now that</span>
+            <span class="c1"># I added interactive support in the errors module. However,</span>
+            <span class="c1"># everything is working nicely now and I don&#39;t see a compelling</span>
+            <span class="c1"># reason to change things at the moment.</span>
             <span class="kn">from</span> <span class="nn">roboduck</span> <span class="kn">import</span> <span class="n">errors</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
@@ -832,16 +847,16 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 
 
 
-
+<h4 id="lib.roboduck.magic.DebugMagic-functions">Functions</h4>
 
 <div class="doc doc-object doc-function">
 
 
 
-<h3 id="lib.roboduck.magic.DebugMagic.duck" class="doc doc-heading">
+<h5 id="lib.roboduck.magic.DebugMagic.duck" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">duck</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
 
-</h3>
+</h5>
 
 
   <div class="doc doc-contents ">
@@ -922,7 +937,12 @@ change persist, at least until the user changes it again.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
                <span class="s1">&#39;new code cell below.&#39;</span><span class="p">)</span>
@@ -981,6 +1001,11 @@ change persist, at least until the user changes it again.</p>
         <span class="c1"># which we don&#39;t necessarily want in most cases.</span>
         <span class="c1"># Note that this uses the `debug_stack_trace` prompt by default</span>
         <span class="c1"># whereas interactive mode uses `debug` by default.</span>
+        <span class="c1"># UPDATE: we could probably use excepthook for both cases</span>
+        <span class="c1"># (args.i = True or False) now that</span>
+        <span class="c1"># I added interactive support in the errors module. However,</span>
+        <span class="c1"># everything is working nicely now and I don&#39;t see a compelling</span>
+        <span class="c1"># reason to change things at the moment.</span>
         <span class="kn">from</span> <span class="nn">roboduck</span> <span class="kn">import</span> <span class="n">errors</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
