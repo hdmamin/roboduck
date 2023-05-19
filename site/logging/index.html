@@ -609,15 +609,15 @@
 is asked to log. Unlike our debugger and errors modules, explanations are
 not streamed because the intended use case is not focused on live development.</p>
 <h3 id="lib.roboduck.logging--quickstart">Quickstart</h3>
-<div class="highlight"><pre><span></span><code>from roboduck import logging
+<pre><code>from roboduck import logging
 
-logger = logging.getLogger(path=&#39;/tmp/log.txt&#39;)
-data = {&#39;x&#39;: 0}
+logger = logging.getLogger(path='/tmp/log.txt')
+data = {'x': 0}
 try:
     x = data.x
 except Exception as e:
     logger.error(e)
-</code></pre></div>
+</code></pre>
 
   
 
@@ -920,11 +920,44 @@ message in the original exception before logging.)</p>
 
   <div class="doc doc-contents ">
   
-      <p>Mimics interface of builtin logging module. I.e. we can do:</p>
-<div class="highlight"><pre><span></span><code>from roboduck import logging
+      <p>Mimics interface of builtin logging.getLogger, but with our custom
+logger that ensures all errors explain themselves.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>kwargs</code></td>
+          <td>
+                <code>any</code>
+          </td>
+          <td><p>These are passed to roboduck.errors.post_mortem which in turn passes
+them to our custom debugger class. The most important arg here is:</p>
+<p>prompt_name (str) - determines what prompt/prompt_name the custom
+debugger uses, e.g. "debug_stack_trace". Users can also define
+their own custom prompt
+(https://hdmamin.github.io/roboduck/custom_prompts/)
+and pass in the file path here.</p></td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<p><strong>Examples:</strong></p>
+    <pre><code>from roboduck import logging
 
 logger = logging.getLogger()
-</code></pre></div>
+</code></pre>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/logging.py</code></summary>
@@ -937,9 +970,39 @@ logger = logging.getLogger()
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">getLogger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mimics interface of builtin logging module. I.e. we can do:</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">getLogger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mimics interface of builtin logging.getLogger, but with our custom</span>
+<span class="sd">    logger that ensures all errors explain themselves.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kwargs : any</span>
+<span class="sd">        These are passed to roboduck.errors.post_mortem which in turn passes</span>
+<span class="sd">        them to our custom debugger class. The most important arg here is:</span>
+
+<span class="sd">        prompt_name (str) - determines what prompt/prompt_name the custom</span>
+<span class="sd">            debugger uses, e.g. &quot;debug_stack_trace&quot;. Users can also define</span>
+<span class="sd">            their own custom prompt</span>
+<span class="sd">            (https://hdmamin.github.io/roboduck/custom_prompts/)</span>
+<span class="sd">            and pass in the file path here.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 <span class="sd">    ```</span>
 <span class="sd">    from roboduck import logging</span>
 

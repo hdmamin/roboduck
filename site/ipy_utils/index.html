@@ -748,12 +748,12 @@ you don't see any backticks below, know that each print statement is
 enclosed in a separate pair of triple backticks. Rendering this nicely
 with mkdocs is very tricky and even if it worked, it would badly mess
 up readability for people viewing the docstring in their IDE):</p>
-<p>'''
-<div class="highlight"><pre><span></span><code>print(&#39;This is cell 1 code.&#39;)
-</code></pre></div></p>
-<p><div class="highlight"><pre><span></span><code>print(&#39;This is cell 2 code.&#39;)
-</code></pre></div>
-'''</p>
+<p>'''</p>
+<pre><code>print('This is cell 1 code.')
+</code></pre>
+<pre><code>print('This is cell 2 code.')
+</code></pre>
+<p>'''</p>
 <p>If False, leave it as a list of strings where each string contains
 content from one cell.</p></td>
           <td>
@@ -888,7 +888,7 @@ content from one cell.</p></td>
 
   <div class="doc doc-contents ">
   
-      <div class="highlight"><pre><span></span><code>Check if a variable name looks like an ipython output cell name, e.g.
+      <pre><code class="language-plaintext">Check if a variable name looks like an ipython output cell name, e.g.
 &quot;_49&quot;, &quot;_&quot;, or &quot;__&quot;.
 
 Ported from [htools](https://github.com/hdmamin/htools) to avoid extra
@@ -898,12 +898,12 @@ More examples:
 Returns True for names like this (technically not sure if something like
 &quot;__i3&quot; is actually used in ipython, but it looks like something we
 probably want to remove it in these contexts anyway.
-[&#39;_&#39;, &#39;__&#39;, &#39;_i3&#39;, &#39;__i3&#39;, &#39;_4&#39;, &#39;_9913&#39;, &#39;__7&#39;, &#39;__23874&#39;]
+['_', '__', '_i3', '__i3', '_4', '_9913', '__7', '__23874']
 
 Returns False for names like
-[&#39;_a&#39;, &#39;i22&#39;, &#39;__0i&#39;, &#39;_03z&#39;, &#39;__99t&#39;]
+['_a', 'i22', '__0i', '_03z', '__99t']
 and most &quot;normal&quot; variable names.
-</code></pre></div>
+</code></pre>
 
   <p><strong>Parameters:</strong></p>
   <table>

@@ -407,21 +407,21 @@ If your custom prompt expects different fields than our default prompt, you need
 Use your custom template as follows:</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code># In a debugger:
+<pre><code># In a debugger:
 from roboduck import duck
 
 duck(prompt_name=your_template_path)
-</code></pre></div>
-<div class="highlight"><pre><span></span><code># In a logger:
+</code></pre>
+<pre><code># In a logger:
 from roboduck import logging
 
 logger = logging.getLogger(prompt_name=your_template_path)
-</code></pre></div>
-<div class="highlight"><pre><span></span><code># In error explanation mode:
+</code></pre>
+<pre><code># In error explanation mode:
 from roboduck import errors
 
 errors.enable(prompt_name=your_template_path)
-</code></pre></div>
+</code></pre>
 
 
 

@@ -645,10 +645,10 @@ default behavior when it encounters an error.</p>
 <code>disable()</code> reverts to python's regular behavior on errors. <code>enable()</code> can be
 used to re-enable error explanations or to change settings. For example,
 setting auto=True automatically explains all errors rather than asking the user
-if they want an explanation (y/n) when an error occurs.
-<div class="highlight"><pre><span></span><code>from roboduck import errors
+if they want an explanation (y/n) when an error occurs.</p>
+<pre><code>from roboduck import errors
 
-data = {&#39;x&#39;: 0}
+data = {'x': 0}
 y = data.x
 
 errors.disable()
@@ -656,7 +656,7 @@ y = data.x
 
 errors.enable(auto=True)
 y = data.x
-</code></pre></div></p>
+</code></pre>
 
   
 

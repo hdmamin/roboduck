@@ -544,17 +544,17 @@ uses a TerminalInteractiveShell class which makes its debugger_cls attribute
 read only. We provide a drop-in replacement that allows our magic class to
 set that attribute when necessary. Note that you'd need to start an ipython
 session with the command:</p>
-<div class="highlight"><pre><span></span><code>ipython --TerminalIPythonApp.interactive_shell_class=roboduck.shell.RoboDuckTerminalInteractiveShell
-</code></pre></div>
+<pre><code>ipython --TerminalIPythonApp.interactive_shell_class=roboduck.shell.RoboDuckTerminalInteractiveShell
+</code></pre>
 <p>for this to work. You'll still need to run <code>from roboduck import magic</code> inside
 your session to make it avaialble.</p>
 <p>Alternatively, you can make it available automatically for all ipython
 sessions by adding the following lines to your ipython config (usually found at
 ~/.ipython/profile_default/ipython_config.py):</p>
-<div class="highlight"><pre><span></span><code>cfg = get_config()
+<pre><code>cfg = get_config()
 cfg.TerminalIPythonApp.interactive_shell_class = roboduck.shell.RoboDuckTerminalInteractiveShell
 cfg.InteractiveShellApp.exec_lines = [&quot;from roboduck import magic&quot;]
-</code></pre></div>
+</code></pre>
 
   
 

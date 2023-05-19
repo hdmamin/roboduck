@@ -639,18 +639,18 @@
 <h2 id="quickstart">Quickstart</h2>
 <h1 id="todo-add-gifs">TODO add gifs</h1>
 <h3 id="install">Install</h3>
-<div class="highlight"><pre><span></span><code>pip install roboduck
-</code></pre></div>
+<pre><code>pip install roboduck
+</code></pre>
 <h3 id="api-key-setup">API Key Setup</h3>
 <p>You need an openai API key to begin using roboduck. Once you have an account (<a href="https://platform.openai.com/signup">sign up here</a>), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is then to call <code>roboduck.set_openai_api_key(api_key, update_config=True)</code> which essentially does the following: </p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>~/.roboduck
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;openai_api_key: your_api_key&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>~/.roboduck/config.yaml
-</code></pre></div>
+<pre><code class="language-bash">mkdir ~/.roboduck
+echo &quot;openai_api_key: your_api_key&quot; &gt; ~/.roboduck/config.yaml
+</code></pre>
 <p>Manually setting an OPENAI_API_KEY environment variable also works.</p>
 <p>Roboduck does not store your API key or collect any usage data.</p>
 <h3 id="debugger">Debugger</h3>
 <p>We provide a natural language equivalent of python's built-in <code>breakpoint</code> function. Once you're in an interactive session, you can use the standard pdb commands to navigate your code (cmd+f "debugger commands" <a href="https://docs.python.org/3/library/pdb.html">here</a>. TLDR: type <code>n</code> to execute the next line, a variable name to view its current value, or <code>q</code> to quit the debugging session). However, you can also type a question like "Why do we get an index error when j changes from 3 to 4?" or "Why does nums have three 9s in it when the input list only had one?". Concretely, any time you type something including a question mark, an LLM will try to answer. This is not just performing static analysis - the LLM can access information about the current state of your program.</p>
-<div class="highlight"><pre><span></span><code>from roboduck import duck
+<pre><code>from roboduck import duck
 
 def bubble_sort(nums):
     for i in range(len(nums)):
@@ -663,12 +663,12 @@ def bubble_sort(nums):
 
 nums = [3, 1, 9, 2, 1]
 bubble_sort(nums)
-</code></pre></div>
+</code></pre>
 <h3 id="errors">Errors</h3>
 <p>Roboduck is also good at explaining error messages.  Importing the errors module automatically enables <em>optional</em> error explanations. <code>errors.disable()</code> reverts to python's regular behavior on errors. <code>errors.enable()</code> can be used to re-enable error explanations or to change settings. For example, setting auto=True automatically explains all errors rather than asking the user if they want an explanation (y/n) when an error occurs (this is probably excessive for most use cases, but you're free to do it).</p>
-<div class="highlight"><pre><span></span><code>from roboduck import errors
+<pre><code>from roboduck import errors
 
-data = {&#39;x&#39;: 0}
+data = {'x': 0}
 y = data.x
 
 errors.disable()
@@ -676,46 +676,46 @@ y = data.x
 
 errors.enable(auto=True)
 y = data.x
-</code></pre></div>
+</code></pre>
 <h3 id="jupyter-magic">Jupyter Magic</h3>
 <p>Jupyter provides a <code>%debug</code> magic that can be used after an error occurs to enter a postmortem debugging session. Roboduck's <code>%duck</code> magic works similarly, but with all of our debugging module's conversational capabilities:</p>
-<div class="highlight"><pre><span></span><code># cell 1
+<pre><code># cell 1
 from roboduck import magic
 
 nums = [1, 2, 3]
 nums.add(4)
-</code></pre></div>
-<div class="highlight"><pre><span></span><code># cell 2
+</code></pre>
+<pre><code># cell 2
 %duck
-</code></pre></div>
+</code></pre>
 <h3 id="logging">Logging</h3>
 <p>Roboduck also provides a logger that can write to stdout and/or a file. Whenever you log an Exception object, an LLM will try to diagnose and suggest a fix for the problem. (Unlike the debug module, the logger does not type responses live because we assume logs will typically be viewed after the fact.)</p>
-<div class="highlight"><pre><span></span><code>from roboduck import logging
+<pre><code>from roboduck import logging
 
-logger = logging.getLogger(path=&#39;/tmp/log.txt&#39;)
-data = {&#39;x&#39;: 0}
+logger = logging.getLogger(path='/tmp/log.txt')
+data = {'x': 0}
 try:
     x = data.x
 except Exception as e:
     logger.error(e)
-</code></pre></div>
+</code></pre>
 <h3 id="cli">CLI</h3>
 <p>You can also run a python script with error explanations enabled:</p>
-<div class="highlight"><pre><span></span><code>duck<span class="w"> </span>my_script.py
-</code></pre></div>
+<pre><code class="language-bash">duck my_script.py
+</code></pre>
 <p>Run <code>duck --help</code> for more info.</p>
 <h2 id="contributing">Contributing</h2>
-<p>To create a virtual environment and install relevant packages:
-<div class="highlight"><pre><span></span><code>make dev_env
-</code></pre></div></p>
-<p>To run unit tests:
-<div class="highlight"><pre><span></span><code>make test
-</code></pre></div></p>
-<p>To rebuild the docs locally:
-<div class="highlight"><pre><span></span><code>make docs
-</code></pre></div></p>
+<p>To create a virtual environment and install relevant packages:</p>
+<pre><code>make dev_env
+</code></pre>
+<p>To run unit tests:</p>
+<pre><code>make test
+</code></pre>
+<p>To rebuild the docs locally:</p>
+<pre><code>make docs
+</code></pre>
 <h3 id="repo-structure">Repo Structure</h3>
-<div class="highlight"><pre><span></span><code>roboduck/
+<pre><code>roboduck/
 ├── lib          # Python package source code
 ├── bin          # Executable scripts to be run from the project root directory.
 ├── docs         # Markdown templates that mkdocs uses to build automatic documentation.
@@ -723,7 +723,7 @@ except Exception as e:
 ├── .github      # Build that executes when pushing or merging to main.
 ├── tests        # Pytest unit tests.
 └── data         # Contains images for our README. Used locally to store other miscellaneous files that are excluded from github.
-</code></pre></div>
+</code></pre>
 
 
 

@@ -1681,7 +1681,7 @@ list of strings otherwise.</p></td>
   </table>
 
 <p><strong>Examples:</strong></p>
-    <div class="highlight"><pre><span></span><code>text = &#39;&#39;&#39;Appending to a tuple is not allowed because tuples are immutable.
+    <pre><code class="language-plaintext">text = '''Appending to a tuple is not allowed because tuples are immutable.
 However, in this code snippet, the tuple b contains two lists, and lists
 are mutable. Therefore, appending to b[1] (which is a list) does not raise
 an error. To fix this, you can either change b[1] to a tuple or create a
@@ -1692,17 +1692,17 @@ new tuple that contains the original elements of b and the new list.
 a = 3
 b = ([0, 1], [2, 3])
 b = (b[0], b[1] + [a])
-```&#39;&#39;&#39;
+```'''
 
 print(extract_code(text))
 
 # Extracted code snippet
-&#39;&#39;&#39;
+'''
 a = 3
 b = ([0, 1], [2, 3])
 b = (b[0], b[1] + [a])
-&#39;&#39;&#39;
-</code></pre></div>
+'''
+</code></pre>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/utils.py</code></summary>

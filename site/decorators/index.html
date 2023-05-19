@@ -608,14 +608,14 @@ that point there is no benefit over the standard <code>list</code>).</p></td>
     <p>In the first example, we specify types directly in the decorator. Notice
 that they can be single types or tuples of types. You can choose to
 specify types for all arguments or just a subset.</p>
-<div class="highlight"><pre><span></span><code>@typecheck(x=float, y=(int, float), iters=int, verbose=bool)
+<pre><code>@typecheck(x=float, y=(int, float), iters=int, verbose=bool)
 def process(x, y, z, iters=5, verbose=True):
-    print(f&#39;z = {z}&#39;)
+    print(f'z = {z}')
     for i in range(iters):
-        if verbose: print(f&#39;Iteration {i}...&#39;)
+        if verbose: print(f'Iteration {i}...')
         x *= y
     return x
-</code></pre></div>
+</code></pre>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">process</span><span class="p">(</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
 <span class="go">TypeError: iters must be &lt;class &#39;int&#39;&gt;, not &lt;class &#39;float&#39;&gt;.</span>
 </code></pre></div>
@@ -627,14 +627,14 @@ def process(x, y, z, iters=5, verbose=True):
 in the function that is to be decorated. The example below behaves
 equivalently to the explicit example shown above. Note that annotations
 regarding the returned value are ignored.</p>
-<div class="highlight"><pre><span></span><code>@typecheck
+<pre><code>@typecheck
 def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
-    print(f&#39;z = {z}&#39;)
+    print(f'z = {z}')
     for i in range(iters):
-        if verbose: print(f&#39;Iteration {i}...&#39;)
+        if verbose: print(f'Iteration {i}...')
         x *= y
     return x
-</code></pre></div>
+</code></pre>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">process</span><span class="p">(</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
 <span class="go">TypeError: iters must be &lt;class &#39;int&#39;&gt;, not &lt;class &#39;float&#39;&gt;.</span>
 </code></pre></div>
@@ -1097,12 +1097,12 @@ all or a subset). Default here refers to the value at class definition
 time.</p>
 
 <p><strong>Examples:</strong></p>
-    <div class="highlight"><pre><span></span><code>@store_class_defaults(attr_filter=lambda x: x.startswith(&#39;last_&#39;))
+    <pre><code>@store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
 class Foo:
     last_bar = 3
-    last_baz = &#39;abc&#39;
+    last_baz = 'abc'
     other = True
-</code></pre></div>
+</code></pre>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">Foo</span><span class="o">.</span><span class="n">_class_defaults</span>
 </code></pre></div>
     <p>{'last_bar': 3, 'last_baz': 'abc'}</p>
@@ -1299,10 +1299,10 @@ dependency.</p>
   </table>
 
 <p><strong>Examples:</strong></p>
-    <div class="highlight"><pre><span></span><code>@add_docstring(nn.Conv2d)
+    <pre><code>@add_docstring(nn.Conv2d)
 class ReflectionPaddedConv2d(nn.Module):
     # ...
-</code></pre></div>
+</code></pre>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
