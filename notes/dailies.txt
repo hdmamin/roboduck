@@ -1823,9 +1823,14 @@ _ -consider changing various refs from "auto error mode" to something like "talk
 
 5/18/23 thurs
 -------------
--check if we can rm the old markdown extension (superfences etc.) section from mkdocs.yml (originally used to parse numpy docstrings, ended up finding a different way that I'm not sure requires that anymore)
+X -check if we can rm the old markdown extension (superfences etc.) section from mkdocs.yml (originally used to parse numpy docstrings, ended up finding a different way that I'm not sure requires that anymore)
+X -flesh out logging docs a bit
 -long prompt handling updates
 	-look into using last_n_turns in Chat history so prompt doesn't grow infinitely big (can reference jabberwocky conversation manager logic if desired)
+
+5/19/23 fri
+-----------
+-record demo gifs for readme
 
 
 Backlog
@@ -1833,7 +1838,6 @@ Backlog
 -try out gpt4 with roboduck
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
--record demo gifs for readme
 -other model support
 	-does chat_class=langchain.chat_models.anthropic.ChatAnthropic work?
 		-check non-55 email for access, set up api key if so
