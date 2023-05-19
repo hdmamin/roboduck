@@ -306,3 +306,13 @@ class Chat:
         template = self.user_templates[key or self.default_user_key]
         return set(template.input_variables)
 
+    # TODO: wip to dynamically discard old turns until our history is an
+    # acceptable size for our LLM's context window.
+    def _truncate_history(self, n_words):
+        while n_words > self.prompt_words_hard_limit:
+            if len(self._history) <= 2:
+                # TODO: copy over better error msg from _reply
+                raise ValueError('System message + last user message are '
+                                 'already too long for context window.')
+            turn = self._history.pop(1)
+            n_words -= len(turn.content.split())
