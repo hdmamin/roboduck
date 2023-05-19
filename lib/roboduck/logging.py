@@ -21,8 +21,6 @@ import os
 import sys
 import warnings
 
-from roboduck.decorators import add_docstring
-
 
 class DuckLogger(Logger):
     """Replacement for logging.Logger class that uses our errors module to
@@ -132,7 +130,6 @@ class DuckLogger(Logger):
                             extra=extra, stack_info=stack_info)
 
 
-@add_docstring()
 def getLogger(name=None, **kwargs):
     """Mimics interface of builtin logging.getLogger, but with our custom
     logger that ensures all errors explain themselves.

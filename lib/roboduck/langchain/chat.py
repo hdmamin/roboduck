@@ -84,6 +84,8 @@ class Chat:
             model we'll be conversing with.
         history : listlike
             This will be used to store all the messages in our conversation.
+            If not empty, it should contain AIMessage and HumanMessage objects
+            from a previous chat, but NOT a SystemMessage.
         streaming : bool
             Determines whether to query the chat model in streaming mode.
             This is often desirable so that we can see incremental results

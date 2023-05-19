@@ -74,3 +74,15 @@ X -nested dir inside docs/ causes a problem
 	> Can't be this bc we're able to successfully build docs for errors.py from inside docs/cli.
 -nested dir inside lib/roboduck causes a problem
 -having module and dir with same name causes problem
+
+5/18/23 thurs
+-------------
+dynamic history updating thoughts
+-_history is currently a list that includes system message. We probably want a dequeue that EXCLUDES system message so we can easily and efficiently popleft at any point to discard the oldest message.
+-could make _history itself this queue and then tack on system message each time we currently access it
+OR
+perhaps make _history a property and implement logic to do that automatically
+-problem is, history() is already a method and properties often make use of leading underscore "private" var, but in this case the property would already have the leading underscore. Adding a second would add name mangling.
+	-can avoid this by using another attr self._messages or something that the _history property can reference.
+	-after implementing a quick/dirty toy example, I'm realizing every time we access _history we'll need to convert deque to a list so we can add system message, so it's either O(N) there or O(N) when popping index 1. Seems like comparable downsides so maybe just stick with the simpler implementation of using a single list and popping the item at idx 1 repeatedly. Seems unlikely that this is something where optimization would be particularly useful. Context window has a fixed size (with current arches anyway) so technically the number of messages is limited to a fixed k (worst case assume 1 char per message) so technically I guess you could argue the pop is still O(1).
+
