@@ -1832,8 +1832,8 @@ Backlog
 -------
 -try out gpt4 with roboduck
 -try with threading/multiprocessing/asyncio? 😬
--record demo gifs for readme
 -share work somewhere (?) when done
+-record demo gifs for readme
 -other model support
 	-does chat_class=langchain.chat_models.anthropic.ChatAnthropic work?
 		-check non-55 email for access, set up api key if so

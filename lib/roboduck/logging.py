@@ -21,6 +21,8 @@ import os
 import sys
 import warnings
 
+from roboduck.decorators import add_docstring
+
 
 class DuckLogger(Logger):
     """Replacement for logging.Logger class that uses our errors module to
@@ -130,9 +132,25 @@ class DuckLogger(Logger):
                             extra=extra, stack_info=stack_info)
 
 
+@add_docstring()
 def getLogger(name=None, **kwargs):
-    """Mimics interface of builtin logging module. I.e. we can do:
+    """Mimics interface of builtin logging.getLogger, but with our custom
+    logger that ensures all errors explain themselves.
 
+    Parameters
+    ----------
+    kwargs : any
+        These are passed to roboduck.errors.post_mortem which in turn passes
+        them to our custom debugger class. The most important arg here is:
+
+        prompt_name (str) - determines what prompt/prompt_name the custom
+            debugger uses, e.g. "debug_stack_trace". Users can also define
+            their own custom prompt
+            (https://hdmamin.github.io/roboduck/custom_prompts/)
+            and pass in the file path here.
+
+    Examples
+    --------
     ```
     from roboduck import logging
 

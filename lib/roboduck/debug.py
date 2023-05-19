@@ -45,18 +45,25 @@ from roboduck.ipy_utils import load_ipynb, load_current_ipython_session, \
 
 @store_class_defaults(attr_filter=lambda x: x.startswith('last_'))
 class CodeCompletionCache:
-    """Just stores the last completion from DuckDB in a way that our
-    `duck` jupyter magic can access (without relying on global variable, though
-    not sure if this is meaningfully different). The magic only needs to access
-    it in insert mode (-i flag) to insert the fixed code snippet into a new
-    code cell.
+    """Stores values related to the last completion from DuckDB in a way that
+    a. our `duck` jupyter magic can access, and
+    b. allows us to easily reset all defaults
+
+    The magic only needs to access it in insert mode (-i flag) to insert
+    the fixed code snippet into a new code cell.
     """
 
+    # LLM full completion.
     last_completion = ''
+    # LLM natural language explanation.
     last_explanation = ''
+    # User code snippet.
     last_code = ''
+    # LLM generated code.
     last_new_code = ''
+    # LLM generated code with new bits highlighted (print to render correctly).
     last_code_diff = ''
+    # Allows storing extra values when passing a custom parse_func to DuckDB.
     last_extra = {}
 
 

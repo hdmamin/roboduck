@@ -14,13 +14,6 @@ plugins:
             show_if_no_docstring: true
             docstring_style: numpy
             filters: ["!^_"]
-markdown_extensions:
-  # TODO Trying to get docstring params to be parsed correctly. Just shows type, not name, atm.
-  - pymdownx.superfences:
-      custom_fences:
-        - name: python
-          class: python
-          format: !!python/str '{lineno} {pyobject}'
 
 # Bullets below will be tabs in left navbar.
 nav:
