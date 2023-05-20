@@ -1839,6 +1839,7 @@ X -flesh out logging docs a bit
 	-look for any other places it might need to be used
 	-flesh out docs
 	-unit test(s)
+-maybe try reverting table in readme to cleaner format
 
 
 Backlog
