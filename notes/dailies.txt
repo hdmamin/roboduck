@@ -1831,6 +1831,8 @@ X -flesh out logging docs a bit
 
 5/19/23 fri
 -----------
+X -maybe try reverting table in readme to cleaner format
+	> Ended up fumbling my way to a banner in gimp. Not the highest quality but I think it looks slightly better than my text/image next to each other combo.
 -dynamically truncate Chat history so prompt doesn't grow infinitely big
 	-add some print statements to truncate method and test with DummyChatModel
 	-fix any errors
@@ -1839,7 +1841,17 @@ X -flesh out logging docs a bit
 	-look for any other places it might need to be used
 	-flesh out docs
 	-unit test(s)
--maybe try reverting table in readme to cleaner format
+
+5/20/23 sat
+-----------
+-dynamically truncate Chat history so prompt doesn't grow infinitely big
+	-add some print statements to truncate method and test with DummyChatModel
+	-fix any errors
+	-improve error message
+	-incorporate into _reply
+	-look for any other places it might need to be used
+	-flesh out docs
+	-unit test(s)
 
 
 Backlog

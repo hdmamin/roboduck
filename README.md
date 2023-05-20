@@ -1,11 +1,15 @@
-|||
-|---|---|
-| ![roboduck logo](data/images/roboduck_blue_small.png) | <h1>RoboDuck</h1> [![Documentation](https://img.shields.io/badge/Documentation-Online-blue.svg)](https://hdmamin.github.io/roboduck/) [![PyPI version](https://badge.fury.io/py/roboduck.svg)](https://badge.fury.io/py/roboduck) [![Build Status](https://github.com/hdmamin/roboduck/actions/workflows/main.yml/badge.svg)](https://github.com/hdmamin/roboduck/actions/workflows/main.yml) |
+<div align="center">
+<img src="data/images/roboduck_blue_banner.png" alt="roboduck logo">
+<p></p>
+<a href="https://hdmamin.github.io/roboduck/"><img src="https://img.shields.io/badge/Documentation-Online-blue.svg" alt="Documentation"></a>
+<a href="https://badge.fury.io/py/roboduck"><img src="https://badge.fury.io/py/roboduck.svg" alt="PyPI version"></a>
+<a href="https://github.com/hdmamin/roboduck/actions/workflows/main.yml"><img src="https://github.com/hdmamin/roboduck/actions/workflows/main.yml/badge.svg" alt="Build Status"></a>
+<p></p>
+</div>
 
+**rubber duck debugging**: a method of debugging code by articulating a problem in spoken or written natural language. The name is a reference to a story in the book The Pragmatic Programmer in which a programmer would carry around a rubber duck and debug their code by forcing themselves to explain it, line-by-line, to the duck. [[1](https://en.wikipedia.org/wiki/Rubber_duck_debugging)]
 
-*rubber duck debugging*: a method of debugging code by articulating a problem in spoken or written natural language. The name is a reference to a story in the book The Pragmatic Programmer in which a programmer would carry around a rubber duck and debug their code by forcing themselves to explain it, line-by-line, to the duck. [[1](https://en.wikipedia.org/wiki/Rubber_duck_debugging)]
-
-*robo duck debugging*: like rubber duck debugging, but the duck talks back.
+**robo duck debugging**: a bit like rubber duck debugging, but the duck talks back.
 
 ## About
 
