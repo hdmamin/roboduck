@@ -257,8 +257,6 @@ class Chat:
         -------
         AIMessage
         """
-        print('key:', key_)
-        print('kwargs:', kwargs)
         user_message = self.user_message(key_=key_, **kwargs)
         self._history.append(user_message)
         self._truncate_history()
