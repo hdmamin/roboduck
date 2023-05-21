@@ -1844,14 +1844,22 @@ X -maybe try reverting table in readme to cleaner format
 
 5/20/23 sat
 -----------
--dynamically truncate Chat history so prompt doesn't grow infinitely big
-	-add some print statements to truncate method and test with DummyChatModel
-	-fix any errors
-	-improve error message
-	-incorporate into _reply
-	-look for any other places it might need to be used
-	-flesh out docs
+~ -dynamically truncate Chat history so prompt doesn't grow infinitely big
+	X -add some print statements to truncate method and test with DummyChatModel
+	_ -fix any errors
+	X -improve error message
+	X -incorporate into _reply
+	! -look for any other places it might need to be used
+	X -flesh out docstring and comments
 	-unit test(s)
+~ -better error message when user passes positional arg only to chat.reply or one of the dynamically generated variants
+	> Did some preliminary investigation. Looks like this error actually occurs inside my typecheck decorator. Need to think about whether to make changes there or trust that ensuring the signature + docstring are correct was/is sufficient (already did this in initial implementation).
+
+5/21/23 sun
+-----------
+-consider renaming chat.from_config (we're just providing a name or file, from_config sounds more like we're passing in a dict/obj containing the args themselves)
+-unit test(s) for chat._truncate_history
+-better error message when user passes positional arg only to chat.reply or one of the dynamically generated variants (see 5/20 notes: occurs in typecheck deco)
 
 
 Backlog

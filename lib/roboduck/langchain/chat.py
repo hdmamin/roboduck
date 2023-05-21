@@ -240,27 +240,28 @@ class Chat:
         return template.format(**kwargs)
 
     def _reply(self, *, key_='', **kwargs):
+        """The basic functionality that will underlie the dynamically generated
+        `reply` method and its other aliases. Passes user reply and
+        conversational history to an LLM for a response.
+
+        Parameters
+        ----------
+        key_: str
+            Determines which type of user reply to use. Defaults to the first
+            type defined in the prompt config.
+        kwargs: any
+            Fields expected by the relevant user prompt type. These will be
+            injected into the docstrings of our dynamically generated methods.
+
+        Returns
+        -------
+        AIMessage
+        """
+        print('key:', key_)
+        print('kwargs:', kwargs)
         user_message = self.user_message(key_=key_, **kwargs)
         self._history.append(user_message)
-        # Technically I don't think this is the exact prompt that gets sent
-        # but it's close enough for our estimate. We're doing some pretty rough
-        # arithmetic anyway with the token->word conversions.
-        n_words = len(self.history(sep='\n').split())
-        if n_words > self.prompt_words_hard_limit:
-            raise ValueError(
-                f'Chat history contains ~{n_words:,} words which is more than '
-                f'the model can support. Context window is ~'
-                f'{self.prompt_words_hard_limit:,} words '
-                f'({self.context_window:,} tokens).'
-            )
-        elif n_words > self.prompt_words_soft_limit:
-            warnings.warn(
-                f'Chat history contains ~{n_words:,} words which means the '
-                f'model\'s context window of ~'
-                f'{self.prompt_words_hard_limit:,} words '
-                f'({self.context_window:,} tokens) will be the bigger limiting '
-                f'factor than your max_length hyperparameter.'
-            )
+        self._truncate_history()
         try:
             response = self.chat(self._history)
         except Exception as e:
@@ -306,13 +307,39 @@ class Chat:
         template = self.user_templates[key or self.default_user_key]
         return set(template.input_variables)
 
-    # TODO: wip to dynamically discard old turns until our history is an
-    # acceptable size for our LLM's context window.
-    def _truncate_history(self, n_words):
+    def _truncate_history(self):
+        """Dynamically discard old turns until our history is an
+        acceptable size for our LLM's context window. Operates in place. Called
+        automatically by _reply.
+        """
+        # Technically I don't think this is the exact prompt that gets sent
+        # but it's close enough for our estimate. We're doing some pretty rough
+        # arithmetic anyway with the token->word conversions.
+        n_words = len(self.history(sep='\n').split())
         while n_words > self.prompt_words_hard_limit:
             if len(self._history) <= 2:
-                # TODO: copy over better error msg from _reply
-                raise ValueError('System message + last user message are '
-                                 'already too long for context window.')
+                raise ValueError(
+                    f'Chat history contains ~{n_words:,} words even when only '
+                    f'including the system prompt and the latest user message,'
+                    f' which is more than this model can support. Context '
+                    f'window is ~{self.prompt_words_hard_limit:,} words '
+                    f'({self.context_window:,} tokens). You could try using '
+                    f'a different model_name with a larger context window, a '
+                    f'prompt_name corresponding to a more concise prompt, '
+                    f'a smaller max_len_per_var (default is 79), or '
+                    f'refactoring your code (this error could potentially be '
+                    f'caused by a truly enormous function).'
+                )
             turn = self._history.pop(1)
-            n_words -= len(turn.content.split())
+            # Subtract an extra 1 for the speaker prefix. This is an
+            # approximate calculation regardless so it doesn't really matter
+            # but it also shouldn't hurt.
+            n_words = n_words - len(turn.content.split()) - 1
+
+        if n_words > self.prompt_words_soft_limit:
+            warnings.warn(
+                f'Chat history contains ~{n_words:,} words which means the '
+                f'model\'s context window of ~{self.prompt_words_hard_limit:,}'
+                f' words ({self.context_window:,} tokens) will be the '
+                'bigger limiting factor than your max_length hyperparameter.'
+            )
