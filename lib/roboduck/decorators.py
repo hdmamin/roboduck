@@ -84,12 +84,21 @@ def typecheck(func_=None, **types):
 
     @wraps(func_)
     def wrapper(*args, **kwargs):
-        # TODO rm
-        print('args:', args)
-        print('kwargs:', kwargs)
-        print({k: v.kind for k, v in signature(wrapper).parameters.items()})
-        # TODO end
-        fargs = signature(wrapper).bind(*args, **kwargs).arguments
+        sig = signature(wrapper)
+        try:
+            fargs = sig.bind(*args, **kwargs).arguments
+        except TypeError as e:
+            # Default error message is not very helpful if we don't handle this
+            # case separately.
+            expected_positional = [name for name, p in sig.parameters.items()
+                                   if 'positional' in str(p.kind).lower()]
+            if args and not expected_positional:
+                raise TypeError(
+                    'Received positional arg(s) but expected none. Expected '
+                    f'arguments: {list(sig.parameters)}'
+                )
+            else:
+                raise e
         for k, v in types.items():
             if k in fargs and not isinstance(fargs[k], v):
                 raise TypeError(

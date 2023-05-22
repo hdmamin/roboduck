@@ -1859,14 +1859,19 @@ X -maybe try reverting table in readme to cleaner format
 -----------
 X -consider renaming chat.from_config (we're just providing a name or file, from_config sounds more like we're passing in a dict/obj containing the args themselves)
 	> Went with from_template, not sure if that's actually much better but /shrug.
+X -better error message when user passes positional arg only to chat.reply or one of the dynamically generated variants (see 5/20 notes: occurs in typecheck deco)
 -unit test(s) for chat._truncate_history
--better error message when user passes positional arg only to chat.reply or one of the dynamically generated variants (see 5/20 notes: occurs in typecheck deco)
+
+5/22/23 mon
+-----------
+-options:
+	-unit test(s) for chat._truncate_history
+	-record demo gifs for readme
+	-try out gpt4 with roboduck
 
 
 Backlog
 -------
--record demo gifs for readme
--try out gpt4 with roboduck
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
 -other model support
