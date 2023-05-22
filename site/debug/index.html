@@ -1714,7 +1714,7 @@ library).</p>
 <span class="sd">            error occurred.</span>
 <span class="sd">        chat_kwargs : any</span>
 <span class="sd">            Additional kwargs to configure our Chat class (passed to</span>
-<span class="sd">            its `from_config` factory). Common example would be setting</span>
+<span class="sd">            its `from_template` factory). Common example would be setting</span>
 <span class="sd">            `chat_class=roboduck.langchain.chat.DummyChatModel`</span>
 <span class="sd">            which mocks api calls (good for development, saves money).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1739,7 +1739,7 @@ library).</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">dev_color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span> <span class="k">else</span> <span class="s1">&#39;red&#39;</span>
         <span class="c1"># Must create self.chat before setting _chat_prompt_keys,</span>
         <span class="c1"># and full_context after both of those.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">**</span><span class="n">chat_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="o">**</span><span class="n">chat_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_user_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backup_user_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_prompt_keys</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">full_context</span> <span class="o">=</span> <span class="s1">&#39;full_code&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_names</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prompt_name</span> <span class="o">=</span> <span class="n">prompt_name</span>
@@ -2181,7 +2181,7 @@ library).</p>
 
 
 <h5 id="lib.roboduck.debug.DuckDB.chat" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="kc">None</span><span class="o">=</span><span class="n">chat_kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="kc">None</span><span class="o">=</span><span class="n">chat_kwargs</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>

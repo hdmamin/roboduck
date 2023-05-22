@@ -121,7 +121,7 @@ class DuckDB(Pdb):
             error occurred.
         chat_kwargs : any
             Additional kwargs to configure our Chat class (passed to
-            its `from_config` factory). Common example would be setting
+            its `from_template` factory). Common example would be setting
             `chat_class=roboduck.langchain.chat.DummyChatModel`
             which mocks api calls (good for development, saves money).
         """
@@ -146,7 +146,7 @@ class DuckDB(Pdb):
         self.dev_color = 'blue' if self.color == 'red' else 'red'
         # Must create self.chat before setting _chat_prompt_keys,
         # and full_context after both of those.
-        self.chat = Chat.from_config(**chat_kwargs)
+        self.chat = Chat.from_template(**chat_kwargs)
         self.default_user_key, self.backup_user_key = self._chat_prompt_keys()
         self.full_context = 'full_code' in self.field_names()
         self.prompt_name = prompt_name

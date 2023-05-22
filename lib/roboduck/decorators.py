@@ -84,6 +84,11 @@ def typecheck(func_=None, **types):
 
     @wraps(func_)
     def wrapper(*args, **kwargs):
+        # TODO rm
+        print('args:', args)
+        print('kwargs:', kwargs)
+        print({k: v.kind for k, v in signature(wrapper).parameters.items()})
+        # TODO end
         fargs = signature(wrapper).bind(*args, **kwargs).arguments
         for k, v in types.items():
             if k in fargs and not isinstance(fargs[k], v):

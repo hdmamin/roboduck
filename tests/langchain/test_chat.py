@@ -14,7 +14,7 @@ from roboduck.langchain.chat import Chat, DummyChatModel
     ]
 )
 def test_chat_generated_methods(name):
-    chat = Chat.from_config(name)
+    chat = Chat.from_template(name)
     field_names = chat.input_variables()
     assert hasattr(chat, 'contextful') and callable(chat.contextful)
     assert hasattr(chat, 'contextless') and callable(chat.contextless)
@@ -27,11 +27,11 @@ def test_chat_generated_methods(name):
 
 
 def test_chat_extra_kwargs():
-    chat = Chat.from_config('debug', chat_class=DummyChatModel)
+    chat = Chat.from_template('debug', chat_class=DummyChatModel)
     assert isinstance(chat.chat, DummyChatModel)
 
     temp = .637
     max_tokens = 28
-    chat = Chat.from_config('debug', temperature=temp, max_tokens=max_tokens)
+    chat = Chat.from_template('debug', temperature=temp, max_tokens=max_tokens)
     assert chat.kwargs['temperature'] == temp
     assert chat.kwargs['max_tokens'] == max_tokens

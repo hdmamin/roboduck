@@ -1857,7 +1857,8 @@ X -maybe try reverting table in readme to cleaner format
 
 5/21/23 sun
 -----------
--consider renaming chat.from_config (we're just providing a name or file, from_config sounds more like we're passing in a dict/obj containing the args themselves)
+X -consider renaming chat.from_config (we're just providing a name or file, from_config sounds more like we're passing in a dict/obj containing the args themselves)
+	> Went with from_template, not sure if that's actually much better but /shrug.
 -unit test(s) for chat._truncate_history
 -better error message when user passes positional arg only to chat.reply or one of the dynamically generated variants (see 5/20 notes: occurs in typecheck deco)
 

@@ -61,7 +61,7 @@ class Chat:
     langchain. Allows you to specify reply types and kwargs via config, avoid
     manually tracking the conversation history, etc.
 
-    We recommend instantiating via the from_config factory method in most
+    We recommend instantiating via the from_template factory method in most
     cases.
     """
 
@@ -101,7 +101,7 @@ class Chat:
         ```
         # Instantiate from builtin roboduck debugging prompt template (see
         # roboduck.prompts.chat.debug).
-        chat = Chat.from_config('debug')
+        chat = Chat.from_template('debug')
         message = chat.reply(
             code='a = 3\nb = ([0, 1], [2, 3])\nb[1].append(a)',
             question='I thought tuples were immutable. Why doesn\'t appending '
@@ -190,7 +190,7 @@ class Chat:
         )
 
     @classmethod
-    def from_config(cls, name, **kwargs):
+    def from_template(cls, name, **kwargs):
         """Instantiate a Chat object from a yaml template (either builtin
         roboduck prompt templates like in roboduck.prompts.chat or a user
         defined file with the same format).
