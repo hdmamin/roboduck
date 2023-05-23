@@ -163,8 +163,7 @@ class Chat:
         1. call chat.reply(), using the key_ arg to determine which type of
         user_message is sent. The docstring shows the default user
         message type's fields but if you set the key accordingly you can pass
-        in fields for another message type. We choose not to infer key_
-        because some user_message types may accept the same fields.
+        in fields for another message type.
         2. call methods like chat.question() or chat.statement(), where 'chat'
         and 'statement' are the names of all available user message types
         (i.e. the keys of the `user` dict in the prompt config file). You can
@@ -279,6 +278,10 @@ class Chat:
         speaker_prefix : bool
             If True, preprend each turn with "Human" or "AI" depending on the
             speaker.
+
+        Returns
+        -------
+        str
         """
         res = []
         for row in self._history:

@@ -28,6 +28,7 @@ reinstall:
 
 test:
 	# `pytest` does not work. -s flag allows us to see stdout.
+	# You can use a command like `python -m pytest -s tests/test_utils.py` to run a single file's tests.
 	python -m pytest -s
 
 dev_env:

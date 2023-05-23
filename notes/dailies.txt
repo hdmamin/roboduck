@@ -1864,14 +1864,21 @@ X -better error message when user passes positional arg only to chat.reply or on
 
 5/22/23 mon
 -----------
--options:
-	-unit test(s) for chat._truncate_history
-	-record demo gifs for readme
-	-try out gpt4 with roboduck
+X -unit test(s) for chat._truncate_history
+-record demo gifs for readme
+-try out gpt4 with roboduck
+
+5/23/23 tues
+------------
+-sample colab notebook demo
+	-create nb
+	-try out gpt4
+	-add to readme
 
 
 Backlog
 -------
+-record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
 -other model support
