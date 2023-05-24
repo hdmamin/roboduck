@@ -1870,7 +1870,7 @@ X -unit test(s) for chat._truncate_history
 
 5/23/23 tues
 ------------
--sample colab notebook demo
+X -sample colab notebook demo
 	X -publish new pypi version
 	~ -create nb
 		> Colab does not provide the greatest experience here, unfortunately. Warns user about the "pydev debugger" (? must be some custom debugger they provide automatically?). Live typing is also kind of slow.
@@ -1878,12 +1878,29 @@ X -unit test(s) for chat._truncate_history
 		> Keeps getting stuck on "pulling image" step 🤷‍♂️. Not sure if binder is still operating?
 	X -try out with gpt4
 		> Does do better than 3.5 on a couple of my sorting examples.
-	-add to readme
+	X -add badge to readme
+	> Atm colab just demos the magic in non-interactive non-paste mode. Maybe should add other examples too.
 X -add warning in set_openai_api_key if key format looks unexpected
 
+5/24/23 wed
+-----------
+-change default model to gpt4 (might as well, most people probably will use that)
+-try gpt4 again in jupyter to confirm slowness is a colab thing, not a gpt4 thing
+-quickstart nb improvements
+	-maybe warn somewhere that colab experience is sub-optimal (e.g. typing is slower than usual, pydev warning might confuse users)
+	-add errors example
+	-add debugging example
+	-maybe warn user about j being a debug command (i.e. in debug you can check var values with (i,j) but not just j because that's interpreted as a command)
+-investigate bug where paste mode does not work for magic in colab
+	-try to reproduce in colab
+	-confirm works in jupyter
 
 Backlog
 -------
+-possible bug: seems like interactive mode in magic works differently than in errors module. Errors still asks the first question, magic does not.
+	-confirm current state
+	-consider desired state
+	-fix one module if necessary
 -update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
 -record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
