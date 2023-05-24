@@ -2,5 +2,6 @@ name: binder-env
 dependencies:
   - python=3.8
   - pip
-  - -r requirements-binder.txt
+  - pip:
+    - roboduck
 
