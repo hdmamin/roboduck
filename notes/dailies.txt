@@ -1871,6 +1871,7 @@ X -unit test(s) for chat._truncate_history
 5/23/23 tues
 ------------
 -sample colab notebook demo
+	-publish new pypi version
 	-create nb
 	-try out gpt4
 	-add to readme
@@ -1878,6 +1879,7 @@ X -unit test(s) for chat._truncate_history
 
 Backlog
 -------
+-update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
 -record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done

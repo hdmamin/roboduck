@@ -166,7 +166,8 @@ def set_openai_api_key(key=None, config_path=config_path,
                 raise RuntimeError(msg)
             else:
                 warnings.warn(msg + ' Not raising error because strict=False, '
-                              'but openai API will not be available.')
+                              'but openai API will not be available until you '
+                              'make key available via one of these methods.')
                 return
     os.environ[var_name] = key
     if update_config_:
