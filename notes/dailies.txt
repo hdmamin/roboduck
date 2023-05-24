@@ -1881,6 +1881,8 @@ X -sample colab notebook demo
 	X -add badge to readme
 	> Atm colab just demos the magic in non-interactive non-paste mode. Maybe should add other examples too.
 X -add warning in set_openai_api_key if key format looks unexpected
+X -update repo description with a third thing
+	> Logging.
 
 5/24/23 wed
 -----------
