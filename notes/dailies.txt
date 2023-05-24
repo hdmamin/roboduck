@@ -1871,10 +1871,15 @@ X -unit test(s) for chat._truncate_history
 5/23/23 tues
 ------------
 -sample colab notebook demo
-	-publish new pypi version
-	-create nb
-	-try out gpt4
+	X -publish new pypi version
+	~ -create nb
+		> Colab does not provide the greatest experience here, unfortunately. Warns user about the "pydev debugger" (? must be some custom debugger they provide automatically?). Live typing is also kind of slow.
+	! -try binder instead of colab
+		> Keeps getting stuck on "pulling image" step 🤷‍♂️. Not sure if binder is still operating?
+	X -try out with gpt4
+		> Does do better than 3.5 on a couple of my sorting examples.
 	-add to readme
+X -add warning in set_openai_api_key if key format looks unexpected
 
 
 Backlog

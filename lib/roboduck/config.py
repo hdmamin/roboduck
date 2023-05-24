@@ -169,6 +169,13 @@ def set_openai_api_key(key=None, config_path=config_path,
                               'but openai API will not be available until you '
                               'make key available via one of these methods.')
                 return
+    if not key.startswith('sk-'):
+        partially_redacted_key = key[:4] + '*'*max(0, len(key) - 4)
+        warnings.warn(
+            f'Your openai api key ({partially_redacted_key}) looks unusual. '
+            f'Are you sure it\'s correct? (Key is partially redacted in '
+            f'warning to err on the side of caution.)'
+        )
     os.environ[var_name] = key
     if update_config_:
         update_config(config_path, **{var_name.lower(): key})

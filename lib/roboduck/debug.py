@@ -49,7 +49,7 @@ class CodeCompletionCache:
     a. our `duck` jupyter magic can access, and
     b. allows us to easily reset all defaults
 
-    The magic only needs to access it in insert mode (-i flag) to insert
+    The magic only needs to access it in Paste mode (-p flag) to insert
     the fixed code snippet into a new code cell.
     """
 
