@@ -171,3 +171,16 @@ def save_notebook(file_path):
     while start_md5 == current_md5:
         time.sleep(1)
         current_md5 = file_md5(file_path)
+
+
+def is_colab(shell=None):
+    """Check if we're currently in google colab.
+
+    Parameters
+    ----------
+    shell : None or IPython.core.interactiveshell.InteractiveShell
+        Colab uses a custom shell class so we can use this to distinguish
+        between colab and jupyter.
+    """
+    shell = shell or get_ipython()
+    return 'google.colab' in str(type(shell))

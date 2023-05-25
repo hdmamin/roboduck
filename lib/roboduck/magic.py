@@ -32,6 +32,7 @@ import sys
 import warnings
 
 from roboduck.debug import DuckDB, CodeCompletionCache
+from roboduck.ipy_utils import is_colab
 
 
 @magics_class
@@ -83,6 +84,9 @@ class DebugMagic(Magics):
             warnings.warn('Support for custom prompts is somewhat limited - '
                           'your prompt must use the default parse_func '
                           '(roboduck.utils.parse_completion).')
+        if args.p and is_colab(self.shell):
+            warnings.warn('Paste mode is unavailable in google colab, which '
+                          'you appear to be using. Ignoring -p flag.')
         if args.i:
             old_cls = self.shell.debugger_cls
             if args.prompt:

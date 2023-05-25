@@ -86,3 +86,20 @@ perhaps make _history a property and implement logic to do that automatically
 	-can avoid this by using another attr self._messages or something that the _history property can reference.
 	-after implementing a quick/dirty toy example, I'm realizing every time we access _history we'll need to convert deque to a list so we can add system message, so it's either O(N) there or O(N) when popping index 1. Seems like comparable downsides so maybe just stick with the simpler implementation of using a single list and popping the item at idx 1 repeatedly. Seems unlikely that this is something where optimization would be particularly useful. Context window has a fixed size (with current arches anyway) so technically the number of messages is limited to a fixed k (worst case assume 1 char per message) so technically I guess you could argue the pop is still O(1).
 
+5/24/23 wed
+-----------
+Possible example for talking errors mode:
+items = ([1, 3], [2, 4])
+items[0] += [5]
+
+Or maybe can put this inside a loop and include a suggested question to ask.
+
+def update_rows(rows):
+    for i in range(len(rows)):
+        duck()
+        rows[i] += [i]
+    return rows
+
+Hit `n` to step through the function until an index error occurs. If you then type `rows` and hit ENTER, you may notice that the first item in rows was altered despite the operation appearing to fail. You can try asking a question like:
+
+Why did 0 get appended to the first item in rows when the addition operation seemingly failed?

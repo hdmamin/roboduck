@@ -1886,16 +1886,29 @@ X -update repo description with a third thing
 
 5/24/23 wed
 -----------
--change default model to gpt4 (might as well, most people probably will use that)
--try gpt4 again in jupyter to confirm slowness is a colab thing, not a gpt4 thing
+X -change default model to gpt4 (might as well, most people probably will use that)
+X -try gpt4 again in jupyter to confirm slowness is a colab thing, not a gpt4 thing
+	> Maybe a tad slower but not too bad.
 -quickstart nb improvements
-	-maybe warn somewhere that colab experience is sub-optimal (e.g. typing is slower than usual, pydev warning might confuse users)
-	-add errors example
-	-add debugging example
+	X -maybe warn somewhere that colab experience is sub-optimal (e.g. typing is slower than usual, pydev warning might confuse users)
+		> Initially added markdown warning in nb, later moved to a programmatic warning in init file about typing. Implemented ipy_utils.is_colab() as a helper. Also incorporated that into magic when user tries to use paste mode (confirmed that does not work, both anecdotally and supported by gpt).
+	X -add errors example
+	X -reorder examples so errors is before magic and api key stuff is in its own section
+	~ -add debugging example
+		> Thinking maybe revert to using one of the sort algos for this and use tricky tuple mutating example for errors (see misc.txt).
 	-maybe warn user about j being a debug command (i.e. in debug you can check var values with (i,j) but not just j because that's interpreted as a command)
--investigate bug where paste mode does not work for magic in colab
-	-try to reproduce in colab
-	-confirm works in jupyter
+X -investigate bug where paste mode does not work for magic in colab
+	X -try to reproduce in colab
+	~ -confirm works in jupyter
+	> Colab's shell does not allow this.
+
+5/25/23 thurs
+-------------
+-quickstart nb improvements
+	-add debugging example (see candidate in misc.txt; can consider whether sort algo should be error or debug demo)
+	-maybe warn user about j being a debug command (i.e. in debug you can check var values with (i,j) but not just j because that's interpreted as a command)
+-update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
+
 
 Backlog
 -------
@@ -1903,7 +1916,6 @@ Backlog
 	-confirm current state
 	-consider desired state
 	-fix one module if necessary
--update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
 -record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
