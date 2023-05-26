@@ -629,8 +629,7 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 
         <details class="quote">
           <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
-<span class="normal"> 38</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
 <span class="normal"> 41</span>
@@ -731,7 +730,11 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
 <span class="k">class</span> <span class="nc">DebugMagic</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter a conversational debugging session after an error is thrown by a</span>
 <span class="sd">    jupyter notebook code cell.</span>
@@ -780,6 +783,9 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Support for custom prompts is somewhat limited - &#39;</span>
                           <span class="s1">&#39;your prompt must use the default parse_func &#39;</span>
                           <span class="s1">&#39;(roboduck.utils.parse_completion).&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">is_colab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Paste mode is unavailable in google colab, which &#39;</span>
+                          <span class="s1">&#39;you appear to be using. Ignoring -p flag.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">i</span><span class="p">:</span>
             <span class="n">old_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
@@ -866,8 +872,7 @@ change persist, at least until the user changes it again.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
-<span class="normal"> 64</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 64</span>
 <span class="normal"> 65</span>
 <span class="normal"> 66</span>
 <span class="normal"> 67</span>
@@ -942,7 +947,11 @@ change persist, at least until the user changes it again.</p>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
                <span class="s1">&#39;new code cell below.&#39;</span><span class="p">)</span>
@@ -965,6 +974,9 @@ change persist, at least until the user changes it again.</p>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Support for custom prompts is somewhat limited - &#39;</span>
                       <span class="s1">&#39;your prompt must use the default parse_func &#39;</span>
                       <span class="s1">&#39;(roboduck.utils.parse_completion).&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">is_colab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Paste mode is unavailable in google colab, which &#39;</span>
+                      <span class="s1">&#39;you appear to be using. Ignoring -p flag.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">i</span><span class="p">:</span>
         <span class="n">old_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>

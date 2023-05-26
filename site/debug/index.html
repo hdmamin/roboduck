@@ -1002,7 +1002,7 @@ second to last line where you might normally call <code>breakpoint()</code>.</p>
 
 def bubble_sort(nums):
     for i in range(len(nums)):
-        for j in range(len(nums)):
+        for j in range(len(nums) - 1):
             if nums[j] &gt; nums[j + 1]:
                 nums[j + 1] = nums[j]
                 nums[j] = nums[j + 1]
@@ -1041,7 +1041,7 @@ bubble_sort(nums)
       <p>Stores values related to the last completion from DuckDB in a way that
 a. our <code>duck</code> jupyter magic can access, and
 b. allows us to easily reset all defaults</p>
-<p>The magic only needs to access it in insert mode (-i flag) to insert
+<p>The magic only needs to access it in Paste mode (-p flag) to insert
 the fixed code snippet into a new code cell.</p>
 
 
@@ -1074,7 +1074,7 @@ the fixed code snippet into a new code cell.</p>
 <span class="sd">    a. our `duck` jupyter magic can access, and</span>
 <span class="sd">    b. allows us to easily reset all defaults</span>
 
-<span class="sd">    The magic only needs to access it in insert mode (-i flag) to insert</span>
+<span class="sd">    The magic only needs to access it in Paste mode (-p flag) to insert</span>
 <span class="sd">    the fixed code snippet into a new code cell.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
