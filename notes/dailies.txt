@@ -1904,18 +1904,22 @@ X -investigate bug where paste mode does not work for magic in colab
 
 5/25/23 thurs
 -------------
--quickstart nb improvements
-	-add debugging example (see candidate in misc.txt; can consider whether sort algo should be error or debug demo)
-	-maybe warn user about j being a debug command (i.e. in debug you can check var values with (i,j) but not just j because that's interpreted as a command)
+X -quickstart nb improvements
+	X -add debugging example (see candidate in misc.txt; can consider whether sort algo should be error or debug demo)
+	_ -maybe warn user about j being a debug command (i.e. in debug you can check var values with (i,j) but not just j because that's interpreted as a command)
 -update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
 
-
-Backlog
--------
+5/26/23 fri
+-----------
+-update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
 -possible bug: seems like interactive mode in magic works differently than in errors module. Errors still asks the first question, magic does not.
 	-confirm current state
 	-consider desired state
 	-fix one module if necessary
+
+
+Backlog
+-------
 -record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
