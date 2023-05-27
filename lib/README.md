@@ -21,9 +21,6 @@ Many AI-powered dev tools help you write boilerplate more quickly, but the harde
 
 ## Quickstart
 
-# TODO add gifs
-
-
 ### Install
 
 ```

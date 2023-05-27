@@ -17,12 +17,21 @@ def version():
             return row.split(' = ')[-1].strip('\n').strip("'")
 
 
+def load_file(name):
+    """Load contents of file in the same directory as setup.py and return it as
+    a string.
+    """
+    path = os.path.join(os.path.dirname(__file__), name)
+    return path.read_text()
+
+
 setuptools.setup(
     name='roboduck',
     version=version(),
     author='Harrison Mamin',
     author_email='harrisonmamin@gmail.com',
     description='A natural language debugger.',
+    long_description=load_file('README.md'),
     install_requires=requirements(),
     packages=setuptools.find_packages(),
     package_data={
