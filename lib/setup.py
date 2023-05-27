@@ -33,6 +33,7 @@ setuptools.setup(
     author_email='harrisonmamin@gmail.com',
     description='A natural language debugger.',
     long_description=load_file('README.md'),
+    long_description_content_type='text/markdown',
     install_requires=requirements(),
     packages=setuptools.find_packages(),
     package_data={
