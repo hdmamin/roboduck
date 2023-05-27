@@ -22,7 +22,8 @@ def load_file(name):
     a string.
     """
     path = os.path.join(os.path.dirname(__file__), name)
-    return path.read_text()
+    with open(path, 'r') as f:
+        return f.read()
 
 
 setuptools.setup(
