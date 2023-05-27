@@ -7,7 +7,7 @@ from roboduck.ipy_utils import is_colab
 from roboduck.utils import available_models
 
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 set_openai_api_key()
 if is_colab():
     warnings.warn(
