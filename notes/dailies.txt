@@ -1911,7 +1911,15 @@ X -quickstart nb improvements
 
 5/26/23 fri
 -----------
--update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
+X -update pypi page (uses lib/readme, initial instinct was for makefile to cp file over when building lib but I think image urls will neneed to be updated as well)
+	> More involved than it looks - needed to update lib readme, get raw image url, figure out why readme wasn't displaying (forgot needed to manually load readme in setup.py), and fix file type issues (now expects rst by default).
+-possible bug: seems like interactive mode in magic works differently than in errors module. Errors still asks the first question, magic does not.
+	-confirm current state
+	-consider desired state
+	-fix one module if necessary
+
+5/27/23 sat
+-----------
 -possible bug: seems like interactive mode in magic works differently than in errors module. Errors still asks the first question, magic does not.
 	-confirm current state
 	-consider desired state
