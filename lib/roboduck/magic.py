@@ -81,9 +81,9 @@ class DebugMagic(Magics):
         """
         args = parse_argstring(self.duck, line)
         if args.prompt:
-            warnings.warn('Support for custom prompts is somewhat limited - '
-                          'your prompt must use the default parse_func '
-                          '(roboduck.utils.parse_completion).')
+            warnings.warn('Support for custom prompts is somewhat limited '
+                          'at the moment - your prompt must use the default '
+                          'parse_func (roboduck.utils.parse_completion).')
         if args.p and is_colab(self.shell):
             warnings.warn('Paste mode is unavailable in google colab, which '
                           'you appear to be using. Ignoring -p flag.')

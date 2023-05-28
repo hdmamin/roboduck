@@ -393,3 +393,28 @@ def available_models():
     res['openai'] = [row['id'] for row in openai_res['data']
                      if row['id'].startswith('gpt')]
     return res
+
+
+def make_import_statement(cls_name):
+    """Given a class name like 'roboduck.debug.DuckDB', construct the import
+    statement (str) that should likely be used to import that class (in this
+    case 'from roboduck.debug import DuckDB'.
+
+    Parameters
+    ----------
+    cls_name : str
+        Class name including module (essentially __qualname__?), e.g.
+        roboduck.DuckDB. (Note that this would need to be roboduck.debug.DuckDB
+        if we didn't include DuckDB in roboduck's __init__.py.)
+
+    Returns
+    -------
+    str
+        E.g. "from roboduck import DuckDB"
+    """
+    parts = cls_name.split('.')
+    if len(parts) == 1:
+        return f'import {parts[0]}'
+    else:
+        lib = '.'.join(parts[:-1])
+        return f'from {lib} import {parts[-1]}'
