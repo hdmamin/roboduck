@@ -1920,26 +1920,31 @@ X -update pypi page (uses lib/readme, initial instinct was for makefile to cp fi
 
 5/27/23 sat
 -----------
--possible bug: seems like interactive mode in magic works differently than in errors module. Errors still asks the first question, magic does not.
+~ -possible bug: seems like interactive mode in magic works differently than in errors module. Errors still asks the first question, magic does not.
 	X -confirm current state
 		> Errors: interactive mode allows followup questions, and the first one is automatically asked for you.
 		> Magic: interactive mode does allow followup questions, but does NOT automatically ask the first question.
-	-consider desired state
+	X -consider desired state
 		> It does seem like a consistent experience would be ideal. Non-interactive mode (for both the magic and errors mode) seems like it should pretty clearly automatically ask the first question.
 		> Realized non-interactive mode uses debug_stack_trace prompt by default, which does NOT currently include a user question. That's fine bc they're not given an opportunity to type. Need to be careful if I use the same method for interactive mode to update the prompt accordingly. Note that in interactive debug mode, contextful can only be used once (I think) bc we're already at the latest step of code execution possible before an error is thrown - need to think about repercussions more.
 		> I think for errors and magic mode, we should ALWAYS (interactive mode or not) ask the first question automatically. That's kind of the whole point.
-	-fix one module if necessary
+	~ -fix one module if necessary
 		> So sounds like errors module already does what I want. Magic module interactive mode is the only thing that needs to change.
+		> Do this tomorrow.
 X -cli changes
 	X -move make_import util to utils module
 	X -debug broken cli
 		> Initially put func in wrong utils module, got confused and moved it back and forth a bit. Then thought actual problem was with the weird circular imports issue again, only to discover I yet AGAIN tried to import the wrong dummy class name. Realized the problem was the example in the cli help section used the wrong name. Fixed and moved make_import func back to utils.
 X -tweak order and instructions of quickstart nb
 
+5/28/23 sun
+-----------
+-fix magics module interactive mode to ask first question automatically (presumably using errors.excepthook)
+-better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
+
 
 Backlog
 -------
--better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
 -record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
