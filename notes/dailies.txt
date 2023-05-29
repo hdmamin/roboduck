@@ -1939,7 +1939,19 @@ X -tweak order and instructions of quickstart nb
 
 5/28/23 sun
 -----------
--fix magics module interactive mode to ask first question automatically (presumably using errors.excepthook)
+X -fix magics module interactive mode to ask first question automatically (presumably using errors.excepthook)
+	X -implement
+	X -test with dummy model
+	X -test with gpt3.5
+-better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
+
+5/29/23 mon
+-----------
+-consider deleting refs to custom ipython shell class now that we seem to no longer use it
+	-del module
+	-del from personal ipython config
+	-check elsewhere in repo for appearances and delete
+-see if magic can maintain a queue or pointer to track latest code completion in interactive mode (As it is, cache gets updated on every ask_language_model call. If user asks a followup question that does not contain code, that erases our last completion and we can't paste it in if requested.)
 -better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
 
 

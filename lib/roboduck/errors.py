@@ -64,7 +64,8 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
     interactive : bool
         If False, LLM will just explain the error and exit. If True, user
         instead will be thrown into an interactive debugging session where
-        they can ask followup questions.
+        they can ask followup questions (the first LLM response will still be
+        automatic though).
     kwargs : any
         Additional kwargs to pass to debugger class constructor. The docstring
         of the default class is included below for reference.

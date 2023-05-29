@@ -23,7 +23,6 @@ nums.add(4)
 ```
 """
 
-from functools import partial
 from IPython import get_ipython
 from IPython.core.magic import line_magic, magics_class, Magics
 from IPython.core.magic_arguments import argument, magic_arguments, \
@@ -31,7 +30,7 @@ from IPython.core.magic_arguments import argument, magic_arguments, \
 import sys
 import warnings
 
-from roboduck.debug import DuckDB, CodeCompletionCache
+from roboduck.debug import CodeCompletionCache
 from roboduck.ipy_utils import is_colab
 
 
@@ -64,7 +63,11 @@ class DebugMagic(Magics):
     @magic_arguments()
     @argument('-p', action='store_true',
               help='Boolean flag: if provided, try to PASTE a solution into a '
-                   'new code cell below.')
+                   'new code cell below. Note that if you also choose to use '
+                   'interactive mode, the pasted code snippet currently comes '
+                   'from the *last* LLM response. If your followup questions '
+                   'don\'t elicit a response that includes code, there will '
+                   'be no solution to insert.')
     @argument('-i', action='store_true',
               help='Boolean flag: if provided, use INTERACTIVE mode. Start a '
                    'conversational debugger session and allow the user to ask '
@@ -87,53 +90,30 @@ class DebugMagic(Magics):
         if args.p and is_colab(self.shell):
             warnings.warn('Paste mode is unavailable in google colab, which '
                           'you appear to be using. Ignoring -p flag.')
-        if args.i:
-            old_cls = self.shell.debugger_cls
-            if args.prompt:
-                new_cls = partial(DuckDB, prompt=args.prompt)
-            else:
-                new_cls = DuckDB
-            try:
-                self.shell.debugger_cls = new_cls
-            except AttributeError:
-                print(
-                    'Roboduck is unavailable in your current ipython session. '
-                    'To use it, start a new session with the command:\n\n'
-                    'ipython --TerminalIPythonApp.interactive_shell_class='
-                    'roboduck.shell.RoboDuckTerminalInteractiveShell\n\n'
-                    '(You will also need to run `from roboduck import '
-                    'magic` in the session to make the magic available.) To '
-                    'make it available automatically for all '
-                    'ipython sessions by default, add the following lines to '
-                    'your ipython config (usually found at '
-                    '~/.ipython/profile_default/ipython_config.py):\n\n'
-                    'cfg = get_config()\ncfg.TerminalIPythonApp.interactive_'
-                    'shell_class = roboduck.shell.'
-                    'RoboDuckTerminalInteractiveShell'
-                    '\ncfg.InteractiveShellApp.exec_lines = '
-                    '["from roboduck import magic"]'
-                )
-                return
-            self.shell.InteractiveTB.debugger_cls = new_cls
-            self.shell.debugger(force=True)
-            self.shell.debugger_cls = self.shell.InteractiveTB.debugger_cls = old_cls
-        else:
-            # Confine this import to this if clause rather than keeping a top
-            # level import - importing this module overwrites sys.excepthook
-            # which we don't necessarily want in most cases.
-            # Note that this uses the `debug_stack_trace` prompt by default
-            # whereas interactive mode uses `debug` by default.
-            # UPDATE: we could probably use excepthook for both cases
-            # (args.i = True or False) now that
-            # I added interactive support in the errors module. However,
-            # everything is working nicely now and I don't see a compelling
-            # reason to change things at the moment.
+        try:
+            # Confine this import to this method rather than keeping a top
+            # level import because importing this module overwrites
+            # sys.excepthook which we don't necessarily want when
+            # importing this module.
+            # Note that this uses the `debug_stack_trace` prompt by default.
+            # This does NOT include a user question param in the contextful
+            # prompt, but in this setting we only use that method once (for our
+            # automatic question) because excepthook transports us to one
+            # step before the error. The user can ask followup questions but
+            # the code state will not progress because we can't step through
+            # any further, and thus the contextless method (which does include
+            # a user question) is used from that point forward.
+            # Color should be specified because errors module uses red
+            # by default (whereas debug module uses green).
             from roboduck import errors
-            kwargs = {'auto': True, 'color': 'green'}
+            kwargs = {'auto': True, 'interactive': args.i, 'color': 'green'}
             if args.prompt:
                 kwargs['prompt'] = args.prompt
             errors.excepthook(sys.last_type, sys.last_value,
                               sys.last_traceback, **kwargs)
+        except Exception as e:
+            pass
+        finally:
             errors.disable()
 
         # Insert suggested code into next cell.
