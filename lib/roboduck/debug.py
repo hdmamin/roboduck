@@ -31,6 +31,7 @@ import ipynbname
 from langchain.callbacks.base import CallbackManager
 from pdb import Pdb
 import sys
+import uuid
 import warnings
 
 from roboduck.langchain.chat import Chat
@@ -54,17 +55,75 @@ class CodeCompletionCache:
     """
 
     # LLM full completion.
-    last_completion = ''
+    last_completion = []
     # LLM natural language explanation.
-    last_explanation = ''
+    last_explanation = []
     # User code snippet.
-    last_code = ''
+    last_code = []
     # LLM generated code.
-    last_new_code = ''
+    last_new_code = []
     # LLM generated code with new bits highlighted (print to render correctly).
-    last_code_diff = ''
-    # Allows storing extra values when passing a custom parse_func to DuckDB.
-    last_extra = {}
+    last_code_diff = []
+    # Technically tied to the DuckDB instance, but in roboduck a new instance
+    # is created for each session. We only store one value here rather than a
+    # list because it will be the same for every turn in the session.
+    last_session_id = ''
+    # List of dicts. Allows storing extra values when passing a
+    # custom parse_func to DuckDB.
+    last_extra = []
+
+    @classmethod
+    def update_cache(cls, **kwargs):
+        for k, v in kwargs.items():
+            cache = getattr(cls, k)
+            if isinstance(cache, list):
+                cache.append(v)
+            elif isinstance(cache, str):
+                setattr(cls, k, v)
+            else:
+                raise ValueError(
+                    'Roboduck encountered an unexpected value in '
+                    f'CodeCompletionCache: attr {k} has type {type(cache)},'
+                    f'expected str or list.'
+                )
+
+    @classmethod
+    def get(cls, name, newest=True):
+        """Get the first/last truthy value of a given attribute if one exists,
+        e.g. the most recent code completion.
+
+        Parameters
+        ----------
+        name : str
+            Attribute name. Should be a class attribute like 'last_code'.
+        newest : bool
+            Determines whether to get the first (newest=False) or last
+            (newest=True) truthy value.
+
+        Returns
+        --------
+        any
+            The first/last truthy value of the requested class attribute. If
+            no truthy values are found, we return None.
+
+        Examples
+        --------
+        ```
+        # Get the most recent LLM response.
+        CodeCompletionCache.get('last_completion')
+        ```
+        """
+        if not hasattr(cls, name):
+            raise AttributeError(f'{cls.__name__} has no attribute {name}.')
+
+        items = getattr(cls, name)
+        if isinstance(items, (list, tuple)):
+            if newest:
+                items = items[::-1]
+            for val in items:
+                if val:
+                    return val
+        return items or None
 
 
 class DuckDB(Pdb):
@@ -155,6 +214,10 @@ class DuckDB(Pdb):
         self.parse_func = parse_func
         # This gets updated every time the user asks a question.
         self.prev_kwargs_hash = None
+        # This can generally be treated as a session ID since roboduck always
+        # creates a new debugger object for each session. It lets us know when
+        # to clear the CodeCompletionCache.
+        self.uuid = str(uuid.uuid1())
 
     def _chat_prompt_keys(self):
         """Retrieve default and backup user reply prompt keys (names) from
@@ -416,21 +479,24 @@ class DuckDB(Pdb):
                 print(colored(answer, self.color))
 
         parsed_kwargs = self.parse_func(answer)
-        # When using the `duck` jupyter magic in "insert" mode, we reference
-        # the CodeCompletionCache to populate the new code cell.
-        CodeCompletionCache.last_completion = answer
-        CodeCompletionCache.last_explanation = parsed_kwargs['explanation']
+        if CodeCompletionCache.last_session_id != self.uuid:
+            CodeCompletionCache.reset_class_vars()
+
         # Built-in prompts always ask for a fixed version of the relevant
         # snippet, not the whole code, so that's what we store here and use for
-        # the diff operation.
-        # Contextless prompt has no `code` key.
+        # the diff operation. Contextless prompt has no `code` key, hence the
+        # `get` usage.
         old_code = prompt_kwargs.get('code', '')
         new_code = parsed_kwargs['code']
-        CodeCompletionCache.last_code_diff = colordiff_new_str(old_code,
-                                                               new_code)
-        CodeCompletionCache.last_code = old_code
-        CodeCompletionCache.last_new_code = new_code
-        CodeCompletionCache.last_extra = parsed_kwargs.get('extra', {})
+        CodeCompletionCache.update_cache(
+            last_completion=answer,
+            last_explanation=parsed_kwargs['explanation'],
+            last_code_diff=colordiff_new_str(old_code, new_code),
+            last_code=old_code,
+            last_new_code=new_code,
+            last_extra=parsed_kwargs.get('extra', {}),
+            last_session_id=self.uuid
+        )
         self.prev_kwargs_hash = kwargs_hash
 
     def precmd(self, line):

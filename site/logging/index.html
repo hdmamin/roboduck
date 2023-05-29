@@ -390,21 +390,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../shell.md" class="md-nav__link">
-        None
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../utils/" class="md-nav__link">
         Utils
       </a>
@@ -759,7 +744,8 @@ message in the original exception before logging.)</p>
 <span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
-<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DuckLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
+<span class="normal">130</span>
+<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DuckLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replacement for logging.Logger class that uses our errors module to</span>
 <span class="sd">    log natural language explanations and fixes along with the original error.</span>
 <span class="sd">    (More specifically, we just wait for the errors module to update the</span>
@@ -778,7 +764,8 @@ message in the original exception before logging.)</p>
 <span class="sd">            Another kwarg to pass to our excepthook function. This is separate</span>
 <span class="sd">            from the others because we want to use a different default than the</span>
 <span class="sd">            function has since we often log to a file, in which case</span>
-<span class="sd">            colordiff=True may be undesirable.</span>
+<span class="sd">            colordiff=True may be undesirable since color is only visible when</span>
+<span class="sd">            printed.</span>
 <span class="sd">        fmt : str</span>
 <span class="sd">            Defines logging format. The default format produces output like</span>
 <span class="sd">            this when an error is logged:</span>
@@ -961,8 +948,7 @@ logger = logging.getLogger()
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/logging.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
-<span class="normal">134</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
@@ -985,7 +971,8 @@ logger = logging.getLogger()
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
-<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">getLogger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">157</span>
+<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">getLogger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Mimics interface of builtin logging.getLogger, but with our custom</span>
 <span class="sd">    logger that ensures all errors explain themselves.</span>
 

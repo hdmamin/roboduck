@@ -41,7 +41,8 @@ class DuckLogger(Logger):
             Another kwarg to pass to our excepthook function. This is separate
             from the others because we want to use a different default than the
             function has since we often log to a file, in which case
-            colordiff=True may be undesirable.
+            colordiff=True may be undesirable since color is only visible when
+            printed.
         fmt : str
             Defines logging format. The default format produces output like
             this when an error is logged:

@@ -117,8 +117,8 @@ class DebugMagic(Magics):
             errors.disable()
 
         # Insert suggested code into next cell.
-        if args.p and CodeCompletionCache.last_completion:
-            self.shell.set_next_input(CodeCompletionCache.last_new_code,
+        if args.p and CodeCompletionCache.get('last_completion'):
+            self.shell.set_next_input(CodeCompletionCache.get('last_new_code'),
                                       replace=False)
         CodeCompletionCache.reset_class_vars()
 

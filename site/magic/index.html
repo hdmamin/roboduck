@@ -370,21 +370,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../shell.md" class="md-nav__link">
-        None
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../utils/" class="md-nav__link">
         Utils
       </a>
@@ -798,8 +783,8 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
             <span class="n">errors</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
 
         <span class="c1"># Insert suggested code into next cell.</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_completion</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">set_next_input</span><span class="p">(</span><span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_new_code</span><span class="p">,</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;last_completion&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">set_next_input</span><span class="p">(</span><span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;last_new_code&#39;</span><span class="p">),</span>
                                       <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">reset_class_vars</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -951,8 +936,8 @@ change persist, at least until the user changes it again.</p>
         <span class="n">errors</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
 
     <span class="c1"># Insert suggested code into next cell.</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_completion</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">set_next_input</span><span class="p">(</span><span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">last_new_code</span><span class="p">,</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;last_completion&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">set_next_input</span><span class="p">(</span><span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;last_new_code&#39;</span><span class="p">),</span>
                                   <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">CodeCompletionCache</span><span class="o">.</span><span class="n">reset_class_vars</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>

@@ -103,11 +103,14 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
     # Make gpt explanation available as part of last error message,
     # accessible via sys.last_value.
     last_value = getattr(sys, 'last_value', None)
-    if CodeCompletionCache.last_completion and last_value:
-        code_name = 'last_code_diff' if colordiff else 'last_new_code'
+    last_completion = CodeCompletionCache.get('last_completion')
+    if last_completion and last_value:
+        # Logging often eschews code-diffing because it doesn't render in file.
+        last_code = CodeCompletionCache.get(
+            'last_code_diff' if colordiff else 'last_new_code'
+        )
         last_value.args = tuple(
-            arg if i else f'{arg}\n\n{CodeCompletionCache.last_explanation}'
-                          f'\n\n{getattr(CodeCompletionCache, code_name)}'
+            arg if i else f'{arg}\n\n{last_completion}\n\n{last_code}'
             for i, arg in enumerate(last_value.args)
         )
 
