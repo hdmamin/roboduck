@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../shell/">
+        <link rel="prev" href="../cli/cli/">
       
       
         <link rel="next" href="../ipy_utils/">
@@ -274,8 +274,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../shell/" class="md-nav__link">
-        Shell
+      <a href="../shell.md" class="md-nav__link">
+        None
       </a>
     </li>
   
@@ -392,6 +392,13 @@
           <li class="md-nav__item">
   <a href="#lib.roboduck.utils.available_models" class="md-nav__link">
     available_models()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.make_import_statement" class="md-nav__link">
+    make_import_statement()
   </a>
   
 </li>
@@ -567,6 +574,13 @@
           <li class="md-nav__item">
   <a href="#lib.roboduck.utils.available_models" class="md-nav__link">
     available_models()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.make_import_statement" class="md-nav__link">
+    make_import_statement()
   </a>
   
 </li>
@@ -2061,6 +2075,119 @@ never got off API waitlist.</p></td>
     <span class="n">res</span><span class="p">[</span><span class="s1">&#39;openai&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">openai_res</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
                      <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;gpt&#39;</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">res</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="lib.roboduck.utils.make_import_statement" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">make_import_statement</span><span class="p">(</span><span class="n">cls_name</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Given a class name like 'roboduck.debug.DuckDB', construct the import
+statement (str) that should likely be used to import that class (in this
+case 'from roboduck.debug import DuckDB'.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cls_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Class name including module (essentially <strong>qualname</strong>?), e.g.
+roboduck.DuckDB. (Note that this would need to be roboduck.debug.DuckDB
+if we didn't include DuckDB in roboduck's <strong>init</strong>.py.)</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>E.g. "from roboduck import DuckDB"</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_import_statement</span><span class="p">(</span><span class="n">cls_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a class name like &#39;roboduck.debug.DuckDB&#39;, construct the import</span>
+<span class="sd">    statement (str) that should likely be used to import that class (in this</span>
+<span class="sd">    case &#39;from roboduck.debug import DuckDB&#39;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cls_name : str</span>
+<span class="sd">        Class name including module (essentially __qualname__?), e.g.</span>
+<span class="sd">        roboduck.DuckDB. (Note that this would need to be roboduck.debug.DuckDB</span>
+<span class="sd">        if we didn&#39;t include DuckDB in roboduck&#39;s __init__.py.)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        E.g. &quot;from roboduck import DuckDB&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">cls_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;import </span><span class="si">{</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;from </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s1"> import </span><span class="si">{</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

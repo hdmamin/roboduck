@@ -406,8 +406,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../shell/" class="md-nav__link">
-        Shell
+      <a href="../shell.md" class="md-nav__link">
+        None
       </a>
     </li>
   
@@ -799,7 +799,8 @@ parts in green.</p></td>
           </td>
           <td><p>If False, LLM will just explain the error and exit. If True, user
 instead will be thrown into an interactive debugging session where
-they can ask followup questions.</p></td>
+they can ask followup questions (the first LLM response will still be
+automatic though).</p></td>
           <td>
                 <code>False</code>
           </td>
@@ -893,7 +894,8 @@ of the default class is included below for reference.</p></td>
 <span class="normal">108</span>
 <span class="normal">109</span>
 <span class="normal">110</span>
-<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">post_mortem</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Pdb</span><span class="o">=</span><span class="n">DuckDB</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span>
                 <span class="n">colordiff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop-in replacement (hence the slightly odd arg order, where trace is</span>
@@ -922,7 +924,8 @@ of the default class is included below for reference.</p></td>
 <span class="sd">    interactive : bool</span>
 <span class="sd">        If False, LLM will just explain the error and exit. If True, user</span>
 <span class="sd">        instead will be thrown into an interactive debugging session where</span>
-<span class="sd">        they can ask followup questions.</span>
+<span class="sd">        they can ask followup questions (the first LLM response will still be</span>
+<span class="sd">        automatic though).</span>
 <span class="sd">    kwargs : any</span>
 <span class="sd">        Additional kwargs to pass to debugger class constructor. The docstring</span>
 <span class="sd">        of the default class is included below for reference.</span>
@@ -1000,8 +1003,7 @@ position of the error.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
-<span class="normal">115</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
@@ -1028,7 +1030,8 @@ position of the error.</p>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_exception</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chain</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_exception</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chain</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replacement for traceback.print_exception() that returns the</span>
 <span class="sd">    whole stack trace as a single string. Used in roboduck&#39;s custom excepthook</span>
 <span class="sd">    to allow us to show the stack trace to gpt. The original function&#39;s</span>
@@ -1177,8 +1180,7 @@ e.g. "model_name='gpt-4'".</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
-<span class="normal">146</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
@@ -1227,7 +1229,8 @@ e.g. "model_name='gpt-4'".</p></td>
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
-<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">excepthook</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span>
+<span class="normal">195</span>
+<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">excepthook</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug_stack_trace&#39;</span><span class="p">,</span>
                <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DuckDB</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces sys.excepthook when module is imported. When an error is</span>
 <span class="sd">    thrown, the user is asked whether they want an explanation of what went</span>
@@ -1344,8 +1347,7 @@ in green.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
-<span class="normal">199</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span>
@@ -1388,7 +1390,8 @@ in green.</p></td>
 <span class="normal">239</span>
 <span class="normal">240</span>
 <span class="normal">241</span>
-<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">242</span>
+<span class="normal">243</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable conversational debugging mode. This is called automatically on</span>
 <span class="sd">    module import. However, users may wish to make changes, e.g. set auto=True</span>
 <span class="sd">    or pass in a custom debugger cls, and this function makes that possible.</span>
@@ -1455,8 +1458,7 @@ in green.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">245</span>
-<span class="normal">246</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
@@ -1467,7 +1469,8 @@ in green.</p></td>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">disable</span><span class="p">():</span>
+<span class="normal">257</span>
+<span class="normal">258</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">disable</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Revert to default behavior when exceptions are thrown.&quot;&quot;&quot;</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">default_excepthook</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1506,8 +1509,7 @@ In the end I think I only used this for development purposes.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/errors.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">260</span>
-<span class="normal">261</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
 <span class="normal">264</span>
@@ -1518,7 +1520,8 @@ In the end I think I only used this for development purposes.</p>
 <span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
-<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stack_trace</span><span class="p">():</span>
+<span class="normal">272</span>
+<span class="normal">273</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stack_trace</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Lets us recover stack trace as string outside of the functions defined</span>
 <span class="sd">    above, which generally only execute automatically when exceptions are</span>
 <span class="sd">    thrown. Don&#39;t just define this as a partial because that requires</span>

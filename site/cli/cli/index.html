@@ -12,7 +12,7 @@
         <link rel="prev" href="../../magic/">
       
       
-        <link rel="next" href="../../shell/">
+        <link rel="next" href="../../utils/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
@@ -304,13 +304,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lib.roboduck.cli.cli.make_import_statement" class="md-nav__link">
-    make_import_statement()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lib.roboduck.cli.cli.run" class="md-nav__link">
     run()
   </a>
@@ -338,8 +331,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../shell/" class="md-nav__link">
-        Shell
+      <a href="../../shell.md" class="md-nav__link">
+        None
       </a>
     </li>
   
@@ -460,13 +453,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lib.roboduck.cli.cli.make_import_statement" class="md-nav__link">
-    make_import_statement()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lib.roboduck.cli.cli.run" class="md-nav__link">
     run()
   </a>
@@ -523,67 +509,29 @@ import error caused by logging.py name collision with standard library.</p>
 
 
 
-<h3 id="lib.roboduck.cli.cli.make_import_statement" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">make_import_statement</span><span class="p">(</span><span class="n">cls_name</span><span class="p">)</span></code>
+<h3 id="lib.roboduck.cli.cli.run" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">run</span><span class="p">()</span></code>
 
 </h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Given a class name like 'roboduck.debug.DuckDB', construct the import
-statement (str) that should likely be used to import that class (in this
-case 'from roboduck.debug import DuckDB'.</p>
+      <p>Execute a python script with auto error mode enabled.</p>
+<p>Run a python script with roboduck's errors mode
+automatically enabled.</p>
 
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>cls_name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td><p>Class name including module (essentially <strong>qualname</strong>?), e.g.
-roboduck.DuckDB. (Note that this would need to be roboduck.debug.DuckDB
-if we didn't include DuckDB in roboduck's <strong>init</strong>.py.)</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>str</code>
-          </td>
-          <td><p>E.g. "from roboduck import DuckDB"</p></td>
-        </tr>
-    </tbody>
-  </table>
+<p><strong>Examples:</strong></p>
+    <p>Make sure to include the equals sign between option name and value.
+If using a custom chat_class, the full name must be provided.</p>
+<pre><code>duck my_script.py
+duck my_script.py --chat_class=roboduck.DummyChatModel
+duck my_script.py --auto=True --prompt_name=~/my_custom_prompt.yaml
+</code></pre>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/cli/cli.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -603,138 +551,63 @@ if we didn't include DuckDB in roboduck's <strong>init</strong>.py.)</p></td>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_import_statement</span><span class="p">(</span><span class="n">cls_name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a class name like &#39;roboduck.debug.DuckDB&#39;, construct the import</span>
-<span class="sd">    statement (str) that should likely be used to import that class (in this</span>
-<span class="sd">    case &#39;from roboduck.debug import DuckDB&#39;.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    cls_name : str</span>
-<span class="sd">        Class name including module (essentially __qualname__?), e.g.</span>
-<span class="sd">        roboduck.DuckDB. (Note that this would need to be roboduck.debug.DuckDB</span>
-<span class="sd">        if we didn&#39;t include DuckDB in roboduck&#39;s __init__.py.)</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        E.g. &quot;from roboduck import DuckDB&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parts</span> <span class="o">=</span> <span class="n">cls_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;import </span><span class="si">{</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">lib</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;from </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s1"> import </span><span class="si">{</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="lib.roboduck.cli.cli.run" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run</span><span class="p">()</span></code>
-
-</h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Execute a python script with auto error mode enabled.</p>
-<p>Run a python script with roboduck's errors mode
-automatically enabled.</p>
-
-<p><strong>Examples:</strong></p>
-    <p>Make sure to include the equals sign between option name and value.
-If using a custom chat_class, the full name must be provided.</p>
-<pre><code>duck my_script.py
-duck my_script.py --chat_class=roboduck.DummyChatClass
-duck my_script.py --auto=True --prompt_name=~/my_custom_prompt.yaml
-</code></pre>
-
-      <details class="quote">
-        <summary>Source code in <code>lib/roboduck/cli/cli.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a python script with auto error mode enabled.</span>
 
 <span class="sd">    Run a python script with roboduck&#39;s errors mode</span>
@@ -747,7 +620,7 @@ duck my_script.py --auto=True --prompt_name=~/my_custom_prompt.yaml
 
 <span class="sd">    ```</span>
 <span class="sd">    duck my_script.py</span>
-<span class="sd">    duck my_script.py --chat_class=roboduck.DummyChatClass</span>
+<span class="sd">    duck my_script.py --chat_class=roboduck.DummyChatModel</span>
 <span class="sd">    duck my_script.py --auto=True --prompt_name=~/my_custom_prompt.yaml</span>
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -370,8 +370,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../shell/" class="md-nav__link">
-        Shell
+      <a href="../shell.md" class="md-nav__link">
+        None
       </a>
     </li>
   
@@ -629,7 +629,8 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 
         <details class="quote">
           <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+<span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
 <span class="normal"> 41</span>
@@ -714,27 +715,7 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
 <span class="k">class</span> <span class="nc">DebugMagic</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter a conversational debugging session after an error is thrown by a</span>
 <span class="sd">    jupyter notebook code cell.</span>
@@ -763,7 +744,11 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
     <span class="nd">@magic_arguments</span><span class="p">()</span>
     <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
               <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
-                   <span class="s1">&#39;new code cell below.&#39;</span><span class="p">)</span>
+                   <span class="s1">&#39;new code cell below. Note that if you also choose to use &#39;</span>
+                   <span class="s1">&#39;interactive mode, the pasted code snippet currently comes &#39;</span>
+                   <span class="s1">&#39;from the *last* LLM response. If your followup questions &#39;</span>
+                   <span class="s1">&#39;don</span><span class="se">\&#39;</span><span class="s1">t elicit a response that includes code, there will &#39;</span>
+                   <span class="s1">&#39;be no solution to insert.&#39;</span><span class="p">)</span>
     <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
               <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, use INTERACTIVE mode. Start a &#39;</span>
                    <span class="s1">&#39;conversational debugger session and allow the user to ask &#39;</span>
@@ -780,59 +765,36 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">parse_argstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duck</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Support for custom prompts is somewhat limited - &#39;</span>
-                          <span class="s1">&#39;your prompt must use the default parse_func &#39;</span>
-                          <span class="s1">&#39;(roboduck.utils.parse_completion).&#39;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Support for custom prompts is somewhat limited &#39;</span>
+                          <span class="s1">&#39;at the moment - your prompt must use the default &#39;</span>
+                          <span class="s1">&#39;parse_func (roboduck.utils.parse_completion).&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">is_colab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Paste mode is unavailable in google colab, which &#39;</span>
                           <span class="s1">&#39;you appear to be using. Ignoring -p flag.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">i</span><span class="p">:</span>
-            <span class="n">old_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span>
-            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
-                <span class="n">new_cls</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">DuckDB</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_cls</span> <span class="o">=</span> <span class="n">DuckDB</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">new_cls</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="s1">&#39;Roboduck is unavailable in your current ipython session. &#39;</span>
-                    <span class="s1">&#39;To use it, start a new session with the command:</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;ipython --TerminalIPythonApp.interactive_shell_class=&#39;</span>
-                    <span class="s1">&#39;roboduck.shell.RoboDuckTerminalInteractiveShell</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;(You will also need to run `from roboduck import &#39;</span>
-                    <span class="s1">&#39;magic` in the session to make the magic available.) To &#39;</span>
-                    <span class="s1">&#39;make it available automatically for all &#39;</span>
-                    <span class="s1">&#39;ipython sessions by default, add the following lines to &#39;</span>
-                    <span class="s1">&#39;your ipython config (usually found at &#39;</span>
-                    <span class="s1">&#39;~/.ipython/profile_default/ipython_config.py):</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;cfg = get_config()</span><span class="se">\n</span><span class="s1">cfg.TerminalIPythonApp.interactive_&#39;</span>
-                    <span class="s1">&#39;shell_class = roboduck.shell.&#39;</span>
-                    <span class="s1">&#39;RoboDuckTerminalInteractiveShell&#39;</span>
-                    <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">cfg.InteractiveShellApp.exec_lines = &#39;</span>
-                    <span class="s1">&#39;[&quot;from roboduck import magic&quot;]&#39;</span>
-                <span class="p">)</span>
-                <span class="k">return</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">InteractiveTB</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">new_cls</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">InteractiveTB</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">old_cls</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Confine this import to this if clause rather than keeping a top</span>
-            <span class="c1"># level import - importing this module overwrites sys.excepthook</span>
-            <span class="c1"># which we don&#39;t necessarily want in most cases.</span>
-            <span class="c1"># Note that this uses the `debug_stack_trace` prompt by default</span>
-            <span class="c1"># whereas interactive mode uses `debug` by default.</span>
-            <span class="c1"># UPDATE: we could probably use excepthook for both cases</span>
-            <span class="c1"># (args.i = True or False) now that</span>
-            <span class="c1"># I added interactive support in the errors module. However,</span>
-            <span class="c1"># everything is working nicely now and I don&#39;t see a compelling</span>
-            <span class="c1"># reason to change things at the moment.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Confine this import to this method rather than keeping a top</span>
+            <span class="c1"># level import because importing this module overwrites</span>
+            <span class="c1"># sys.excepthook which we don&#39;t necessarily want when</span>
+            <span class="c1"># importing this module.</span>
+            <span class="c1"># Note that this uses the `debug_stack_trace` prompt by default.</span>
+            <span class="c1"># This does NOT include a user question param in the contextful</span>
+            <span class="c1"># prompt, but in this setting we only use that method once (for our</span>
+            <span class="c1"># automatic question) because excepthook transports us to one</span>
+            <span class="c1"># step before the error. The user can ask followup questions but</span>
+            <span class="c1"># the code state will not progress because we can&#39;t step through</span>
+            <span class="c1"># any further, and thus the contextless method (which does include</span>
+            <span class="c1"># a user question) is used from that point forward.</span>
+            <span class="c1"># Color should be specified because errors module uses red</span>
+            <span class="c1"># by default (whereas debug module uses green).</span>
             <span class="kn">from</span> <span class="nn">roboduck</span> <span class="kn">import</span> <span class="n">errors</span>
-            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;interactive&#39;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;prompt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span>
             <span class="n">errors</span><span class="o">.</span><span class="n">excepthook</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">last_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">last_value</span><span class="p">,</span>
                               <span class="n">sys</span><span class="o">.</span><span class="n">last_traceback</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">finally</span><span class="p">:</span>
             <span class="n">errors</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
 
         <span class="c1"># Insert suggested code into next cell.</span>
@@ -872,7 +834,8 @@ change persist, at least until the user changes it again.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 64</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
+<span class="normal"> 64</span>
 <span class="normal"> 65</span>
 <span class="normal"> 66</span>
 <span class="normal"> 67</span>
@@ -931,30 +894,14 @@ change persist, at least until the user changes it again.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
-               <span class="s1">&#39;new code cell below.&#39;</span><span class="p">)</span>
+               <span class="s1">&#39;new code cell below. Note that if you also choose to use &#39;</span>
+               <span class="s1">&#39;interactive mode, the pasted code snippet currently comes &#39;</span>
+               <span class="s1">&#39;from the *last* LLM response. If your followup questions &#39;</span>
+               <span class="s1">&#39;don</span><span class="se">\&#39;</span><span class="s1">t elicit a response that includes code, there will &#39;</span>
+               <span class="s1">&#39;be no solution to insert.&#39;</span><span class="p">)</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, use INTERACTIVE mode. Start a &#39;</span>
                <span class="s1">&#39;conversational debugger session and allow the user to ask &#39;</span>
@@ -971,59 +918,36 @@ change persist, at least until the user changes it again.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_argstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duck</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Support for custom prompts is somewhat limited - &#39;</span>
-                      <span class="s1">&#39;your prompt must use the default parse_func &#39;</span>
-                      <span class="s1">&#39;(roboduck.utils.parse_completion).&#39;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Support for custom prompts is somewhat limited &#39;</span>
+                      <span class="s1">&#39;at the moment - your prompt must use the default &#39;</span>
+                      <span class="s1">&#39;parse_func (roboduck.utils.parse_completion).&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">p</span> <span class="ow">and</span> <span class="n">is_colab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Paste mode is unavailable in google colab, which &#39;</span>
                       <span class="s1">&#39;you appear to be using. Ignoring -p flag.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">i</span><span class="p">:</span>
-        <span class="n">old_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
-            <span class="n">new_cls</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">DuckDB</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_cls</span> <span class="o">=</span> <span class="n">DuckDB</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">new_cls</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="s1">&#39;Roboduck is unavailable in your current ipython session. &#39;</span>
-                <span class="s1">&#39;To use it, start a new session with the command:</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                <span class="s1">&#39;ipython --TerminalIPythonApp.interactive_shell_class=&#39;</span>
-                <span class="s1">&#39;roboduck.shell.RoboDuckTerminalInteractiveShell</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                <span class="s1">&#39;(You will also need to run `from roboduck import &#39;</span>
-                <span class="s1">&#39;magic` in the session to make the magic available.) To &#39;</span>
-                <span class="s1">&#39;make it available automatically for all &#39;</span>
-                <span class="s1">&#39;ipython sessions by default, add the following lines to &#39;</span>
-                <span class="s1">&#39;your ipython config (usually found at &#39;</span>
-                <span class="s1">&#39;~/.ipython/profile_default/ipython_config.py):</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                <span class="s1">&#39;cfg = get_config()</span><span class="se">\n</span><span class="s1">cfg.TerminalIPythonApp.interactive_&#39;</span>
-                <span class="s1">&#39;shell_class = roboduck.shell.&#39;</span>
-                <span class="s1">&#39;RoboDuckTerminalInteractiveShell&#39;</span>
-                <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">cfg.InteractiveShellApp.exec_lines = &#39;</span>
-                <span class="s1">&#39;[&quot;from roboduck import magic&quot;]&#39;</span>
-            <span class="p">)</span>
-            <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">InteractiveTB</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">new_cls</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">InteractiveTB</span><span class="o">.</span><span class="n">debugger_cls</span> <span class="o">=</span> <span class="n">old_cls</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Confine this import to this if clause rather than keeping a top</span>
-        <span class="c1"># level import - importing this module overwrites sys.excepthook</span>
-        <span class="c1"># which we don&#39;t necessarily want in most cases.</span>
-        <span class="c1"># Note that this uses the `debug_stack_trace` prompt by default</span>
-        <span class="c1"># whereas interactive mode uses `debug` by default.</span>
-        <span class="c1"># UPDATE: we could probably use excepthook for both cases</span>
-        <span class="c1"># (args.i = True or False) now that</span>
-        <span class="c1"># I added interactive support in the errors module. However,</span>
-        <span class="c1"># everything is working nicely now and I don&#39;t see a compelling</span>
-        <span class="c1"># reason to change things at the moment.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Confine this import to this method rather than keeping a top</span>
+        <span class="c1"># level import because importing this module overwrites</span>
+        <span class="c1"># sys.excepthook which we don&#39;t necessarily want when</span>
+        <span class="c1"># importing this module.</span>
+        <span class="c1"># Note that this uses the `debug_stack_trace` prompt by default.</span>
+        <span class="c1"># This does NOT include a user question param in the contextful</span>
+        <span class="c1"># prompt, but in this setting we only use that method once (for our</span>
+        <span class="c1"># automatic question) because excepthook transports us to one</span>
+        <span class="c1"># step before the error. The user can ask followup questions but</span>
+        <span class="c1"># the code state will not progress because we can&#39;t step through</span>
+        <span class="c1"># any further, and thus the contextless method (which does include</span>
+        <span class="c1"># a user question) is used from that point forward.</span>
+        <span class="c1"># Color should be specified because errors module uses red</span>
+        <span class="c1"># by default (whereas debug module uses green).</span>
         <span class="kn">from</span> <span class="nn">roboduck</span> <span class="kn">import</span> <span class="n">errors</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;interactive&#39;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;prompt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span>
         <span class="n">errors</span><span class="o">.</span><span class="n">excepthook</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">last_type</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">last_value</span><span class="p">,</span>
                           <span class="n">sys</span><span class="o">.</span><span class="n">last_traceback</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">finally</span><span class="p">:</span>
         <span class="n">errors</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
 
     <span class="c1"># Insert suggested code into next cell.</span>
