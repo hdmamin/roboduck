@@ -101,7 +101,7 @@ class CodeCompletionCache:
             (newest=True) truthy value.
 
         Returns
-        --------
+        -------
         any
             The first/last truthy value of the requested class attribute. If
             no truthy values are found, we return None.
