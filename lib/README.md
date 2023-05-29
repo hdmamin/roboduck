@@ -137,7 +137,7 @@ make docs
 ```
 
 ---
-Start of auto-generated file data.<br/>Last updated: 2023-04-23 20:52:09
+Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
 
 <table border="1" class="dataframe">
   <thead>
@@ -153,51 +153,65 @@ Start of auto-generated file data.<br/>Last updated: 2023-04-23 20:52:09
     <tr>
       <td>__init__.py</td>
       <td>_</td>
-      <td>5</td>
-      <td>2023-04-16 21:46:51</td>
-      <td>142.00 b</td>
+      <td>17</td>
+      <td>2023-05-26 21:33:35</td>
+      <td>548.00 b</td>
+    </tr>
+    <tr>
+      <td>config.py</td>
+      <td>Allow us to easily read from and write to roboduck's config file.<br/><br/>Roboduck creates a config file at `~/.roboduck/config.yaml`. This currently<br/>supports only two fields:<br/><br/>- `openai_api_key`: See the [Quickstart](https://hdmamin.github.io/roboduck/)<br/>for setup help.<br/><br/>- `model_name` (optional): Roboduck is configured to use gpt-3.5-turbo by<br/>default. This field lets you change that (e.g. to gpt-4). If present in the<br/>config file, this will take priority over any model_name field specified in a<br/>chat template<br/>(e.g. our [default debug prompt template](https://github.com/hdmamin/roboduck/blob/7ff904972921fd3f82b8b9fd862c4ffc7b61aee4/lib/roboduck/prompts/chat/debug.yaml#L2)).<br/>You can view valid options with `roboduck.available_models()`.<br/>You can still override the config default by manually passing a value into a<br/>function, e.g. `duck(model_name='gpt-4-32k')`.<br/><br/>You can manually edit your config file or use a command like<br/>`roboduck.update_config(model_name='gpt-4')`. Passing in a value of None<br/>(e.g. `roboduck.update_config(model_name=None)`) will delete that field from<br/>your config file.</td>
+      <td>181</td>
+      <td>2023-05-23 22:09:40</td>
+      <td>7.41 kb</td>
     </tr>
     <tr>
       <td>debug.py</td>
-      <td>A conversational debugger and drop-in replacement for pdb. Python's default<br/>interactive debugging session is already a crude conversation with your<br/>program or interpreter, in a sense - this just lets your program communicate to<br/>you more effectively.<br/><br/>Quickstart<br/>----------<br/># Our replacement for python's `breakpoint`.<br/>from roboduck.debug import duck<br/><br/># Broken version of bubble sort. Notice the duck() call on the second to last<br/># line.<br/>def bubble_sort(nums):<br/>    for i in range(len(nums)):<br/>        for j in range(len(nums)):<br/>            if nums[j] &gt; nums[j + 1]:<br/>                nums[j + 1], nums[j] = nums[j], nums[j + 1]<br/>                duck()<br/>    return nums</td>
-      <td>424</td>
-      <td>2023-04-16 21:52:28</td>
-      <td>18.17 kb</td>
+      <td>A conversational debugger and drop-in replacement for pdb. Python's default<br/>interactive debugging session is already a crude conversation with your<br/>program or interpreter, in a sense - this just lets your program communicate to<br/>you more effectively.<br/><br/>Quickstart<br/>----------<br/>Here's a broken version of bubble sort that places a `duck()` call on the<br/>second to last line where you might normally call `breakpoint()`.<br/><br/>```<br/>from roboduck import duck<br/><br/>def bubble_sort(nums):<br/>    for i in range(len(nums)):<br/>        for j in range(len(nums) - 1):<br/>            if nums[j] &gt; nums[j + 1]:<br/>                nums[j + 1] = nums[j]<br/>                nums[j] = nums[j + 1]<br/>                duck()   # &lt;--------------------------- instead of breakpoint()<br/>    return nums<br/><br/>nums = [3, 1, 9, 2, 1]<br/>bubble_sort(nums)<br/>```</td>
+      <td>486</td>
+      <td>2023-05-25 22:14:45</td>
+      <td>20.18 kb</td>
+    </tr>
+    <tr>
+      <td>decorators.py</td>
+      <td>Miscellaneous decorators used throughout the library.</td>
+      <td>287</td>
+      <td>2023-05-21 22:59:59</td>
+      <td>10.26 kb</td>
     </tr>
     <tr>
       <td>errors.py</td>
-      <td>Errors that explain themselves! Or more precisely, that are explained to you<br/>by a gpt-esque model. Simply importing this module will change python's default<br/>behavior when it encounters an error.<br/><br/>Quickstart<br/>----------<br/># After this import, error explanations are automatically enabled.<br/>from roboduck import errors<br/><br/># Go back to python's regular behavior on errors.<br/>errors.disable()<br/><br/># You can use `enable` to change settings or manually re-enable gpt<br/># explanations. By default, we ask the user if they want an explanation after<br/># each error (y/n). Setting auto=True skips this step and always explains<br/># errors (not recommended in most cases, but it's an option).<br/>errors.enable(auto=True)</td>
-      <td>225</td>
-      <td>2023-04-12 21:48:03</td>
-      <td>9.27 kb</td>
+      <td>Errors that explain themselves! Or more precisely, errors that are explained<br/>to you by a gpt-esque model. Simply importing this module will change python's<br/>default behavior when it encounters an error.<br/><br/>Quickstart<br/>----------<br/>Importing the errors module automatically enables optional error explanations.<br/>`disable()` reverts to python's regular behavior on errors. `enable()` can be<br/>used to re-enable error explanations or to change settings. For example,<br/>setting auto=True automatically explains all errors rather than asking the user<br/>if they want an explanation (y/n) when an error occurs.<br/>```<br/>from roboduck import errors<br/><br/>data = {'x': 0}<br/>y = data.x<br/><br/>errors.disable()<br/>y = data.x<br/><br/>errors.enable(auto=True)<br/>y = data.x<br/>```</td>
+      <td>276</td>
+      <td>2023-05-28 21:41:30</td>
+      <td>11.35 kb</td>
+    </tr>
+    <tr>
+      <td>ipy_utils.py</td>
+      <td>Functions related to loading, saving, or otherwise working with ipython<br/>sessions or jupyter notebooks.</td>
+      <td>186</td>
+      <td>2023-05-24 21:37:48</td>
+      <td>5.70 kb</td>
     </tr>
     <tr>
       <td>logging.py</td>
-      <td>Logger that attempts to diagnose and propose a solution for any errors it<br/>is asked to log. Unlike our debugger and errors modules, explanations are<br/>not streamed because the intended use case is not focused on live development.<br/><br/>Quickstart<br/>----------<br/>from roboduck import logging<br/><br/>logger = logging.getLogger()</td>
-      <td>118</td>
-      <td>2023-04-14 21:55:16</td>
-      <td>4.75 kb</td>
+      <td>Logger that attempts to diagnose and propose a solution for any errors it<br/>is asked to log. Unlike our debugger and errors modules, explanations are<br/>not streamed because the intended use case is not focused on live development.<br/><br/>Quickstart<br/>----------<br/>```<br/>from roboduck import logging<br/><br/>logger = logging.getLogger(path='/tmp/log.txt')<br/>data = {'x': 0}<br/>try:<br/>    x = data.x<br/>except Exception as e:<br/>    logger.error(e)<br/>```</td>
+      <td>157</td>
+      <td>2023-05-18 22:25:48</td>
+      <td>6.28 kb</td>
     </tr>
     <tr>
       <td>magic.py</td>
-      <td>GPT-powered rough equivalent of the `%debug` Jupyter magic. After an error<br/>occurs, just run %duck in the next cell to get an explanation. This is very<br/>similar to using the errors module, but is less intrusive - you only call it<br/>when you want an explanation, rather than having to type y/n after each error.<br/>We also provide `paste` mode, which attempts to paste a solution into a new<br/>code cell below, and `interactive` mode, which throws you into a conversational<br/>debugging session (technically closer to the original `%debug` magic<br/>functionality.<br/><br/>Quickstart<br/>----------<br/># cell 1<br/>from roboduck import magic<br/><br/># cell 2<br/>nums = [1, 2, 3]<br/>nums.add(4)<br/><br/># cell 3<br/>%duck</td>
-      <td>134</td>
-      <td>2023-04-13 22:05:19</td>
-      <td>5.46 kb</td>
-    </tr>
-    <tr>
-      <td>shell.py</td>
-      <td>This module allows our roboduck `%duck` magic to work in ipython. Ipython<br/>uses a TerminalInteractiveShell class which makes its debugger_cls attribute<br/>read only. We provide a drop-in replacement that allows our magic class to<br/>set that attribute when necessary. Note that you'd need to start an ipython<br/>session with the command:<br/><br/>```<br/>ipython --TerminalIPythonApp.interactive_shell_class=roboduck.shell.RoboDuckTerminalInteractiveShell<br/>```<br/><br/>for this to work. You'll still need to run `from roboduck import magic` inside<br/>your session to make it avaialble.<br/><br/>Alternatively, you can make it available automatically for all ipython<br/>sessions by adding the following lines to your ipython config (usually found at<br/>~/.ipython/profile_default/ipython_config.py):<br/><br/>```<br/>cfg = get_config()<br/>cfg.TerminalIPythonApp.interactive_shell_class = roboduck.shell.RoboDuckTerminalInteractiveShell<br/>cfg.InteractiveShellApp.exec_lines = ["from roboduck import magic"]<br/>```</td>
-      <td>34</td>
-      <td>2023-03-20 21:20:45</td>
-      <td>1.31 kb</td>
+      <td>GPT-powered rough equivalent of the `%debug` Jupyter magic. After an error<br/>occurs, just run %duck in the next cell to get an explanation. This is very<br/>similar to using the errors module, but is less intrusive - you only call it<br/>when you want an explanation, rather than having to type y/n after each error.<br/>We also provide `paste` mode, which attempts to paste a solution into a new<br/>code cell below, and `interactive` mode, which throws you into a conversational<br/>debugging session (technically closer to the original `%debug` magic<br/>functionality.<br/><br/>Quickstart<br/>----------<br/>```<br/># cell 1<br/>from roboduck import magic<br/><br/>nums = [1, 2, 3]<br/>nums.add(4)<br/>```<br/><br/>```<br/># cell 2<br/>%duck<br/>```</td>
+      <td>126</td>
+      <td>2023-05-28 21:41:30</td>
+      <td>5.11 kb</td>
     </tr>
     <tr>
       <td>utils.py</td>
       <td>Utility functions used by other roboduck modules.</td>
-      <td>599</td>
-      <td>2023-04-21 23:15:17</td>
-      <td>21.12 kb</td>
+      <td>420</td>
+      <td>2023-05-27 21:32:29</td>
+      <td>15.14 kb</td>
     </tr>
   </tbody>
 </table>

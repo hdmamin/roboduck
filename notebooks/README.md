@@ -4,7 +4,7 @@ Jupyter notebooks for data exploration and experimentation.
 
 
 ---
-Start of auto-generated file data.<br/>Last updated: 2023-04-23 20:52:09
+Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
 
 <table border="1" class="dataframe">
   <thead>
@@ -31,8 +31,8 @@ Start of auto-generated file data.<br/>Last updated: 2023-04-23 20:52:09
       <td>Toying around with a custom pdb class for language model-assisted debugging.</td>
       <td>59</td>
       <td>4</td>
-      <td>2023-03-20 21:20:45</td>
-      <td>97.15 kb</td>
+      <td>2023-05-07 19:51:23</td>
+      <td>96.80 kb</td>
     </tr>
     <tr>
       <td>nb01-test-debugger-magic-imports.ipynb</td>
@@ -69,10 +69,18 @@ Start of auto-generated file data.<br/>Last updated: 2023-04-23 20:52:09
     <tr>
       <td>nb05-test-post-langchain-migration.ipynb</td>
       <td>_</td>
-      <td>56</td>
+      <td>54</td>
       <td>11</td>
-      <td>2023-04-21 23:15:17</td>
-      <td>250.88 kb</td>
+      <td>2023-05-28 21:41:30</td>
+      <td>220.61 kb</td>
+    </tr>
+    <tr>
+      <td>quickstart.ipynb</td>
+      <td>_</td>
+      <td>15</td>
+      <td>4</td>
+      <td>2023-05-27 21:32:29</td>
+      <td>33.01 kb</td>
     </tr>
   </tbody>
 </table>
