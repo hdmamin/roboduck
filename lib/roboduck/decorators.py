@@ -1,7 +1,8 @@
 """Miscellaneous decorators used throughout the library."""
-import warnings
+from copy import deepcopy
 from functools import partial, wraps
-from inspect import signature, Parameter
+from inspect import signature, Parameter, getmembers, isroutine
+import warnings
 
 
 def typecheck(func_=None, **types):
@@ -187,10 +188,25 @@ def add_kwargs(func, fields, hide_fields=(), strict=False):
     return wrapper
 
 
+def _classvars(cls):
+    """Get class variable nnames and values for a given class.
+
+    Parameters
+    ----------
+    cls : type
+
+    Returns
+    -------
+    dict[str, any]
+    """
+    return dict(getmembers(cls, lambda x: not(isroutine(x))))
+
+
 def store_class_defaults(cls=None, attr_filter=None):
     """Class decorator that stores default values of class attributes (can be
     all or a subset). Default here refers to the value at class definition
-    time.
+    time. Mutable defaults should be okay since we deepcopy them, but are
+    probably still riskier to use than immutable defaults.
 
     Examples
     --------
@@ -224,11 +240,13 @@ def store_class_defaults(cls=None, attr_filter=None):
         )
     if not attr_filter:
         def attr_filter(x):
-            return True
+            # Usually returns True, just False for some magic methods that are
+            # not easily filtered out otherwise.
+            return not (x.startswith('__') and x.endswith('__'))
     defaults = {}
-    for k, v in vars(cls).items():
+    for k, v in _classvars(cls).items():
         if attr_filter(k):
-            defaults[k] = v
+            defaults[k] = deepcopy(v)
 
     name = '_class_defaults'
     if hasattr(cls, name):

@@ -1952,7 +1952,9 @@ X -consider deleting refs to custom ipython shell class now that we seem to no l
 	X -del module
 	X -del from personal ipython config
 	X -check elsewhere in repo for appearances and delete
+X -fix bug in store_class_defaults (realized didn't work with mutable defaults)
 -see if magic can maintain a queue or pointer to track latest code completion in interactive mode (As it is, cache gets updated on every ask_language_model call. If user asks a followup question that does not contain code, that erases our last completion and we can't paste it in if requested.)
+	> All cache updates occur in ask_language_model so I don't think we can make the change purely in magic. Interestingly, I only reset vars in magic module though. Maybe bc debugger class doesn't have a good concept of when a session starts and begins? Maybe can create a debugger_id in init, store that in cache cls, and at each stage check if the id has changed (indicating a new session). Then could store a *list* of completions for each attr rather than a single str.
 -better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
 
 
