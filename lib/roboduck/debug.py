@@ -25,8 +25,9 @@ bubble_sort(nums)
 ```
 """
 import cmd
-import code
+from contextlib import contextmanager, redirect_stdout
 from functools import partial
+import io
 import inspect
 import ipynbname
 from langchain.callbacks.base import CallbackManager
@@ -239,6 +240,23 @@ class DuckDB(Pdb):
                     f'backup reply type ("{backup}").'
                 )
         return default, backup
+
+    def error(self, line):
+        """Add a hint when displaying errors that roboduck only responds to
+        *questions* in natural language.
+
+        Parameters
+        ----------
+        line : str
+        """
+        super().error(line)
+        if any(term in line for term in ('SyntaxError', 'NameError')):
+            print(
+                '*** If you meant to respond to Duck in natural language, '
+                'remember that it only provides English responses to '
+                'questions. Statements are evaluated as Pdb commands.',
+                file=self.stdout
+            )
 
     def field_names(self, key=''):
         """Get names of variables that are expected to be passed into default

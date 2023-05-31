@@ -1966,12 +1966,21 @@ X -update magic module arg help info to reflect that subsequent code-free replie
 	-non-interactive, paste
 	-interactive, no paste
 	-non-interactive, no paste
--better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
+X -better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
 	> Findings:
 		> currently, syntax error is raised by DuckDB.onecmd - >cmd.Cmd.onecmd -> else block raises attribute error bc 'do_{cmd}' is not a method of DuckDB -> cmd.Cmd.default prints error instead of raising it.
 		> Error handling is difficult bc the error is never actually raised.
 		> Detecting whether the command is natural language before any syntax errors is quite tricky without another LLM call (prefer to avoid due to added time + cost). Recall testing out a smaller transformer model in the past for this and it was only ok. There are lots of cases that are a bit ambiguous when taking a symbolic approach: 'explain' could be a variable or a NL statement, long sequences could be NL statements or python commands like 'print("dog", "cat", 3+4)'. Argh.
 		> One option: capture stdout and check if syntax error is printed with asterisks (not raised)? Yikes.
+		> Yikes, had a terrible time trying to implement this. My capture_stdout method worked standalone but not in debugger for some reason. Then tried to subclass cmd.Cmd and override default() but it had no effect, defined new onecmd as well but still no. Finally realized that pdb.error() is what was printing this msg, NOT cmd.Cmd.default. Overrode that and it works nicely. Whew.
+
+5/31/23 wed
+------------
+-manually test magic changes (prob just keep 3.5 model enabled here since dummy model might not give us the mix of codeful and code-free outputs we want to test)
+	-interactive, paste
+	-non-interactive, paste
+	-interactive, no paste
+	-non-interactive, no paste
 
 
 Backlog
