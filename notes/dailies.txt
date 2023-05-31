@@ -1967,6 +1967,11 @@ X -update magic module arg help info to reflect that subsequent code-free replie
 	-interactive, no paste
 	-non-interactive, no paste
 -better error message when user types a statement in debugging sess (currently just syntax error: invalid syntax)
+	> Findings:
+		> currently, syntax error is raised by DuckDB.onecmd - >cmd.Cmd.onecmd -> else block raises attribute error bc 'do_{cmd}' is not a method of DuckDB -> cmd.Cmd.default prints error instead of raising it.
+		> Error handling is difficult bc the error is never actually raised.
+		> Detecting whether the command is natural language before any syntax errors is quite tricky without another LLM call (prefer to avoid due to added time + cost). Recall testing out a smaller transformer model in the past for this and it was only ok. There are lots of cases that are a bit ambiguous when taking a symbolic approach: 'explain' could be a variable or a NL statement, long sequences could be NL statements or python commands like 'print("dog", "cat", 3+4)'. Argh.
+		> One option: capture stdout and check if syntax error is printed with asterisks (not raised)? Yikes.
 
 
 Backlog

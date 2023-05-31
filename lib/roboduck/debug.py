@@ -25,6 +25,7 @@ bubble_sort(nums)
 ```
 """
 import cmd
+import code
 from functools import partial
 import inspect
 import ipynbname
