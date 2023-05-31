@@ -63,11 +63,12 @@ class DebugMagic(Magics):
     @magic_arguments()
     @argument('-p', action='store_true',
               help='Boolean flag: if provided, try to PASTE a solution into a '
-                   'new code cell below. Note that if you also choose to use '
-                   'interactive mode, the pasted code snippet currently comes '
-                   'from the *last* LLM response. If your followup questions '
-                   'don\'t elicit a response that includes code, there will '
-                   'be no solution to insert.')
+                   'new code cell below. If you also choose to use '
+                   'interactive mode and receive multiple replies containing '
+                   'code snippets, the last snippet to be generated will be '
+                   'the one that is pasted in (we make the assumption that '
+                   'users will prompt for increasingly correct code rather '
+                   'than the reverse).')
     @argument('-i', action='store_true',
               help='Boolean flag: if provided, use INTERACTIVE mode. Start a '
                    'conversational debugger session and allow the user to ask '

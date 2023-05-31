@@ -1960,7 +1960,7 @@ X -see if magic can maintain a queue or pointer to track latest code completion 
 
 5/30/23 tues
 ------------
--update magic module arg help info to reflect that subsequent code-free replies no longer impact paste mode
+X -update magic module arg help info to reflect that subsequent code-free replies no longer impact paste mode
 -manually test magic changes (prob just keep 3.5 model enabled here since dummy model might not give us the mix of codeful and code-free outputs we want to test)
 	-interactive, paste
 	-non-interactive, paste
