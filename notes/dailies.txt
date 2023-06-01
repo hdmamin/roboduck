@@ -1976,17 +1976,25 @@ X -better error message when user types a statement in debugging sess (currently
 
 5/31/23 wed
 ------------
--manually test magic changes (prob just keep 3.5 model enabled here since dummy model might not give us the mix of codeful and code-free outputs we want to test)
-	-interactive, paste
-	-non-interactive, paste
-	-interactive, no paste
-	-non-interactive, no paste
+X -manually test magic changes (prob just keep 3.5 model enabled here since dummy model might not give us the mix of codeful and code-free outputs we want to test)
+	X -interactive, paste
+	X -non-interactive, paste
+	X -interactive, no paste
+	X -non-interactive, no paste
+X -record first demo gif for readme
+	> Recorded magic and added to readme. Now considering whether we really need gifs for all the others too - they're largely pretty similar. Could consider making main gif errors/pdb mode instead since jupyter is a slightly more niche tool than python in general.
 
+6/1/23 thurs
+------------
+-record more gif(s) for readme
+	-decide on main one: errors or pdb
+	-record
+	-add to readme
+-link to mov in pypi readme (think needs to be a remote mov rather than local gif, see jabberwocky for reference)
+-write usage notes in docs (i.e. take completions with grain of salt, whole point of roboduck is to use LLMs to put useful ideas into human minds rather than bypassing human minds and putting code into prod)
 
 Backlog
 -------
--write usage notes in docs (i.e. take completions with grain of salt, whole point of roboduck is to use LLMs to put useful ideas into human minds rather than bypassing human minds and putting code into prod)
--record demo gifs for readme
 -try with threading/multiprocessing/asyncio? 😬
 -share work somewhere (?) when done
 -other model support

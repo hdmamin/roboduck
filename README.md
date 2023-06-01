@@ -12,6 +12,8 @@
 
 **robo duck debugging**: a bit like rubber duck debugging, but the duck talks back.
 
+![jupyter magic demo](data/images/magic.gif)
+
 ## About
 
 Many AI-powered dev tools help you write boilerplate more quickly, but the hardest and most time-consuming part of programming is often the last mile. Roboduck's goal is to help you understand and fix those bugs. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:  
@@ -20,9 +22,6 @@ Many AI-powered dev tools help you write boilerplate more quickly, but the harde
 - logging  
 
 ## Quickstart
-
-# TODO add gifs
-
 
 ### Install
 

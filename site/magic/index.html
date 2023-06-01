@@ -700,7 +700,8 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
+<span class="normal">123</span>
+<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
 <span class="k">class</span> <span class="nc">DebugMagic</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter a conversational debugging session after an error is thrown by a</span>
 <span class="sd">    jupyter notebook code cell.</span>
@@ -729,11 +730,12 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
     <span class="nd">@magic_arguments</span><span class="p">()</span>
     <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
               <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
-                   <span class="s1">&#39;new code cell below. Note that if you also choose to use &#39;</span>
-                   <span class="s1">&#39;interactive mode, the pasted code snippet currently comes &#39;</span>
-                   <span class="s1">&#39;from the *last* LLM response. If your followup questions &#39;</span>
-                   <span class="s1">&#39;don</span><span class="se">\&#39;</span><span class="s1">t elicit a response that includes code, there will &#39;</span>
-                   <span class="s1">&#39;be no solution to insert.&#39;</span><span class="p">)</span>
+                   <span class="s1">&#39;new code cell below. If you also choose to use &#39;</span>
+                   <span class="s1">&#39;interactive mode and receive multiple replies containing &#39;</span>
+                   <span class="s1">&#39;code snippets, the last snippet to be generated will be &#39;</span>
+                   <span class="s1">&#39;the one that is pasted in (we make the assumption that &#39;</span>
+                   <span class="s1">&#39;users will prompt for increasingly correct code rather &#39;</span>
+                   <span class="s1">&#39;than the reverse).&#39;</span><span class="p">)</span>
     <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
               <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, use INTERACTIVE mode. Start a &#39;</span>
                    <span class="s1">&#39;conversational debugger session and allow the user to ask &#39;</span>
@@ -879,14 +881,16 @@ change persist, at least until the user changes it again.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
+<span class="normal">123</span>
+<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
-               <span class="s1">&#39;new code cell below. Note that if you also choose to use &#39;</span>
-               <span class="s1">&#39;interactive mode, the pasted code snippet currently comes &#39;</span>
-               <span class="s1">&#39;from the *last* LLM response. If your followup questions &#39;</span>
-               <span class="s1">&#39;don</span><span class="se">\&#39;</span><span class="s1">t elicit a response that includes code, there will &#39;</span>
-               <span class="s1">&#39;be no solution to insert.&#39;</span><span class="p">)</span>
+               <span class="s1">&#39;new code cell below. If you also choose to use &#39;</span>
+               <span class="s1">&#39;interactive mode and receive multiple replies containing &#39;</span>
+               <span class="s1">&#39;code snippets, the last snippet to be generated will be &#39;</span>
+               <span class="s1">&#39;the one that is pasted in (we make the assumption that &#39;</span>
+               <span class="s1">&#39;users will prompt for increasingly correct code rather &#39;</span>
+               <span class="s1">&#39;than the reverse).&#39;</span><span class="p">)</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, use INTERACTIVE mode. Start a &#39;</span>
                <span class="s1">&#39;conversational debugger session and allow the user to ask &#39;</span>
