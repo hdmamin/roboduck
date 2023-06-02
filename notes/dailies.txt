@@ -1992,7 +1992,7 @@ X -record first demo gif for readme
 	-decide on main one: errors or pdb
 	-record
 	-add to readme
-	-maybe update some example snippet(s) in quickstart to match video(s)?
+	-maybe update some example snippet(s) in quickstart nb and/or readme to match video(s)?
 -link to mov in pypi readme (think needs to be a remote mov rather than local gif, see jabberwocky for reference)
 -write usage notes in docs (i.e. take completions with grain of salt, whole point of roboduck is to use LLMs to put useful ideas into human minds rather than bypassing human minds and putting code into prod)
 

@@ -12,7 +12,7 @@
 
 **robo duck debugging**: a bit like rubber duck debugging, but the duck talks back.
 
-![jupyter magic demo](data/images/magic.gif)
+![errors demo](data/images/errors.gif)
 
 ## About
 
@@ -80,6 +80,8 @@ y = data.x
 ```
 
 ### Jupyter Magic
+
+![jupyter magic demo](data/images/magic.gif)
 
 Jupyter provides a `%debug` magic that can be used after an error occurs to enter a postmortem debugging session. Roboduck's `%duck` magic works similarly, but with all of our debugging module's conversational capabilities:
 
