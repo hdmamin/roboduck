@@ -8,3 +8,5 @@ data/*
 roboduck.egg_info/
 lib/roboduck.egg-info/
 lib/dist
+notes/*
+notebooks/nb0*.ipynb
