@@ -1986,15 +1986,24 @@ X -record first demo gif for readme
 
 6/1/23 thurs
 ------------
--investigate why current gif is so slow to load (too big a file?)
+X -investigate why current gif is so slow to load (too big a file?)
 	> Yep, seems to be a bit big for github. Based on past jabberwocky file sizes, seems like we should aim for <10mb, or at least <15mb.
--record more gif(s) for readme
-	-decide on main one: errors or pdb
-	-record
-	-add to readme
-	-maybe update some example snippet(s) in quickstart nb and/or readme to match video(s)?
+X -record more gif(s) for readme
+	X -decide on main one: errors or pdb
+		> Errors is a little more broadly applicable imo.
+	X -record
+	X -add to readme
+	X -record debugger gif
+	_ -maybe update some example snippet(s) in quickstart nb and/or readme to match video(s)?
+		> Meh, fine as is.
 -link to mov in pypi readme (think needs to be a remote mov rather than local gif, see jabberwocky for reference)
 -write usage notes in docs (i.e. take completions with grain of salt, whole point of roboduck is to use LLMs to put useful ideas into human minds rather than bypassing human minds and putting code into prod)
+
+6/2/23 fri
+----------
+-link to mov in pypi readme (think needs to be a remote mov rather than local gif, see jabberwocky for reference)
+-write usage notes in docs (i.e. take completions with grain of salt, whole point of roboduck is to use LLMs to put useful ideas into human minds rather than bypassing human minds and putting code into prod)
+
 
 Backlog
 -------
