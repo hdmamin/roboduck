@@ -137,7 +137,7 @@ make docs
 ```
 
 ---
-Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
+Start of auto-generated file data.<br/>Last updated: 2023-06-02 21:08:08
 
 <table border="1" class="dataframe">
   <thead>
@@ -154,7 +154,7 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
       <td>__init__.py</td>
       <td>_</td>
       <td>17</td>
-      <td>2023-05-26 21:33:35</td>
+      <td>2023-06-01 23:26:46</td>
       <td>548.00 b</td>
     </tr>
     <tr>
@@ -167,23 +167,23 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
     <tr>
       <td>debug.py</td>
       <td>A conversational debugger and drop-in replacement for pdb. Python's default<br/>interactive debugging session is already a crude conversation with your<br/>program or interpreter, in a sense - this just lets your program communicate to<br/>you more effectively.<br/><br/>Quickstart<br/>----------<br/>Here's a broken version of bubble sort that places a `duck()` call on the<br/>second to last line where you might normally call `breakpoint()`.<br/><br/>```<br/>from roboduck import duck<br/><br/>def bubble_sort(nums):<br/>    for i in range(len(nums)):<br/>        for j in range(len(nums) - 1):<br/>            if nums[j] &gt; nums[j + 1]:<br/>                nums[j + 1] = nums[j]<br/>                nums[j] = nums[j + 1]<br/>                duck()   # &lt;--------------------------- instead of breakpoint()<br/>    return nums<br/><br/>nums = [3, 1, 9, 2, 1]<br/>bubble_sort(nums)<br/>```</td>
-      <td>486</td>
-      <td>2023-05-25 22:14:45</td>
-      <td>20.18 kb</td>
+      <td>571</td>
+      <td>2023-05-31 00:16:13</td>
+      <td>22.98 kb</td>
     </tr>
     <tr>
       <td>decorators.py</td>
       <td>Miscellaneous decorators used throughout the library.</td>
-      <td>287</td>
-      <td>2023-05-21 22:59:59</td>
-      <td>10.26 kb</td>
+      <td>305</td>
+      <td>2023-05-29 15:21:23</td>
+      <td>10.86 kb</td>
     </tr>
     <tr>
       <td>errors.py</td>
       <td>Errors that explain themselves! Or more precisely, errors that are explained<br/>to you by a gpt-esque model. Simply importing this module will change python's<br/>default behavior when it encounters an error.<br/><br/>Quickstart<br/>----------<br/>Importing the errors module automatically enables optional error explanations.<br/>`disable()` reverts to python's regular behavior on errors. `enable()` can be<br/>used to re-enable error explanations or to change settings. For example,<br/>setting auto=True automatically explains all errors rather than asking the user<br/>if they want an explanation (y/n) when an error occurs.<br/>```<br/>from roboduck import errors<br/><br/>data = {'x': 0}<br/>y = data.x<br/><br/>errors.disable()<br/>y = data.x<br/><br/>errors.enable(auto=True)<br/>y = data.x<br/>```</td>
-      <td>276</td>
-      <td>2023-05-28 21:41:30</td>
-      <td>11.35 kb</td>
+      <td>279</td>
+      <td>2023-05-29 16:15:02</td>
+      <td>11.44 kb</td>
     </tr>
     <tr>
       <td>ipy_utils.py</td>
@@ -195,16 +195,16 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
     <tr>
       <td>logging.py</td>
       <td>Logger that attempts to diagnose and propose a solution for any errors it<br/>is asked to log. Unlike our debugger and errors modules, explanations are<br/>not streamed because the intended use case is not focused on live development.<br/><br/>Quickstart<br/>----------<br/>```<br/>from roboduck import logging<br/><br/>logger = logging.getLogger(path='/tmp/log.txt')<br/>data = {'x': 0}<br/>try:<br/>    x = data.x<br/>except Exception as e:<br/>    logger.error(e)<br/>```</td>
-      <td>157</td>
-      <td>2023-05-18 22:25:48</td>
-      <td>6.28 kb</td>
+      <td>158</td>
+      <td>2023-05-29 16:15:02</td>
+      <td>6.33 kb</td>
     </tr>
     <tr>
       <td>magic.py</td>
       <td>GPT-powered rough equivalent of the `%debug` Jupyter magic. After an error<br/>occurs, just run %duck in the next cell to get an explanation. This is very<br/>similar to using the errors module, but is less intrusive - you only call it<br/>when you want an explanation, rather than having to type y/n after each error.<br/>We also provide `paste` mode, which attempts to paste a solution into a new<br/>code cell below, and `interactive` mode, which throws you into a conversational<br/>debugging session (technically closer to the original `%debug` magic<br/>functionality.<br/><br/>Quickstart<br/>----------<br/>```<br/># cell 1<br/>from roboduck import magic<br/><br/>nums = [1, 2, 3]<br/>nums.add(4)<br/>```<br/><br/>```<br/># cell 2<br/>%duck<br/>```</td>
-      <td>126</td>
-      <td>2023-05-28 21:41:30</td>
-      <td>5.11 kb</td>
+      <td>127</td>
+      <td>2023-05-30 22:28:43</td>
+      <td>5.18 kb</td>
     </tr>
     <tr>
       <td>utils.py</td>

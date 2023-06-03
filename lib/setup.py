@@ -40,6 +40,12 @@ setuptools.setup(
         'roboduck': ['**/*.yaml']
     },
     entry_points={'console_scripts': ['duck=roboduck.cli.cli:run']},
-    include_package_data=True
+    include_package_data=True,
+    project_urls={
+        'Documentation': 'https://hdmamin.github.io/roboduck/',
+        'Repository': 'https://github.com/hdmamin/roboduck'
+    },
+    keywords='debugging,llm,language model,dev tools,errors,jupyter magic,'
+             'gpt,openai,langchain',
 )
 

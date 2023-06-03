@@ -16,6 +16,8 @@
 
 ## About
 
+Have you ever wanted to ask your program why it's not working?
+
 Many AI-powered dev tools help you write boilerplate more quickly, but the hardest and most time-consuming part of programming is often the last mile. Roboduck's goal is to help you understand and fix those bugs. It essentially embeds an LLM (large language model) in the Python interpreter, providing drop-in natural language replacements for Python's standard approaches to:  
 - debugging  
 - error handling  
@@ -124,6 +126,12 @@ duck my_script.py
 ```
 
 Run `duck --help` for more info.
+
+## Usage Advice
+
+Language models are not infallible. You should not blindly assume that roboduck's code snippets are flawless or that its explanations are a source of unimpeachable truth. But that's kind of the whole reason roboduck is useful - if LLMs were perfectly reliable, humans wouldn't need to write code at all. We could simply generate it, `./deploy.sh`, and call it a day. Maybe we'll get there eventually but in the meantime, I believe LLMs are best viewed as tools to augment human thought. It's ultimately still up to you to assess and make use of what they tell you. 
+
+It comes back to the name of the library. Sure, as a pun it only kind of makes sense, but it's a good mental cue. Conversing with rubber ducks isn't an effective debugging strategy because bath toys are brilliant programmers - the practice just encourages you to hone in on what the problem is, what you understand and what you don't, what would need to be true for your program to function correctly. Roboduck obviously takes a more active role in the conversation, but that mindset is still useful.
 
 ## Contributing
 

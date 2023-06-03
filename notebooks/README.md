@@ -4,7 +4,7 @@ Jupyter notebooks for data exploration and experimentation.
 
 
 ---
-Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
+Start of auto-generated file data.<br/>Last updated: 2023-06-02 21:08:08
 
 <table border="1" class="dataframe">
   <thead>
@@ -31,7 +31,7 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
       <td>Toying around with a custom pdb class for language model-assisted debugging.</td>
       <td>59</td>
       <td>4</td>
-      <td>2023-05-07 19:51:23</td>
+      <td>2023-06-01 23:33:02</td>
       <td>96.80 kb</td>
     </tr>
     <tr>
@@ -39,7 +39,7 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
       <td>Test if library version of debugger and/or magic work in notebook.</td>
       <td>36</td>
       <td>5</td>
-      <td>2023-03-20 21:20:45</td>
+      <td>2023-06-01 23:33:02</td>
       <td>106.13 kb</td>
     </tr>
     <tr>
@@ -47,7 +47,7 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
       <td>Toying around with langchain. Getting familiar with it as a possible replacement for my custom built jabberwocky lib.</td>
       <td>123</td>
       <td>12</td>
-      <td>2023-03-28 22:36:49</td>
+      <td>2023-06-01 23:33:02</td>
       <td>224.25 kb</td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
       <td>Determine how much work it would take to update jabberwocky to:<br/><br/>- [x] support gpt 3.5 models<br/>- [x] support gpt 4 models<br/>- [x] support chatGPT<br/>- use ConversationManager for PDB subclass<br/><br/>"Support" could mean gpt.query works, prompt_manager.query works, conversation_manager.query works, engine_map.get works, etc.</td>
       <td>42</td>
       <td>13</td>
-      <td>2023-04-07 21:44:07</td>
+      <td>2023-06-01 23:33:02</td>
       <td>59.91 kb</td>
     </tr>
     <tr>
@@ -63,16 +63,16 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
       <td>_</td>
       <td>98</td>
       <td>8</td>
-      <td>2023-04-15 22:21:16</td>
+      <td>2023-06-01 23:33:02</td>
       <td>123.77 kb</td>
     </tr>
     <tr>
       <td>nb05-test-post-langchain-migration.ipynb</td>
       <td>_</td>
-      <td>54</td>
+      <td>76</td>
       <td>11</td>
-      <td>2023-05-28 21:41:30</td>
-      <td>220.61 kb</td>
+      <td>2023-06-01 23:33:02</td>
+      <td>42.16 kb</td>
     </tr>
     <tr>
       <td>quickstart.ipynb</td>
@@ -85,3 +85,4 @@ Start of auto-generated file data.<br/>Last updated: 2023-05-29 14:50:53
   </tbody>
 </table>
 <br/>End of auto-generated file data. Do not add anything below this.
+
