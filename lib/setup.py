@@ -3,12 +3,20 @@ import setuptools
 
 
 def requirements(path='requirements.txt'):
+    """Load requirements and return a list of strings."""
     with open(path, 'r') as f:
         deps = [line.strip() for line in f]
     return deps
 
 
 def version():
+    """Get library version from __init__.py.
+
+    Returns
+    -------
+    str
+        E.g. '1.0.0'
+    """
     path = os.path.join('roboduck', '__init__.py')
     with open(path, 'r') as f:
         for row in f:
@@ -20,6 +28,10 @@ def version():
 def load_file(name):
     """Load contents of file in the same directory as setup.py and return it as
     a string.
+
+    Parameters
+    ----------
+    name : str
     """
     path = os.path.join(os.path.dirname(__file__), name)
     with open(path, 'r') as f:
