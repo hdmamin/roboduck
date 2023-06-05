@@ -41,6 +41,7 @@ def load_file(name):
 setuptools.setup(
     name='roboduck',
     version=version(),
+    python_requires='>=3.8',
     author='Harrison Mamin',
     author_email='harrisonmamin@gmail.com',
     description='A natural language debugger.',
