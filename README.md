@@ -35,7 +35,7 @@ pip install roboduck
 
 ### API Key Setup
 
-You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is then to call `roboduck.set_openai_api_key(api_key, update_config=True)` which essentially does the following: 
+You need an openai API key to begin using roboduck. Once you have an account ([sign up here](https://platform.openai.com/signup)), you can visit https://platform.openai.com/account/api-keys to retrieve your key. Your simplest option is then to call `roboduck.set_openai_api_key(api_key, update_config_=True)` which essentially does the following: 
 
 ```bash
 mkdir ~/.roboduck
