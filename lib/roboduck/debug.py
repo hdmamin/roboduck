@@ -25,12 +25,10 @@ bubble_sort(nums)
 ```
 """
 import cmd
-from contextlib import contextmanager, redirect_stdout
 from functools import partial
-import io
 import inspect
 import ipynbname
-from langchain.callbacks.base import CallbackManager
+from langchain.callbacks.base import BaseCallbackManager
 from pdb import Pdb
 import sys
 import uuid
@@ -198,7 +196,7 @@ class DuckDB(Pdb):
             chat_kwargs['streaming'] = False
         else:
             chat_kwargs['streaming'] = True
-            chat_kwargs['callback_manager'] = CallbackManager(
+            chat_kwargs['callback_manager'] = BaseCallbackManager(
                 [LiveTypingCallbackHandler(color=color)]
             )
         # Dev color is what we print the prompt in when user asks a question
