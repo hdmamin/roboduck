@@ -701,7 +701,14 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magics_class</span>
 <span class="k">class</span> <span class="nc">DebugMagic</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter a conversational debugging session after an error is thrown by a</span>
 <span class="sd">    jupyter notebook code cell.</span>
@@ -749,6 +756,13 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
     <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Silence warnings for a cell. The -p flag can be used to make the</span>
 <span class="sd">        change persist, at least until the user changes it again.</span>
+
+<span class="sd">        Developer note: later found a needs_local_scope decorator</span>
+<span class="sd">        https://ipython.readthedocs.io/en/stable/config/custommagics.html#\</span>
+<span class="sd">            accessing-user-namespace-and-local-scope</span>
+<span class="sd">        that might let us load state from ipython in a a more reliable way.</span>
+<span class="sd">        Not certain this would be an improvement, and major refactor might be</span>
+<span class="sd">        needed to make this work, but it&#39;s something to keep in mind.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">parse_argstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duck</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
@@ -818,6 +832,11 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
   
       <p>Silence warnings for a cell. The -p flag can be used to make the
 change persist, at least until the user changes it again.</p>
+<p>Developer note: later found a needs_local_scope decorator
+https://ipython.readthedocs.io/en/stable/config/custommagics.html#            accessing-user-namespace-and-local-scope
+that might let us load state from ipython in a a more reliable way.
+Not certain this would be an improvement, and major refactor might be
+needed to make this work, but it's something to keep in mind.</p>
 
       <details class="quote">
         <summary>Source code in <code>lib/roboduck/magic.py</code></summary>
@@ -882,7 +901,14 @@ change persist, at least until the user changes it again.</p>
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@magic_arguments</span><span class="p">()</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Boolean flag: if provided, try to PASTE a solution into a &#39;</span>
                <span class="s1">&#39;new code cell below. If you also choose to use &#39;</span>
@@ -904,6 +930,13 @@ change persist, at least until the user changes it again.</p>
 <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Silence warnings for a cell. The -p flag can be used to make the</span>
 <span class="sd">    change persist, at least until the user changes it again.</span>
+
+<span class="sd">    Developer note: later found a needs_local_scope decorator</span>
+<span class="sd">    https://ipython.readthedocs.io/en/stable/config/custommagics.html#\</span>
+<span class="sd">        accessing-user-namespace-and-local-scope</span>
+<span class="sd">    that might let us load state from ipython in a a more reliable way.</span>
+<span class="sd">    Not certain this would be an improvement, and major refactor might be</span>
+<span class="sd">    needed to make this work, but it&#39;s something to keep in mind.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_argstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duck</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
