@@ -82,6 +82,13 @@ class DebugMagic(Magics):
     def duck(self, line=''):
         """Silence warnings for a cell. The -p flag can be used to make the
         change persist, at least until the user changes it again.
+
+        Developer note: later found a needs_local_scope decorator
+        https://ipython.readthedocs.io/en/stable/config/custommagics.html#\
+            accessing-user-namespace-and-local-scope
+        that might let us load state from ipython in a a more reliable way.
+        Not certain this would be an improvement, and major refactor might be
+        needed to make this work, but it's something to keep in mind.
         """
         args = parse_argstring(self.duck, line)
         if args.prompt:
