@@ -2180,7 +2180,7 @@ library).</p>
             <span class="n">chat_kwargs</span><span class="p">[</span><span class="s1">&#39;streaming&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">chat_kwargs</span><span class="p">[</span><span class="s1">&#39;streaming&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">chat_kwargs</span><span class="p">[</span><span class="s1">&#39;callback_manager&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BaseCallbackManager</span><span class="p">(</span>
+            <span class="n">chat_kwargs</span><span class="p">[</span><span class="s1">&#39;callback_manager&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CallbackManager</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">LiveTypingCallbackHandler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)]</span>
             <span class="p">)</span>
         <span class="c1"># Dev color is what we print the prompt in when user asks a question</span>
