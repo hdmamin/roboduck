@@ -142,7 +142,7 @@ def truncated_repr(obj, max_len=79):
     def qualname(obj):
         """Similar to type(obj).__qualname__() but that method doesn't always
         include the module(s). e.g. pandas Index has __qualname__ "Index" but
-        this funnction returns "<pandas.core.indexes.base.Index>".
+        this function returns "<pandas.core.indexes.base.Index>".
         """
         text = str(type(obj))
         names = re.search("<class '([a-zA-Z_.]*)'>", text).groups()
