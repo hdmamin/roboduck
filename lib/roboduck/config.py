@@ -6,7 +6,7 @@ supports only two fields:
 - `openai_api_key`: See the [Quickstart](https://hdmamin.github.io/roboduck/)
 for setup help.
 
-- `model_name` (optional): Roboduck is configured to use gpt-3.5-turbo by
+- `model_name` (optional): Roboduck is configured to use gpt-4o-mini by
 default. This field lets you change that (e.g. to gpt-4). If present in the
 config file, this will take priority over any model_name field specified in a
 chat template
@@ -44,7 +44,7 @@ def update_config(config_path=config_path, **kwargs):
     kwargs : any
         Available fields include:
             - openai_api_key
-            - model_name: name like 'gpt-3.5-turbo' that controls what model
+            - model_name: name like 'gpt-4o-mini' that controls what model
             to use for completions. Model_name is resolved as follows:
             1. kwargs explicitly passed in by user (e.g.
             `duck(model_name='gpt-4')` always override everything else.

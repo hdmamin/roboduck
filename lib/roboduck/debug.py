@@ -127,7 +127,7 @@ class CodeCompletionCache:
 
 
 class DuckDB(Pdb):
-    """Conversational debugger powered by LLM (e.g. gpt-3.5-turbo or gpt-4).
+    """Conversational debugger powered by LLM (e.g. gpt-4o-mini or gpt-4).
     Once you're in a debugging session, regular pdb commands will work as usual
     but any user command containing a question mark will be interpreted as a
     question for the lLM. Prefixing your question with "[dev]" will print out
