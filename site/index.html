@@ -267,6 +267,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="API Key Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config File
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -619,6 +634,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="API Key Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config File
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -753,6 +783,12 @@ echo &quot;openai_api_key: your_api_key&quot; &gt; ~/.roboduck/config.yaml
 </code></pre>
 <p>Manually setting an OPENAI_API_KEY environment variable also works.</p>
 <p>Roboduck does not store your API key or collect any usage data.</p>
+<h4 id="config-file">Config File</h4>
+<p>If you want to use a custom path for your config file, you can set this using the ROBODUCK_CONFIG_PATH environment variable. This should still end with ".yaml" or ".yml", e.g.</p>
+<pre><code>import os
+
+os.environ[&quot;ROBODUCK_CONFIG_PATH&quot;] = &quot;/Users/path/to/custom/config.yaml&quot;
+</code></pre>
 <h3 id="debugger">Debugger</h3>
 <p><img alt="debug demo" src="data/images/debug.gif" /></p>
 <p>We provide a natural language equivalent of python's built-in <code>breakpoint</code> function. Once you're in an interactive session, you can use the standard pdb commands to navigate your code (cmd+f "debugger commands" <a href="https://docs.python.org/3/library/pdb.html">here</a>. TLDR: type <code>n</code> to execute the next line, a variable name to view its current value, or <code>q</code> to quit the debugging session). However, you can also type a question like "Why do we get an index error when j changes from 3 to 4?" or "Why does nums have three 9s in it when the input list only had one?". Concretely, any time you type something including a question mark, an LLM will try to answer. This is not just performing static analysis - the LLM can access information about the current state of your program.</p>
