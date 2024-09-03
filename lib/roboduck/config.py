@@ -1,8 +1,22 @@
 """Allow us to easily read from and write to roboduck's config file.
 
-Roboduck creates a config file at `~/.roboduck/config.yaml` (you can also
-change this path by setting the ROBODUCK_CONFIG_PATH environment variable).
-This currently supports only two fields:
+Roboduck creates a config file at `~/.roboduck/config.yaml`. You can also
+change this path by setting the ROBODUCK_CONFIG_PATH environment variable
+in a python script:
+
+```python
+import os
+
+os.environ["ROBODUCK_CONFIG_PATH"] = "/Users/path/to/custom/config.yaml"
+```
+
+or by adding this to your ~/.bashrc file:
+
+```bash
+export ROBODUCK_CONFIG_PATH=/Users/path/to/custom/config.yaml
+```
+
+The config currently supports only two fields:
 
 - `openai_api_key`: See the [Quickstart](https://hdmamin.github.io/roboduck/)
 for setup help.
