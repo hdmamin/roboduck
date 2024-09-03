@@ -48,12 +48,18 @@ Roboduck does not store your API key or collect any usage data.
 
 #### Config File
 
-If you want to use a custom path for your config file, you can set this using the ROBODUCK_CONFIG_PATH environment variable. This should still end with ".yaml" or ".yml", e.g.
+If you want to use a custom path for your config file, you can set this using the ROBODUCK_CONFIG_PATH environment variable. This should still end with ".yaml" or ".yml". You can set this in a python script:
 
-```
+```python
 import os
 
 os.environ["ROBODUCK_CONFIG_PATH"] = "/Users/path/to/custom/config.yaml"
+```
+
+or add this to your ~/.bashrc file:
+
+```bash
+export ROBODUCK_CONFIG_PATH=/Users/path/to/custom/config.yaml
 ```
 
 ### Debugger
