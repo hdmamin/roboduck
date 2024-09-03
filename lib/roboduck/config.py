@@ -1,7 +1,22 @@
 """Allow us to easily read from and write to roboduck's config file.
 
-Roboduck creates a config file at `~/.roboduck/config.yaml`. This currently
-supports only two fields:
+Roboduck creates a config file at `~/.roboduck/config.yaml`. You can also
+change this path by setting the ROBODUCK_CONFIG_PATH environment variable
+in a python script:
+
+```python
+import os
+
+os.environ["ROBODUCK_CONFIG_PATH"] = "/Users/path/to/custom/config.yaml"
+```
+
+or by adding this to your ~/.bashrc file:
+
+```bash
+export ROBODUCK_CONFIG_PATH=/Users/path/to/custom/config.yaml
+```
+
+The config currently supports only two fields:
 
 - `openai_api_key`: See the [Quickstart](https://hdmamin.github.io/roboduck/)
 for setup help.
@@ -27,10 +42,26 @@ import warnings
 from roboduck.utils import update_yaml, load_yaml
 
 
-config_path = Path('~/.roboduck/config.yaml').expanduser()
+CONFIG_PATH = Path('~/.roboduck/config.yaml').expanduser()
+# User can optionally set this to a custom path. This should still end
+# with ".yaml" or ".yml".
+CONFIG_PATH_ENV_VAR = "ROBODUCK_CONFIG_PATH"
 
 
-def update_config(config_path=config_path, **kwargs):
+def get_config_path():
+    """Get the path to the roboduck config file. We use this instead of just
+    referencing the variable in case the user sets a custom location.
+
+    Returns
+    -------
+    Path
+        The path to the roboduck config file (yaml), either the default path
+        or the path specified by the user-set environment variable.
+    """
+    return Path(os.environ.get(CONFIG_PATH_ENV_VAR, CONFIG_PATH))
+
+
+def update_config(**kwargs):
     """Update roboduck config file with settings that persist for future
     sessions.
 
@@ -39,8 +70,6 @@ def update_config(config_path=config_path, **kwargs):
 
     Parameters
     ----------
-    config_path : str or Path
-        Location of the roboduck config file.
     kwargs : any
         Available fields include:
             - openai_api_key
@@ -69,29 +98,24 @@ def update_config(config_path=config_path, **kwargs):
     if set(kwargs) - recognized_keys:
         warnings.warn(f'You are setting unrecognized key(s): '
                       f'{set(kwargs) - recognized_keys}.')
-    update_yaml(path=config_path, delete_if_none=True, **kwargs)
+    update_yaml(path=get_config_path(), delete_if_none=True, **kwargs)
 
 
-def load_config(config_path=config_path):
+def load_config():
     """Load roboduck config.
-
-    Parameters
-    ----------
-    config_path : str or Path
-        Location of the roboduck config file.
 
     Returns
     -------
     dict
     """
-    config_path = Path(config_path)
+    config_path = get_config_path()
     if not config_path.is_file():
         config_path.parent.mkdir(parents=True, exist_ok=True)
         config_path.touch()
     return load_yaml(path=config_path)
 
 
-def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
+def apply_config_defaults(chat_kwargs, template_only):
     """Help resolve model_name in place. Recall we prioritize sources in this
     order:
 
@@ -109,8 +133,6 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
         Specifies whether chat_kwargs are passed in directly from a prompt
         template (template_only=True) or include kwargs that a user passed in
         explicitly (template_only=False).
-    config_path : str or Path
-        Location of the roboduck config file.
 
     Returns
     -------
@@ -122,7 +144,7 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
     if 'model_name' in chat_kwargs and not template_only:
         return
 
-    cfg = load_config(config_path=config_path)
+    cfg = load_config()
     config_model_name = cfg.get('model_name', '')
     # We also don't want to add something like model_name='' if no default is
     # specified in the config. Better to revert to langchain class default than
@@ -131,7 +153,7 @@ def apply_config_defaults(chat_kwargs, template_only, config_path=config_path):
         chat_kwargs['model_name'] = config_model_name
 
 
-def set_openai_api_key(key=None, config_path=config_path,
+def set_openai_api_key(key=None,
                        strict=False, update_config_=False):
     """Set OPENAI_API_KEY environment variable for langchain.
 
@@ -139,26 +161,25 @@ def set_openai_api_key(key=None, config_path=config_path,
     ----------
     key : str or None
         Optionally pass in openai api key (str). If not provided, we check the
-        config path and try to load a key. If it is provided, we don't check
-        config_path.
-    config_path : str or Path
-        Local yaml file containing the field openai_api_key. We only try to
-        load the key from it if `key` is not provided. We do not write to
-        this file by default.
+        users's roboduck config and try to load a key (using the
+        "openai_api_key" field). If `key` is provided, we don't check the
+        config.
     strict : bool
-        Determines what happens when key is None and config path does not
-        exist. Strict=True raises a runtime error, False just warns user.
+        Determines what happens when key is None and the roboduck config does
+        not exist. Strict=True raises a runtime error, False just warns user.
     update_config_ : bool
-        If True, we update the yaml config file with that api key.
+        If True, we update the roboduck yaml config file with the provided
+        api key.
     """
-    config_path = Path(config_path).expanduser()
     var_name = 'OPENAI_API_KEY'
     key = key or os.environ.get(var_name)
     if not key:
         try:
-            data = load_config(config_path)
+            data = load_config()
             key = data[var_name.lower()]
         except Exception as e:
+            # Just creating this for warning/error message.
+            config_path = get_config_path()
             msg = 'Openai api key must either be passed into this function ' \
                   f'or stored in {config_path} with field name ' \
                   f'{var_name.lower()}. No key found.'
@@ -169,6 +190,7 @@ def set_openai_api_key(key=None, config_path=config_path,
                               'but openai API will not be available until you '
                               'make key available via one of these methods.')
                 return
+
     if not key.startswith('sk-'):
         partially_redacted_key = key[:4] + '*'*max(0, len(key) - 4)
         warnings.warn(
@@ -178,4 +200,4 @@ def set_openai_api_key(key=None, config_path=config_path,
         )
     os.environ[var_name] = key
     if update_config_:
-        update_config(config_path, **{var_name.lower(): key})
+        update_config(**{var_name.lower(): key})
