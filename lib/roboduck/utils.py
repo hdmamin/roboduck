@@ -5,7 +5,6 @@ from colorama import Fore, Style
 import difflib
 import openai
 import os
-import pandas as pd
 from pathlib import Path
 import re
 import warnings
@@ -109,6 +108,34 @@ def type_annotated_dict_str(dict_, func=repr):
     return '{' + ''.join(type_strs) + '\n}'
 
 
+def is_pandas_df(obj) -> bool:
+    """Slightly hacky replacement for isinstance(obj, pd.DataFrame)
+    to avoid requiring a pandas dependency solely for a couple isinstance
+    checks. Not ideal but I think it's better than the alternative.
+    """
+    clsname = str(type(obj))
+    return clsname.startswith("pandas") \
+        and clsname.endswith("DataFrame") \
+        and all(
+            hasattr(obj, name)
+            for name in ("columns", "value_counts", "iloc")
+    )
+
+
+def is_pandas_series(obj) -> bool:
+    """Slightly hacky replacement for isinstance(obj, pd.Series)
+    to avoid requiring a pandas dependency solely for a couple isinstance
+    checks. Not ideal but I think it's better than the alternative.
+    """
+    clsname = str(type(obj))
+    return clsname.startswith("pandas") \
+        and clsname.endswith("Series") \
+        and all(
+            hasattr(obj, name)
+            for name in ("sort_values", "value_counts", "iloc")
+    )
+
+
 def truncated_repr(obj, max_len=79):
     """Return an object's repr, truncated to ensure that it doesn't take up
     more characters than we want. This is used to reduce our chances of using
@@ -158,11 +185,11 @@ def truncated_repr(obj, max_len=79):
     repr_ = repr(obj)
     if len(repr_) < max_len:
         return repr_
-    if isinstance(obj, pd.DataFrame):
+    if is_pandas_df(obj):
         cols = truncated_repr(obj.columns.tolist(), max_len - 26)
         return f'pd.DataFrame(columns=' \
                f'{truncated_repr(cols, max_len - 22)})'
-    if isinstance(obj, pd.Series):
+    if is_pandas_series(obj):
         return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
     if isinstance(obj, dict):
         length = 5
@@ -176,6 +203,9 @@ def truncated_repr(obj, max_len=79):
         return "{" + res.rstrip() + "...}"
     if isinstance(obj, str):
         return repr_[:max_len - 4] + "...'"
+    # TODO: this doesn't handle numpy arrays (and probably torch tensors,
+    # I'm guessing) correctly. Sample failing input:
+    # np.arange(24).reshape(2, 3, 4)
     if isinstance(obj, Iterable):
         # A bit risky but sort of elegant. Just recursively take smaller
         # slices until we get an acceptable length. We may end up going
