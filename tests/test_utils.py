@@ -117,3 +117,40 @@ def test_store_class_defaults():
     assert Foo.last_bar == 3
     assert Foo.last_baz == 'abc'
     assert Foo.other is False
+
+
+@pytest.mark.parametrize(
+    "obj,answer",
+    (
+        ({3: 4}, False),
+        ([2], False),
+        (('a', 'b', 'c'), False),
+        ('pandas.DataFrame', False),
+        (pd.DataFrame, False),
+        (pd.Series([1, 2, 3]), False),
+        (pd.DataFrame({"a": [3, 5]}), True),
+        (pd.DataFrame(), True),
+    )
+)
+def test_is_pandas_df(obj, answer):
+    assert utils.is_pandas_df(obj) == answer
+
+
+@pytest.mark.parametrize(
+    "obj,answer",
+    (
+        ({3: 4}, False),
+        ([2], False),
+        (('a', 'b', 'c'), False),
+        ('pandas.Series', False),
+        (pd.DataFrame, False),
+        (pd.Series, False),
+        (pd.DataFrame({"a": [3, 5]}), False),
+        (pd.DataFrame(), False),
+        (pd.Series([1, 2, 3]), True),
+        (pd.Series([1.0, None]), True),
+        (pd.Series(), True),
+    )
+)
+def test_is_pandas_series(obj, answer):
+    assert utils.is_pandas_series(obj) == answer

@@ -113,9 +113,8 @@ def is_pandas_df(obj) -> bool:
     to avoid requiring a pandas dependency solely for a couple isinstance
     checks. Not ideal but I think it's better than the alternative.
     """
-    clsname = str(type(obj))
-    return clsname.startswith("pandas") \
-        and clsname.endswith("DataFrame") \
+    clsname = getattr(type(obj), "__qualname__", "")
+    return clsname == "DataFrame" \
         and all(
             hasattr(obj, name)
             for name in ("columns", "value_counts", "iloc")
@@ -127,9 +126,8 @@ def is_pandas_series(obj) -> bool:
     to avoid requiring a pandas dependency solely for a couple isinstance
     checks. Not ideal but I think it's better than the alternative.
     """
-    clsname = str(type(obj))
-    return clsname.startswith("pandas") \
-        and clsname.endswith("Series") \
+    clsname = getattr(type(obj), "__qualname__", "")
+    return clsname == "Series" \
         and all(
             hasattr(obj, name)
             for name in ("sort_values", "value_counts", "iloc")
