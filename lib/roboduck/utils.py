@@ -134,7 +134,50 @@ def is_pandas_series(obj) -> bool:
     )
 
 
-def truncated_repr(obj, max_len=79):
+def is_array_like(obj) -> bool:
+    """Similar to is_pandas_df but for numpy arrays/torch tensors/similar.
+    Instead of checking for specific types here, we just check that the obj
+    has certain attributes that those objects should have.
+    """
+    return all(hasattr(obj, attr)
+               for attr in ("ndim", "shape", "dtype", "tolist"))
+
+
+def qualname(obj, with_brackets=True) -> str:
+    """Similar to type(obj).__qualname__() but that method doesn't always
+    include the module(s). e.g. pandas Index has __qualname__ "Index" but
+    this function returns "<pandas.core.indexes.base.Index>".
+
+    Set with_brackets=False to skip the leading/trailing angle brackets.
+    """
+    text = str(type(obj))
+    names = re.search("<class '([a-zA-Z_.]*)'>", text).groups()
+    assert len(names) == 1, f'Should have found only 1 qualname but ' \
+                            f'found: {names}'
+    if with_brackets:
+        return f'<{names[0]}>'
+    return names[0]
+
+
+def format_listlike_with_metadata(array, truncated_data=None):
+    """
+    """
+    clsname = qualname(array, with_brackets=False)
+    res = f"<{clsname}, "
+    if is_array_like(array):
+        if truncated_data is not None:
+            repr_ = repr(truncated_data.tolist())
+            res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
+        res += f"shape={array.shape}, dtype={array.dtype}>"
+        return res
+
+    if truncated_data is not None:
+        repr_ = repr(truncated_data)
+        res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
+    return res + f"len={len(array)}>"
+
+
+def truncated_repr(obj, max_len=400) -> str:
     """Return an object's repr, truncated to ensure that it doesn't take up
     more characters than we want. This is used to reduce our chances of using
     up all our available tokens in a gpt prompt simply communicating that a
@@ -164,21 +207,11 @@ def truncated_repr(obj, max_len=79):
         deal, at least at the moment. I can always revisit that later if
         necessary.
     """
-    def qualname(obj):
-        """Similar to type(obj).__qualname__() but that method doesn't always
-        include the module(s). e.g. pandas Index has __qualname__ "Index" but
-        this function returns "<pandas.core.indexes.base.Index>".
-        """
-        text = str(type(obj))
-        names = re.search("<class '([a-zA-Z_.]*)'>", text).groups()
-        assert len(names) == 1, f'Should have found only 1 qualname but ' \
-                                f'found: {names}'
-        return f'<{names[0]}>'
 
     open2close = {
         '[': ']',
         '(': ')',
-        '{': '}'
+        '{': '}',
     }
     repr_ = repr(obj)
     if len(repr_) < max_len:
@@ -198,12 +231,20 @@ def truncated_repr(obj, max_len=79):
             new_str = f'{k!r}: {v!r}, '
             length += len(new_str)
             res += new_str
-        return "{" + res.rstrip() + "...}"
+        return "{" + res.rstrip() + f"..., len={len(obj)}" + "}"
+
     if isinstance(obj, str):
         return repr_[:max_len - 4] + "...'"
-    # TODO: this doesn't handle numpy arrays (and probably torch tensors,
-    # I'm guessing) correctly. Sample failing input:
+
+    # TODO: this doesn't handle nested lists or multidimensional data
+    # structures very well. Sample failing input:
     # np.arange(24).reshape(2, 3, 4)
+    # (Currently handling this differently above and not including any actual
+    # data, but still waffling on whether to keep that approach.)
+    # Also not great on nested lists, e.g.
+    # [(np.arange(20)*i).tolist() for i in range(1, 5)]
+    # (observed ellipses only occur INSIDE the last nested list, but hides the
+    # fact that there were more nested lists that aren't shown at all).
     if isinstance(obj, Iterable):
         # A bit risky but sort of elegant. Just recursively take smaller
         # slices until we get an acceptable length. We may end up going
@@ -215,11 +256,16 @@ def truncated_repr(obj, max_len=79):
         # when inputs are long.
         # Can't easily pass smaller max_len value into recursive call
         # because we always want to compare to the user-specified value.
-        n = int(max_len / len(repr_) * len(obj))
+        # n is the approximate number of items we expect to be able to fit in
+        # a truncated repr of length <= max_len, though this is of course not
+        # bulletproof (usually only a problem for nested or multidimensional
+        # data structures).
+        n = max(1, int(max_len / len(repr_) * len(obj)))
         if n == len(obj):
             # Even slicing to just first item is too long, so just revert
             # to treating this like a non-iterable object.
-            return qualname(obj)
+            return format_listlike_with_metadata(obj)
+
         # Need to slice set while keeping the original dtype.
         if isinstance(obj, set):
             slice_ = set(list(obj)[:n])
@@ -230,14 +276,25 @@ def truncated_repr(obj, max_len=79):
                 warnings.warn(f'Failed to slice obj {obj}. Result may not be '
                               f'truncated as much as desired. Error:\n{e}')
                 slice_ = obj
+
         repr_ = truncated_repr(slice_, max_len)
+        # TODO: rm? I think this is good if we're in an inner call but bad if
+        # this is the outer call.
+        # Don't add any ellipses in this case.
+        if repr_ == qualname(obj):
+            print('qualname = repr_') # TODO rm
+            return repr_
+
         non_brace_idx = len(repr_) - 1
         while repr_[non_brace_idx] in open2close.values():
             non_brace_idx -= 1
+        print('non_brace_idx', non_brace_idx)
         if non_brace_idx <= 0 or (non_brace_idx == 3
                                   and repr_.startswith('set')):
             return repr_[:-1] + '...' + repr_[-1]
-        return repr_[:non_brace_idx + 1] + ',...' + repr_[non_brace_idx + 1:]
+
+        print('last format')
+        return format_listlike_with_metadata(obj, truncated_data=slice_)
 
     # We know it's non-iterable at this point.
     if isinstance(obj, type):

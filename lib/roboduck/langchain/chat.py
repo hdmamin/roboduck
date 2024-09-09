@@ -327,7 +327,7 @@ class Chat:
                     f'({self.context_window:,} tokens). You could try using '
                     f'a different model_name with a larger context window, a '
                     f'prompt_name corresponding to a more concise prompt, '
-                    f'a smaller max_len_per_var (default is 79), or '
+                    f'a smaller max_len_per_var (default is 400), or '
                     f'refactoring your code (this error could potentially be '
                     f'caused by a truly enormous function).'
                 )

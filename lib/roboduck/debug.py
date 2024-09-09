@@ -135,7 +135,7 @@ class DuckDB(Pdb):
     library).
     """
 
-    def __init__(self, prompt_name='debug', max_len_per_var=79, silent=False,
+    def __init__(self, prompt_name='debug', max_len_per_var=400, silent=False,
                  pdb_kwargs=None, parse_func=parse_completion, color='green',
                  **chat_kwargs):
         """
@@ -159,9 +159,9 @@ class DuckDB(Pdb):
             Limits number of characters per variable when communicating
             current state (local or global depending on `full_context`) to
             gpt. If unbounded, that section of the prompt alone could grow
-            very big . I somewhat arbitrarily set 79 as the default, i.e.
-            1 line of python per variable. I figure that's usually enough to
-            communicate the gist of what's happening.
+            very big. I somewhat arbitrarily set 400 as the default, i.e.
+            100 tokens. I figure that's usually enough
+            to communicate the gist of what's happening.
         silent : bool
             If True, print gpt completions to stdout. One example of when False
             is appropriate is our logging module - we want to get the
