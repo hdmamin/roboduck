@@ -216,6 +216,9 @@ def truncated_repr(obj, max_len=400) -> str:
     repr_ = repr(obj)
     if len(repr_) < max_len:
         return repr_
+    # Originally subtracted 26 for df and 11 for series to account for
+    # hardcoded prefixes, but new version of func adds some additional chars
+    # by way of the recursive call so this isn't very precise.
     if is_pandas_df(obj):
         cols = truncated_repr(obj.columns.tolist(), max_len - 26)
         return f'pd.DataFrame(columns=' \
@@ -231,20 +234,16 @@ def truncated_repr(obj, max_len=400) -> str:
             new_str = f'{k!r}: {v!r}, '
             length += len(new_str)
             res += new_str
-        return "{" + res.rstrip() + f"..., len={len(obj)}" + "}"
+        return f"<{qualname(obj, with_brackets=False)}, " + \
+               "truncated_data={" + res.rstrip() + \
+               "...}, " + f"len={len(obj)}" + ">"
 
     if isinstance(obj, str):
         return repr_[:max_len - 4] + "...'"
 
-    # TODO: this doesn't handle nested lists or multidimensional data
-    # structures very well. Sample failing input:
-    # np.arange(24).reshape(2, 3, 4)
-    # (Currently handling this differently above and not including any actual
-    # data, but still waffling on whether to keep that approach.)
-    # Also not great on nested lists, e.g.
-    # [(np.arange(20)*i).tolist() for i in range(1, 5)]
-    # (observed ellipses only occur INSIDE the last nested list, but hides the
-    # fact that there were more nested lists that aren't shown at all).
+    # TODO: see if we can replace this with simliar logic (or refactor to use
+    # same logic) as dict block above. The recursive call makes it a little
+    # hard to track things and generally makes me a bit uneasy.
     if isinstance(obj, Iterable):
         # A bit risky but sort of elegant. Just recursively take smaller
         # slices until we get an acceptable length. We may end up going
@@ -281,19 +280,19 @@ def truncated_repr(obj, max_len=400) -> str:
         # TODO: rm? I think this is good if we're in an inner call but bad if
         # this is the outer call.
         # Don't add any ellipses in this case.
-        if repr_ == qualname(obj):
-            print('qualname = repr_') # TODO rm
-            return repr_
+        # if repr_ == qualname(obj):
+        #     print('qualname = repr_') # TODO rm
+        #     return repr_
 
-        non_brace_idx = len(repr_) - 1
-        while repr_[non_brace_idx] in open2close.values():
-            non_brace_idx -= 1
-        print('non_brace_idx', non_brace_idx)
-        if non_brace_idx <= 0 or (non_brace_idx == 3
-                                  and repr_.startswith('set')):
-            return repr_[:-1] + '...' + repr_[-1]
+        # TODO think we can rm this, but run on a big set of test cases to be sure.
+        # non_brace_idx = len(repr_) - 1
+        # while repr_[non_brace_idx] in open2close.values():
+        #     non_brace_idx -= 1
+        # print('non_brace_idx', non_brace_idx)
+        # if non_brace_idx <= 0 or (non_brace_idx == 3
+        #                           and repr_.startswith('set')):
+        #     return repr_[:-1] + '...' + repr_[-1]
 
-        print('last format')
         return format_listlike_with_metadata(obj, truncated_data=slice_)
 
     # We know it's non-iterable at this point.
