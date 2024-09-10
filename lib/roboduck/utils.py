@@ -160,7 +160,36 @@ def qualname(obj, with_brackets=True) -> str:
 
 
 def format_listlike_with_metadata(array, truncated_data=None):
-    """
+    """Format a list-like object with metadata.
+
+    This function creates a string representation of a list-like object,
+    including its class name, truncated data (if provided), and additional
+    metadata such as shape, dtype, or length.
+
+    Parameters
+    ----------
+    array : object
+        The list-like object to be formatted.
+    truncated_data : object, optional
+        A truncated version of the array's data. If provided, it will be
+        included in the formatted string.
+
+    Returns
+    -------
+    str
+        A formatted string representation of the array with metadata.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> arr = np.array([1, 2, 3, 4, 5])
+    >>> format_listlike_with_metadata(arr, arr[:3])
+    '<numpy.ndarray, truncated_data=[1, 2, 3, ...], shape=(5,), dtype=int64>'
+
+    >>> import pandas as pd
+    >>> series = pd.Series(['a', 'b', 'c', 'd', 'e'])
+    >>> format_listlike_with_metadata(series, series[:2])
+    "<pandas.core.series.Series, truncated_data=['a', 'b', ...], len=5>"
     """
     clsname = qualname(array, with_brackets=False)
     res = f"<{clsname}, "
@@ -222,7 +251,7 @@ def truncated_repr(obj, max_len=400) -> str:
     if is_pandas_df(obj):
         cols = truncated_repr(obj.columns.tolist(), max_len - 26)
         return f'pd.DataFrame(columns=' \
-               f'{truncated_repr(cols, max_len - 22)})'
+               f'{truncated_repr(cols, max_len - 22)}, shape={obj.shape})'
     if is_pandas_series(obj):
         return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
     if isinstance(obj, dict):

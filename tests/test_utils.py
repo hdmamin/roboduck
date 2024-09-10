@@ -154,3 +154,29 @@ def test_is_pandas_df(obj, answer):
 )
 def test_is_pandas_series(obj, answer):
     assert utils.is_pandas_series(obj) == answer
+
+
+@pytest.mark.parametrize(
+    "obj,answer",
+    (
+        ({3: 4}, False),
+        ([2, 3], False),
+        ([], False),
+        (('a', 'b', 'c'), False),
+        ('pandas.Series', False),
+        (pd.DataFrame, False),
+        (pd.Series, False),
+        (pd.DataFrame({"a": [3, 5]}), False),
+        (pd.DataFrame(), False),
+        # TODO: series currently return True, consider making func stricter
+        # OR maybe removing hardcoded series if block and refactor so
+        # existing is_array_like block handles it?
+        (pd.Series([1, 2, 3]), False),
+        (pd.Series([1.0, None]), False),
+        (pd.Series(), False),
+        (np.arange(5), True),
+        (np.array([]), True),
+    )
+)
+def test_is_array_like(obj, answer):
+    assert utils.is_array_like(obj) == answer
