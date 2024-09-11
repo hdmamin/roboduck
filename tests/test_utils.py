@@ -180,3 +180,22 @@ def test_is_pandas_series(obj, answer):
 )
 def test_is_array_like(obj, answer):
     assert utils.is_array_like(obj) == answer
+
+
+@pytest.mark.parametrize(
+    "obj,with_brackets,expected",
+    [
+        (pd.DataFrame(), False, "pandas.core.frame.DataFrame"),
+        (pd.Series(), False, "pandas.core.series.Series"),
+        (np.array([]), False, "numpy.ndarray"),
+        ([], False, "list"),
+        ({}, False, "dict"),
+        (pd.DataFrame(), True, "<pandas.core.frame.DataFrame>"),
+        (pd.Series(), True, "<pandas.core.series.Series>"),
+        (np.array([]), True, "<numpy.ndarray>"),
+        ([], True, "<list>"),
+        ({}, True, "<dict>"),
+    ]
+)
+def test_qualname(obj, with_brackets, expected):
+    assert utils.qualname(obj, with_brackets=with_brackets) == expected
