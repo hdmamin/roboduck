@@ -43,6 +43,41 @@ def test_truncated_repr_long_inputs(obj, n, expected):
 
 
 @pytest.mark.parametrize(
+    'obj, n, expected',
+    [
+        (
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            50,
+            "[[1, 2, 3], [4, 5, 6], [7, 8, 9]]"
+        ),
+        (
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]],
+            40,
+            "<list, truncated_data=[[1, 2, 3], [4, 5, 6], [7, 8, 9], ...], len=4>"
+        ),
+        (
+            [{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}],
+            50,
+            "[{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}]"
+        ),
+        (
+            [{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}],
+            30,
+            "<list, truncated_data=[{'a': 1, 'b': 2}, ...], len=3>"
+        ),
+        (
+            {'x': list(range(100 * i)) for i in range(10)},
+            30,
+            # TODO: fix the bug this revealed, currently I think this always
+            # displays the whole first value so repr is way too long.
+        )
+    ]
+)
+def test_truncated_repr_nested_inputs(obj, n, expected):
+    assert utils.truncated_repr(obj, n) == expected
+
+
+@pytest.mark.parametrize(
     "d, func, expected",
     [
         ({}, repr, '{\n}'),
