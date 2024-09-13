@@ -158,23 +158,6 @@ def test_store_class_defaults():
     "obj,answer",
     (
         ({3: 4}, False),
-        ([2], False),
-        (('a', 'b', 'c'), False),
-        ('pandas.DataFrame', False),
-        (pd.DataFrame, False),
-        (pd.Series([1, 2, 3]), False),
-        (pd.DataFrame({"a": [3, 5]}), True),
-        (pd.DataFrame(), True),
-    )
-)
-def test_is_pandas_df(obj, answer):
-    assert utils.is_pandas_df(obj) == answer
-
-
-@pytest.mark.parametrize(
-    "obj,answer",
-    (
-        ({3: 4}, False),
         ([2, 3], False),
         ([], False),
         (('a', 'b', 'c'), False),

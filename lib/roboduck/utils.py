@@ -108,19 +108,6 @@ def type_annotated_dict_str(dict_, func=repr):
     return '{' + ''.join(type_strs) + '\n}'
 
 
-def is_pandas_df(obj) -> bool:
-    """Slightly hacky replacement for isinstance(obj, pd.DataFrame)
-    to avoid requiring a pandas dependency solely for a couple isinstance
-    checks. Not ideal but I think it's better than the alternative.
-    """
-    clsname = getattr(type(obj), "__qualname__", "")
-    return clsname == "DataFrame" \
-        and all(
-            hasattr(obj, name)
-            for name in ("columns", "value_counts", "iloc")
-    )
-
-
 def is_array_like(obj) -> bool:
     """Similar to is_pandas_df but for numpy arrays/torch tensors/similar.
     Instead of checking for specific types here, we just check that the obj
@@ -254,21 +241,9 @@ def truncated_repr(obj, max_len=400) -> str:
     if len(repr_) < max_len:
         return repr_
 
-    # Originally subtracted 26 for df and 11 for series to account for
-    # hardcoded prefixes, but new version of func adds some additional chars
-    # by way of the recursive call so this isn't very precise.
-    if is_pandas_df(obj):
-        cols = truncated_repr(obj.columns.tolist(), max_len - 26)
-        return f'pd.DataFrame(columns=' \
-               f'{truncated_repr(cols, max_len - 22)}, shape={obj.shape})'
-
     if isinstance(obj, str):
-        return repr_[:max_len - 4] + "...'"
-    print('not str') # TODO rm
+        return repr_[:max_len - 16] + "...' (truncated)"
 
-    # TODO: see if we can replace this with simliar logic (or refactor to use
-    # same logic) as dict block above. The recursive call makes it a little
-    # hard to track things and generally makes me a bit uneasy.
     if isinstance(obj, Iterable):
         # A bit risky but sort of elegant. Just recursively take smaller
         # slices until we get an acceptable length. We may end up going
@@ -314,6 +289,9 @@ def truncated_repr(obj, max_len=400) -> str:
     # We know it's non-iterable at this point.
     if isinstance(obj, type):
         return f'<class {obj.__name__}>'
+    
+    # Note that ints/floats usually won't hit this block, but it could happen
+    # with an extraordinarily high number of digits.
     if isinstance(obj, (int, float)):
         return truncated_repr(format(obj, '.3e'), max_len)
     return qualname(obj)
