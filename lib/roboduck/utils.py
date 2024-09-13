@@ -193,16 +193,17 @@ def format_listlike_with_metadata(array, truncated_data=None):
     """
     clsname = qualname(array, with_brackets=False)
     res = f"<{clsname}, "
+    if truncated_data is None:
+        truncated_data = '[...]'
+
     if is_array_like(array):
-        if truncated_data is not None:
-            repr_ = repr(truncated_data.tolist())
-            res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
+        repr_ = repr(truncated_data.tolist())
+        res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
         res += f"shape={array.shape}, dtype={array.dtype}>"
         return res
 
-    if truncated_data is not None:
-        repr_ = repr(truncated_data)
-        res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
+    repr_ = repr(truncated_data)
+    res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
     return res + f"len={len(array)}>"
 
 
@@ -236,7 +237,6 @@ def truncated_repr(obj, max_len=400) -> str:
         deal, at least at the moment. I can always revisit that later if
         necessary.
     """
-
     open2close = {
         '[': ']',
         '(': ')',
@@ -301,9 +301,11 @@ def truncated_repr(obj, max_len=400) -> str:
             try:
                 slice_ = obj[:n]
             except Exception as e:
-                warnings.warn(f'Failed to slice obj {obj}. Result may not be '
-                              f'truncated as much as desired. Error:\n{e}')
-                slice_ = obj
+                warnings.warn(
+                    f'Failed to slice obj {obj}, returning qualname. '
+                    f'Error:\n{e}'
+                )
+                return qualname(obj)
 
         repr_ = truncated_repr(slice_, max_len)
         # TODO: rm? I think this is good if we're in an inner call but bad if
