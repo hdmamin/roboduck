@@ -7,7 +7,6 @@ import openai
 import os
 from pathlib import Path
 import re
-import warnings
 import yaml
 
 
@@ -207,6 +206,31 @@ def format_listlike_with_metadata(array, truncated_data=None):
     return res + f"len={len(array)}>"
 
 
+def fallback(*, default=None, default_func=None):
+    """Decorator to provide a default value (or function that produces a value)
+    to return when the decorated function's execution fails.
+
+    You must specify either default OR default_func, not both. If default_func
+    is provided, it should accept the same args as the decorated function.
+    """
+    if bool(default) + bool(default_func) != 1:
+        raise ValueError('Exactly 1 of ()`default`, `default_func`) args '
+                         'must be non-None.')
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                if default is not None:
+                    return default
+                return default_func(*args, **kwargs)
+        return wrapper
+
+    return decorator
+
+
+@fallback(default_func=qualname)
 def truncated_repr(obj, max_len=400) -> str:
     """Return an object's repr, truncated to ensure that it doesn't take up
     more characters than we want. This is used to reduce our chances of using
@@ -237,14 +261,10 @@ def truncated_repr(obj, max_len=400) -> str:
         deal, at least at the moment. I can always revisit that later if
         necessary.
     """
-    open2close = {
-        '[': ']',
-        '(': ')',
-        '{': '}',
-    }
     repr_ = repr(obj)
     if len(repr_) < max_len:
         return repr_
+
     # Originally subtracted 26 for df and 11 for series to account for
     # hardcoded prefixes, but new version of func adds some additional chars
     # by way of the recursive call so this isn't very precise.
@@ -254,18 +274,19 @@ def truncated_repr(obj, max_len=400) -> str:
                f'{truncated_repr(cols, max_len - 22)}, shape={obj.shape})'
     if is_pandas_series(obj):
         return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
-    if isinstance(obj, dict):
-        length = 5
-        res = ''
-        for k, v in obj.items():
-            if length >= max_len - 2:
-                break
-            new_str = f'{k!r}: {v!r}, '
-            length += len(new_str)
-            res += new_str
-        return f"<{qualname(obj, with_brackets=False)}, " + \
-               "truncated_data={" + res.rstrip() + \
-               "...}, " + f"len={len(obj)}" + ">"
+    # TODO rm
+    # if isinstance(obj, dict):
+    #     length = 5
+    #     res = ''
+    #     for k, v in obj.items():
+    #         if length >= max_len - 2:
+    #             break
+    #         new_str = f'{k!r}: {v!r}, '
+    #         length += len(new_str)
+    #         res += new_str
+    #     return f"<{qualname(obj, with_brackets=False)}, " + \
+    #            "truncated_data={" + res.rstrip() + \
+    #            "...}, " + f"len={len(obj)}" + ">"
 
     if isinstance(obj, str):
         return repr_[:max_len - 4] + "...'"
@@ -297,15 +318,10 @@ def truncated_repr(obj, max_len=400) -> str:
         # Need to slice set while keeping the original dtype.
         if isinstance(obj, set):
             slice_ = set(list(obj)[:n])
+        elif isinstance(obj, dict):
+            slice_ = list(obj.items())[:n]
         else:
-            try:
-                slice_ = obj[:n]
-            except Exception as e:
-                warnings.warn(
-                    f'Failed to slice obj {obj}, returning qualname. '
-                    f'Error:\n{e}'
-                )
-                return qualname(obj)
+            slice_ = obj[:n]
 
         repr_ = truncated_repr(slice_, max_len)
         # TODO: rm? I think this is good if we're in an inner call but bad if
@@ -314,15 +330,6 @@ def truncated_repr(obj, max_len=400) -> str:
         # if repr_ == qualname(obj):
         #     print('qualname = repr_') # TODO rm
         #     return repr_
-
-        # TODO think we can rm this, but run on a big set of test cases to be sure.
-        # non_brace_idx = len(repr_) - 1
-        # while repr_[non_brace_idx] in open2close.values():
-        #     non_brace_idx -= 1
-        # print('non_brace_idx', non_brace_idx)
-        # if non_brace_idx <= 0 or (non_brace_idx == 3
-        #                           and repr_.startswith('set')):
-        #     return repr_[:-1] + '...' + repr_[-1]
 
         return format_listlike_with_metadata(obj, truncated_data=slice_)
 
