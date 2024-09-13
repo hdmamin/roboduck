@@ -3,6 +3,7 @@
 from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib
+from functools import wraps
 import openai
 import os
 from pathlib import Path
@@ -218,6 +219,7 @@ def fallback(*, default=None, default_func=None):
                          'must be non-None.')
 
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
@@ -272,24 +274,15 @@ def truncated_repr(obj, max_len=400) -> str:
         cols = truncated_repr(obj.columns.tolist(), max_len - 26)
         return f'pd.DataFrame(columns=' \
                f'{truncated_repr(cols, max_len - 22)}, shape={obj.shape})'
-    if is_pandas_series(obj):
-        return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
+
     # TODO rm
-    # if isinstance(obj, dict):
-    #     length = 5
-    #     res = ''
-    #     for k, v in obj.items():
-    #         if length >= max_len - 2:
-    #             break
-    #         new_str = f'{k!r}: {v!r}, '
-    #         length += len(new_str)
-    #         res += new_str
-    #     return f"<{qualname(obj, with_brackets=False)}, " + \
-    #            "truncated_data={" + res.rstrip() + \
-    #            "...}, " + f"len={len(obj)}" + ">"
+    print('no more series custom logic')
+    # if is_pandas_series(obj):
+        # return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
 
     if isinstance(obj, str):
         return repr_[:max_len - 4] + "...'"
+    print('not str') # TODO rm
 
     # TODO: see if we can replace this with simliar logic (or refactor to use
     # same logic) as dict block above. The recursive call makes it a little
@@ -310,6 +303,7 @@ def truncated_repr(obj, max_len=400) -> str:
         # bulletproof (usually only a problem for nested or multidimensional
         # data structures).
         n = max(1, int(max_len / len(repr_) * len(obj)))
+        print('n', n) # TODO rm
         if n == len(obj):
             # Even slicing to just first item is too long, so just revert
             # to treating this like a non-iterable object.
@@ -324,6 +318,8 @@ def truncated_repr(obj, max_len=400) -> str:
             slice_ = obj[:n]
 
         repr_ = truncated_repr(slice_, max_len)
+        # TODO rm
+        print('slice repr', repr_)
         # TODO: rm? I think this is good if we're in an inner call but bad if
         # this is the outer call.
         # Don't add any ellipses in this case.
