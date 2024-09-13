@@ -109,12 +109,17 @@ def type_annotated_dict_str(dict_, func=repr):
 
 
 def is_array_like(obj) -> bool:
-    """Similar to is_pandas_df but for numpy arrays/torch tensors/similar.
+    """Hackily check if obj is a numpy array/torch tensor/pd.Series or similar
+    without requiring all those libraries as dependencies
+    (notably, pd.DataFrame is not considered array_like - it has useful column
+    names unlike these other types).
     Instead of checking for specific types here, we just check that the obj
     has certain attributes that those objects should have.
+    If obj is the class itself rather than an instance, we return False.
     """
     return all(hasattr(obj, attr)
-               for attr in ("ndim", "shape", "dtype", "tolist"))
+               for attr in ("ndim", "shape", "dtype", "tolist")) \
+            and not isinstance(obj, type)
 
 
 def qualname(obj, with_brackets=True) -> str:
@@ -165,20 +170,42 @@ def format_listlike_with_metadata(array, truncated_data=None):
     >>> format_listlike_with_metadata(series, series[:2])
     "<pandas.core.series.Series, truncated_data=['a', 'b', ...], len=5>"
     """
+    open2close = {
+        '(': ')',
+        '{': '}',
+        '[': ']',
+    }
+    closing_bracket_str = ''.join(open2close.values())
     clsname = qualname(array, with_brackets=False)
-    res = f"<{clsname}, "
+    res = f"<{clsname}, truncated_data="
     if truncated_data is None:
         truncated_data = '[...]'
 
     if is_array_like(array):
-        repr_ = repr(truncated_data.tolist())
-        res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
-        res += f"shape={array.shape}, dtype={array.dtype}>"
+        if isinstance(truncated_data, str):
+            res += truncated_data
+        else:
+            repr_ = repr(truncated_data.tolist())
+            res += f"{repr_[:-1] + repr_[-1].rstrip(closing_bracket_str)}, " \
+                   f"...{open2close.get(repr_[0], '')}"
+        res += f", shape={array.shape}, dtype={array.dtype}>"
         return res
 
-    repr_ = repr(truncated_data)
-    res += f"truncated_data={repr_[:-1]}, ...{repr_[-1]}, "
-    return res + f"len={len(array)}>"
+    # Duplicating logic but maybe not that important to clean this up,
+    # context lengths are increasing anyway so maybe we won't need all this
+    # truncated_repr related stuff much longer.
+    # This lets us pass in a str for truncated data - when we do, we don't want
+    # to reattach the closing bracket, as we would if passing in a
+    # list/set/tuple.
+    if isinstance(truncated_data, str):
+        res += truncated_data
+    else:
+        repr_ = repr(truncated_data)
+        # If the last char is a closing brace, we want to strip it. But we
+        # don't want to strip multiple closing braces, e.g. [(3, 4), (5, 6)].
+        res += f"{repr_[:-1] + repr_[-1].rstrip(closing_bracket_str)}, " \
+                f"...{open2close.get(repr_[0], '')}"
+    return res + f", len={len(array)}>"
 
 
 def fallback(*, default=None, default_func=None):
@@ -260,11 +287,6 @@ def truncated_repr(obj, max_len=400) -> str:
         # bulletproof (usually only a problem for nested or multidimensional
         # data structures).
         n = max(1, int(max_len / len(repr_) * len(obj)))
-        print('n', n) # TODO rm
-        if n == len(obj):
-            # Even slicing to just first item is too long, so just revert
-            # to treating this like a non-iterable object.
-            return format_listlike_with_metadata(obj)
 
         # Need to slice set while keeping the original dtype.
         if isinstance(obj, set):
@@ -274,14 +296,23 @@ def truncated_repr(obj, max_len=400) -> str:
         else:
             slice_ = obj[:n]
 
+        if n == len(obj):
+            # Slicing didn't help in this case so do some manual surgery.
+            # Don't call truncated_repr recursively here because we would
+            # get stuck in an infinite loop.
+            # TODO: subtracted 10 as a placeholder, could be more careful or just
+            # ignore precision entirely.
+            print('in n=len(obj)')
+            return format_listlike_with_metadata(
+                obj,
+                truncated_data=repr(slice_)[:max_len - 10].rstrip(', ')
+            )
+
         repr_ = truncated_repr(slice_, max_len)
-        # TODO rm
-        print('slice repr', repr_)
         # TODO: rm? I think this is good if we're in an inner call but bad if
         # this is the outer call.
         # Don't add any ellipses in this case.
         # if repr_ == qualname(obj):
-        #     print('qualname = repr_') # TODO rm
         #     return repr_
 
         return format_listlike_with_metadata(obj, truncated_data=slice_)

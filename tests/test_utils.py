@@ -26,16 +26,15 @@ def test_truncated_repr_short_inputs(obj):
     [
         (list(range(1000)),
          50,
-         "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,...]"),
+         "<list, truncated_data=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ...], len=1000>"),
         (pd.DataFrame(np.arange(390).reshape(30, 13),
                       columns=list('abcdefghijklm')),
          79,
-         "pd.DataFrame(columns=\"['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',"
-         " 'i', 'j',...]\")"),
-        ("abcdefghijklmnopqrstuvwxyz", 20, "'abcdefghijklmno...'"),
+         '<pandas.core.frame.DataFrame, truncated_data=   a  b  c  d  e  f  g  h  i  j   k   l   m\n0  0  1  2  3  4  5  6  7  8  9  10  11  12, ..., len=30>'),
+        ("abcdefghijklmnopqrstuvwxyz", 21, "'abcd...' (truncated)"),
         (dict(enumerate('abcdefghijklmnop')),
          50,
-         "{0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f',...}")
+         "<dict, truncated_data=[(0, 'a'), (1, 'b'), (2, 'c'), (3, 'd'), (4, 'e'), ...], len=16>"),
     ]
 )
 def test_truncated_repr_long_inputs(obj, n, expected):
@@ -57,7 +56,7 @@ def test_truncated_repr_long_inputs(obj, n, expected):
         ),
         (
             [{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}],
-            50,
+            60,
             "[{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}]"
         ),
         (
@@ -66,10 +65,9 @@ def test_truncated_repr_long_inputs(obj, n, expected):
             "<list, truncated_data=[{'a': 1, 'b': 2}, ...], len=3>"
         ),
         (
-            {'x': list(range(100 * i)) for i in range(10)},
+            {i: list(range(100 * i)) for i in range(1, 10)},
             30,
-            # TODO: fix the bug this revealed, currently I think this always
-            # displays the whole first value so repr is way too long.
+            '<dict, truncated_data=[(1, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]), ...], len=9>',
         )
     ]
 )
@@ -166,12 +164,9 @@ def test_store_class_defaults():
         (pd.Series, False),
         (pd.DataFrame({"a": [3, 5]}), False),
         (pd.DataFrame(), False),
-        # TODO: series currently return True, consider making func stricter
-        # OR maybe removing hardcoded series if block and refactor so
-        # existing is_array_like block handles it?
-        (pd.Series([1, 2, 3]), False),
-        (pd.Series([1.0, None]), False),
-        (pd.Series(), False),
+        (pd.Series([1, 2, 3]), True),
+        (pd.Series([1.0, None]), True),
+        (pd.Series(), True),
         (np.arange(5), True),
         (np.array([]), True),
     )
