@@ -121,19 +121,6 @@ def is_pandas_df(obj) -> bool:
     )
 
 
-def is_pandas_series(obj) -> bool:
-    """Slightly hacky replacement for isinstance(obj, pd.Series)
-    to avoid requiring a pandas dependency solely for a couple isinstance
-    checks. Not ideal but I think it's better than the alternative.
-    """
-    clsname = getattr(type(obj), "__qualname__", "")
-    return clsname == "Series" \
-        and all(
-            hasattr(obj, name)
-            for name in ("sort_values", "value_counts", "iloc")
-    )
-
-
 def is_array_like(obj) -> bool:
     """Similar to is_pandas_df but for numpy arrays/torch tensors/similar.
     Instead of checking for specific types here, we just check that the obj
@@ -274,11 +261,6 @@ def truncated_repr(obj, max_len=400) -> str:
         cols = truncated_repr(obj.columns.tolist(), max_len - 26)
         return f'pd.DataFrame(columns=' \
                f'{truncated_repr(cols, max_len - 22)}, shape={obj.shape})'
-
-    # TODO rm
-    print('no more series custom logic')
-    # if is_pandas_series(obj):
-        # return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
 
     if isinstance(obj, str):
         return repr_[:max_len - 4] + "...'"
