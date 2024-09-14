@@ -7,6 +7,21 @@ import roboduck.decorators
 from roboduck import utils
 
 
+class BrokenList(list):
+    """When longer than truncated_repr allows, this should trigger an error
+    causing us to end up with the fallback qualname.
+    """
+
+    def __init__(self, x):
+        super().__init__(x)
+ 
+    def __getitem__(self, i):
+        raise IndexError
+ 
+    def __repr__(self):
+        return f'{type(self).__name__}({list(self)})'
+
+
 @pytest.mark.parametrize(
     'obj',
     [
@@ -19,6 +34,20 @@ from roboduck import utils
 )
 def test_truncated_repr_short_inputs(obj):
     assert utils.truncated_repr(obj) == repr(obj)
+
+
+@pytest.mark.parametrize(
+    'obj,expected',
+    (
+        # The builtin repr is short enough so we use it.
+        (BrokenList([1, 2, 3]), 'BrokenList([1, 2, 3])'),
+        # Now the builtin repr is too long so we try to truncate it, we get an
+        # error, and we fallback to qualname.
+        (BrokenList(list(range(1_000))), '<test_utils.BrokenList>'),
+    )
+)
+def test_truncated_repr_uses_fallback_when_getitem_raises_error(obj, expected):
+    assert utils.truncated_repr(obj) == expected
 
 
 @pytest.mark.parametrize(
