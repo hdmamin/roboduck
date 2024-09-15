@@ -313,8 +313,6 @@ def truncated_repr(obj, max_len=400) -> str:
                 truncated_data=truncated_str
             )
 
-        repr_ = truncated_repr(slice_, max_len)
-
         return format_listlike_with_metadata(obj, truncated_data=slice_)
 
     # We know it's non-iterable at this point.
