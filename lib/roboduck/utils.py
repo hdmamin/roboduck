@@ -299,21 +299,21 @@ def truncated_repr(obj, max_len=400) -> str:
         if n == len(obj):
             # Slicing didn't help in this case so do some manual surgery.
             # Don't call truncated_repr recursively here because we would
-            # get stuck in an infinite loop.
-            # TODO: subtracted 10 as a placeholder, could be more careful or just
-            # ignore precision entirely.
-            print('in n=len(obj)')
+            # get stuck in an infinite loop because there's no room to slice
+            # our object to be shorter.
+            # Arbitrarily choosing to subtract 10 to account for some the
+            # characters created by qualname and attributres, could try to do
+            # this more carefully but don't think it's worth it right now.
+            # We then slice up to the last comma to ensure we don't truncate
+            # mid item, e.g. [10, 20, 30] should not be truncated to '[10, 2'.
+            truncated_str = repr(slice_)[:max_len - 10]
+            truncated_str = truncated_str[:truncated_str.rfind(',')]
             return format_listlike_with_metadata(
                 obj,
-                truncated_data=repr(slice_)[:max_len - 10].rstrip(', ')
+                truncated_data=truncated_str
             )
 
         repr_ = truncated_repr(slice_, max_len)
-        # TODO: rm? I think this is good if we're in an inner call but bad if
-        # this is the outer call.
-        # Don't add any ellipses in this case.
-        # if repr_ == qualname(obj):
-        #     return repr_
 
         return format_listlike_with_metadata(obj, truncated_data=slice_)
 
