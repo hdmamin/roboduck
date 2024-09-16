@@ -7,6 +7,21 @@ import roboduck.decorators
 from roboduck import utils
 
 
+class BrokenList(list):
+    """When longer than truncated_repr allows, this should trigger an error
+    causing us to end up with the fallback qualname.
+    """
+
+    def __init__(self, x):
+        super().__init__(x)
+ 
+    def __getitem__(self, i):
+        raise IndexError
+ 
+    def __repr__(self):
+        return f'{type(self).__name__}({list(self)})'
+
+
 @pytest.mark.parametrize(
     'obj',
     [
@@ -22,23 +37,70 @@ def test_truncated_repr_short_inputs(obj):
 
 
 @pytest.mark.parametrize(
+    'obj,expected',
+    (
+        # The builtin repr is short enough so we use it.
+        (BrokenList([1, 2, 3]), 'BrokenList([1, 2, 3])'),
+        # Now the builtin repr is too long so we try to truncate it, we get an
+        # error, and we fallback to qualname.
+        (BrokenList(list(range(1_000))), '<test_utils.BrokenList>'),
+    )
+)
+def test_truncated_repr_uses_fallback_when_getitem_raises_error(obj, expected):
+    assert utils.truncated_repr(obj) == expected
+
+
+@pytest.mark.parametrize(
     'obj, n, expected',
     [
         (list(range(1000)),
          50,
-         "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,...]"),
+         "<list, truncated_data=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ...], len=1000>"),
         (pd.DataFrame(np.arange(390).reshape(30, 13),
                       columns=list('abcdefghijklm')),
          79,
-         "pd.DataFrame(columns=\"['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',"
-         " 'i', 'j',...]\")"),
-        ("abcdefghijklmnopqrstuvwxyz", 20, "'abcdefghijklmno...'"),
+         '<pandas.core.frame.DataFrame, truncated_data=   a  b  c  d  e  f  g  h  i  j   k   l   m\n0  0  1  2  3  4  5  6  7  8  9  10  11  12, ..., len=30>'),
+        ("abcdefghijklmnopqrstuvwxyz", 21, "'abcd...' (truncated)"),
         (dict(enumerate('abcdefghijklmnop')),
          50,
-         "{0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f',...}")
+         "<dict, truncated_data=[(0, 'a'), (1, 'b'), (2, 'c'), (3, 'd'), (4, 'e'), ...], len=16>"),
     ]
 )
 def test_truncated_repr_long_inputs(obj, n, expected):
+    assert utils.truncated_repr(obj, n) == expected
+
+
+@pytest.mark.parametrize(
+    'obj, n, expected',
+    [
+        (
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            50,
+            "[[1, 2, 3], [4, 5, 6], [7, 8, 9]]"
+        ),
+        (
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]],
+            40,
+            "<list, truncated_data=[[1, 2, 3], [4, 5, 6], [7, 8, 9], ...], len=4>"
+        ),
+        (
+            [{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}],
+            60,
+            "[{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}]"
+        ),
+        (
+            [{'a': 1, 'b': 2}, {'c': 3, 'd': 4}, {'e': 5, 'f': 6}],
+            30,
+            "<list, truncated_data=[{'a': 1, 'b': 2}, ...], len=3>"
+        ),
+        (
+            {i: list(range(100 * i)) for i in range(1, 10)},
+            30,
+            '<dict, truncated_data=[(1, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]), ...], len=9>',
+        )
+    ]
+)
+def test_truncated_repr_nested_inputs(obj, n, expected):
     assert utils.truncated_repr(obj, n) == expected
 
 
@@ -117,3 +179,45 @@ def test_store_class_defaults():
     assert Foo.last_bar == 3
     assert Foo.last_baz == 'abc'
     assert Foo.other is False
+
+
+@pytest.mark.parametrize(
+    "obj,answer",
+    (
+        ({3: 4}, False),
+        ([2, 3], False),
+        ([], False),
+        (('a', 'b', 'c'), False),
+        ('pandas.Series', False),
+        (pd.DataFrame, False),
+        (pd.Series, False),
+        (pd.DataFrame({"a": [3, 5]}), False),
+        (pd.DataFrame(), False),
+        (pd.Series([1, 2, 3]), True),
+        (pd.Series([1.0, None]), True),
+        (pd.Series(), True),
+        (np.arange(5), True),
+        (np.array([]), True),
+    )
+)
+def test_is_array_like(obj, answer):
+    assert utils.is_array_like(obj) == answer
+
+
+@pytest.mark.parametrize(
+    "obj,with_brackets,expected",
+    [
+        (pd.DataFrame(), False, "pandas.core.frame.DataFrame"),
+        (pd.Series(), False, "pandas.core.series.Series"),
+        (np.array([]), False, "numpy.ndarray"),
+        ([], False, "list"),
+        ({}, False, "dict"),
+        (pd.DataFrame(), True, "<pandas.core.frame.DataFrame>"),
+        (pd.Series(), True, "<pandas.core.series.Series>"),
+        (np.array([]), True, "<numpy.ndarray>"),
+        ([], True, "<list>"),
+        ({}, True, "<dict>"),
+    ]
+)
+def test_qualname(obj, with_brackets, expected):
+    assert utils.qualname(obj, with_brackets=with_brackets) == expected

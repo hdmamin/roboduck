@@ -3,12 +3,11 @@
 from collections.abc import Iterable
 from colorama import Fore, Style
 import difflib
+from functools import wraps
 import openai
 import os
-import pandas as pd
 from pathlib import Path
 import re
-import warnings
 import yaml
 
 
@@ -109,7 +108,133 @@ def type_annotated_dict_str(dict_, func=repr):
     return '{' + ''.join(type_strs) + '\n}'
 
 
-def truncated_repr(obj, max_len=79):
+def is_array_like(obj) -> bool:
+    """Hackily check if obj is a numpy array/torch tensor/pd.Series or similar
+    without requiring all those libraries as dependencies
+    (notably, pd.DataFrame is not considered array_like - it has useful column
+    names unlike these other types).
+    Instead of checking for specific types here, we just check that the obj
+    has certain attributes that those objects should have.
+    If obj is the class itself rather than an instance, we return False.
+    """
+    return all(hasattr(obj, attr)
+               for attr in ("ndim", "shape", "dtype", "tolist")) \
+            and not isinstance(obj, type)
+
+
+def qualname(obj, with_brackets=True) -> str:
+    """Similar to type(obj).__qualname__() but that method doesn't always
+    include the module(s). e.g. pandas Index has __qualname__ "Index" but
+    this function returns "<pandas.core.indexes.base.Index>".
+
+    Set with_brackets=False to skip the leading/trailing angle brackets.
+    """
+    text = str(type(obj))
+    names = re.search("<class '([a-zA-Z_.]*)'>", text).groups()
+    assert len(names) == 1, f'Should have found only 1 qualname but ' \
+                            f'found: {names}'
+    if with_brackets:
+        return f'<{names[0]}>'
+    return names[0]
+
+
+def format_listlike_with_metadata(array, truncated_data=None):
+    """Format a list-like object with metadata.
+
+    This function creates a string representation of a list-like object,
+    including its class name, truncated data (if provided), and additional
+    metadata such as shape, dtype, or length.
+
+    Parameters
+    ----------
+    array : object
+        The list-like object to be formatted.
+    truncated_data : object, optional
+        A truncated version of the array's data. If provided, it will be
+        included in the formatted string.
+
+    Returns
+    -------
+    str
+        A formatted string representation of the array with metadata.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> arr = np.array([1, 2, 3, 4, 5])
+    >>> format_listlike_with_metadata(arr, arr[:3])
+    '<numpy.ndarray, truncated_data=[1, 2, 3, ...], shape=(5,), dtype=int64>'
+
+    >>> import pandas as pd
+    >>> series = pd.Series(['a', 'b', 'c', 'd', 'e'])
+    >>> format_listlike_with_metadata(series, series[:2])
+    "<pandas.core.series.Series, truncated_data=['a', 'b', ...], len=5>"
+    """
+    open2close = {
+        '(': ')',
+        '{': '}',
+        '[': ']',
+    }
+    closing_bracket_str = ''.join(open2close.values())
+    clsname = qualname(array, with_brackets=False)
+    res = f"<{clsname}, truncated_data="
+    if truncated_data is None:
+        truncated_data = '[...]'
+
+    if is_array_like(array):
+        if isinstance(truncated_data, str):
+            res += truncated_data
+        else:
+            repr_ = repr(truncated_data.tolist())
+            res += f"{repr_[:-1] + repr_[-1].rstrip(closing_bracket_str)}, " \
+                   f"...{open2close.get(repr_[0], '')}"
+        res += f", shape={array.shape}, dtype={array.dtype}>"
+        return res
+
+    # Duplicating logic but maybe not that important to clean this up,
+    # context lengths are increasing anyway so maybe we won't need all this
+    # truncated_repr related stuff much longer.
+    # This lets us pass in a str for truncated data - when we do, we don't want
+    # to reattach the closing bracket, as we would if passing in a
+    # list/set/tuple.
+    if isinstance(truncated_data, str):
+        res += truncated_data
+    else:
+        repr_ = repr(truncated_data)
+        # If the last char is a closing brace, we want to strip it. But we
+        # don't want to strip multiple closing braces, e.g. [(3, 4), (5, 6)].
+        res += f"{repr_[:-1] + repr_[-1].rstrip(closing_bracket_str)}, " \
+                f"...{open2close.get(repr_[0], '')}"
+    return res + f", len={len(array)}>"
+
+
+def fallback(*, default=None, default_func=None):
+    """Decorator to provide a default value (or function that produces a value)
+    to return when the decorated function's execution fails.
+
+    You must specify either default OR default_func, not both. If default_func
+    is provided, it should accept the same args as the decorated function.
+    """
+    if bool(default) + bool(default_func) != 1:
+        raise ValueError('Exactly 1 of ()`default`, `default_func`) args '
+                         'must be non-None.')
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                if default is not None:
+                    return default
+                return default_func(*args, **kwargs)
+        return wrapper
+
+    return decorator
+
+
+@fallback(default_func=qualname)
+def truncated_repr(obj, max_len=400) -> str:
     """Return an object's repr, truncated to ensure that it doesn't take up
     more characters than we want. This is used to reduce our chances of using
     up all our available tokens in a gpt prompt simply communicating that a
@@ -139,43 +264,13 @@ def truncated_repr(obj, max_len=79):
         deal, at least at the moment. I can always revisit that later if
         necessary.
     """
-    def qualname(obj):
-        """Similar to type(obj).__qualname__() but that method doesn't always
-        include the module(s). e.g. pandas Index has __qualname__ "Index" but
-        this function returns "<pandas.core.indexes.base.Index>".
-        """
-        text = str(type(obj))
-        names = re.search("<class '([a-zA-Z_.]*)'>", text).groups()
-        assert len(names) == 1, f'Should have found only 1 qualname but ' \
-                                f'found: {names}'
-        return f'<{names[0]}>'
-
-    open2close = {
-        '[': ']',
-        '(': ')',
-        '{': '}'
-    }
     repr_ = repr(obj)
     if len(repr_) < max_len:
         return repr_
-    if isinstance(obj, pd.DataFrame):
-        cols = truncated_repr(obj.columns.tolist(), max_len - 26)
-        return f'pd.DataFrame(columns=' \
-               f'{truncated_repr(cols, max_len - 22)})'
-    if isinstance(obj, pd.Series):
-        return f'pd.Series({truncated_repr(obj.tolist(), max_len - 11)})'
-    if isinstance(obj, dict):
-        length = 5
-        res = ''
-        for k, v in obj.items():
-            if length >= max_len - 2:
-                break
-            new_str = f'{k!r}: {v!r}, '
-            length += len(new_str)
-            res += new_str
-        return "{" + res.rstrip() + "...}"
+
     if isinstance(obj, str):
-        return repr_[:max_len - 4] + "...'"
+        return repr_[:max_len - 16] + "...' (truncated)"
+
     if isinstance(obj, Iterable):
         # A bit risky but sort of elegant. Just recursively take smaller
         # slices until we get an acceptable length. We may end up going
@@ -187,33 +282,45 @@ def truncated_repr(obj, max_len=79):
         # when inputs are long.
         # Can't easily pass smaller max_len value into recursive call
         # because we always want to compare to the user-specified value.
-        n = int(max_len / len(repr_) * len(obj))
-        if n == len(obj):
-            # Even slicing to just first item is too long, so just revert
-            # to treating this like a non-iterable object.
-            return qualname(obj)
+        # n is the approximate number of items we expect to be able to fit in
+        # a truncated repr of length <= max_len, though this is of course not
+        # bulletproof (usually only a problem for nested or multidimensional
+        # data structures).
+        n = max(1, int(max_len / len(repr_) * len(obj)))
+
         # Need to slice set while keeping the original dtype.
         if isinstance(obj, set):
             slice_ = set(list(obj)[:n])
+        elif isinstance(obj, dict):
+            slice_ = list(obj.items())[:n]
         else:
-            try:
-                slice_ = obj[:n]
-            except Exception as e:
-                warnings.warn(f'Failed to slice obj {obj}. Result may not be '
-                              f'truncated as much as desired. Error:\n{e}')
-                slice_ = obj
-        repr_ = truncated_repr(slice_, max_len)
-        non_brace_idx = len(repr_) - 1
-        while repr_[non_brace_idx] in open2close.values():
-            non_brace_idx -= 1
-        if non_brace_idx <= 0 or (non_brace_idx == 3
-                                  and repr_.startswith('set')):
-            return repr_[:-1] + '...' + repr_[-1]
-        return repr_[:non_brace_idx + 1] + ',...' + repr_[non_brace_idx + 1:]
+            slice_ = obj[:n]
+
+        if n == len(obj):
+            # Slicing didn't help in this case so do some manual surgery.
+            # Don't call truncated_repr recursively here because we would
+            # get stuck in an infinite loop because there's no room to slice
+            # our object to be shorter.
+            # Arbitrarily choosing to subtract 10 to account for some the
+            # characters created by qualname and attributres, could try to do
+            # this more carefully but don't think it's worth it right now.
+            # We then slice up to the last comma to ensure we don't truncate
+            # mid item, e.g. [10, 20, 30] should not be truncated to '[10, 2'.
+            truncated_str = repr(slice_)[:max_len - 10]
+            truncated_str = truncated_str[:truncated_str.rfind(',')]
+            return format_listlike_with_metadata(
+                obj,
+                truncated_data=truncated_str
+            )
+
+        return format_listlike_with_metadata(obj, truncated_data=slice_)
 
     # We know it's non-iterable at this point.
     if isinstance(obj, type):
         return f'<class {obj.__name__}>'
+    
+    # Note that ints/floats usually won't hit this block, but it could happen
+    # with an extraordinarily high number of digits.
     if isinstance(obj, (int, float)):
         return truncated_repr(format(obj, '.3e'), max_len)
     return qualname(obj)
