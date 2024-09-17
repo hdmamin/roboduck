@@ -2,9 +2,13 @@
 
 
 MODEL_CONTEXT_WINDOWS = {
-    'gpt-3.5-turbo': 4_096,
+    'gpt-3.5-turbo': 16_385,
     'gpt-4': 8_192,
-    'gpt-4-32k': 32_768,
+    'gpt-4-turbo': 128_000,
+    'gpt-4o': 128_000,
+    'gpt-4o-mini': 128_000,
+    'o1-preview': 128_000,
+    'o1-mini': 128_000,
     # Eventually would like to support anthropic's claude, but it's not
     # supported in roboduck v1 because they never gave me api access so I can't
     # test it. 🤷‍♂️.
