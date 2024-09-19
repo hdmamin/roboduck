@@ -190,6 +190,11 @@ class DuckDB(Pdb):
         # user or the LLM will begin typing.
         self.prompt = '>>> '
         self.duck_prompt = '[Duck] '
+        # Allow user to respond with non-question by starting their reply with
+        # this prefix. We can't treat all responses like replies to the LLM
+        # because we want to retain the option to view variables and use
+        # builtin debugger commands.
+        self.comment_prefix = '>'
         self.query_kwargs = {}
         chat_kwargs['name'] = prompt_name
         if silent:
@@ -252,7 +257,9 @@ class DuckDB(Pdb):
             print(
                 '*** If you meant to respond to Duck in natural language, '
                 'remember that it only provides English responses to '
-                'questions. Statements are evaluated as Pdb commands.',
+                'questions or statements starting with '
+                f'{self.comment_prefix!r}. All other statements are evaluated '
+                'as Pdb commands.',
                 file=self.stdout
             )
 
@@ -387,6 +394,26 @@ class DuckDB(Pdb):
         return '\n'.join(line for line in code_str.splitlines()
                          if not line.strip().startswith('duck('))
 
+    def _is_conversational_reply(self, line: str) -> bool:
+        """Determine if the user's input is a conversational reply.
+
+        This method checks if the input line is intended as a question/comment
+        for the language model rather than a debugger command. Refactored this
+        into its own method mostly to make testing easier.
+
+        Parameters
+        ----------
+        line : str
+            The input line from the user.
+
+        Returns
+        -------
+        bool
+            True if the input is a conversational reply (contains a question
+            mark or starts with the comment prefix), False otherwise.
+        """
+        return '?' in line or line.startswith(self.comment_prefix)
+
     def onecmd(self, line):
         """Base class describes this as follows:
 
@@ -395,8 +422,10 @@ class DuckDB(Pdb):
         a breakpoint command list definition.
 
         We add an extra check in the if block to check if the user asked a
-        question. If so, we ask gpt. If not, we treat it as a regular pdb
-        command.
+        question (or made a statement that they want to send to the LLM rather
+        than being treated as pdb command, as indicated by a
+        self.comment_prefix prefix).
+        If so, we ask gpt. If not, we treat it as a regular pdb command.
 
         Parameters
         ----------
@@ -411,7 +440,7 @@ class DuckDB(Pdb):
         else:
             stack_trace = ''
         if not self.commands_defining:
-            if '?' in line:
+            if self._is_conversational_reply(line):
                 return self.ask_language_model(
                     line,
                     stack_trace=stack_trace,
@@ -430,7 +459,9 @@ class DuckDB(Pdb):
         question : str
             User question, e.g. "Why are the first three values in nums equal
             to 5 when the input list only had a single 5?". (Example is from
-            a faulty bubble sort implementation.)
+            a faulty bubble sort implementation.) Could also be a
+            comment/statement if the user prefixes their reply with
+            self.comment_prefix.
         stack_trace : str
             When using the "debug_stack_trace" prompt, we need to pass a
             stack trace string into the prompt.
@@ -439,6 +470,8 @@ class DuckDB(Pdb):
             call. User activates this mode by prefixing their question with
             '[dev]'. This overrides self.silent.
         """
+        question = question.lstrip(self.comment_prefix)
+
         # Don't provide long context-laden prompt if nothing has changed since
         # the user's last question. This is often a followup/clarifying
         # question.
