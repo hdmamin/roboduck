@@ -438,6 +438,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lib.roboduck.debug.DuckDB.comment_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      comment_prefix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lib.roboduck.debug.DuckDB.query_kwargs" class="md-nav__link">
     <span class="md-ellipsis">
       query_kwargs
@@ -1034,6 +1043,15 @@
   <a href="#lib.roboduck.debug.DuckDB.duck_prompt" class="md-nav__link">
     <span class="md-ellipsis">
       duck_prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.debug.DuckDB.comment_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      comment_prefix
     </span>
   </a>
   
@@ -2329,7 +2347,40 @@ library).</p>
 <span class="normal">557</span>
 <span class="normal">558</span>
 <span class="normal">559</span>
-<span class="normal">560</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DuckDB</span><span class="p">(</span><span class="n">Pdb</span><span class="p">):</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DuckDB</span><span class="p">(</span><span class="n">Pdb</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Conversational debugger powered by LLM (e.g. gpt-4o-mini or gpt-4).</span>
 <span class="sd">    Once you&#39;re in a debugging session, regular pdb commands will work as usual</span>
 <span class="sd">    but any user command containing a question mark will be interpreted as a</span>
@@ -2338,7 +2389,7 @@ library).</p>
 <span class="sd">    library).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">max_len_per_var</span><span class="o">=</span><span class="mi">79</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_name</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">max_len_per_var</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">pdb_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_func</span><span class="o">=</span><span class="n">parse_completion</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">chat_kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2362,9 +2413,9 @@ library).</p>
 <span class="sd">            Limits number of characters per variable when communicating</span>
 <span class="sd">            current state (local or global depending on `full_context`) to</span>
 <span class="sd">            gpt. If unbounded, that section of the prompt alone could grow</span>
-<span class="sd">            very big . I somewhat arbitrarily set 79 as the default, i.e.</span>
-<span class="sd">            1 line of python per variable. I figure that&#39;s usually enough to</span>
-<span class="sd">            communicate the gist of what&#39;s happening.</span>
+<span class="sd">            very big. I somewhat arbitrarily set 400 as the default, i.e.</span>
+<span class="sd">            100 tokens. I figure that&#39;s usually enough</span>
+<span class="sd">            to communicate the gist of what&#39;s happening.</span>
 <span class="sd">        silent : bool</span>
 <span class="sd">            If True, print gpt completions to stdout. One example of when False</span>
 <span class="sd">            is appropriate is our logging module - we want to get the</span>
@@ -2393,6 +2444,11 @@ library).</p>
         <span class="c1"># user or the LLM will begin typing.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; &#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duck_prompt</span> <span class="o">=</span> <span class="s1">&#39;[Duck] &#39;</span>
+        <span class="c1"># Allow user to respond with non-question by starting their reply with</span>
+        <span class="c1"># this prefix. We can&#39;t treat all responses like replies to the LLM</span>
+        <span class="c1"># because we want to retain the option to view variables and use</span>
+        <span class="c1"># builtin debugger commands.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment_prefix</span> <span class="o">=</span> <span class="s1">&#39;&gt;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">chat_kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prompt_name</span>
         <span class="k">if</span> <span class="n">silent</span><span class="p">:</span>
@@ -2455,7 +2511,9 @@ library).</p>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="s1">&#39;*** If you meant to respond to Duck in natural language, &#39;</span>
                 <span class="s1">&#39;remember that it only provides English responses to &#39;</span>
-                <span class="s1">&#39;questions. Statements are evaluated as Pdb commands.&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;questions or statements starting with &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_prefix</span><span class="si">!r}</span><span class="s1">. All other statements are evaluated &#39;</span>
+                <span class="s1">&#39;as Pdb commands.&#39;</span><span class="p">,</span>
                 <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout</span>
             <span class="p">)</span>
 
@@ -2590,6 +2648,26 @@ library).</p>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">code_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
                          <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;duck(&#39;</span><span class="p">))</span>
 
+    <span class="k">def</span> <span class="nf">_is_conversational_reply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine if the user&#39;s input is a conversational reply.</span>
+
+<span class="sd">        This method checks if the input line is intended as a question/comment</span>
+<span class="sd">        for the language model rather than a debugger command. Refactored this</span>
+<span class="sd">        into its own method mostly to make testing easier.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The input line from the user.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the input is a conversational reply (contains a question</span>
+<span class="sd">            mark or starts with the comment prefix), False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_prefix</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">onecmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Base class describes this as follows:</span>
 
@@ -2598,8 +2676,10 @@ library).</p>
 <span class="sd">        a breakpoint command list definition.</span>
 
 <span class="sd">        We add an extra check in the if block to check if the user asked a</span>
-<span class="sd">        question. If so, we ask gpt. If not, we treat it as a regular pdb</span>
-<span class="sd">        command.</span>
+<span class="sd">        question (or made a statement that they want to send to the LLM rather</span>
+<span class="sd">        than being treated as pdb command, as indicated by a</span>
+<span class="sd">        self.comment_prefix prefix).</span>
+<span class="sd">        If so, we ask gpt. If not, we treat it as a regular pdb command.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2614,7 +2694,7 @@ library).</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">stack_trace</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands_defining</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_conversational_reply</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_language_model</span><span class="p">(</span>
                     <span class="n">line</span><span class="p">,</span>
                     <span class="n">stack_trace</span><span class="o">=</span><span class="n">stack_trace</span><span class="p">,</span>
@@ -2633,7 +2713,9 @@ library).</p>
 <span class="sd">        question : str</span>
 <span class="sd">            User question, e.g. &quot;Why are the first three values in nums equal</span>
 <span class="sd">            to 5 when the input list only had a single 5?&quot;. (Example is from</span>
-<span class="sd">            a faulty bubble sort implementation.)</span>
+<span class="sd">            a faulty bubble sort implementation.) Could also be a</span>
+<span class="sd">            comment/statement if the user prefixes their reply with</span>
+<span class="sd">            self.comment_prefix.</span>
 <span class="sd">        stack_trace : str</span>
 <span class="sd">            When using the &quot;debug_stack_trace&quot; prompt, we need to pass a</span>
 <span class="sd">            stack trace string into the prompt.</span>
@@ -2642,6 +2724,8 @@ library).</p>
 <span class="sd">            call. User activates this mode by prefixing their question with</span>
 <span class="sd">            &#39;[dev]&#39;. This overrides self.silent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="n">question</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_prefix</span><span class="p">)</span>
+
         <span class="c1"># Don&#39;t provide long context-laden prompt if nothing has changed since</span>
         <span class="c1"># the user&#39;s last question. This is often a followup/clarifying</span>
         <span class="c1"># question.</span>
@@ -2799,6 +2883,25 @@ library).</p>
 
 <h5 id="lib.roboduck.debug.DuckDB.duck_prompt" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">duck_prompt</span> <span class="o">=</span> <span class="s1">&#39;[Duck] &#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h5>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="lib.roboduck.debug.DuckDB.comment_prefix" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">comment_prefix</span> <span class="o">=</span> <span class="s1">&#39;&gt;&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3068,12 +3171,7 @@ library).</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
 <span class="normal">250</span>
@@ -3083,7 +3181,14 @@ library).</p>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a hint when displaying errors that roboduck only responds to</span>
 <span class="sd">    *questions* in natural language.</span>
 
@@ -3096,7 +3201,9 @@ library).</p>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s1">&#39;*** If you meant to respond to Duck in natural language, &#39;</span>
             <span class="s1">&#39;remember that it only provides English responses to &#39;</span>
-            <span class="s1">&#39;questions. Statements are evaluated as Pdb commands.&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;questions or statements starting with &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_prefix</span><span class="si">!r}</span><span class="s1">. All other statements are evaluated &#39;</span>
+            <span class="s1">&#39;as Pdb commands.&#39;</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3177,14 +3284,7 @@ values, and the stack trace when appropriate) and "contextless"
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
 <span class="normal">267</span>
 <span class="normal">268</span>
 <span class="normal">269</span>
@@ -3194,7 +3294,14 @@ values, and the stack trace when appropriate) and "contextless"
 <span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span>
-<span class="normal">276</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get names of variables that are expected to be passed into default</span>
 <span class="sd">    user prompt template.</span>
 
@@ -3234,8 +3341,10 @@ values, and the stack trace when appropriate) and "contextless"
 prompt. Checks whether this line is typed at the normal prompt or in
 a breakpoint command list definition.</p>
 <p>We add an extra check in the if block to check if the user asked a
-question. If so, we ask gpt. If not, we treat it as a regular pdb
-command.</p>
+question (or made a statement that they want to send to the LLM rather
+than being treated as pdb command, as indicated by a
+self.comment_prefix prefix).
+If so, we ask gpt. If not, we treat it as a regular pdb command.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3271,39 +3380,41 @@ cmdqueue). This is for use with the debug_stack_trace mode.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
-<span class="normal">395</span>
-<span class="normal">396</span>
-<span class="normal">397</span>
-<span class="normal">398</span>
-<span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
-<span class="normal">403</span>
-<span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">417</span>
 <span class="normal">418</span>
 <span class="normal">419</span>
 <span class="normal">420</span>
 <span class="normal">421</span>
-<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">onecmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">onecmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class describes this as follows:</span>
 
 <span class="sd">    Interpret the argument as though it had been typed in response to the</span>
@@ -3311,8 +3422,10 @@ cmdqueue). This is for use with the debug_stack_trace mode.</p>
 <span class="sd">    a breakpoint command list definition.</span>
 
 <span class="sd">    We add an extra check in the if block to check if the user asked a</span>
-<span class="sd">    question. If so, we ask gpt. If not, we treat it as a regular pdb</span>
-<span class="sd">    command.</span>
+<span class="sd">    question (or made a statement that they want to send to the LLM rather</span>
+<span class="sd">    than being treated as pdb command, as indicated by a</span>
+<span class="sd">    self.comment_prefix prefix).</span>
+<span class="sd">    If so, we ask gpt. If not, we treat it as a regular pdb command.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3327,7 +3440,7 @@ cmdqueue). This is for use with the debug_stack_trace mode.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">stack_trace</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands_defining</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_conversational_reply</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_language_model</span><span class="p">(</span>
                 <span class="n">line</span><span class="p">,</span>
                 <span class="n">stack_trace</span><span class="o">=</span><span class="n">stack_trace</span><span class="p">,</span>
@@ -3377,7 +3490,9 @@ gpt for the answer and type it back to them live.</p>
               <div class="doc-md-description">
                 <p>User question, e.g. "Why are the first three values in nums equal
 to 5 when the input list only had a single 5?". (Example is from
-a faulty bubble sort implementation.)</p>
+a faulty bubble sort implementation.) Could also be a
+comment/statement if the user prefixes their reply with
+self.comment_prefix.</p>
               </div>
             </td>
             <td>
@@ -3420,36 +3535,7 @@ call. User activates this mode by prefixing their question with
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">424</span>
-<span class="normal">425</span>
-<span class="normal">426</span>
-<span class="normal">427</span>
-<span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">453</span>
 <span class="normal">454</span>
 <span class="normal">455</span>
 <span class="normal">456</span>
@@ -3513,7 +3599,40 @@ call. User activates this mode by prefixing their question with
 <span class="normal">514</span>
 <span class="normal">515</span>
 <span class="normal">516</span>
-<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ask_language_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">stack_trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ask_language_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">stack_trace</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;When the user asks a question during a debugging session, query</span>
 <span class="sd">    gpt for the answer and type it back to them live.</span>
 
@@ -3522,7 +3641,9 @@ call. User activates this mode by prefixing their question with
 <span class="sd">    question : str</span>
 <span class="sd">        User question, e.g. &quot;Why are the first three values in nums equal</span>
 <span class="sd">        to 5 when the input list only had a single 5?&quot;. (Example is from</span>
-<span class="sd">        a faulty bubble sort implementation.)</span>
+<span class="sd">        a faulty bubble sort implementation.) Could also be a</span>
+<span class="sd">        comment/statement if the user prefixes their reply with</span>
+<span class="sd">        self.comment_prefix.</span>
 <span class="sd">    stack_trace : str</span>
 <span class="sd">        When using the &quot;debug_stack_trace&quot; prompt, we need to pass a</span>
 <span class="sd">        stack trace string into the prompt.</span>
@@ -3531,6 +3652,8 @@ call. User activates this mode by prefixing their question with
 <span class="sd">        call. User activates this mode by prefixing their question with</span>
 <span class="sd">        &#39;[dev]&#39;. This overrides self.silent.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">question</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_prefix</span><span class="p">)</span>
+
     <span class="c1"># Don&#39;t provide long context-laden prompt if nothing has changed since</span>
     <span class="c1"># the user&#39;s last question. This is often a followup/clarifying</span>
     <span class="c1"># question.</span>
@@ -3664,25 +3787,25 @@ is normally passed in.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">519</span>
-<span class="normal">520</span>
-<span class="normal">521</span>
-<span class="normal">522</span>
-<span class="normal">523</span>
-<span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
-<span class="normal">530</span>
-<span class="normal">531</span>
-<span class="normal">532</span>
-<span class="normal">533</span>
-<span class="normal">534</span>
-<span class="normal">535</span>
-<span class="normal">536</span>
-<span class="normal">537</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">precmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">precmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;We need to define this to make our errors module work. Our</span>
 <span class="sd">    post_mortem function sometimes places a tuple in our debugger&#39;s</span>
 <span class="sd">    cmdqueue and precmd is called as part of the default cmdloop method.</span>
@@ -3729,28 +3852,28 @@ identically to the standard pdb equivalent.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">539</span>
-<span class="normal">540</span>
-<span class="normal">541</span>
-<span class="normal">542</span>
-<span class="normal">543</span>
-<span class="normal">544</span>
-<span class="normal">545</span>
-<span class="normal">546</span>
-<span class="normal">547</span>
-<span class="normal">548</span>
-<span class="normal">549</span>
-<span class="normal">550</span>
-<span class="normal">551</span>
-<span class="normal">552</span>
-<span class="normal">553</span>
-<span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span>
-<span class="normal">559</span>
-<span class="normal">560</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_stack_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_lineno</span><span class="p">,</span> <span class="n">prompt_prefix</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-&gt; &#39;</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_stack_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_lineno</span><span class="p">,</span> <span class="n">prompt_prefix</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-&gt; &#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is called automatically when entering a debugger session</span>
 <span class="sd">    and it prints a message to stdout like</span>
 
@@ -3804,13 +3927,13 @@ will be passed to its constructor.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/debug.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">563</span>
-<span class="normal">564</span>
-<span class="normal">565</span>
-<span class="normal">566</span>
-<span class="normal">567</span>
-<span class="normal">568</span>
-<span class="normal">569</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@add_docstring</span><span class="p">(</span><span class="n">DuckDB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Roboduck equivalent of native python breakpoint().</span>
 <span class="sd">    The DuckDB docstring is below. Any kwargs passed in to this function</span>

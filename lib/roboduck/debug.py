@@ -394,6 +394,26 @@ class DuckDB(Pdb):
         return '\n'.join(line for line in code_str.splitlines()
                          if not line.strip().startswith('duck('))
 
+    def _is_conversational_reply(self, line: str) -> bool:
+        """Determine if the user's input is a conversational reply.
+
+        This method checks if the input line is intended as a question/comment
+        for the language model rather than a debugger command. Refactored this
+        into its own method mostly to make testing easier.
+
+        Parameters
+        ----------
+        line : str
+            The input line from the user.
+
+        Returns
+        -------
+        bool
+            True if the input is a conversational reply (contains a question
+            mark or starts with the comment prefix), False otherwise.
+        """
+        return '?' in line or line.startswith(self.comment_prefix)
+
     def onecmd(self, line):
         """Base class describes this as follows:
 
@@ -420,7 +440,7 @@ class DuckDB(Pdb):
         else:
             stack_trace = ''
         if not self.commands_defining:
-            if '?' in line or line.startswith(self.comment_prefix):
+            if self._is_conversational_reply(line):
                 return self.ask_language_model(
                     line,
                     stack_trace=stack_trace,

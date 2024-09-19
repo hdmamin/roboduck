@@ -68,6 +68,8 @@ export ROBODUCK_CONFIG_PATH=/Users/path/to/custom/config.yaml
 
 We provide a natural language equivalent of python's built-in `breakpoint` function. Once you're in an interactive session, you can use the standard pdb commands to navigate your code (cmd+f "debugger commands" [here](https://docs.python.org/3/library/pdb.html). TLDR: type `n` to execute the next line, a variable name to view its current value, or `q` to quit the debugging session). However, you can also type a question like "Why do we get an index error when j changes from 3 to 4?" or "Why does nums have three 9s in it when the input list only had one?". Concretely, any time you type something including a question mark, an LLM will try to answer. This is not just performing static analysis - the LLM can access information about the current state of your program.
 
+If you want to respond to the LLM with a statement rather than a question, prefix your reply with ">".
+
 ```
 from roboduck import duck
 

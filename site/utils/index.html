@@ -401,6 +401,42 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.is_array_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_array_like
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.qualname" class="md-nav__link">
+    <span class="md-ellipsis">
+      qualname
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.format_listlike_with_metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      format_listlike_with_metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      fallback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lib.roboduck.utils.truncated_repr" class="md-nav__link">
     <span class="md-ellipsis">
       truncated_repr
@@ -627,6 +663,42 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.is_array_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_array_like
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.qualname" class="md-nav__link">
+    <span class="md-ellipsis">
+      qualname
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.format_listlike_with_metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      format_listlike_with_metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lib.roboduck.utils.fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      fallback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lib.roboduck.utils.truncated_repr" class="md-nav__link">
     <span class="md-ellipsis">
       truncated_repr
@@ -817,7 +889,8 @@ characters appended and prepended.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -838,8 +911,7 @@ characters appended and prepended.</p>
 <span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colored</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colored</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add tags to color text and then reset color afterwards. Note that this</span>
 <span class="sd">    does NOT actually print anything.</span>
 
@@ -971,7 +1043,8 @@ https://gist.github.com/ines/04b47597eb9d011ade5e77a068389521</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
+<span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -1006,8 +1079,7 @@ https://gist.github.com/ines/04b47597eb9d011ade5e77a068389521</p>
 <span class="normal">72</span>
 <span class="normal">73</span>
 <span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colordiff_new_str</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">):</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">colordiff_new_str</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given two strings, return the new one with new parts in green. Note that</span>
 <span class="sd">    deletions are ignored because we want to retain only characters in the new</span>
 <span class="sd">    string. Remember colors are only displayed correctly when printing the</span>
@@ -1146,7 +1218,8 @@ contain quotes.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
+<span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
@@ -1175,8 +1248,7 @@ contain quotes.</p>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">type_annotated_dict_str</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="nb">repr</span><span class="p">):</span>
+<span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">type_annotated_dict_str</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="nb">repr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String representation (or repr) of a dict, where each line includes</span>
 <span class="sd">    an inline comment showing the type of the value.</span>
 
@@ -1216,21 +1288,119 @@ contain quotes.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="lib.roboduck.utils.truncated_repr" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">79</span><span class="p">)</span></code>
+<h3 id="lib.roboduck.utils.is_array_like" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_array_like</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-      <p>Return an object's repr, truncated to ensure that it doesn't take up
-more characters than we want. This is used to reduce our chances of using
-up all our available tokens in a gpt prompt simply communicating that a
-giant data structure exists, e.g. list(range(1_000_000)). Our use
-case doesn't call for anything super precise so the max_len should be
-thought of as more of guide than an exact max. I think it's enforced but I
-didn't put a whole lot of thought or effort into confirming that.</p>
+      <p>Hackily check if obj is a numpy array/torch tensor/pd.Series or similar
+without requiring all those libraries as dependencies
+(notably, pd.DataFrame is not considered array_like - it has useful column
+names unlike these other types).
+Instead of checking for specific types here, we just check that the obj
+has certain attributes that those objects should have.
+If obj is the class itself rather than an instance, we return False.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_array_like</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hackily check if obj is a numpy array/torch tensor/pd.Series or similar</span>
+<span class="sd">    without requiring all those libraries as dependencies</span>
+<span class="sd">    (notably, pd.DataFrame is not considered array_like - it has useful column</span>
+<span class="sd">    names unlike these other types).</span>
+<span class="sd">    Instead of checking for specific types here, we just check that the obj</span>
+<span class="sd">    has certain attributes that those objects should have.</span>
+<span class="sd">    If obj is the class itself rather than an instance, we return False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+               <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;ndim&quot;</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="s2">&quot;tolist&quot;</span><span class="p">))</span> \
+            <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lib.roboduck.utils.qualname" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">qualname</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">with_brackets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Similar to type(obj).<strong>qualname</strong>() but that method doesn't always
+include the module(s). e.g. pandas Index has <strong>qualname</strong> "Index" but
+this function returns "<pandas.core.indexes.base.Index>".</p>
+<p>Set with_brackets=False to skip the leading/trailing angle brackets.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">qualname</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">with_brackets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to type(obj).__qualname__() but that method doesn&#39;t always</span>
+<span class="sd">    include the module(s). e.g. pandas Index has __qualname__ &quot;Index&quot; but</span>
+<span class="sd">    this function returns &quot;&lt;pandas.core.indexes.base.Index&gt;&quot;.</span>
+
+<span class="sd">    Set with_brackets=False to skip the leading/trailing angle brackets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;&lt;class &#39;([a-zA-Z_.]*)&#39;&gt;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Should have found only 1 qualname but &#39;</span> \
+                            <span class="sa">f</span><span class="s1">&#39;found: </span><span class="si">{</span><span class="n">names</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">if</span> <span class="n">with_brackets</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;</span><span class="si">{</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+    <span class="k">return</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lib.roboduck.utils.format_listlike_with_metadata" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">format_listlike_with_metadata</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">truncated_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Format a list-like object with metadata.</p>
+<p>This function creates a string representation of a list-like object,
+including its class name, truncated data (if provided), and additional
+metadata such as shape, dtype, or length.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1245,13 +1415,13 @@ didn't put a whole lot of thought or effort into confirming that.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>obj</code></td>
+            <td><code>array</code></td>
             <td>
-                  <code>any</code>
+                  <code>object</code>
             </td>
             <td>
               <div class="doc-md-description">
-                
+                <p>The list-like object to be formatted.</p>
               </div>
             </td>
             <td>
@@ -1259,22 +1429,18 @@ didn't put a whole lot of thought or effort into confirming that.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_len</code></td>
+            <td><code>truncated_data</code></td>
             <td>
-                  <code>int</code>
+                  <code>object</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Max number of characters for resulting repr. Think of this more as an
-estimate than a hard guarantee - precision isn't important in our use
-case. The result will likely be shorter than this because we want to
-truncate in a readable place, e.g. taking the repr of the first k items
-of a list instead of taking the repr of all items and then slicing off
-the end of the repr.</p>
+                <p>A truncated version of the array's data. If provided, it will be
+included in the formatted string.</p>
               </div>
             </td>
             <td>
-                  <code>79</code>
+                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -1296,50 +1462,29 @@ the end of the repr.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Repr for obj, truncated to approximately max_len characters or fewer.
-When possible, we insert ellipses into the repr to show that truncation
-occurred. Technically there are some edge cases we don't handle (e.g.
-if obj is a class with an insanely long name) but that's not a big
-deal, at least at the moment. I can always revisit that later if
-necessary.</p>
+                <p>A formatted string representation of the array with metadata.</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
 
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_listlike_with_metadata</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">arr</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">&#39;&lt;numpy.ndarray, truncated_data=[1, 2, 3, ...], shape=(5,), dtype=int64&gt;&#39;</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_listlike_with_metadata</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">series</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">&quot;&lt;pandas.core.series.Series, truncated_data=[&#39;a&#39;, &#39;b&#39;, ...], len=5&gt;&quot;</span>
+</code></pre></div>
+
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
@@ -1406,10 +1551,99 @@ necessary.</p>
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
+<span class="normal">208</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">format_listlike_with_metadata</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">truncated_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format a list-like object with metadata.</span>
+
+<span class="sd">    This function creates a string representation of a list-like object,</span>
+<span class="sd">    including its class name, truncated data (if provided), and additional</span>
+<span class="sd">    metadata such as shape, dtype, or length.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array : object</span>
+<span class="sd">        The list-like object to be formatted.</span>
+<span class="sd">    truncated_data : object, optional</span>
+<span class="sd">        A truncated version of the array&#39;s data. If provided, it will be</span>
+<span class="sd">        included in the formatted string.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        A formatted string representation of the array with metadata.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; arr = np.array([1, 2, 3, 4, 5])</span>
+<span class="sd">    &gt;&gt;&gt; format_listlike_with_metadata(arr, arr[:3])</span>
+<span class="sd">    &#39;&lt;numpy.ndarray, truncated_data=[1, 2, 3, ...], shape=(5,), dtype=int64&gt;&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; series = pd.Series([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; format_listlike_with_metadata(series, series[:2])</span>
+<span class="sd">    &quot;&lt;pandas.core.series.Series, truncated_data=[&#39;a&#39;, &#39;b&#39;, ...], len=5&gt;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">open2close</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;(&#39;</span><span class="p">:</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;{&#39;</span><span class="p">:</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;[&#39;</span><span class="p">:</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">closing_bracket_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">open2close</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">clsname</span> <span class="o">=</span> <span class="n">qualname</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">with_brackets</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">clsname</span><span class="si">}</span><span class="s2">, truncated_data=&quot;</span>
+    <span class="k">if</span> <span class="n">truncated_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">truncated_data</span> <span class="o">=</span> <span class="s1">&#39;[...]&#39;</span>
+
+    <span class="k">if</span> <span class="n">is_array_like</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">truncated_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">truncated_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">repr_</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">truncated_data</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repr_</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">repr_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">closing_bracket_str</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span> \
+                   <span class="sa">f</span><span class="s2">&quot;...</span><span class="si">{</span><span class="n">open2close</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">repr_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, shape=</span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="c1"># Duplicating logic but maybe not that important to clean this up,</span>
+    <span class="c1"># context lengths are increasing anyway so maybe we won&#39;t need all this</span>
+    <span class="c1"># truncated_repr related stuff much longer.</span>
+    <span class="c1"># This lets us pass in a str for truncated data - when we do, we don&#39;t want</span>
+    <span class="c1"># to reattach the closing bracket, as we would if passing in a</span>
+    <span class="c1"># list/set/tuple.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">truncated_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="n">truncated_data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">repr_</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">truncated_data</span><span class="p">)</span>
+        <span class="c1"># If the last char is a closing brace, we want to strip it. But we</span>
+        <span class="c1"># don&#39;t want to strip multiple closing braces, e.g. [(3, 4), (5, 6)].</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repr_</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">repr_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">closing_bracket_str</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span> \
+                <span class="sa">f</span><span class="s2">&quot;...</span><span class="si">{</span><span class="n">open2close</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">repr_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">res</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;, len=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lib.roboduck.utils.fallback" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">fallback</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_func</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Decorator to provide a default value (or function that produces a value)
+to return when the decorated function's execution fails.</p>
+<p>You must specify either default OR default_func, not both. If default_func
+is provided, it should accept the same args as the decorated function.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
@@ -1417,7 +1651,238 @@ necessary.</p>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
-<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">79</span><span class="p">):</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fallback</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to provide a default value (or function that produces a value)</span>
+<span class="sd">    to return when the decorated function&#39;s execution fails.</span>
+
+<span class="sd">    You must specify either default OR default_func, not both. If default_func</span>
+<span class="sd">    is provided, it should accept the same args as the decorated function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">default</span><span class="p">)</span> <span class="o">+</span> <span class="nb">bool</span><span class="p">(</span><span class="n">default_func</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Exactly 1 of ()`default`, `default_func`) args &#39;</span>
+                         <span class="s1">&#39;must be non-None.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">default</span>
+                <span class="k">return</span> <span class="n">default_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">decorator</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lib.roboduck.utils.truncated_repr" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Return an object's repr, truncated to ensure that it doesn't take up
+more characters than we want. This is used to reduce our chances of using
+up all our available tokens in a gpt prompt simply communicating that a
+giant data structure exists, e.g. list(range(1_000_000)). Our use
+case doesn't call for anything super precise so the max_len should be
+thought of as more of guide than an exact max. I think it's enforced but I
+didn't put a whole lot of thought or effort into confirming that.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>obj</code></td>
+            <td>
+                  <code>any</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_len</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Max number of characters for resulting repr. Think of this more as an
+estimate than a hard guarantee - precision isn't important in our use
+case. The result will likely be shorter than this because we want to
+truncate in a readable place, e.g. taking the repr of the first k items
+of a list instead of taking the repr of all items and then slicing off
+the end of the repr.</p>
+              </div>
+            </td>
+            <td>
+                  <code>400</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Repr for obj, truncated to approximately max_len characters or fewer.
+When possible, we insert ellipses into the repr to show that truncation
+occurred. Technically there are some edge cases we don't handle (e.g.
+if obj is a class with an insanely long name) but that's not a big
+deal, at least at the moment. I can always revisit that later if
+necessary.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+            <details class="quote">
+              <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@fallback</span><span class="p">(</span><span class="n">default_func</span><span class="o">=</span><span class="n">qualname</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an object&#39;s repr, truncated to ensure that it doesn&#39;t take up</span>
 <span class="sd">    more characters than we want. This is used to reduce our chances of using</span>
 <span class="sd">    up all our available tokens in a gpt prompt simply communicating that a</span>
@@ -1447,43 +1912,13 @@ necessary.</p>
 <span class="sd">        deal, at least at the moment. I can always revisit that later if</span>
 <span class="sd">        necessary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">qualname</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Similar to type(obj).__qualname__() but that method doesn&#39;t always</span>
-<span class="sd">        include the module(s). e.g. pandas Index has __qualname__ &quot;Index&quot; but</span>
-<span class="sd">        this function returns &quot;&lt;pandas.core.indexes.base.Index&gt;&quot;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;&lt;class &#39;([a-zA-Z_.]*)&#39;&gt;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Should have found only 1 qualname but &#39;</span> \
-                                <span class="sa">f</span><span class="s1">&#39;found: </span><span class="si">{</span><span class="n">names</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;</span><span class="si">{</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
-
-    <span class="n">open2close</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;[&#39;</span><span class="p">:</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;(&#39;</span><span class="p">:</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;{&#39;</span><span class="p">:</span> <span class="s1">&#39;}&#39;</span>
-    <span class="p">}</span>
     <span class="n">repr_</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">repr_</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_len</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">repr_</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-        <span class="n">cols</span> <span class="o">=</span> <span class="n">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">max_len</span> <span class="o">-</span> <span class="mi">26</span><span class="p">)</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;pd.DataFrame(columns=&#39;</span> \
-               <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">truncated_repr</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="n">max_len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">22</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;pd.Series(</span><span class="si">{</span><span class="n">truncated_repr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span><span class="w"> </span><span class="n">max_len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="n">length</span> <span class="o">=</span> <span class="mi">5</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;=</span> <span class="n">max_len</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">break</span>
-            <span class="n">new_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s1">: </span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s1">, &#39;</span>
-            <span class="n">length</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_str</span><span class="p">)</span>
-            <span class="n">res</span> <span class="o">+=</span> <span class="n">new_str</span>
-        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;...}&quot;</span>
+
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">repr_</span><span class="p">[:</span><span class="n">max_len</span> <span class="o">-</span> <span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&#39;&quot;</span>
+        <span class="k">return</span> <span class="n">repr_</span><span class="p">[:</span><span class="n">max_len</span> <span class="o">-</span> <span class="mi">16</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&#39; (truncated)&quot;</span>
+
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
         <span class="c1"># A bit risky but sort of elegant. Just recursively take smaller</span>
         <span class="c1"># slices until we get an acceptable length. We may end up going</span>
@@ -1495,33 +1930,45 @@ necessary.</p>
         <span class="c1"># when inputs are long.</span>
         <span class="c1"># Can&#39;t easily pass smaller max_len value into recursive call</span>
         <span class="c1"># because we always want to compare to the user-specified value.</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_len</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">repr_</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-            <span class="c1"># Even slicing to just first item is too long, so just revert</span>
-            <span class="c1"># to treating this like a non-iterable object.</span>
-            <span class="k">return</span> <span class="n">qualname</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="c1"># n is the approximate number of items we expect to be able to fit in</span>
+        <span class="c1"># a truncated repr of length &lt;= max_len, though this is of course not</span>
+        <span class="c1"># bulletproof (usually only a problem for nested or multidimensional</span>
+        <span class="c1"># data structures).</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_len</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">repr_</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)))</span>
+
         <span class="c1"># Need to slice set while keeping the original dtype.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
             <span class="n">slice_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)[:</span><span class="n">n</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">slice_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="n">n</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">slice_</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to slice obj </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">. Result may not be &#39;</span>
-                              <span class="sa">f</span><span class="s1">&#39;truncated as much as desired. Error:</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">slice_</span> <span class="o">=</span> <span class="n">obj</span>
-        <span class="n">repr_</span> <span class="o">=</span> <span class="n">truncated_repr</span><span class="p">(</span><span class="n">slice_</span><span class="p">,</span> <span class="n">max_len</span><span class="p">)</span>
-        <span class="n">non_brace_idx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">repr_</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">repr_</span><span class="p">[</span><span class="n">non_brace_idx</span><span class="p">]</span> <span class="ow">in</span> <span class="n">open2close</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">non_brace_idx</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">non_brace_idx</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">non_brace_idx</span> <span class="o">==</span> <span class="mi">3</span>
-                                  <span class="ow">and</span> <span class="n">repr_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;set&#39;</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="n">repr_</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;...&#39;</span> <span class="o">+</span> <span class="n">repr_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">repr_</span><span class="p">[:</span><span class="n">non_brace_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,...&#39;</span> <span class="o">+</span> <span class="n">repr_</span><span class="p">[</span><span class="n">non_brace_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+            <span class="n">slice_</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="c1"># Slicing didn&#39;t help in this case so do some manual surgery.</span>
+            <span class="c1"># Don&#39;t call truncated_repr recursively here because we would</span>
+            <span class="c1"># get stuck in an infinite loop because there&#39;s no room to slice</span>
+            <span class="c1"># our object to be shorter.</span>
+            <span class="c1"># Arbitrarily choosing to subtract 10 to account for some the</span>
+            <span class="c1"># characters created by qualname and attributres, could try to do</span>
+            <span class="c1"># this more carefully but don&#39;t think it&#39;s worth it right now.</span>
+            <span class="c1"># We then slice up to the last comma to ensure we don&#39;t truncate</span>
+            <span class="c1"># mid item, e.g. [10, 20, 30] should not be truncated to &#39;[10, 2&#39;.</span>
+            <span class="n">truncated_str</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slice_</span><span class="p">)[:</span><span class="n">max_len</span> <span class="o">-</span> <span class="mi">10</span><span class="p">]</span>
+            <span class="n">truncated_str</span> <span class="o">=</span> <span class="n">truncated_str</span><span class="p">[:</span><span class="n">truncated_str</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">format_listlike_with_metadata</span><span class="p">(</span>
+                <span class="n">obj</span><span class="p">,</span>
+                <span class="n">truncated_data</span><span class="o">=</span><span class="n">truncated_str</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">format_listlike_with_metadata</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">truncated_data</span><span class="o">=</span><span class="n">slice_</span><span class="p">)</span>
 
     <span class="c1"># We know it&#39;s non-iterable at this point.</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;class </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+
+    <span class="c1"># Note that ints/floats usually won&#39;t hit this block, but it could happen</span>
+    <span class="c1"># with an extraordinarily high number of digits.</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">truncated_repr</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;.3e&#39;</span><span class="p">),</span> <span class="n">max_len</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">qualname</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
@@ -1615,26 +2062,26 @@ returns the whole contents.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a yaml file. Useful for loading prompts.</span>
 
 <span class="sd">    Borrowed from jabberwocky.</span>
@@ -1735,34 +2182,34 @@ actually set <code>{field}: None</code> in the yaml file.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delete_if_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delete_if_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a yaml file with new values.</span>
 
 <span class="sd">    Parameters</span>
@@ -1925,65 +2372,65 @@ b = (b[0], b[1] + [a])
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_code</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">join_multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multi_prefix_template</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"># </span><span class="si">{i}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_code</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">join_multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multi_prefix_template</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1"># </span><span class="si">{i}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract code snippet from a GPT response (e.g. from our `debug` chat</span>
 <span class="sd">    prompt. See `Examples` for expected format.</span>
 
@@ -2128,41 +2575,41 @@ and code.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span>
-<span class="normal">357</span>
-<span class="normal">358</span>
-<span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span>
-<span class="normal">362</span>
-<span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span>
-<span class="normal">366</span>
-<span class="normal">367</span>
-<span class="normal">368</span>
-<span class="normal">369</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_completion</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_completion</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is called on the gpt completion text in</span>
 <span class="sd">    roboduck.debug.DuckDB.ask_language_model (i.e. when the user asks a</span>
 <span class="sd">    question during a debugging session, or when an error occurs when in</span>
@@ -2246,30 +2693,30 @@ never got off API waitlist.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">372</span>
-<span class="normal">373</span>
-<span class="normal">374</span>
-<span class="normal">375</span>
-<span class="normal">376</span>
-<span class="normal">377</span>
-<span class="normal">378</span>
-<span class="normal">379</span>
-<span class="normal">380</span>
-<span class="normal">381</span>
-<span class="normal">382</span>
-<span class="normal">383</span>
-<span class="normal">384</span>
-<span class="normal">385</span>
-<span class="normal">386</span>
-<span class="normal">387</span>
-<span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
-<span class="normal">395</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">available_models</span><span class="p">():</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">available_models</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show user available values for model_name parameter in debug.DuckDB</span>
 <span class="sd">    class/ debug.duck function/errors.enable function etc.</span>
 
@@ -2370,29 +2817,29 @@ if we didn't include DuckDB in roboduck's <strong>init</strong>.py.)</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">398</span>
-<span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
-<span class="normal">403</span>
-<span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_import_statement</span><span class="p">(</span><span class="n">cls_name</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_import_statement</span><span class="p">(</span><span class="n">cls_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a class name like &#39;roboduck.debug.DuckDB&#39;, construct the import</span>
 <span class="sd">    statement (str) that should likely be used to import that class (in this</span>
 <span class="sd">    case &#39;from roboduck.debug import DuckDB&#39;.</span>

@@ -7,8 +7,9 @@ MODEL_CONTEXT_WINDOWS = {
     'gpt-4-turbo': 128_000,
     'gpt-4o': 128_000,
     'gpt-4o-mini': 128_000,
-    'o1-preview': 128_000,
-    'o1-mini': 128_000,
+    # TODO: add o1 support in langchain.chat module.
+    # 'o1-preview': 128_000,
+    # 'o1-mini': 128_000,
     # Eventually would like to support anthropic's claude, but it's not
     # supported in roboduck v1 because they never gave me api access so I can't
     # test it. 🤷‍♂️.
