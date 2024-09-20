@@ -58,10 +58,40 @@ def test_field_names(key: str, expected_names: 'set[str]'):
             ('what\'s going on?', False),
         )
 )
-def test_field_names(line: str, warns: bool, capsys):
+def test_error(line: str, warns: bool, capsys):
     debugger = DuckDB()
     debugger.error(line)
     stdout = capsys.readouterr()
     did_warn = 'If you meant to respond to Duck in natural ' \
         'language' in stdout.out
     assert did_warn == warns
+
+
+@pytest.mark.parametrize(
+        'source_code,cleaned_code',
+        (
+            (
+                "def foo():\n    x = 1\n    duck()\n    y = 2\n    return x + y",
+                "def foo():\n    x = 1\n    y = 2\n    return x + y"
+            ),
+            (
+                "print('Hello')\nduck(silent=True)\nprint('World')",
+                "print('Hello')\nprint('World')"
+            ),
+            (
+                "duck()\nif True:\n    duck()\n    print('test')",
+                "if True:\n    print('test')"
+            ),
+            (
+                "x = 5\n# duck() in a comment should be ignored\nduck()\ny = 10",
+                "x = 5\n# duck() in a comment should be ignored\ny = 10"
+            ),
+            (
+                "def bar():\n    return 'No duck calls here'",
+                "def bar():\n    return 'No duck calls here'"
+            ),
+        )
+)
+def test_remove_debugger_call(source_code: str, cleaned_code: str):
+    debugger = DuckDB()
+    assert debugger._remove_debugger_call(source_code) == cleaned_code
