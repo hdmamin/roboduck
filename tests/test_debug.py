@@ -23,7 +23,7 @@ from roboduck.debug import DuckDB
         ('x < 5', False),
     )
 )
-def test_is_conversational_reply(line: str, expected: bool):
+def test_DuckDB_is_conversational_reply(line: str, expected: bool):
     debugger = DuckDB()
     assert debugger._is_conversational_reply(line) == expected
 
@@ -39,7 +39,7 @@ def test_is_conversational_reply(line: str, expected: bool):
              {'question'}),
         )
 )
-def test_field_names(key: str, expected_names: 'set[str]'):
+def test_DuckDB_field_names(key: str, expected_names: 'set[str]'):
     debugger = DuckDB()
     kwargs = {}
     # Want to reflect what happens if we literally pass in nothing.
@@ -58,7 +58,7 @@ def test_field_names(key: str, expected_names: 'set[str]'):
             ('what\'s going on?', False),
         )
 )
-def test_error(line: str, warns: bool, capsys):
+def test_DuckDB_error(line: str, warns: bool, capsys):
     debugger = DuckDB()
     debugger.error(line)
     stdout = capsys.readouterr()
@@ -92,6 +92,6 @@ def test_error(line: str, warns: bool, capsys):
             ),
         )
 )
-def test_remove_debugger_call(source_code: str, cleaned_code: str):
+def test_DuckDB_remove_debugger_call(source_code: str, cleaned_code: str):
     debugger = DuckDB()
     assert debugger._remove_debugger_call(source_code) == cleaned_code
