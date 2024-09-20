@@ -42,7 +42,26 @@ def test_is_conversational_reply(line: str, expected: bool):
 def test_field_names(key: str, expected_names: 'set[str]'):
     debugger = DuckDB()
     kwargs = {}
+    # Want to reflect what happens if we literally pass in nothing.
     if key is not None:
         kwargs['key'] = key
     field_names = debugger.field_names(**kwargs)
     assert field_names == expected_names
+
+
+@pytest.mark.parametrize(
+        'line,warns',
+        (
+            ('SyntaxError(abc)', True),
+            ('raise NameError(def)', True),
+            ('c', False),
+            ('what\'s going on?', False),
+        )
+)
+def test_field_names(line: str, warns: bool, capsys):
+    debugger = DuckDB()
+    debugger.error(line)
+    stdout = capsys.readouterr()
+    did_warn = 'If you meant to respond to Duck in natural ' \
+        'language' in stdout.out
+    assert did_warn == warns

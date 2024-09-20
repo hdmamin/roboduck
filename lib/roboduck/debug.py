@@ -273,8 +273,12 @@ class DuckDB(Pdb):
             Determines which user prompt type to use. By default, roboduck
             provides "contextful" (which will include the source code, variable
             values, and the stack trace when appropriate) and "contextless"
-            (which includes only the user question). We default to
-            "contextful" here.
+            (which includes only the user question). Falls back to a
+            default defined in the prompt template, in this case
+            "contextful". Keeping the actual default as an empty string here
+            means that if we defined a new prompt with different keys, we
+            don't need to define a new subclass with a custom field_names
+            method, we just need to pass in the desired `prompt` on init.
 
         Returns
         -------
