@@ -1,6 +1,9 @@
 import pytest
+from unittest.mock import patch
 
-from roboduck.debug import DuckDB
+from langchain.schema import AIMessage
+
+from roboduck.debug import DuckDB, CodeCompletionCache
 
 
 @pytest.mark.parametrize(
@@ -95,3 +98,34 @@ def test_DuckDB_error(line: str, warns: bool, capsys):
 def test_DuckDB_remove_debugger_call(source_code: str, cleaned_code: str):
     debugger = DuckDB()
     assert debugger._remove_debugger_call(source_code) == cleaned_code
+
+
+def test_DuckDB_ask_language_model():
+    prompt_kwargs = {
+            'code': 'for i in range(4)\n    i',
+            'local_vars': {'i': 3},
+            'global_vars': {},
+            'next_line': '    i',
+    }
+    mock_response = "Use a for loop:\n\n```python\nfor i in range(4):\n    print(i)\n```"
+
+    # Create a DuckDB instance with the mocked Chat
+    debugger = DuckDB()
+    with patch.object(
+        debugger.chat,
+        'reply',
+        return_value=AIMessage(content=mock_response)
+    ) as mock_reply, patch.object(
+        debugger,
+        '_get_prompt_kwargs',
+        return_value=prompt_kwargs
+    ) as mock_get_prompt_kwargs:
+        debugger.ask_language_model('why is i not being displayed?')
+        mock_reply.assert_called_once()
+        mock_get_prompt_kwargs.assert_called_once()
+
+    # Check if CodeCompletionCache was updated correctly
+    assert CodeCompletionCache.get('last_completion') == mock_response
+    assert CodeCompletionCache.get('last_explanation') == "Use a for loop:\n"
+    assert CodeCompletionCache.get('last_code') == prompt_kwargs['code']
+    assert CodeCompletionCache.get('last_new_code') == "for i in range(4):\n    print(i)"

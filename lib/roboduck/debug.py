@@ -319,9 +319,9 @@ class DuckDB(Pdb):
         Returns
         -------
         dict
-            contains keys 'code', 'local_vars', 'global_vars', 'file_type'.
-            If we specified full_context=True on init, we also include the key
-            'full_code'.
+            contains keys 'code', 'local_vars', 'global_vars', 'next_line'.
+            If we specified full_context=True on init, we also include the keys
+            'full_code' and 'file_type'.
         """
         res = {}
 
