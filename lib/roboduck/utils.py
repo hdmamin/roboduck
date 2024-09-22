@@ -8,10 +8,11 @@ import openai
 import os
 from pathlib import Path
 import re
+from typing import Any, Callable, Optional, Union
 import yaml
 
 
-def colored(text, color):
+def colored(text: str, color: str) -> str:
     """Add tags to color text and then reset color afterwards. Note that this
     does NOT actually print anything.
 
@@ -36,7 +37,7 @@ def colored(text, color):
     return f'{color}{text}{Style.RESET_ALL}'
 
 
-def colordiff_new_str(old, new, color='green'):
+def colordiff_new_str(old: str, new: str, color: str = 'green'):
     """Given two strings, return the new one with new parts in green. Note that
     deletions are ignored because we want to retain only characters in the new
     string. Remember colors are only displayed correctly when printing the
@@ -75,7 +76,7 @@ def colordiff_new_str(old, new, color='green'):
     return ''.join(res)
 
 
-def type_annotated_dict_str(dict_, func=repr):
+def type_annotated_dict_str(dict_: dict, func: Callable = repr) -> str:
     """String representation (or repr) of a dict, where each line includes
     an inline comment showing the type of the value.
 
@@ -108,7 +109,7 @@ def type_annotated_dict_str(dict_, func=repr):
     return '{' + ''.join(type_strs) + '\n}'
 
 
-def is_array_like(obj) -> bool:
+def is_array_like(obj: Any) -> bool:
     """Hackily check if obj is a numpy array/torch tensor/pd.Series or similar
     without requiring all those libraries as dependencies
     (notably, pd.DataFrame is not considered array_like - it has useful column
@@ -122,7 +123,7 @@ def is_array_like(obj) -> bool:
             and not isinstance(obj, type)
 
 
-def qualname(obj, with_brackets=True) -> str:
+def qualname(obj: Any, with_brackets: bool = True) -> str:
     """Similar to type(obj).__qualname__() but that method doesn't always
     include the module(s). e.g. pandas Index has __qualname__ "Index" but
     this function returns "<pandas.core.indexes.base.Index>".
@@ -138,7 +139,9 @@ def qualname(obj, with_brackets=True) -> str:
     return names[0]
 
 
-def format_listlike_with_metadata(array, truncated_data=None):
+def format_listlike_with_metadata(
+        array: Iterable, truncated_data: Optional[Iterable] = None
+    ) -> str:
     """Format a list-like object with metadata.
 
     This function creates a string representation of a list-like object,
@@ -208,7 +211,8 @@ def format_listlike_with_metadata(array, truncated_data=None):
     return res + f", len={len(array)}>"
 
 
-def fallback(*, default=None, default_func=None):
+def fallback(*, default: Optional[Any] = None,
+             default_func: Optional[Callable] = None) -> Callable:
     """Decorator to provide a default value (or function that produces a value)
     to return when the decorated function's execution fails.
 
@@ -234,7 +238,7 @@ def fallback(*, default=None, default_func=None):
 
 
 @fallback(default_func=qualname)
-def truncated_repr(obj, max_len=400) -> str:
+def truncated_repr(obj: Any, max_len: int = 400) -> str:
     """Return an object's repr, truncated to ensure that it doesn't take up
     more characters than we want. This is used to reduce our chances of using
     up all our available tokens in a gpt prompt simply communicating that a
@@ -326,7 +330,7 @@ def truncated_repr(obj, max_len=400) -> str:
     return qualname(obj)
 
 
-def load_yaml(path, section=None):
+def load_yaml(path: Union[str, Path], section: Optional[str] = None) -> dict:
     """Load a yaml file. Useful for loading prompts.
 
     Borrowed from jabberwocky.
@@ -348,7 +352,7 @@ def load_yaml(path, section=None):
     return data.get(section, data)
 
 
-def update_yaml(path, delete_if_none=True, **kwargs):
+def update_yaml(path: Union[str, Path], delete_if_none: bool = True, **kwargs):
     """Update a yaml file with new values.
 
     Parameters
@@ -378,7 +382,11 @@ def update_yaml(path, delete_if_none=True, **kwargs):
         yaml.dump(data, f)
 
 
-def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
+def extract_code(
+    text: str,
+    join_multi: bool = True,
+    multi_prefix_template: str = '\n\n# {i}\n'
+) -> Union[str, list]:
     """Extract code snippet from a GPT response (e.g. from our `debug` chat
     prompt. See `Examples` for expected format.
 
@@ -439,7 +447,7 @@ def extract_code(text, join_multi=True, multi_prefix_template='\n\n# {i}\n'):
     return ''.join(chunks)
 
 
-def parse_completion(text):
+def parse_completion(text: str) -> dict:
     """This function is called on the gpt completion text in
     roboduck.debug.DuckDB.ask_language_model (i.e. when the user asks a
     question during a debugging session, or when an error occurs when in
@@ -476,7 +484,7 @@ def parse_completion(text):
             'code': code}
 
 
-def available_models():
+def available_models() -> dict:
     """Show user available values for model_name parameter in debug.DuckDB
     class/ debug.duck function/errors.enable function etc.
 
@@ -502,7 +510,7 @@ def available_models():
     return res
 
 
-def make_import_statement(cls_name):
+def make_import_statement(cls_name: str) -> str:
     """Given a class name like 'roboduck.debug.DuckDB', construct the import
     statement (str) that should likely be used to import that class (in this
     case 'from roboduck.debug import DuckDB'.
