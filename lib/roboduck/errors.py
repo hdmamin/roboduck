@@ -26,6 +26,7 @@ from functools import partial
 from IPython import get_ipython
 import sys
 from traceback import TracebackException
+from typing import Optional, Type, TracebackType
 import warnings
 
 from roboduck.debug import DuckDB, CodeCompletionCache
@@ -36,8 +37,15 @@ ipy = get_ipython()
 
 
 @add_docstring(DuckDB.__init__)
-def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
-                colordiff=True, interactive=False, **kwargs):
+def post_mortem(
+    t: Optional[TracebackType] = None,
+    Pdb: Type = DuckDB,
+    trace: str = '',
+    prompt_name: str = 'debug_stack_trace',
+    colordiff: bool = True,
+    interactive: bool = False,
+    **kwargs
+) -> None:
     """Drop-in replacement (hence the slightly odd arg order, where trace is
     required but third positionally) for pdb.post_mortem that allows us to get
     both the stack trace AND global/local vars from the program state right
@@ -115,7 +123,9 @@ def post_mortem(t=None, Pdb=DuckDB, trace='', prompt_name='debug_stack_trace',
         )
 
 
-def print_exception(etype, value, tb, limit=None, file=None, chain=True):
+def print_exception(etype: Type, value, tb: TracebackType,
+                    limit: Optional[int] = None, file=None,
+                    chain: bool = True) -> str:
     """Replacement for traceback.print_exception() that returns the
     whole stack trace as a single string. Used in roboduck's custom excepthook
     to allow us to show the stack trace to gpt. The original function's
@@ -146,8 +156,9 @@ def print_exception(etype, value, tb, limit=None, file=None, chain=True):
     return trace
 
 
-def excepthook(etype, val, tb, prompt_name='debug_stack_trace',
-               auto=False, cls=DuckDB, **kwargs):
+def excepthook(etype: Type, val: Exception, tb: TracebackType,
+               prompt_name: str = 'debug_stack_trace',
+               auto: bool = False, cls: Type = DuckDB, **kwargs) -> None:
     """Replaces sys.excepthook when module is imported. When an error is
     thrown, the user is asked whether they want an explanation of what went
     wrong. If they enter 'y' or 'yes', it will query gpt for help. Unlike
@@ -199,7 +210,7 @@ def excepthook(etype, val, tb, prompt_name='debug_stack_trace',
         print('Unrecognized command. Valid choices are "y" or "n".\n')
 
 
-def enable(**kwargs):
+def enable(**kwargs) -> None:
     """Enable conversational debugging mode. This is called automatically on
     module import. However, users may wish to make changes, e.g. set auto=True
     or pass in a custom debugger cls, and this function makes that possible.
@@ -246,7 +257,7 @@ def enable(**kwargs):
         pass
 
 
-def disable():
+def disable() -> None:
     """Revert to default behavior when exceptions are thrown."""
     sys.excepthook = default_excepthook
     try:
@@ -261,7 +272,7 @@ def disable():
         pass
 
 
-def stack_trace():
+def stack_trace() -> str:
     """Lets us recover stack trace as string outside of the functions defined
     above, which generally only execute automatically when exceptions are
     thrown. Don't just define this as a partial because that requires
