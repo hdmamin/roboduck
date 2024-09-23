@@ -3,9 +3,11 @@ from copy import deepcopy
 from functools import partial, wraps
 from inspect import signature, Parameter, getmembers, isroutine
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 
-def typecheck(func_=None, **types):
+def typecheck(func_: Optional[Callable] = None,
+              **types: Dict[str, Type]) -> Callable:
     """Decorator to enforce type checking for a function or method. There are
     two ways to call this: either explicitly passing argument types to the
     decorator, or letting it infer them using type annotations in the function
@@ -18,16 +20,21 @@ def typecheck(func_=None, **types):
 
     Parameters
     ----------
-    func_ : function
+    func_ : Optional[Callable]
         The function to decorate. When using decorator with
         manually-specified types, this is None. Underscore is used so that
         `func` can still be used as a valid keyword argument for the wrapped
         function.
-    types : type
+    types : Dict[str, Type]
         Optional way to specify variable types. Use standard types rather than
         importing from the typing library, as subscripted generics are not
         supported (e.g. typing.List[str] will not work; typing.List will but at
         that point there is no benefit over the standard `list`).
+
+    Returns
+    -------
+    Callable
+        The decorated function with type checking.
 
     Examples
     --------
@@ -109,7 +116,8 @@ def typecheck(func_=None, **types):
     return wrapper
 
 
-def add_kwargs(func, fields, hide_fields=(), strict=False):
+def add_kwargs(func: Callable, fields: List[str],
+               hide_fields: List[str] = (), strict: bool = False) -> Callable:
     """Decorator that adds parameters into the signature and docstring of a
     function that accepts **kwargs.
 
@@ -188,7 +196,7 @@ def add_kwargs(func, fields, hide_fields=(), strict=False):
     return wrapper
 
 
-def _classvars(cls):
+def _classvars(cls: Type) -> Dict:
     """Get class variable nnames and values for a given class.
 
     Parameters
@@ -202,7 +210,8 @@ def _classvars(cls):
     return dict(getmembers(cls, lambda x: not(isroutine(x))))
 
 
-def store_class_defaults(cls=None, attr_filter=None):
+def store_class_defaults(cls: Optional[Type] = None,
+                         attr_filter: Optional[Callable] = None) -> Type:
     """Class decorator that stores default values of class attributes (can be
     all or a subset). Default here refers to the value at class definition
     time. Mutable defaults should be okay since we deepcopy them, but are
@@ -276,7 +285,7 @@ def store_class_defaults(cls=None, attr_filter=None):
     return cls
 
 
-def add_docstring(func):
+def add_docstring(func: Callable) -> Callable:
     """Add the docstring from another function/class to the decorated
     function/class.
 

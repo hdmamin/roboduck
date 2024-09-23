@@ -38,6 +38,7 @@ your config file.
 import os
 from pathlib import Path
 import warnings
+from typing import Dict, Any, Optional
 
 from roboduck.utils import update_yaml, load_yaml
 
@@ -48,7 +49,7 @@ CONFIG_PATH = Path('~/.roboduck/config.yaml').expanduser()
 CONFIG_PATH_ENV_VAR = "ROBODUCK_CONFIG_PATH"
 
 
-def get_config_path():
+def get_config_path() -> Path:
     """Get the path to the roboduck config file. We use this instead of just
     referencing the variable in case the user sets a custom location.
 
@@ -61,7 +62,7 @@ def get_config_path():
     return Path(os.environ.get(CONFIG_PATH_ENV_VAR, CONFIG_PATH))
 
 
-def update_config(**kwargs):
+def update_config(**kwargs) -> None:
     """Update roboduck config file with settings that persist for future
     sessions.
 
@@ -101,7 +102,7 @@ def update_config(**kwargs):
     update_yaml(path=get_config_path(), delete_if_none=True, **kwargs)
 
 
-def load_config():
+def load_config() -> Dict[str, Any]:
     """Load roboduck config.
 
     Returns
@@ -115,7 +116,8 @@ def load_config():
     return load_yaml(path=config_path)
 
 
-def apply_config_defaults(chat_kwargs, template_only):
+def apply_config_defaults(chat_kwargs: Dict[str, Any],
+                          template_only: bool) -> None:
     """Help resolve model_name in place. Recall we prioritize sources in this
     order:
 
@@ -153,8 +155,9 @@ def apply_config_defaults(chat_kwargs, template_only):
         chat_kwargs['model_name'] = config_model_name
 
 
-def set_openai_api_key(key=None,
-                       strict=False, update_config_=False):
+def set_openai_api_key(key: Optional[str] = None,
+                       strict: bool = False,
+                       update_config_: bool = False) -> None:
     """Set OPENAI_API_KEY environment variable for langchain.
 
     Parameters
