@@ -822,7 +822,7 @@ code cell upon exiting the debugger containing the fixed code snippet.</p>
                    <span class="s1">&#39;debugger session.&#39;</span><span class="p">)</span>
     <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;--prompt&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="nd">@line_magic</span>
-    <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Silence warnings for a cell. The -p flag can be used to make the</span>
 <span class="sd">        change persist, at least until the user changes it again.</span>
 
@@ -995,7 +995,7 @@ needed to make this work, but it's something to keep in mind.</p>
                <span class="s1">&#39;debugger session.&#39;</span><span class="p">)</span>
 <span class="nd">@argument</span><span class="p">(</span><span class="s1">&#39;--prompt&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="nd">@line_magic</span>
-<span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Silence warnings for a cell. The -p flag can be used to make the</span>
 <span class="sd">    change persist, at least until the user changes it again.</span>
 

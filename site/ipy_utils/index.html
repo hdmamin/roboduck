@@ -731,8 +731,7 @@ and separated by newlines.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/ipy_utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -774,7 +773,8 @@ and separated by newlines.</p>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_ipynb</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">save_if_self</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">59</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_ipynb</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">save_if_self</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Loads ipynb and formats cells into 1 big string.</span>
 
 <span class="sd">    Adapted from htools.cli.ReadmeUpdater method.</span>
@@ -904,8 +904,7 @@ content from one cell.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/ipy_utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 62</span>
-<span class="normal"> 63</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
 <span class="normal"> 64</span>
 <span class="normal"> 65</span>
 <span class="normal"> 66</span>
@@ -947,7 +946,8 @@ content from one cell.</p>
 <span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
-<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_current_ipython_session</span><span class="p">(</span><span class="n">formatted</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_current_ipython_session</span><span class="p">(</span><span class="n">formatted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load current ipython session as a list and optionally convert it to a</span>
 <span class="sd">    nicely formatted str with each cell enclosed in triple backticks.</span>
 
@@ -1094,8 +1094,7 @@ pattern but should nonetheless return True if we encounter them.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/ipy_utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
-<span class="normal">109</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
@@ -1134,10 +1133,11 @@ pattern but should nonetheless return True if we encounter them.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_ipy_name</span><span class="p">(</span>
-        <span class="n">name</span><span class="p">,</span>
-        <span class="n">count_as_true</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;In&#39;</span><span class="p">,</span> <span class="s1">&#39;Out&#39;</span><span class="p">,</span> <span class="s1">&#39;_dh&#39;</span><span class="p">,</span> <span class="s1">&#39;_ih&#39;</span><span class="p">,</span> <span class="s1">&#39;_ii&#39;</span><span class="p">,</span> <span class="s1">&#39;_iii&#39;</span><span class="p">,</span> <span class="s1">&#39;_oh&#39;</span><span class="p">)</span>
-<span class="p">):</span>
+<span class="normal">148</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_ipy_name</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">count_as_true</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;In&#39;</span><span class="p">,</span> <span class="s1">&#39;Out&#39;</span><span class="p">,</span> <span class="s1">&#39;_dh&#39;</span><span class="p">,</span> <span class="s1">&#39;_ih&#39;</span><span class="p">,</span> <span class="s1">&#39;_ii&#39;</span><span class="p">,</span> <span class="s1">&#39;_iii&#39;</span><span class="p">,</span> <span class="s1">&#39;_oh&#39;</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;```plaintext</span>
 <span class="sd">    Check if a variable name looks like an ipython output cell name, e.g.</span>
 <span class="sd">    &quot;_49&quot;, &quot;_&quot;, or &quot;__&quot;.</span>
@@ -1228,8 +1228,7 @@ https://stackoverflow.com/questions/32237275/save-an-ipython-notebook-programmat
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/ipy_utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">151</span>
-<span class="normal">152</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
@@ -1250,7 +1249,8 @@ https://stackoverflow.com/questions/32237275/save-an-ipython-notebook-programmat
 <span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
-<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_notebook</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="normal">173</span>
+<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_notebook</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a jupyter notebook. We use this in load_ipynb (optionally) to</span>
 <span class="sd">    ensure that when we load a notebook&#39;s source</span>
 <span class="sd">    code, we get the most up to date version. Adapted from</span>
@@ -1324,8 +1324,7 @@ between colab and jupyter.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/ipy_utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
-<span class="normal">177</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
@@ -1334,7 +1333,12 @@ between colab and jupyter.</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
-<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_colab</span><span class="p">(</span><span class="n">shell</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_colab</span><span class="p">(</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;IPython.core.interactiveshell.InteractiveShell&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if we&#39;re currently in google colab.</span>
 
 <span class="sd">    Parameters</span>
