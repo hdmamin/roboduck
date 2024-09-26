@@ -26,7 +26,8 @@ from functools import partial
 from IPython import get_ipython
 import sys
 from traceback import TracebackException
-from typing import Optional, Type, TracebackType
+from types import TracebackType
+from typing import Optional, Type
 import warnings
 
 from roboduck.debug import DuckDB, CodeCompletionCache

@@ -12,6 +12,7 @@ from typing import List, Optional, Tuple, Union
 import ipynbname
 from IPython import get_ipython
 from IPython.core.display import display, Javascript
+from IPython.core.interactiveshell import InteractiveShell
 
 
 def load_ipynb(path: Path, save_if_self: bool = True) -> str:
@@ -149,7 +150,7 @@ def is_ipy_name(
     return is_under or name in count_as_true
 
 
-def save_notebook(file_path: str) -> None:
+def save_notebook(file_path: Union[str, Path]) -> None:
     """Save a jupyter notebook. We use this in load_ipynb (optionally) to
     ensure that when we load a notebook's source
     code, we get the most up to date version. Adapted from
@@ -157,7 +158,7 @@ def save_notebook(file_path: str) -> None:
 
     Parameters
     ----------
-    file_path : str
+    file_path : str or Path
         Path to notebook that you want to save.
     """
     def file_md5(path):
@@ -174,9 +175,7 @@ def save_notebook(file_path: str) -> None:
         current_md5 = file_md5(file_path)
 
 
-def is_colab(
-    shell: Optional["IPython.core.interactiveshell.InteractiveShell"] = None
-) -> bool:
+def is_colab(shell: Optional[InteractiveShell] = None) -> bool:
     """Check if we're currently in google colab.
 
     Parameters

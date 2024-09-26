@@ -175,7 +175,7 @@ def set_openai_api_key(key: Optional[str] = None,
         api key.
     """
     var_name = 'OPENAI_API_KEY'
-    key = key or os.environ.get(var_name)
+    key = key or os.environ.get(var_name, '')
     if not key:
         try:
             data = load_config()

@@ -52,4 +52,4 @@ lint:
 	pydocstyle lib/roboduck
 
 typecheck:
-	mypy lib/roboduck --no-error-summary
+	mypy lib/roboduck
