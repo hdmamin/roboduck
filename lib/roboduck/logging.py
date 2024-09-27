@@ -109,12 +109,12 @@ class DuckLogger(Logger):
         if path:
             path = Path(path).resolve()
             os.makedirs(path.parent, exist_ok=True)
-            handlers.append(FileHandler(path, fmode))
+            handlers.append(FileHandler(path, fmode))  # type: ignore
         for handler in handlers:
             handler.setFormatter(formatter)
             self.addHandler(handler)
 
-    def _log(self, level: int, msg: Union[str, Exception],
+    def _log(self, level: int, msg: Union[str, Exception],  # type: ignore
              args: Tuple, exc_info: Optional[Dict] = None,
              extra: Optional[Dict] = None,
              stack_info: bool = False) -> None:
@@ -132,7 +132,7 @@ class DuckLogger(Logger):
             msg = sys.last_value
             errors.disable()
 
-        return super()._log(level, msg, args, exc_info=exc_info,
+        return super()._log(level, msg, args, exc_info=exc_info, # type: ignore
                             extra=extra, stack_info=stack_info)
 
 

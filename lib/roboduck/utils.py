@@ -8,7 +8,7 @@ import openai
 import os
 from pathlib import Path
 import re
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 import yaml
 
 
@@ -208,7 +208,7 @@ def format_listlike_with_metadata(
         # don't want to strip multiple closing braces, e.g. [(3, 4), (5, 6)].
         res += f"{repr_[:-1] + repr_[-1].rstrip(closing_bracket_str)}, " \
                 f"...{open2close.get(repr_[0], '')}"
-    return res + f", len={len(array)}>"
+    return res + f", len={len(array)}>"  # type: ignore
 
 
 def fallback(*, default: Optional[Any] = None,
@@ -290,7 +290,7 @@ def truncated_repr(obj: Any, max_len: int = 400) -> str:
         # a truncated repr of length <= max_len, though this is of course not
         # bulletproof (usually only a problem for nested or multidimensional
         # data structures).
-        n = max(1, int(max_len / len(repr_) * len(obj)))
+        n = max(1, int(max_len / len(repr_) * len(obj)))  # type: ignore
 
         # Need to slice set while keeping the original dtype.
         if isinstance(obj, set):
@@ -298,7 +298,7 @@ def truncated_repr(obj: Any, max_len: int = 400) -> str:
         elif isinstance(obj, dict):
             slice_ = list(obj.items())[:n]
         else:
-            slice_ = obj[:n]
+            slice_ = obj[:n]  # type: ignore
 
         if n == len(obj):
             # Slicing didn't help in this case so do some manual surgery.

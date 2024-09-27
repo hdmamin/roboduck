@@ -29,7 +29,7 @@ class DummyChatModel:
         self.verbose = getattr(self, 'verbose', True)
 
     def __call__(self, messages: List[BaseMessage],
-                 stop: Optional[List[str]] = None) -> ChatResult:
+                 stop: Optional[List[str]] = None) -> BaseMessage:
         return self._generate(messages, stop=stop).generations[0].message
 
     def _generate(self, messages: List[BaseMessage],
@@ -49,9 +49,11 @@ class DummyChatModel:
                     verbose=self.verbose,
                 )
         message = AIMessage(content=res)
-        return ChatResult(generations=[ChatGeneration(message=message)])
+        return ChatResult(
+            generations=[ChatGeneration(message=message)]  # type: ignore
+        )
 
-    async def _agenerate(self, messages: List[str],
+    async def _agenerate(self, messages: List[BaseMessage],
                          stop: Optional[List[str]] = None):
         warnings.warn(
             f'{type(self).__name__} doesn\'t provide a real _agenerate '

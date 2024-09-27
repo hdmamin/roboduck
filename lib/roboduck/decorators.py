@@ -83,7 +83,7 @@ def typecheck(func_: Optional[Callable] = None,
     """
     # Case 1: Pass keyword args to decorator specifying types.
     if not func_:
-        return partial(typecheck, **types)
+        return partial(typecheck, **types)  # type: ignore
     # Case 2: Infer types from annotations. Skip if Case 1 already occurred.
     elif not types:
         types = {k: v.annotation
@@ -185,14 +185,17 @@ def add_kwargs(func: Callable, fields: List[str],
         )
 
     params_.update(new_params)
-    wrapper.__signature__ = sig.replace(parameters=params_.values())
+    wrapper.__signature__ = sig.replace(
+        parameters=params_.values()  # type: ignore
+    )
     if strict:
         # In practice langchain checks for this anyway if we ask for a
         # completion, but outside of that context we need typecheck
         # because otherwise we could provide no kwargs and _func wouldn't
         # complain. Just use generic type because we only care that a value is
         # provided.
-        wrapper = typecheck(wrapper, **{f: object for f in fields})
+        wrapper = typecheck(wrapper,
+                            **{f: object for f in fields})  # type: ignore
     return wrapper
 
 
@@ -239,7 +242,8 @@ def store_class_defaults(cls: Optional[Type] = None,
     default values.
     """
     if cls is None:
-        return partial(store_class_defaults, attr_filter=attr_filter)
+        return partial(store_class_defaults,
+                        attr_filter=attr_filter)  # type: ignore
     if not isinstance(cls, type):
         raise TypeError(
             f'cls arg in store_class_defaults decorator has type {type(cls)} '

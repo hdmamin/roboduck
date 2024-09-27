@@ -117,7 +117,7 @@ class DebugMagic(Magics):
             kwargs = {'auto': True, 'interactive': args.i, 'color': 'green'}
             if args.prompt:
                 kwargs['prompt'] = args.prompt
-            errors.excepthook(sys.last_type, sys.last_value,
+            errors.excepthook(sys.last_type, sys.last_value,  # type: ignore
                               sys.last_traceback, **kwargs)
         except Exception as e:
             pass

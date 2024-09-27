@@ -340,7 +340,7 @@ class DuckDB(Pdb):
             res['next_line'] = self._get_next_line(code_snippet)
             res['code'] = self._remove_debugger_call(code_snippet)
         except OSError as err:
-            self.error(err)
+            self.error(str(err))
 
         # Get full source code if necessary.
         if self.full_context:
