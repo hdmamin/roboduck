@@ -17,8 +17,10 @@ MODEL_CONTEXT_WINDOWS = {
 }
 
 
-def model_context_window(model_name,
-                         default=min(MODEL_CONTEXT_WINDOWS.values())):
+def model_context_window(
+    model_name: str,
+    default: int = min(MODEL_CONTEXT_WINDOWS.values())
+) -> int:
     """Get context window (int) for a given model name. Relies on
     MODEL_CONTEXT_WINDOWS var in this module being updated manually.
 

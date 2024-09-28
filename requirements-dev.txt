@@ -5,3 +5,4 @@ pytest
 mkdocs
 mkdocstrings[python]
 mkdocs-material
+mypy

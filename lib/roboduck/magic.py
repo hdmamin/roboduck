@@ -79,7 +79,7 @@ class DebugMagic(Magics):
                    'debugger session.')
     @argument('--prompt', type=str, default=None)
     @line_magic
-    def duck(self, line=''):
+    def duck(self, line: str = ''):
         """Silence warnings for a cell. The -p flag can be used to make the
         change persist, at least until the user changes it again.
 
@@ -117,7 +117,7 @@ class DebugMagic(Magics):
             kwargs = {'auto': True, 'interactive': args.i, 'color': 'green'}
             if args.prompt:
                 kwargs['prompt'] = args.prompt
-            errors.excepthook(sys.last_type, sys.last_value,
+            errors.excepthook(sys.last_type, sys.last_value,  # type: ignore
                               sys.last_traceback, **kwargs)
         except Exception as e:
             pass

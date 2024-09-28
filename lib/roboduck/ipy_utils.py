@@ -7,13 +7,15 @@ import re
 import secrets
 import time
 from pathlib import Path
+from typing import List, Optional, Tuple, Union
 
 import ipynbname
 from IPython import get_ipython
 from IPython.core.display import display, Javascript
+from IPython.core.interactiveshell import InteractiveShell
 
 
-def load_ipynb(path, save_if_self=True):
+def load_ipynb(path: Path, save_if_self: bool = True) -> str:
     """Loads ipynb and formats cells into 1 big string.
 
     Adapted from htools.cli.ReadmeUpdater method.
@@ -59,7 +61,7 @@ def load_ipynb(path, save_if_self=True):
     return cell_str
 
 
-def load_current_ipython_session(formatted=True):
+def load_current_ipython_session(formatted: bool = True) -> Union[List, str]:
     """Load current ipython session as a list and optionally convert it to a
     nicely formatted str with each cell enclosed in triple backticks.
 
@@ -106,9 +108,9 @@ def load_current_ipython_session(formatted=True):
 
 
 def is_ipy_name(
-        name,
-        count_as_true=('In', 'Out', '_dh', '_ih', '_ii', '_iii', '_oh')
-):
+    name: str,
+    count_as_true: Tuple = ('In', 'Out', '_dh', '_ih', '_ii', '_iii', '_oh')
+) -> bool:
     """```plaintext
     Check if a variable name looks like an ipython output cell name, e.g.
     "_49", "_", or "__".
@@ -148,7 +150,7 @@ def is_ipy_name(
     return is_under or name in count_as_true
 
 
-def save_notebook(file_path):
+def save_notebook(file_path: Union[str, Path]) -> None:
     """Save a jupyter notebook. We use this in load_ipynb (optionally) to
     ensure that when we load a notebook's source
     code, we get the most up to date version. Adapted from
@@ -156,7 +158,7 @@ def save_notebook(file_path):
 
     Parameters
     ----------
-    file_path : str
+    file_path : str or Path
         Path to notebook that you want to save.
     """
     def file_md5(path):
@@ -173,7 +175,7 @@ def save_notebook(file_path):
         current_md5 = file_md5(file_path)
 
 
-def is_colab(shell=None):
+def is_colab(shell: Optional[InteractiveShell] = None) -> bool:
     """Check if we're currently in google colab.
 
     Parameters

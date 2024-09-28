@@ -31,6 +31,7 @@ import ipynbname
 from langchain.callbacks.base import CallbackManager
 from pdb import Pdb
 import sys
+from typing import Optional, Callable
 import uuid
 import warnings
 
@@ -88,7 +89,7 @@ class CodeCompletionCache:
                 )
 
     @classmethod
-    def get(cls, name, newest=True):
+    def get(cls: type, name: str, newest=True):
         """Get the first/last truthy value of a given attribute if one exists,
         e.g. the most recent code completion.
 
@@ -135,9 +136,12 @@ class DuckDB(Pdb):
     library).
     """
 
-    def __init__(self, prompt_name='debug', max_len_per_var=400, silent=False,
-                 pdb_kwargs=None, parse_func=parse_completion, color='green',
-                 **chat_kwargs):
+    def __init__(
+        self, prompt_name: str = 'debug', max_len_per_var: int = 400,
+        silent: bool = False, pdb_kwargs: Optional[dict] = None,
+        parse_func: Callable = parse_completion, color: str = 'green',
+        **chat_kwargs
+    ):
         """
         Parameters
         ----------
@@ -224,7 +228,7 @@ class DuckDB(Pdb):
         # to clear the CodeCompletionCache.
         self.uuid = str(uuid.uuid1())
 
-    def _chat_prompt_keys(self):
+    def _chat_prompt_keys(self) -> tuple:
         """Retrieve default and backup user reply prompt keys (names) from
         self.chat object. If the prompt template has only one reply type,
         the backup key will equal the default key.
@@ -244,7 +248,7 @@ class DuckDB(Pdb):
                 )
         return default, backup
 
-    def error(self, line):
+    def error(self, line: str):
         """Add a hint when displaying errors that roboduck only responds to
         *questions* in natural language.
 
@@ -263,7 +267,7 @@ class DuckDB(Pdb):
                 file=self.stdout
             )
 
-    def field_names(self, key=''):
+    def field_names(self, key: str = '') -> set:
         """Get names of variables that are expected to be passed into default
         user prompt template.
 
@@ -273,8 +277,12 @@ class DuckDB(Pdb):
             Determines which user prompt type to use. By default, roboduck
             provides "contextful" (which will include the source code, variable
             values, and the stack trace when appropriate) and "contextless"
-            (which includes only the user question). We default to
-            "contextful" here.
+            (which includes only the user question). Falls back to a
+            default defined in the prompt template, in this case
+            "contextful". Keeping the actual default as an empty string here
+            means that if we defined a new prompt with different keys, we
+            don't need to define a new subclass with a custom field_names
+            method, we just need to pass in the desired `prompt` on init.
 
         Returns
         -------
@@ -282,7 +290,7 @@ class DuckDB(Pdb):
         """
         return self.chat.input_variables(key)
 
-    def _get_next_line(self, code_snippet):
+    def _get_next_line(self, code_snippet: str) -> str:
         """Retrieve next line of code that will be executed. Must call this
         before we remove the duck() call. We use this in `_get_prompt_kwargs`
         during interactive debugging sessions.
@@ -306,7 +314,7 @@ class DuckDB(Pdb):
                 break
         return next_line
 
-    def _get_prompt_kwargs(self):
+    def _get_prompt_kwargs(self) -> dict:
         """Construct a dictionary describing the current state of our code
         (variable names and values, source code, file type). This will be
         passed to our langchain chat.reply() method to fill in the debug prompt
@@ -315,9 +323,9 @@ class DuckDB(Pdb):
         Returns
         -------
         dict
-            contains keys 'code', 'local_vars', 'global_vars', 'file_type'.
-            If we specified full_context=True on init, we also include the key
-            'full_code'.
+            contains keys 'code', 'local_vars', 'global_vars', 'next_line'.
+            If we specified full_context=True on init, we also include the keys
+            'full_code' and 'file_type'.
         """
         res = {}
 
@@ -332,7 +340,7 @@ class DuckDB(Pdb):
             res['next_line'] = self._get_next_line(code_snippet)
             res['code'] = self._remove_debugger_call(code_snippet)
         except OSError as err:
-            self.error(err)
+            self.error(str(err))
 
         # Get full source code if necessary.
         if self.full_context:
@@ -375,7 +383,7 @@ class DuckDB(Pdb):
         return res
 
     @staticmethod
-    def _remove_debugger_call(code_str):
+    def _remove_debugger_call(code_str: str) -> str:
         """Remove `duck` function call (our equivalent of `breakpoint` from
         source code string. Including it introduces a slight risk that gpt
         will fixate on this mistery function as a potential bug cause.
@@ -414,7 +422,7 @@ class DuckDB(Pdb):
         """
         return '?' in line or line.startswith(self.comment_prefix)
 
-    def onecmd(self, line):
+    def onecmd(self, line: str):
         """Base class describes this as follows:
 
         Interpret the argument as though it had been typed in response to the
@@ -450,7 +458,8 @@ class DuckDB(Pdb):
         else:
             return self.handle_command_def(line)
 
-    def ask_language_model(self, question, stack_trace='', verbose=False):
+    def ask_language_model(self, question: str, stack_trace: str = '',
+                           verbose: bool = False):
         """When the user asks a question during a debugging session, query
         gpt for the answer and type it back to them live.
 
@@ -549,7 +558,7 @@ class DuckDB(Pdb):
         )
         self.prev_kwargs_hash = kwargs_hash
 
-    def precmd(self, line):
+    def precmd(self, line: str):
         """We need to define this to make our errors module work. Our
         post_mortem function sometimes places a tuple in our debugger's
         cmdqueue and precmd is called as part of the default cmdloop method.
@@ -569,7 +578,7 @@ class DuckDB(Pdb):
             return super().precmd(line), trace
         return super().precmd(line)
 
-    def print_stack_entry(self, frame_lineno, prompt_prefix='\n-> '):
+    def print_stack_entry(self, frame_lineno, prompt_prefix: str = '\n-> '):
         """This is called automatically when entering a debugger session
         and it prints a message to stdout like
 

@@ -30,6 +30,9 @@ jobs:
     - name: Lint docstrings
       run: |
         make lint
+    - name: Typecheck
+      run: |
+        make typecheck
     - name: Test with pytest
       run: |
         pytest

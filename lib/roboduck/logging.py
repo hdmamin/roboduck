@@ -19,6 +19,7 @@ from logging import Logger, Formatter, StreamHandler, FileHandler
 from pathlib import Path
 import os
 import sys
+from typing import Dict, Optional, Tuple, Union
 import warnings
 
 
@@ -29,9 +30,10 @@ class DuckLogger(Logger):
     message in the original exception before logging.)
     """
 
-    def __init__(self, name, colordiff=False,
-                 fmt='%(asctime)s [%(levelname)s]: %(message)s', stdout=True,
-                 path='', fmode='a', **kwargs):
+    def __init__(self, name: str, colordiff: bool = False,
+                 fmt: str = '%(asctime)s [%(levelname)s]: %(message)s',
+                 stdout: bool = True,
+                 path: Union[str, Path] = '', fmode: str = 'a', **kwargs):
         """
         Parameters
         ----------
@@ -92,7 +94,8 @@ class DuckLogger(Logger):
         )
         self._add_handlers(fmt, stdout, path, fmode)
 
-    def _add_handlers(self, fmt, stdout, path, fmode):
+    def _add_handlers(self, fmt: str, stdout: bool, path: Union[str, Path],
+                      fmode: str) -> None:
         """Set up handlers to log to stdout and/or a file."""
         formatter = Formatter(fmt)
         handlers = []
@@ -106,13 +109,15 @@ class DuckLogger(Logger):
         if path:
             path = Path(path).resolve()
             os.makedirs(path.parent, exist_ok=True)
-            handlers.append(FileHandler(path, fmode))
+            handlers.append(FileHandler(path, fmode))  # type: ignore
         for handler in handlers:
             handler.setFormatter(formatter)
             self.addHandler(handler)
 
-    def _log(self, level, msg, args, exc_info=None, extra=None,
-             stack_info=False):
+    def _log(self, level: int, msg: Union[str, Exception],  # type: ignore
+             args: Tuple, exc_info: Optional[Dict] = None,
+             extra: Optional[Dict] = None,
+             stack_info: bool = False) -> None:
         """This is where we insert our custom logic to get error explanations.
         We keep the import inside the method to avoid overwriting
         sys.excepthook whenever the logging module is imported.
@@ -127,11 +132,11 @@ class DuckLogger(Logger):
             msg = sys.last_value
             errors.disable()
 
-        return super()._log(level, msg, args, exc_info=exc_info,
+        return super()._log(level, msg, args, exc_info=exc_info, # type: ignore
                             extra=extra, stack_info=stack_info)
 
 
-def getLogger(name=None, **kwargs):
+def getLogger(name: Optional[str] = None, **kwargs) -> DuckLogger:
     """Mimics interface of builtin logging.getLogger, but with our custom
     logger that ensures all errors explain themselves.
 

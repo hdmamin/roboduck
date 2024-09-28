@@ -659,7 +659,7 @@ dependency.</p>
           <tr class="doc-section-item">
             <td><code>func_</code></td>
             <td>
-                  <code>function</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -676,7 +676,7 @@ function.</p>
           <tr class="doc-section-item">
             <td><code>types</code></td>
             <td>
-                  <code>type</code>
+                  <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Type">Type</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -688,6 +688,29 @@ that point there is no benefit over the standard <code>list</code>).</p>
             </td>
             <td>
                   <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The decorated function with type checking.</p>
+              </div>
             </td>
           </tr>
       </tbody>
@@ -735,8 +758,7 @@ def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  8</span>
-<span class="normal">  9</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
 <span class="normal"> 10</span>
 <span class="normal"> 11</span>
 <span class="normal"> 12</span>
@@ -836,7 +858,15 @@ def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">typecheck</span><span class="p">(</span><span class="n">func_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">types</span><span class="p">):</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">typecheck</span><span class="p">(</span><span class="n">func_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+              <span class="o">**</span><span class="n">types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to enforce type checking for a function or method. There are</span>
 <span class="sd">    two ways to call this: either explicitly passing argument types to the</span>
 <span class="sd">    decorator, or letting it infer them using type annotations in the function</span>
@@ -849,16 +879,21 @@ def process(x:float, y:(int, float), z, iters:int=5, verbose:bool=True):
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    func_ : function</span>
+<span class="sd">    func_ : Optional[Callable]</span>
 <span class="sd">        The function to decorate. When using decorator with</span>
 <span class="sd">        manually-specified types, this is None. Underscore is used so that</span>
 <span class="sd">        `func` can still be used as a valid keyword argument for the wrapped</span>
 <span class="sd">        function.</span>
-<span class="sd">    types : type</span>
+<span class="sd">    types : Dict[str, Type]</span>
 <span class="sd">        Optional way to specify variable types. Use standard types rather than</span>
 <span class="sd">        importing from the typing library, as subscripted generics are not</span>
 <span class="sd">        supported (e.g. typing.List[str] will not work; typing.List will but at</span>
 <span class="sd">        that point there is no benefit over the standard `list`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Callable</span>
+<span class="sd">        The decorated function with type checking.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1060,14 +1095,7 @@ expected arguments.
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
@@ -1136,7 +1164,16 @@ expected arguments.
 <span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_kwargs</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">hide_fields</span><span class="o">=</span><span class="p">(),</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_kwargs</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+               <span class="n">hide_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator that adds parameters into the signature and docstring of a</span>
 <span class="sd">    function that accepts **kwargs.</span>
 
@@ -1254,15 +1291,7 @@ default values.</p>
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
@@ -1325,7 +1354,17 @@ default values.</p>
 <span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span>
-<span class="normal">276</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">store_class_defaults</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">store_class_defaults</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">attr_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class decorator that stores default values of class attributes (can be</span>
 <span class="sd">    all or a subset). Default here refers to the value at class definition</span>
 <span class="sd">    time. Mutable defaults should be okay since we deepcopy them, but are</span>
@@ -1457,16 +1496,7 @@ class ReflectionPaddedConv2d(nn.Module):
 
             <details class="quote">
               <summary>Source code in <code>lib/roboduck/decorators.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
 <span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
@@ -1483,7 +1513,16 @@ class ReflectionPaddedConv2d(nn.Module):
 <span class="normal">302</span>
 <span class="normal">303</span>
 <span class="normal">304</span>
-<span class="normal">305</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_docstring</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_docstring</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the docstring from another function/class to the decorated</span>
 <span class="sd">    function/class.</span>
 

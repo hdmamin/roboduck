@@ -50,3 +50,6 @@ deploy_docs:
 lint:
 	# Only lints docstrings.
 	pydocstyle lib/roboduck
+
+typecheck:
+	mypy lib/roboduck

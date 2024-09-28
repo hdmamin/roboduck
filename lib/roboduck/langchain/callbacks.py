@@ -19,7 +19,7 @@ class LiveTypingCallbackHandler(StreamingStdOutCallbackHandler):
 
     always_verbose = True
 
-    def __init__(self, color='green', sleep=.01):
+    def __init__(self, color: str = 'green', sleep: float = .01):
         """
         Parameters
         ----------
@@ -33,7 +33,7 @@ class LiveTypingCallbackHandler(StreamingStdOutCallbackHandler):
         self.color = color
         self.sleep = sleep
 
-    def on_llm_new_token(self, token, **kwargs):
+    def on_llm_new_token(self, token: str, **kwargs) -> None:
         """Runs on new LLM token. Only called when streaming is enabled.
 
         Parameters

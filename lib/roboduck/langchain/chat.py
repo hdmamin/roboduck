@@ -7,8 +7,9 @@ from functools import partial
 from langchain.callbacks.base import CallbackManager
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import ChatResult, ChatGeneration, AIMessage, \
-    SystemMessage
+    BaseMessage, SystemMessage
 from langchain.prompts import HumanMessagePromptTemplate
+from typing import Dict, List, Optional, Set, Tuple, Type, Union
 import warnings
 
 from roboduck.config import apply_config_defaults
@@ -27,10 +28,12 @@ class DummyChatModel:
         self.__dict__.update(kwargs)
         self.verbose = getattr(self, 'verbose', True)
 
-    def __call__(self, messages, stop=None):
+    def __call__(self, messages: List[BaseMessage],
+                 stop: Optional[List[str]] = None) -> BaseMessage:
         return self._generate(messages, stop=stop).generations[0].message
 
-    def _generate(self, messages, stop=None):
+    def _generate(self, messages: List[BaseMessage],
+                  stop: Optional[List[str]] = None) -> ChatResult:
         if stop:
             warnings.warn(
                 f'`stop` param is ignored by {type(self).__name__}. You '
@@ -46,9 +49,12 @@ class DummyChatModel:
                     verbose=self.verbose,
                 )
         message = AIMessage(content=res)
-        return ChatResult(generations=[ChatGeneration(message=message)])
+        return ChatResult(
+            generations=[ChatGeneration(message=message)]  # type: ignore
+        )
 
-    async def _agenerate(self, messages, stop=None):
+    async def _agenerate(self, messages: List[BaseMessage],
+                         stop: Optional[List[str]] = None):
         warnings.warn(
             f'{type(self).__name__} doesn\'t provide a real _agenerate '
             'method. Calling synchronous generate() instead.'
@@ -65,8 +71,9 @@ class Chat:
     cases.
     """
 
-    def __init__(self, system, user, chat_class=ChatOpenAI,
-                 history=(), streaming=True, **kwargs):
+    def __init__(self, system: str, user: Union[str, Dict],
+                 chat_class: Type = ChatOpenAI,
+                 history: Tuple = (), streaming: bool = True, **kwargs):
         r"""
         Parameters
         ----------
@@ -219,7 +226,7 @@ class Chat:
         kwargs = template.pop('kwargs', {})
         return cls(**template, **kwargs)
 
-    def user_message(self, *, key_='', **kwargs):
+    def user_message(self, *, key_: str = '', **kwargs) -> str:
         """Get a fully resolved user reply as a string.
 
         Parameters
@@ -238,7 +245,7 @@ class Chat:
         template = self.user_templates[key]
         return template.format(**kwargs)
 
-    def _reply(self, *, key_='', **kwargs):
+    def _reply(self, *, key_: str = '', **kwargs) -> AIMessage:
         """The basic functionality that will underlie the dynamically generated
         `reply` method and its other aliases. Passes user reply and
         conversational history to an LLM for a response.
@@ -267,7 +274,7 @@ class Chat:
         self._history.append(response)
         return response
 
-    def history(self, sep='\n\n', speaker_prefix=True):
+    def history(self, sep: str = '\n\n', speaker_prefix: bool = True) -> str:
         """Return chat history as a single string.
 
         Parameters
@@ -292,7 +299,7 @@ class Chat:
             res.append(reply)
         return sep.join(res)
 
-    def input_variables(self, key=''):
+    def input_variables(self, key: str = '') -> Set[str]:
         """Get names of fields that user has to pass in when replying.
 
         Parameters
@@ -308,7 +315,7 @@ class Chat:
         template = self.user_templates[key or self.default_user_key]
         return set(template.input_variables)
 
-    def _truncate_history(self):
+    def _truncate_history(self) -> None:
         """Dynamically discard old turns until our history is an
         acceptable size for our LLM's context window. Operates in place. Called
         automatically by _reply.
